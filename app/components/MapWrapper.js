@@ -1,5 +1,6 @@
 var React = require('react');
 var MapContainer = require('../containers/MapContainer')
+var MapLayerToggleWrapper = require('../components/MapLayerToggleWrapper')
 var PropTypes = React.PropTypes;
 
 var MapWrapper = React.createClass({
@@ -8,13 +9,13 @@ var MapWrapper = React.createClass({
     return (
       <div className="column">
         <div className="ui raised padded segment">
-          <div className="ui grid">
+          <div className="ui stackable grid">
             <div className="two column row">
               <div className="column">
                 <MapContainer />
               </div>
               <div className="column">
-                {/* add layer wrapper*/}
+                <MapLayerToggleWrapper />
               </div>
             </div>
           </div>
