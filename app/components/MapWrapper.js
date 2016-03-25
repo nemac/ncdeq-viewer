@@ -9,12 +9,12 @@ var MapWrapper = React.createClass({
     return (
       <div className="column">
         <div className="ui raised padded segment">
-          <div className="ui stackable grid">
-            <div className="two column row">
-              <div className="column">
+          <div className="ui stackable three column grid">
+            <div className="row">
+              <div className="ten wide column">
                 <MapContainer />
               </div>
-              <div className="column">
+              <div className="five wide column">
                 <MapLayerToggleWrapper />
               </div>
             </div>
