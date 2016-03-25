@@ -1,4 +1,5 @@
 var React = require('react');
+var MainTitle = require('./MainTitle');
 var PropTypes = React.PropTypes;
 
 var Header = React.createClass({
@@ -7,7 +8,7 @@ var Header = React.createClass({
     return (
       <div className="column">
           <div className="ui raised segment">
-            <h2 className="ui header">Explore a River Basin</h2>
+            <MainTitle  text='Explore a River Basin'/>
             <p>To get started click a River Basin on the map, or search for a location.</p>
               {/*
                 bread crumb wrapper - breadcrumbs
