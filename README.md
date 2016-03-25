@@ -20,6 +20,4 @@ finally
 npm run start
 ```
 
-Goto
-http://localhost:8080
-in a web browser
+Goto [http://localhost:8080](http://localhost:8080]) in a web browser
