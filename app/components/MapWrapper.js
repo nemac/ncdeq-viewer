@@ -7,8 +7,6 @@ var MapWrapper = React.createClass({
 
   render: function() {
     return (
-      <div className="column">
-        <div className="ui raised  segment">
           <div className="ui stackable three column grid">
             <div className="row">
               <div className="ten wide column">
@@ -19,8 +17,6 @@ var MapWrapper = React.createClass({
               </div>
             </div>
           </div>
-        </div>
-      </div>
     );
   }
 
