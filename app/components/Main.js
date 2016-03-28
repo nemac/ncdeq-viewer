@@ -11,7 +11,8 @@ require('../main.css');
 var Main = React.createClass({
   render: function () {
     return (
-      <div className="ui one column padded grid">
+      <div className="ui one column padded divided grid">
+
         <SectionWrapper>
           <Header />
         </SectionWrapper>
@@ -27,13 +28,9 @@ var Main = React.createClass({
         <BottomSectionWrapper text="Rankings" />
         <BottomSectionWrapper text="TRA's" />
         <BottomSectionWrapper text="Compare" />
-        {/*
-          breadcrumbs
-          charts
-            draggable
-            icons
-          */}
-        </div>
+      </div>
+
+
       )
     }
   });

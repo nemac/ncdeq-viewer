@@ -8,11 +8,15 @@ var MapLayerWrapper = React.createClass({
 
   render: function() {
     return (
-      <div className="column">
-        <MapLayerToggleWrapper />
-        <div className="ui hidden divider"></div>
-        <ProjectMapWrapper />
-      </div>
+        <div >
+          <div className="ui basic segment">
+            <MapLayerToggleWrapper />
+          </div>
+          <div className="ui divider"></div>
+          <div className="ui basic segment">
+            <ProjectMapWrapper />
+          </div>
+        </div>
 
     );
   }

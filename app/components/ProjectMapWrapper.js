@@ -8,16 +8,11 @@ var ProjectMapWrapper = React.createClass({
 
   render: function() {
     return (
-      <div className="row bottom-toggles" >
-        <div className="column padded">
-          <MapLayerToggleName  text='Add my Project'/>
-        </div>
-        <div className="column padded">
-          <ProjectMapAdd />
-        </div>
-        <div className="column padded">
-          <MapLayerToggle  toggleText='project'/>
-        </div>
+      <div className="row">
+        <MapLayerToggleName text='Add a Project'/>
+        <MapLayerToggle toggleText='Project Name'/>
+        <br />
+        <ProjectMapAdd placeholder='Search for a project' />
       </div>
     );
   }

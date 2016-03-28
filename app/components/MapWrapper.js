@@ -7,15 +7,13 @@ var MapWrapper = React.createClass({
 
   render: function() {
     return (
-          <div className="ui stackable three column grid">
-            <div className="row">
-              <div className="ten wide column">
+          <div className="ui stackable three column divided grid">
+              <div className="eleven wide column">
                 <MapContainer />
               </div>
               <div className="five wide column">
-                <MapLayerWrapper />
+                  <MapLayerWrapper />
               </div>
-            </div>
           </div>
     );
   }

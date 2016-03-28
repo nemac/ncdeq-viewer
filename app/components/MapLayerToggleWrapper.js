@@ -8,10 +8,13 @@ var MapLayerToggleWrapper = React.createClass({
 
   render: function() {
     return (
-        <div className="row top-toggles">
-          <MapLayerToggleName  text='Toggle Layers'/>
-          <MapLayerToggle  toggleText='Layer One'/>
-        </div>
+      <div className="row">
+        <MapLayerToggleName  text='Toggle Layers'/>
+        <MapLayerToggle  toggleText='Layer One'/>
+        <MapLayerToggle  toggleText='Layer One'/>
+        <MapLayerToggle  toggleText='Layer One'/>
+        <MapLayerToggle  toggleText='Layer One'/>
+      </div>
       );
     }
 
