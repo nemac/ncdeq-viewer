@@ -1,6 +1,6 @@
 var React = require('react');
 var MapContainer = require('../containers/MapContainer')
-var MapLayerToggleWrapper = require('../components/MapLayerToggleWrapper')
+var MapLayerWrapper = require('../components/MapLayerWrapper')
 var PropTypes = React.PropTypes;
 
 var MapWrapper = React.createClass({
@@ -13,7 +13,7 @@ var MapWrapper = React.createClass({
                 <MapContainer />
               </div>
               <div className="five wide column">
-                <MapLayerToggleWrapper />
+                <MapLayerWrapper />
               </div>
             </div>
           </div>
