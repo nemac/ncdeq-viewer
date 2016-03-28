@@ -12,3 +12,12 @@
 .appear-leave {
   opacity: 0;
 }
+
+.top-toggles{
+  height: 75%;
+}
+
+.bottom-toggles{
+  position: absolute;
+  bottom: 10%;
+}
