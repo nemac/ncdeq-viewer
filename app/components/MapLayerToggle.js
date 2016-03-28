@@ -21,7 +21,7 @@ var MapLayerToggle = React.createClass({
     return (
       <div>
         <div className="ui checkbox">
-          <input type="checkbox" className="hidden" />
+          <input type="checkbox" name="togglelayer" />
           <label>{this.state.toggleText}</label>
         </div>
       </div>
