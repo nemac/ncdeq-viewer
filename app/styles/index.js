@@ -4,6 +4,9 @@ var styles = {
   },
   space:{
     marginTop: '25px'
+  },
+  fullHeight: {
+    height:'100%'
   }
 };
 

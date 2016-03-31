@@ -4,7 +4,7 @@ var PropTypes = React.PropTypes;
 function SectionWrapper (props){
   return(
     <div className="column">
-      <div className="ui raised padded segment">
+      <div className="ui basic segment">
         {props.children}
       </div>
     </div>
