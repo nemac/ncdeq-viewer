@@ -43,9 +43,12 @@ var Main = React.createClass({
     console.log('Resize $.outerHeight()', ReactDOM.findDOMNode(this).offsetHeight);
     console.log('Resize $.nodeName()', this.refs.mapMain.nodeName);
     console.log('Resize $.innerWidth()', window.innerHeight);
-    var chartheight = window.innerHeight - (window.innerHeight * (.38 * 2))
+    var chartheight = window.innerHeight - (window.innerHeight * (.38 * 2));
+     var height = 250;
 
-    var height =  window.innerHeight - (this.refs.header.offsetHeight+this.refs.breadCrumbs.offsetHeight+this.refs.charts.offsetHeight)
+    window.innerHeight - (this.refs.header.offsetHeight+this.refs.breadCrumbs.offsetHeight+this.refs.charts.offsetHeight) >= 250 ?
+      height =  window.innerHeight - (this.refs.header.offsetHeight+this.refs.breadCrumbs.offsetHeight+this.refs.charts.offsetHeight) :
+      height = 250;
     //this.refs.mapMain.clientHeight;
     //window.innerHeight * .66;
 
@@ -55,14 +58,23 @@ var Main = React.createClass({
     })
   },
   componentDidMount: function() {
-    console.log('CDM header $.height()', this.refs.header.offsetHeight);
-    console.log('CDM breadCrumbs $.height()', this.refs.breadCrumbs.offsetHeight);
-    console.log('CDM mapmain $.height()', this.refs.mapMain.offsetHeight);
-    console.log('CDM charts $.height()', this.refs.charts.offsetHeight);
+    console.log('CDM total', window.innerHeight  )
+    var first = window.innerHeight - (window.innerHeight / 1.618);
+    var second = first / 1.618;
+    var third = second / 1.618;
 
-    console.log('CDM $.outerHeight()', ReactDOM.findDOMNode(this).offsetHeight);
-    console.log('CDM $.nodeName()', this.refs.mapMain.nodeName);
-    console.log('CDM $.innerWidth()', window.innerHeight);
+    console.log('CDM first ', first )
+    console.log('CDM second ', second )
+    console.log('CDM third ', third )
+
+    // console.log('CDM header $.height()', this.refs.header.offsetHeight);
+    // console.log('CDM breadCrumbs $.height()', this.refs.breadCrumbs.offsetHeight);
+    // console.log('CDM mapmain $.height()', this.refs.mapMain.offsetHeight);
+    // console.log('CDM charts $.height()', this.refs.charts.offsetHeight);
+    //
+    // console.log('CDM $.outerHeight()', ReactDOM.findDOMNode(this).offsetHeight);
+    // console.log('CDM $.nodeName()', this.refs.mapMain.nodeName);
+    // console.log('CDM $.innerWidth()', window.innerHeight);
     var height =  window.innerHeight - (this.refs.header.offsetHeight+this.refs.breadCrumbs.offsetHeight+this.refs.charts.offsetHeight)
     var chartheight = window.innerHeight - (window.innerHeight * (.38 * 2))
 
@@ -77,7 +89,7 @@ var Main = React.createClass({
   render: function () {
     return (
       <div className="ui one column relaxed padded grid">
-        <div ref="header"  className="stretched row" >
+        <div ref="header"  className="stretched row" style={{height:'100px'}}>
           <div className="sixteen wide column" >
 
             <SectionWrapper>
@@ -86,18 +98,18 @@ var Main = React.createClass({
           </div>
         </div>
         <div ref="breadCrumbs"  className="stretched row"  style={{padding:'0px'}}>
-          <div className="sixteen wide column"  style={{padding:'0px'}}>
+          <div className="sixteen wide column"  style={{padding:'0px',height:'100px'}}>
 
             <div className="ui pointing menu" onClick={this.handleMenuClick} >
 
               <a className="item">
-                Home
+                River Basins
               </a>
               <a className="item">
-                Messages
+                Cataloging Units
               </a>
               <a className="item">
-                Friends
+                HUC
               </a>
               <div className="right menu">
                 <div className="item">
@@ -148,9 +160,11 @@ var Main = React.createClass({
         </div>
       </div>
 
-      <div ref="charts" className="row" style={{height:this.state.chartheight}}>
+      <div ref="charts" className="row" style={{  'minhHeight': '260px',height:this.state.chartheight}}>
         <div className="sixteen wide column"  >
-          <p>Charts</p>
+          <h3 className="ui left floated header">
+            Charts
+          </h3>
         </div>
       </div>
 
