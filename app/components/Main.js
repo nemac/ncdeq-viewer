@@ -35,9 +35,9 @@ var Main = React.createClass({
   },
   getInitialState: function () {
 
-    var mapHeight = this.getHeight(2,window.outerHeight );
-    var headerHeight = 100 //this.getHeight(4,window.outerHeight );
-    var breadCrumbsHeight = 50//this.getHeight(5,window.outerHeight );
+    var mapHeight = this.getHeight(1,window.innerHeight );
+    var headerHeight = 100;
+    var breadCrumbsHeight = 50;
     var chartHeight = window.outerHeight - (mapHeight + headerHeight + breadCrumbsHeight)
 
     return {
@@ -53,34 +53,19 @@ var Main = React.createClass({
     e.target.className = 'active ' + e.target.className
   },
   handleResize: function(e) {
-    // console.log('map height HR ',this.state.mapHeight);
-    // this.getHeight(3,window.outerHeight );
-    //
-    // var mapH = this.getHeight(4,window.outerHeight );
-    //
-    // console.log('Resize header $.height()', this.getHeight(1,window.innerHeight )) //this.refs.header.offsetHeight);
-    // console.log('Resize breadCrumbs $.height()', this.refs.breadCrumbs.offsetHeight);
-    // console.log('Resize mapmain $.height()', this.refs.mapMain.offsetHeight);
-    // console.log('Resize charts $.height()', this.refs.charts.offsetHeight);
 
-    // console.log('Resize $.outerHeight()', ReactDOM.findDOMNode(this).offsetHeight);
-    // console.log('Resize $.nodeName()', this.refs.mapMain.nodeName);
-    // console.log('Resize $.innerWidth()', window.innerHeight);
-
-
-    // var chartheight = window.innerHeight - (window.innerHeight * (.38 * 2));
-    //  var height = 250;
-    //
-    // window.innerHeight - (this.refs.header.offsetHeight+this.refs.breadCrumbs.offsetHeight+this.refs.charts.offsetHeight) >= 250 ?
-    //   height =  window.innerHeight - (this.refs.header.offsetHeight+this.refs.breadCrumbs.offsetHeight+this.refs.charts.offsetHeight) :
-    //   height = 250;
-    // //this.refs.mapMain.clientHeight;
-    // //window.innerHeight * .66;
-    //
-    var mapHeight = this.getHeight(2,window.outerHeight );
-    var headerHeight = 100 //this.getHeight(4,window.outerHeight );
-    var breadCrumbsHeight = 50//this.getHeight(5,window.outerHeight );
+    var mapHeight = this.getHeight(1,window.innerHeight );
+    var headerHeight = 100;
+    var breadCrumbsHeight = 50;
     var chartHeight = window.outerHeight - (mapHeight + headerHeight + breadCrumbsHeight)
+
+    if (mapHeight < 250){
+      mapHeight = 250
+    }
+
+    if (chartHeight < 100){
+      chartHeight = 100
+    }
 
     this.setState({
       headerHeight: headerHeight,
@@ -102,24 +87,6 @@ var Main = React.createClass({
     var start
     this.getHeight(2,window.innerHeight )
 
-
-    //console.log(this.refs);
-    //console.log('CDM header $.height()', this.refs.header.offsetHeight);
-    // console.log('CDM breadCrumbs $.height()', this.refs.breadCrumbs.offsetHeight);
-    // console.log('CDM mapmain $.height()', this.refs.mapMain.offsetHeight);
-    // console.log('CDM charts $.height()', this.refs.charts.offsetHeight);
-    //
-    // console.log('CDM $.outerHeight()', ReactDOM.findDOMNode(this).offsetHeight);
-    // console.log('CDM $.nodeName()', this.refs.mapMain.nodeName);
-    // console.log('CDM $.innerWidth()', window.innerHeight);
-
-    // var height =  window.innerHeight - (this.refs.header.offsetHeight+this.refs.breadCrumbs.offsetHeight+this.refs.charts.offsetHeight)
-    // var chartheight = window.innerHeight - (window.innerHeight * (.38 * 2))
-    //
-    // this.setState({
-    //   height:  height,
-    //   chartheight: chartheight
-    // })
 
     window.addEventListener('resize', this.handleResize);
     $('.ui.dropdown').dropdown();
