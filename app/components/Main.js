@@ -98,10 +98,9 @@ var Main = React.createClass({
           </div>
         </div>
         <div ref="breadCrumbs"  className="stretched row"  style={{padding:'0px'}}>
-          <div className="sixteen wide column"  style={{padding:'0px',height:'100px'}}>
+          <div className="sixteen wide column"  style={{padding:'0px',height:'50px'}}>
 
             <div className="ui pointing menu" onClick={this.handleMenuClick} >
-
               <a className="item">
                 River Basins
               </a>
