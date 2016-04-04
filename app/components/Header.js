@@ -1,18 +1,32 @@
 var React = require('react');
-var MainTitle = require('./MainTitle');
-var BreadCrumbWrapper = require('./BreadCrumbWrapper');
+var HeaderTitle = require('./HeaderTitle');
+var SectionWrapper = require('./SectionWrapper');
+
 var PropTypes = React.PropTypes;
 
-//              <BreadCrumbWrapper />
-
 var Header = React.createClass({
-
+  propTypes: {
+    content: PropTypes.string,
+  },
+  getDefaultProps: function() {
+    return {
+      content:'Do Something on the map'
+    };
+  },
+  getInitialState: function() {
+    this.titleText = this.props.content;
+    return {
+      content: this.titleText
+    };
+  },
   render: function() {
     return (
+          <SectionWrapper>
             <div className = 'header' >
-              <MainTitle  text='Explore a River Basin'/>
-              <p>To get started click a River Basin on the map, or search for a location to zoom to.</p>
+              <HeaderTitle  text='Explore a River Basin'/>
+              <p>{this.state.content}</p>
             </div>
+          </SectionWrapper>
     );
   }
 

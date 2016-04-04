@@ -1,7 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-var MainTitle = React.createClass({
+var HeaderTitle = React.createClass({
   propTypes: {
     title: PropTypes.string,
   },
@@ -24,4 +24,4 @@ var MainTitle = React.createClass({
 
 });
 
-module.exports = MainTitle;
+module.exports = HeaderTitle;
