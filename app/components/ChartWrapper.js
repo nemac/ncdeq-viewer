@@ -5,7 +5,9 @@ var ChartWrapper = React.createClass({
 
   render: function() {
     return (
-      <div />
+      <h3 className="ui left floated header">
+        Charts
+      </h3>
     );
   }
 

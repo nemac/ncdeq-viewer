@@ -1,25 +1,21 @@
 var React = require('react');
 var MapContainer = require('../containers/MapContainer')
-var MapLayerWrapper = require('../components/MapLayerWrapper')
 var PropTypes = React.PropTypes;
 
-var MapWrapper = React.createClass({
 
-  render: function() {
-    return (
-          <div className="ui stackable three column divided grid">
-              <div className="twelve wide column">
-                <div className="stretched row">
-                  <MapContainer />
-                </div>
-              </div>
-              <div className="four wide column">
-                  <MapLayerWrapper />
-              </div>
-          </div>
-    );
-  }
+function MapWrapper(props) {
+  var pad = props.rowPadding ? 1 : props.rowPadding;
+  return (
+    <div className="twelve wide column" style={{padding:pad + 'px',height:props.mapHeight + 'px'}}>
+      <MapContainer />
+    </div>
+  );
+}
 
-});
+
+MapWrapper.propTypes = {
+  mapHeight: PropTypes.number.isRequired,
+  rowPadding: PropTypes.number
+}
 
 module.exports = MapWrapper;
