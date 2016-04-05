@@ -1,5 +1,10 @@
 var React = require('react');
+
 var MapWrapper = require('./MapWrapper');
+var ProjectMapWrapper = require('./ProjectMapWrapper');
+var MapLayerToggleWrapper = require('./MapLayerToggleWrapper');
+var SearchMapWrapper = require('./SearchMapWrapper');
+
 var PropTypes = React.PropTypes;
 
 var MapRow = React.createClass({
@@ -25,7 +30,7 @@ var MapRow = React.createClass({
   render: function() {
     return (
       <div className="ui stackable internally celled grid">
-        <div ref="mapMain"className="stretched row" style={{padding:'0px'}}>
+        <div ref="mapMain"className="stretched row" >
 
           <MapWrapper rowPadding={this.props.rowPadding} mapHeight={this.props.mapHeight} />
 
@@ -34,12 +39,12 @@ var MapRow = React.createClass({
             <div className="ui internally celled grid">
               <div className="row">
                 <div className="sixteen wide column">
-                  <p>Toggle</p>
+                  <MapLayerToggleWrapper />
                 </div>
               </div>
               <div className="row">
                 <div className="sixteen wide column">
-                  <p>Projects</p>
+                  <ProjectMapWrapper />
                 </div>
               </div>
             </div>

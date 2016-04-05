@@ -9,6 +9,9 @@ var BreadCrumb = React.createClass({
   render: function() {
     return (
       <div className="ui pointing menu" onClick={this.handleMenuClick} >
+        <div className="header item">
+          &nbsp;
+        </div>
         <a className="item">
           River Basins
         </a>
@@ -18,10 +21,13 @@ var BreadCrumb = React.createClass({
         <a className="item">
           HUC
         </a>
-        <div className="right menu">
+        <div className="header item">
+          &nbsp;
+        </div>
+        <div className="left menu">
           <div className="item">
             <div className="ui transparent icon input">
-              <input type="text" placeholder="Search..." />
+              <input type="text" placeholder="Search to zoom..." />
               <i className="search link icon"></i>
             </div>
           </div>
