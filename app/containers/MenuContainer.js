@@ -46,9 +46,6 @@ var MenuContainer = React.createClass({
   render: function() {
     return (
       <Menu
-        RiverBasinActive={this.state.RiverBasinActive}
-        CatalogingActive={this.state.CatalogingActive}
-        HUCActive={this.state.HUCActive}
         handleMenuClick={this.handleMenuClick}
         getActive={this.getActive}
         items = {this.defaultItems()}/>

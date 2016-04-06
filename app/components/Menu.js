@@ -1,5 +1,5 @@
 var React = require('react');
-var BreadCrumbItem = require('./MenuItem');
+var MenuItem = require('./MenuItem');
 
 var PropTypes = React.PropTypes;
 
@@ -11,11 +11,13 @@ function Menu (props) {
       <div className="header item">
         &nbsp;
       </div>
-      {props.items.map(function(item) {
-        return (
-            <BreadCrumbItem key={item.name} name={item.name} activeValue={item.activeValue} getActive={props.getActive} handleMenuClick={props.handleMenuClick} />
-        );
-      })}
+
+        {props.items.map(function(item) {
+            return (
+              <MenuItem key={item.name} name={item.name} activeValue={item.activeValue} getActive={props.getActive} handleMenuClick={props.handleMenuClick} />
+            )
+          })
+        }
 
 
       <div className="header item" >
@@ -34,9 +36,6 @@ function Menu (props) {
 }
 
 Menu.PropTypes = {
-  RiverBasinActive: PropTypes.bool.isRequired,
-  CatalogingActive: PropTypes.bool.isRequired,
-  HUCActive: PropTypes.bool.isRequired,
   handleMenuClick: PropTypes.func.isRequired,
   getActive: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired
