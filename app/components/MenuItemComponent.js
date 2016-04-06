@@ -9,7 +9,7 @@ function MenuItemComponent (props) {
   )
 }
 
-MenuItem.PropTypes = {
+MenuItemComponent.PropTypes = {
   handleMenuClick: PropTypes.func.isRequired,
   getActive: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,

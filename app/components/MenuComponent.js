@@ -1,5 +1,5 @@
 var React = require('react');
-var MenuItem = require('./MenuItem');
+var MenuItemComponent = require('../containers/MenuItemContainer');
 
 var PropTypes = React.PropTypes;
 
@@ -14,7 +14,7 @@ function MenuComponent (props) {
 
         {props.items.map(function(item) {
             return (
-              <MenuItem key={item.name} name={item.name} activeValue={item.activeValue} getActive={props.getActive} handleMenuClick={props.handleMenuClick} />
+              <MenuItemComponent key={item.name} name={item.name} activeValue={item.activeValue} getActive={props.getActive} handleMenuClick={props.handleMenuClick} />
             )
           })
         }

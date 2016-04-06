@@ -5,7 +5,7 @@ var PropTypes = React.PropTypes;
 var Header = require('../components/Header');
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
-var BreadCrumb = require('../containers/MenuContainer');
+var MenuContainer = require('../containers/MenuContainer');
 var MapRow = require('../components/MapRow');
 var ChartRow = require('../components/ChartRow');
 
@@ -20,7 +20,7 @@ function MainComponent (props) {
       </RowWrapper>
 
       <RowWrapper refText="breadCrumbs" rowPadding={props.rowPadding} height={props.breadCrumbsHeight}>
-        <BreadCrumb />
+        <MenuContainer />
       </RowWrapper>
 
       <RowWrapper rowPadding={props.rowPadding} refText="mapRowWrapper" >

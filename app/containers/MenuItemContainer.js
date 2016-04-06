@@ -1,5 +1,5 @@
 var React = require('react');
-var Menu = require('../components/MenuItemComponent');
+var MenuItemComponent = require('../components/MenuItemComponent');
 
 var PropTypes = React.PropTypes;
 
@@ -22,9 +22,11 @@ var MenuItemContainer = React.createClass({
   },
   render: function() {
     return (
-      <Menu
-        handleMenuClick={this.handleMenuClick}
-        getActive={this.getActive} />
+      <MenuItemComponent
+        handleMenuClick={this.props.handleMenuClick}
+        getActive={this.props.getActive} 
+        name={this.state.name}
+        activeValue={this.state.activeValue} />
     );
   }
 
