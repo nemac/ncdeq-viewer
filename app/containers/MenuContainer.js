@@ -1,5 +1,5 @@
 var React = require('react');
-var Menu = require('../components/Menu');
+var MenuComponent = require('../components/MenuComponent');
 
 var PropTypes = React.PropTypes;
 
@@ -45,7 +45,7 @@ var MenuContainer = React.createClass({
   },
   render: function() {
     return (
-      <Menu
+      <MenuComponent
         handleMenuClick={this.handleMenuClick}
         getActive={this.getActive}
         items = {this.defaultItems()}/>

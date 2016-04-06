@@ -1,7 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-function MenuItem (props) {
+function MenuItemComponent (props) {
   return (
     <a className={props.getActive(props.activeValue)}  onClick={props.handleMenuClick.bind(null, props.activeValue)} >
       {props.name}
@@ -16,4 +16,4 @@ MenuItem.PropTypes = {
   activeValue: PropTypes.string.isRequired
 }
 
-module.exports = MenuItem;
+module.exports = MenuItemComponent;

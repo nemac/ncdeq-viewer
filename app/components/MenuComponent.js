@@ -3,7 +3,7 @@ var MenuItem = require('./MenuItem');
 
 var PropTypes = React.PropTypes;
 
-function Menu (props) {
+function MenuComponent (props) {
 
   return (
 
@@ -35,10 +35,10 @@ function Menu (props) {
   )
 }
 
-Menu.PropTypes = {
+MenuComponent.PropTypes = {
   handleMenuClick: PropTypes.func.isRequired,
   getActive: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired
 }
 
-module.exports = Menu;
+module.exports = MenuComponent;

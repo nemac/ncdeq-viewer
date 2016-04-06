@@ -1,5 +1,5 @@
 var React = require('react');
-var Menu = require('../components/MenuItem');
+var Menu = require('../components/MenuItemComponent');
 
 var PropTypes = React.PropTypes;
 
