@@ -1,7 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-var ChartWrapper = React.createClass({
+var MainContainer = React.createClass({
 
   render: function() {
     return (
@@ -11,4 +11,4 @@ var ChartWrapper = React.createClass({
 
 });
 
-module.exports = ChartWrapper;
+module.exports = MainContainer;

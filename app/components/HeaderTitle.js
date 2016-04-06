@@ -1,8 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
-var BottomSectionTitle = require('./BottomSectionTitle');
 
-var BottomSectionHeader = React.createClass({
+var HeaderTitle = React.createClass({
   propTypes: {
     title: PropTypes.string,
   },
@@ -19,15 +18,10 @@ var BottomSectionHeader = React.createClass({
   },
   render: function() {
     return (
-      <div className="ui clearing segment">
-        <BottomSectionTitle text={this.state.title} />
-        <h4 className="ui right floated header">
-          <i className="dropdown icon"></i>
-        </h4>
-      </div>
+      <h2 className="ui header">{this.state.title}</h2>
     );
   }
 
 });
 
-module.exports = BottomSectionHeader;
+module.exports = HeaderTitle;
