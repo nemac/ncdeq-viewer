@@ -1,9 +1,9 @@
 var React = require('react');
-var BreadCrumb = require('../components/BreadCrumb');
+var Menu = require('../components/Menu');
 
 var PropTypes = React.PropTypes;
 
-var BreadCrumbContainer = React.createClass({
+var MenuContainer = React.createClass({
   defaultItems: function(){
     return ([
       {name:'River Basins',activeValue:'RiverBasinActive' },
@@ -45,7 +45,7 @@ var BreadCrumbContainer = React.createClass({
   },
   render: function() {
     return (
-      <BreadCrumb
+      <Menu
         RiverBasinActive={this.state.RiverBasinActive}
         CatalogingActive={this.state.CatalogingActive}
         HUCActive={this.state.HUCActive}
@@ -57,4 +57,4 @@ var BreadCrumbContainer = React.createClass({
 
 });
 
-module.exports = BreadCrumbContainer;
+module.exports = MenuContainer;

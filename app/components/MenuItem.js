@@ -1,7 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-var BreadCrumbItem = React.createClass({
+var MenuItem = React.createClass({
   propTypes: {
     name: PropTypes.string,
     activeValue: PropTypes.string,
@@ -28,4 +28,4 @@ var BreadCrumbItem = React.createClass({
 
 });
 
-module.exports = BreadCrumbItem;
+module.exports = MenuItem;

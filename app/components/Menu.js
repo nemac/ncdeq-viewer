@@ -1,9 +1,9 @@
 var React = require('react');
-var BreadCrumbItem = require('./BreadCrumbItem');
+var BreadCrumbItem = require('./MenuItem');
 
 var PropTypes = React.PropTypes;
 
-function BreadCrumb (props) {
+function Menu (props) {
 
   return (
 
@@ -33,7 +33,7 @@ function BreadCrumb (props) {
   )
 }
 
-BreadCrumb.PropTypes = {
+Menu.PropTypes = {
   RiverBasinActive: PropTypes.bool.isRequired,
   CatalogingActive: PropTypes.bool.isRequired,
   HUCActive: PropTypes.bool.isRequired,
@@ -42,4 +42,4 @@ BreadCrumb.PropTypes = {
   items: PropTypes.array.isRequired
 }
 
-module.exports = BreadCrumb;
+module.exports = Menu;
