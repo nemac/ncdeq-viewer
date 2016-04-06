@@ -6,9 +6,9 @@ var PropTypes = React.PropTypes;
 var MenuContainer = React.createClass({
   defaultItems: function(){
     return ([
-      {name:'River Basins',activeValue:'RiverBasinActive' },
-      {name:'Cataloging Units',activeValue:'CatalogingActive' },
-      {name:'HUC',activeValue:'HUCActive' }
+      {name:'River Basins' },
+      {name:'Cataloging Units'},
+      {name:'HUC'}
     ])
   },
   getStateObject: function(){
@@ -17,7 +17,7 @@ var MenuContainer = React.createClass({
     var items = this.defaultItems();
 
     items.map(function(item) {
-      obj[ item.activeValue ] = false;
+      obj[ item.name ] = false;
     })
 
     return obj
@@ -30,7 +30,7 @@ var MenuContainer = React.createClass({
     this.setState(this.getStateObject())
   },
   handleMenuClick: function(val,e) {
-
+    console.log(val)
     //reset menu
     this.resetMenus();
 

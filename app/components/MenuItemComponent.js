@@ -3,7 +3,7 @@ var PropTypes = React.PropTypes;
 
 function MenuItemComponent (props) {
   return (
-    <a className={props.getActive(props.activeValue)}  onClick={props.handleMenuClick.bind(null, props.activeValue)} >
+    <a className={props.getActive(props.name)}  onClick={props.handleMenuClick.bind(null, props.name)} >
       {props.name}
     </a>
   )
