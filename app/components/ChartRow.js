@@ -36,7 +36,7 @@ var ChartRow = React.createClass({
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapper title="TRA's" />
+        <ChartRowWrapper title="Compare" />
       </div>
 
 

@@ -11,9 +11,8 @@ var MapLayerToggleName = React.createClass({
     };
   },
   getInitialState: function() {
-    this.titleText = this.props.text;
     return {
-      title: this.titleText
+      title: this.props.text
     };
   },
   render: function() {

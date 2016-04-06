@@ -39,7 +39,6 @@ var BreadCrumb = React.createClass({
       [val]: true,
     })
 
-
   },
   getActive: function(val){
     return  (this.state[val] ? 'active item' : 'item')
