@@ -5,14 +5,11 @@ var PropTypes = React.PropTypes;
 var Header = require('../components/Header');
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
-var BreadCrumb = require('../components/BreadCrumb');
+var BreadCrumb = require('../containers/BreadCrumbContainer');
 var MapRow = require('../components/MapRow');
 var ChartRow = require('../components/ChartRow');
 
-
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-
-
 
 function MainComponent (props) {
   return(

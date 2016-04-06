@@ -7,11 +7,12 @@ require('../main.css');
 var PropTypes = React.PropTypes;
 
 var MainContainer = React.createClass({
-  getHeight(repeat,val){
+  setHeight(repeat,val){
+    //set the height of element based on a ratio 1.618
     if(repeat<1){
       return val
     } else{
-      return this.getHeight(repeat-1, val/1.618)
+      return this.setHeight(repeat-1, val/1.618)
     }
   },
   setSize: function(){
@@ -27,7 +28,7 @@ var MainContainer = React.createClass({
     // the calculate the map hieght.
     //give the rest to the chart
     var leftover = window.innerHeight -  (headerHeight + breadCrumbsHeight);
-    var mapHeight = this.getHeight(1,leftover);
+    var mapHeight = this.setHeight(1,leftover);
     var chartHeight  = window.innerHeight - (leftover + mapHeight);
 
     //do not let map height less than 250 pixels
@@ -64,7 +65,7 @@ var MainContainer = React.createClass({
     }
   },
   handleResize: function(e) {
-
+    //handling the scaling of map and chart areas
     var sizes = this.setSize();
 
     this.setState({
