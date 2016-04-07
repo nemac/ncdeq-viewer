@@ -1,5 +1,5 @@
 var React = require('react');
-var HeaderTitle = require('./HeaderTitle');
+var HeaderTitle = require('../containers/HeaderTitleContainer');
 var SectionWrapper = require('./SectionWrapper');
 
 var PropTypes = React.PropTypes;

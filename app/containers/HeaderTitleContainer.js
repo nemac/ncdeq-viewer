@@ -1,7 +1,8 @@
 var React = require('react');
+var HeaderTitleComponent = require('../components/HeaderTitle')
 var PropTypes = React.PropTypes;
 
-var HeaderTitle = React.createClass({
+var HeaderTitleContainer = React.createClass({
   propTypes: {
     title: PropTypes.string,
   },
@@ -11,17 +12,16 @@ var HeaderTitle = React.createClass({
     };
   },
   getInitialState: function() {
-    this.titleText = this.props.text;
     return {
-      title: this.titleText
+      title: this.props.text
     };
   },
   render: function() {
     return (
-      <h2 className="ui header">{this.state.title}</h2>
+      <HeaderTitleComponent title={this.state.title} />
     );
   }
 
 });
 
-module.exports = HeaderTitle;
+module.exports = HeaderTitleContainer;
