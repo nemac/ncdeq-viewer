@@ -7,6 +7,12 @@ require('../main.css');
 var PropTypes = React.PropTypes;
 
 var MainContainer = React.createClass({
+  getDefaultProps: function() {
+    return {
+      headerHeight:100,
+      breadCrumbsHeight:50,
+    };
+  },
   setHeight(repeat,val){
     //set the height of element based on a ratio 1.618
     if(repeat<1){
