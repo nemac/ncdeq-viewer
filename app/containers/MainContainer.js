@@ -48,8 +48,8 @@ var MainContainer = React.createClass({
       chartHeight = 100
     }
 
+    //set suze varriabe
     return {
-      isResultsVisible: true,
       headerHeight: headerHeight,
       mapHeight: mapHeight,
       chartHeight: chartHeight,

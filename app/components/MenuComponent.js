@@ -3,6 +3,7 @@ var MenuItemComponent = require('../containers/MenuItemContainer');
 
 var PropTypes = React.PropTypes;
 
+
 function MenuComponent (props) {
 
   return (
