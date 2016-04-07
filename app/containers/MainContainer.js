@@ -41,7 +41,6 @@ var MainContainer = React.createClass({
     if (mapHeight < 300){
       mapHeight = 300
     }
-
     //do not let chart area less than 100 pixels
     //  may need to rethink this if the charts need more space....
     if (chartHeight < 100){

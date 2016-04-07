@@ -6,7 +6,7 @@ var HeaderContainer = require('../containers/HeaderContainer');
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
 var MenuContainer = require('../containers/MenuContainer');
-var MapRow = require('../components/MapRow');
+var MapRowContainer = require('../containers/MapRowContainer');
 var ChartRow = require('../components/ChartRow');
 
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
@@ -15,19 +15,19 @@ function MainComponent (props) {
   return(
     <div className="ui one column relaxed padded grid">
 
-      <RowWrapper refText="header" rowPadding={props.rowPadding} height={props.headerHeight} >
+      <RowWrapper rowPadding={props.rowPadding} height={props.headerHeight} >
         <HeaderContainer content='To get started click a River Basin on the map, or search for a location to zoom to.'/>
       </RowWrapper>
 
-      <RowWrapper refText="breadCrumbs" rowPadding={props.rowPadding} height={props.breadCrumbsHeight}>
+      <RowWrapper rowPadding={props.rowPadding} height={props.breadCrumbsHeight}>
         <MenuContainer />
       </RowWrapper>
 
-      <RowWrapper rowPadding={props.rowPadding} refText="mapRowWrapper" >
-        <MapRow   rowPadding={props.rowPadding} mapHeight={props.mapHeight}  />
+      <RowWrapper rowPadding={props.rowPadding} >
+        <MapRowContainer rowPadding={props.rowPadding} mapHeight={props.mapHeight}  />
       </RowWrapper>
 
-      <RowWrapper refText="mapWrapper" rowPadding={props.defpad} height={props.chartHeight}>
+      <RowWrapper rowPadding={props.defpad} height={props.chartHeight}>
         <ChartRow />
       </RowWrapper>
 
