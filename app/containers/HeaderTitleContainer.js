@@ -1,5 +1,5 @@
 var React = require('react');
-var HeaderTitleComponent = require('../components/HeaderTitle')
+var HeaderTitleComponent = require('../components/HeaderTitleComponent')
 var PropTypes = React.PropTypes;
 
 var HeaderTitleContainer = React.createClass({
@@ -13,7 +13,7 @@ var HeaderTitleContainer = React.createClass({
   },
   getInitialState: function() {
     return {
-      title: this.props.text
+      title: this.props.title
     };
   },
   render: function() {

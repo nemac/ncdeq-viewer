@@ -1,7 +1,5 @@
 var React = require('react');
 var HeaderComponent = require('../components/HeaderComponent')
-
-var HeaderTitle = require('../components/HeaderTitle');
 var SectionWrapper = require('../components/SectionWrapper');
 
 var PropTypes = React.PropTypes;
