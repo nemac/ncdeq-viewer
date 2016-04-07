@@ -12,7 +12,6 @@ function MapWrapper(props) {
   );
 }
 
-
 MapWrapper.propTypes = {
   mapHeight: PropTypes.number.isRequired,
   rowPadding: PropTypes.number
