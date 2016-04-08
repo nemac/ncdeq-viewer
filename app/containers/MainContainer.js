@@ -9,6 +9,7 @@ var PropTypes = React.PropTypes;
 var MainContainer = React.createClass({
   getDefaultProps: function() {
     return {
+      isChartsVisible: true,
       headerHeight:100,
       breadCrumbsHeight:50,
     };
@@ -21,7 +22,11 @@ var MainContainer = React.createClass({
       return this.setHeight(repeat-1, val/1.618)
     }
   },
-  setSize: function(){
+  setSize: function(chartVis){
+
+    //when state is not defined yet set to true
+    var vis = this.state ? chartVis : true;
+    var padding = this.state ? this.state.rowPadding : true;
 
     //components with fixed heights.
     var headerHeight = this.props.headerHeight;
@@ -33,21 +38,31 @@ var MainContainer = React.createClass({
     //first get whats leftover from fixed components
     // the calculate the map hieght.
     //give the rest to the chart
-    var leftover = window.innerHeight -  (headerHeight + breadCrumbsHeight);
-    var mapHeight = this.setHeight(1,leftover);
-    var chartHeight  = window.innerHeight - (leftover + mapHeight);
+    var leftover = window.innerHeight -
+                        (headerHeight + breadCrumbsHeight +
+                          (padding*4)
+                        );
+
+    if (vis){
+      var mapHeight = this.setHeight(1,leftover);
+      var chartHeight = window.innerHeight - (leftover - mapHeight);
+    } else {
+      var mapHeight  = leftover
+      var chartHeight = 0;
+    }
 
     //do not let map height less than 250 pixels
     if (mapHeight < 300){
-      mapHeight = 300
+        mapHeight = 300
     }
+
     //do not let chart area less than 100 pixels
     //  may need to rethink this if the charts need more space....
     if (chartHeight < 100){
-      chartHeight = 100
+        chartHeight = 100
     }
 
-    //set suze varriabe
+    //set size varriabe
     return {
       headerHeight: headerHeight,
       mapHeight: mapHeight,
@@ -61,13 +76,28 @@ var MainContainer = React.createClass({
 
     return{
       defpad:5,
-      isResultsVisible: true,
+      isChartsVisible: true,
       rowPadding: 1,
       headerHeight: sizes.headerHeight,
       mapHeight: sizes.mapHeight,
       chartHeight: sizes.chartHeight,
       breadCrumbsHeight: sizes.breadCrumbsHeight
     }
+  },
+  handleChartToggle: function(e){
+    //toggle state of chart area
+    var active = !this.state.isChartsVisible;
+
+    this.setState({
+      isChartsVisible: active
+    });
+
+    //set new map size without chart area
+    var sizes = this.setSize(active);
+
+    //set state to force re-render
+    this.handleResize();
+
   },
   handleResize: function(e) {
     //handling the scaling of map and chart areas
@@ -93,7 +123,8 @@ var MainContainer = React.createClass({
     return (
       <MainComponent
         defpad={this.state.defpad}
-        isResultsVisible={this.state.isResultsVisible}
+        handleChartToggle={this.handleChartToggle}
+        isChartsVisible={this.state.isChartsVisible}
         headerHeight={this.state.headerHeight}
         mapHeight={this.state.mapHeight}
         chartHeight={this.state.chartHeight}

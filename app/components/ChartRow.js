@@ -4,20 +4,22 @@ var ChartRowWrapper = require('./ChartRowWrapper');
 var Divider = require('./Divider');
 
 var ChartRow = React.createClass({
-
   render: function() {
+    var vis = this.props.isChartsVisible ?  'show' : 'none';
     return (
 
-      <div className="ui stackable centered grid">
+      <div className="ui stackable centered grid" style={{display:vis}}>
         <div className="row" >
 
       <div className="sixteen wide grey tertiary column" >
             <h3 className="ui left floated  header">
               Charts
             </h3>
-            <h3 className="ui right floated header">
-              <i className="remove icon"></i>
-            </h3>
+            <div className="ui right floated compact grey inverted segment">
+              <div className="meduim basic ui button" onClick={this.props.handleChartToggle} >
+                <i className="remove icon"></i>
+              </div>
+          </div>
         <div className="content"><p>Some descriptive text</p></div>
       </div>
 

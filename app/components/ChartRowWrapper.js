@@ -27,7 +27,7 @@ var ChartRowWrapper = React.createClass({
           </h4>
         </div>
         <div className="ui basic segment">
-          <p>Navigate to a Catloging Unit to view chart data</p>
+          <p>Navigate to a Cataloging Unit to view chart data</p>
           {/*
               add chartwrapper
                 charts...
