@@ -24,19 +24,23 @@ function MainComponent (props) {
       </RowWrapper>
 
       <RowWrapper rowPadding={props.rowPadding} >
-        <MapRowContainer rowPadding={props.rowPadding} mapHeight={props.mapHeight}  />
+        <MapRowContainer handleMapClick={props.handleMapClick} rowPadding={props.rowPadding} mapHeight={props.mapHeight}  />
       </RowWrapper>
 
-      <RowWrapper rowPadding={props.defpad} height={props.chartHeight}>
-        <ChartRow />
-      </RowWrapper>
+      { props.isChartsVisible &&
+        <RowWrapper rowPadding={props.defpad} height={props.chartHeight}>
+          <ChartRow isChartsVisible={props.isChartsVisible} handleChartToggle={props.handleChartToggle} />
+        </RowWrapper>
+      }
 
     </div>)
   }
 
   MainComponent.PropTypes = {
     defpad: PropTypes.number.isRequired,
-    isResultsVisible: PropTypes.bool.isRequired,
+    handleChartToggle: PropTypes.func.isRequired,
+    handleMapClick: PropTypes.func.isRequired,
+    isChartsVisible: PropTypes.bool.isRequired,
     headerHeight: PropTypes.number.isRequired,
     breadCrumbsHeight: PropTypes.number.isRequired,
     mapHeight: PropTypes.number.isRequired,

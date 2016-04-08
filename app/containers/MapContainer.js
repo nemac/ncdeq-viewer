@@ -3,6 +3,7 @@ var PropTypes = React.PropTypes;
 var MapComponent = require('../components/MapComponent');
 
 var MapContainer = React.createClass({
+
   getInitialState: function() {
     return {
       latitude: 35.6683,
@@ -20,7 +21,8 @@ var MapContainer = React.createClass({
         longitude={this.state.longitude}
         attribution={this.state.attribution}
         tileUrl={this.state.tileUrl}
-        zoom={this.state.zoom}/>
+        zoom={this.state.zoom}
+        handleMapClick={this.props.handleMapClick} />
     );
   }
 });
