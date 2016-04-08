@@ -7,13 +7,14 @@ function MapWrapper(props) {
   var pad = props.rowPadding ? 1 : props.rowPadding;
   return (
     <div className="twelve wide column" style={{padding:pad + 'px',height:props.mapHeight + 'px'}}>
-      <MapContainer />
+      <MapContainer handleMapClick={props.handleMapClick} />
     </div>
   );
 }
 
 MapWrapper.propTypes = {
   mapHeight: PropTypes.number.isRequired,
+  handleMapClick: PropTypes.func.isRequired,
   rowPadding: PropTypes.number
 }
 

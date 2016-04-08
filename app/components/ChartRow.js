@@ -23,6 +23,7 @@ var ChartRow = React.createClass({
         <div className="content"><p>Some descriptive text</p></div>
       </div>
 
+
       <Divider />
 
       <div className="fourteen wide column">

@@ -3,9 +3,11 @@ var ReactLeaflet = require('react-leaflet')
 //import { Map, GeoJson, TileLayer } from 'react-leaflet';
 var PropTypes = React.PropTypes;
 
+
+
 function MapComponent(props){
     return (
-        <ReactLeaflet.Map center={[props.latitude,props.longitude]} zoom={props.zoom}>
+        <ReactLeaflet.Map onLeafletClick={props.handleMapClick} center={[props.latitude,props.longitude]} zoom={props.zoom}>
           <ReactLeaflet.TileLayer
             attribution={props.attribution}
             url={props.tileUrl}
@@ -20,6 +22,7 @@ function MapComponent(props){
     attribution: PropTypes.string.isRequired,
     tileUrl: PropTypes.string.isRequired,
     zoom: PropTypes.number.isRequired,
+    handleMapClick: PropTypes.func.isRequired,
     geojson: PropTypes.object
   }
 

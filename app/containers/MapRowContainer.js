@@ -21,7 +21,7 @@ var MapRowContainer = React.createClass({
   },
   render: function() {
     return (
-      <MapRowComponent  rowPadding={this.state.rowPadding} mapHeight={this.props.mapHeight} />
+      <MapRowComponent handleMapClick={this.props.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.props.mapHeight} />
     );
   }
 

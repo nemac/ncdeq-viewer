@@ -12,14 +12,14 @@ function MapRowComponent (props) {
     <div className="ui stackable internally celled grid">
       <div className="stretched row" >
 
-        <MapWrapper rowPadding={props.rowPadding} mapHeight={props.mapHeight} />
+        <MapWrapper handleMapClick={props.handleMapClick} rowPadding={props.rowPadding} mapHeight={props.mapHeight} />
 
         <div className="four wide column">
 
           <div className="ui internally celled grid">
             <div className="row">
               <div className="sixteen wide column">
-                <MapLayerToggleWrapper />
+                <MapLayerToggleWrapper    />
               </div>
             </div>
             <div className="row">
@@ -37,6 +37,7 @@ function MapRowComponent (props) {
 }
 
 MapRowComponent.PropTypes = {
+  handleMapClick: PropTypes.func.isRequired,
   mapHeight: PropTypes.number,
   rowPadding: PropTypes.number
 }

@@ -24,7 +24,7 @@ function MainComponent (props) {
       </RowWrapper>
 
       <RowWrapper rowPadding={props.rowPadding} >
-        <MapRowContainer rowPadding={props.rowPadding} mapHeight={props.mapHeight}  />
+        <MapRowContainer handleMapClick={props.handleMapClick} rowPadding={props.rowPadding} mapHeight={props.mapHeight}  />
       </RowWrapper>
 
       { props.isChartsVisible &&
@@ -39,6 +39,7 @@ function MainComponent (props) {
   MainComponent.PropTypes = {
     defpad: PropTypes.number.isRequired,
     handleChartToggle: PropTypes.func.isRequired,
+    handleMapClick: PropTypes.func.isRequired,
     isChartsVisible: PropTypes.bool.isRequired,
     headerHeight: PropTypes.number.isRequired,
     breadCrumbsHeight: PropTypes.number.isRequired,

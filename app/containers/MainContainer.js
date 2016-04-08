@@ -23,7 +23,6 @@ var MainContainer = React.createClass({
     }
   },
   setSize: function(chartVis){
-
     //when state is not defined yet set to true
     var vis = this.state ? chartVis : true;
     var padding = this.state ? this.state.rowPadding : true;
@@ -64,6 +63,7 @@ var MainContainer = React.createClass({
 
     //set size varriabe
     return {
+      isChartsVisible: vis,
       headerHeight: headerHeight,
       mapHeight: mapHeight,
       chartHeight: chartHeight,
@@ -86,22 +86,38 @@ var MainContainer = React.createClass({
   },
   handleChartToggle: function(e){
     //toggle state of chart area
-    var active = !this.state.isChartsVisible;
-
-    this.setState({
-      isChartsVisible: active
-    });
+    //var active = !this.state.isChartsVisible;
 
     //set new map size without chart area
-    var sizes = this.setSize(active);
+    var sizes = this.setSize(false);
 
-    //set state to force re-render
-    this.handleResize();
+    this.setState({
+      isChartsVisible: sizes.isChartsVisible,
+      headerHeight: sizes.headerHeight,
+      mapHeight: sizes.mapHeight,
+      chartHeight: sizes.chartHeight,
+      breadCrumbsHeight: sizes.breadCrumbsHeight
+    })
+
+  },
+  handleMapClick: function(e){
+
+    //set new map size without chart area
+    var sizes = this.setSize(true);
+
+    this.setState({
+      isChartsVisible: sizes.isChartsVisible,
+      headerHeight: sizes.headerHeight,
+      mapHeight: sizes.mapHeight,
+      chartHeight: sizes.chartHeight,
+      breadCrumbsHeight: sizes.breadCrumbsHeight
+    })
 
   },
   handleResize: function(e) {
+
     //handling the scaling of map and chart areas
-    var sizes = this.setSize();
+    var sizes = this.setSize(this.state.isChartsVisible);
 
     this.setState({
       headerHeight: sizes.headerHeight,
@@ -125,6 +141,7 @@ var MainContainer = React.createClass({
         defpad={this.state.defpad}
         handleChartToggle={this.handleChartToggle}
         isChartsVisible={this.state.isChartsVisible}
+        handleMapClick={this.handleMapClick}
         headerHeight={this.state.headerHeight}
         mapHeight={this.state.mapHeight}
         chartHeight={this.state.chartHeight}
