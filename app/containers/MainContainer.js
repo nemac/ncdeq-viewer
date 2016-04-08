@@ -9,7 +9,7 @@ var PropTypes = React.PropTypes;
 var MainContainer = React.createClass({
   getDefaultProps: function() {
     return {
-      isChartsVisible: true,
+      isChartsVisible: false,
       headerHeight:100,
       breadCrumbsHeight:50,
     };
@@ -24,7 +24,7 @@ var MainContainer = React.createClass({
   },
   setSize: function(chartVis){
     //when state is not defined yet set to true
-    var vis = this.state ? chartVis : true;
+    var vis = this.state ? chartVis : false;
     var padding = this.state ? this.state.rowPadding : true;
 
     //components with fixed heights.
@@ -76,7 +76,7 @@ var MainContainer = React.createClass({
 
     return{
       defpad:5,
-      isChartsVisible: true,
+      isChartsVisible: false,
       rowPadding: 1,
       headerHeight: sizes.headerHeight,
       mapHeight: sizes.mapHeight,
