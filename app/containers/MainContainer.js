@@ -9,6 +9,8 @@ var PropTypes = React.PropTypes;
 var MainContainer = React.createClass({
   getDefaultProps: function() {
     return {
+      latitude: 35.6683,
+      longitude: -80.4786,
       isChartsVisible: false,
       headerHeight:100,
       breadCrumbsHeight:50,
@@ -139,6 +141,8 @@ var MainContainer = React.createClass({
     return (
       <MainComponent
         defpad={this.state.defpad}
+        latitude= {this.state.latitude}
+        longitude= {this.state.latitude}
         handleChartToggle={this.handleChartToggle}
         isChartsVisible={this.state.isChartsVisible}
         handleMapClick={this.handleMapClick}

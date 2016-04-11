@@ -5,9 +5,10 @@ var PropTypes = React.PropTypes;
 
 
 
+
 function MapComponent(props){
     return (
-        <ReactLeaflet.Map onLeafletClick={props.handleMapClick} center={[props.latitude,props.longitude]} zoom={props.zoom}>
+        <ReactLeaflet.Map  ref='map' onLeafletMoveend={ function(e){console.log('test')}} onLeafletClick={props.handleMapClick().bind(null)} center={[props.latitude,props.longitude]} zoom={props.zoom}>
           <ReactLeaflet.TileLayer
             attribution={props.attribution}
             url={props.tileUrl}
