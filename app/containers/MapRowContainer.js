@@ -17,14 +17,6 @@ var MapRowContainer = React.createClass({
       longitude: center.lng
     })
   },
-  handleMapClick: function(mapComp,e){
-    // var center = e.latlng
-    //
-    // this.setState({
-    //   latitude: center.lat,
-    //   longitude: center.lng
-    // })
-  },
   handleCenter: function(e){
     this.setState({
       latitude: 35.6683,
@@ -48,7 +40,7 @@ var MapRowContainer = React.createClass({
   },
   render: function() {
     return (
-      <MapRowComponent handleSetCenter={this.handleSetCenter} handleCenter={this.handleCenter} latitude={this.state.latitude} longitude={this.state.longitude} handleMapClick={this.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.props.mapHeight} />
+      <MapRowComponent handleSetCenter={this.handleSetCenter} handleCenter={this.handleCenter} latitude={this.state.latitude} longitude={this.state.longitude} handleMapClick={this.props.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.props.mapHeight} />
     );
   }
 
