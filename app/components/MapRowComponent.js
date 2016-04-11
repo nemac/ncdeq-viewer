@@ -12,13 +12,14 @@ function MapRowComponent (props) {
     <div className="ui stackable internally celled grid">
       <div className="stretched row" >
 
-        <MapWrapper handleSetCenter={props.handleSetCenter}  latitude={props.latitude} longitude={props.longitude} handleMapClick={props.handleMapClick} rowPadding={props.rowPadding} mapHeight={props.mapHeight} />
-        <div>
+        <MapWrapper handleMapMoveEnd={props.handleMapMoveEnd}  latitude={props.latitude} longitude={props.longitude} handleMapClick={props.handleMapClick} rowPadding={props.rowPadding} mapHeight={props.mapHeight} />
+{/*
+         <div>
           <button className="big ui button" onClick={props.handleCenter}>
             re-center
           </button>
         </div>
-
+*/}
         <div className="four wide column">
 
           <div className="ui internally celled grid">
@@ -46,7 +47,7 @@ MapRowComponent.PropTypes = {
   longitude: PropTypes.number.isRequired,
   handleCenter: PropTypes.func.isRequired,
   handleMapClick: PropTypes.func.isRequired,
-  handleSetCenter: PropTypes.func.isRequired,
+  handleMapMoveEnd: PropTypes.func.isRequired,
   mapHeight: PropTypes.number,
   rowPadding: PropTypes.number
 }

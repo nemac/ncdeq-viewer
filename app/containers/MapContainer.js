@@ -17,7 +17,7 @@ var MapContainer = React.createClass({
   },
   render: function() {
     return (
-      <ReactLeaflet.Map  ref='map' onLeafletMoveend={this.props.handleSetCenter.bind(null,this)} onLeafletClick={this.props.handleMapClick.bind(null,this)} center={[this.props.latitude,this.props.longitude]} zoom={this.state.zoom}>
+      <ReactLeaflet.Map  ref='map' onLeafletMoveend={this.props.handleMapMoveEnd.bind(null,this)} onLeafletClick={this.props.handleMapClick.bind(null,this)} center={[this.props.latitude,this.props.longitude]} zoom={this.state.zoom}>
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
           url={this.state.tileUrl}

@@ -8,10 +8,9 @@ var MapRowContainer = React.createClass({
     mapHeight: PropTypes.number,
     rowPadding: PropTypes.number
   },
-  handleSetCenter: function(mapComp,e){
+  handleMapMoveEnd: function(mapComp,e){
     var L = mapComp.refs.map.leafletElement
     var center = L.getCenter();
-
     this.setState({
       latitude: center.lat,
       longitude: center.lng
@@ -40,7 +39,7 @@ var MapRowContainer = React.createClass({
   },
   render: function() {
     return (
-      <MapRowComponent handleSetCenter={this.handleSetCenter} handleCenter={this.handleCenter} latitude={this.state.latitude} longitude={this.state.longitude} handleMapClick={this.props.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.props.mapHeight} />
+      <MapRowComponent handleMapMoveEnd={this.handleMapMoveEnd} handleCenter={this.handleCenter} latitude={this.state.latitude} longitude={this.state.longitude} handleMapClick={this.props.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.props.mapHeight} />
     );
   }
 
