@@ -20,11 +20,11 @@ function MainComponent (props) {
       </RowWrapper>
 
       <RowWrapper rowPadding={props.rowPadding} height={props.breadCrumbsHeight}>
-        <MenuContainer handleSearchChange={props.handleSearchChange}  latitude={props.latitude} longitude={props.longitude} />
+        <MenuContainer handleSearchChange={props.handleSearchChange} zoom={props.zoom} latitude={props.latitude} longitude={props.longitude} />
       </RowWrapper>
 
       <RowWrapper rowPadding={props.rowPadding} >
-        <MapRowContainer latitude={props.latitude} longitude={props.longitude} handleMapClick={props.handleMapClick} rowPadding={props.rowPadding} mapHeight={props.mapHeight}  />
+        <MapRowContainer zoom={props.zoom} latitude={props.latitude} longitude={props.longitude} HandleMapZoomEnd={props.HandleMapZoomEnd} handleMapMoveEnd={props.handleMapMoveEnd} handleCenter={props.handleCenter} handleMapClick={props.handleMapClick} rowPadding={props.rowPadding} mapHeight={props.mapHeight}  />
       </RowWrapper>
 
       { props.isChartsVisible &&
@@ -39,6 +39,7 @@ function MainComponent (props) {
   MainComponent.PropTypes = {
     latitude: PropTypes.number.isRequired,
     longitude: PropTypes.number.isRequired,
+    zoom: PropTypes.number.isRequired,
     defpad: PropTypes.number.isRequired,
     handleChartToggle: PropTypes.func.isRequired,
     handleMapClick: PropTypes.func.isRequired,

@@ -9,7 +9,7 @@ var MapContainer = React.createClass({
     return {
       latitude: this.props.latitude,
       longitude: this.props.longitude,
-      zoom: 7,
+      zoom: this.props.zoom,
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
       tileUrl:'http://api.tiles.mapbox.com/v3/daveism.oo0p88l4/{z}/{x}/{y}.png',
       geojson:[],

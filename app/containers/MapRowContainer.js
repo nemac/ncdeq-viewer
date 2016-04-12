@@ -5,7 +5,7 @@ var PropTypes = React.PropTypes;
 
 var MapRowContainer = React.createClass({
   componentDidMount: function() {
-    console.log('mount: ' + this.props.latitude)
+      //
   },
   propTypes: {
     mapHeight: PropTypes.number,
@@ -16,48 +16,31 @@ var MapRowContainer = React.createClass({
       // latitude: 35.6683,
       // longitude: -80.4786,
       mapHeight: 300,
-      rowPadding: 1,
-      zoom: 7
+      rowPadding: 1
+      // zoom: 7
     };
   },
-  HandleMapZoomEnd: function(mapComp,e){
-    var L = mapComp.refs.map.leafletElement
 
-    var zoom = L.getZoom();
-    var center = L.getCenter();
-
-    this.setState({
-      zoom: zoom,
-      latitude: center.lat,
-      longitude: center.lng
-    })
-
-  },
-  handleMapMoveEnd: function(mapComp,e){
-    var L = mapComp.refs.map.leafletElement
-    var center = L.getCenter();
-    this.setState({
-      latitude: center.lat,
-      longitude: center.lng
-    })
-  },
-  handleCenter: function(e){
-    this.setState({
-      latitude: 35.6683,
-      longitude: -81.4786
-    })
-  },
   getInitialState: function () {
     return {
       latitude: this.props.latitude,
       longitude: this.props.longitude,
       rowPadding: this.props.rowPadding,
-      zoom: 7
+      zoom: this.props.zoom
     }
   },
   render: function() {
     return (
-      <MapRowComponent HandleMapZoomEnd={this.HandleMapZoomEnd} handleMapMoveEnd={this.handleMapMoveEnd} handleCenter={this.handleCenter} latitude={this.props.latitude} longitude={this.props.longitude} zoom={this.state.zoom} handleMapClick={this.props.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.props.mapHeight} />
+      <MapRowComponent
+        handleMapClick={this.props.handleMapClick}
+        HandleMapZoomEnd={this.props.HandleMapZoomEnd}
+        handleMapMoveEnd={this.props.handleMapMoveEnd}
+        handleCenter={this.props.handleCenter}
+        zoom={this.props.zoom}
+        latitude={this.props.latitude}
+        longitude={this.props.longitude}
+        rowPadding={this.state.rowPadding}
+        mapHeight={this.props.mapHeight} />
     );
   }
 

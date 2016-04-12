@@ -11,9 +11,10 @@ var MainContainer = React.createClass({
     return {
       latitude: 35.6684,
       longitude: -80.4786,
+      zoom: 7,
       isChartsVisible: false,
       headerHeight:100,
-      breadCrumbsHeight:50,
+      breadCrumbsHeight:50
     };
   },
   setHeight(repeat,val){
@@ -77,8 +78,9 @@ var MainContainer = React.createClass({
     var sizes = this.setSize();
 
     return{
-      latitude: 35.6684,
+      latitude: 35.6683,
       longitude: -80.4786,
+      zoom: 7,
       defpad:5,
       isChartsVisible: false,
       rowPadding: 1,
@@ -104,8 +106,38 @@ var MainContainer = React.createClass({
     })
 
   },
+  HandleMapZoomEnd: function(mapComp,e){
+    var L = mapComp.refs.map.leafletElement
+
+    var zoom = L.getZoom();
+    var center = L.getCenter();
+
+    this.setState({
+      zoom: zoom,
+      latitude: center.lat,
+      longitude: center.lng
+    })
+
+  },
+  handleMapMoveEnd: function(mapComp,e){
+    var L = mapComp.refs.map.leafletElement
+    var center = L.getCenter();
+    var zoom = L.getZoom();
+
+
+    this.setState({
+      zoom: zoom,
+      latitude: center.lat,
+      longitude: center.lng
+    })
+  },
+  handleCenter: function(e){
+    this.setState({
+      latitude: 35.6683,
+      longitude: -81.4786
+    })
+  },
   handleSearchChange: function(comp,e){
-    console.log(e.target.value)
 
     var input = e.target;
     var options = {componentRestrictions: {country: 'us'}};
@@ -117,13 +149,16 @@ var MainContainer = React.createClass({
       var place = ac.getPlace();
       var lat = place.geometry.location.lat();
       var lng = place.geometry.location.lng();
+      var zoom = self.state.zoom > 12 ? self.state.zoom  : 12
 
       self.setState({
         latitude: lat,
-        longitude: lng
+        longitude: lng,
+        zoom: zoom
       })
 
   });
+
 
   },
   handleMapClick: function(e){
@@ -167,10 +202,14 @@ var MainContainer = React.createClass({
         defpad={this.state.defpad}
         latitude= {this.state.latitude}
         longitude= {this.state.longitude}
+        zoom = {this.state.zoom}
         handleChartToggle={this.handleChartToggle}
         handleSearchChange={this.handleSearchChange}
         isChartsVisible={this.state.isChartsVisible}
         handleMapClick={this.handleMapClick}
+        handleCenter={this.handleCenter}
+        handleMapMoveEnd={this.handleMapMoveEnd}
+        HandleMapZoomEnd={this.HandleMapZoomEnd}
         headerHeight={this.state.headerHeight}
         mapHeight={this.state.mapHeight}
         chartHeight={this.state.chartHeight}
