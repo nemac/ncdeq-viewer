@@ -8,7 +8,7 @@ function MapWrapper(props) {
   var pad = props.rowPadding ? 1 : props.rowPadding;
   return (
     <div className="twelve wide column" style={{padding:pad + 'px',height:props.mapHeight + 'px'}}>
-      <MapContainer handleMapMoveEnd={props.handleMapMoveEnd} latitude={props.latitude} longitude={props.longitude} handleMapClick={props.handleMapClick} />
+      <MapContainer HandleMapZoomEnd={props.HandleMapZoomEnd} handleMapMoveEnd={props.handleMapMoveEnd} zoom={props.zoom} latitude={props.latitude} longitude={props.longitude} handleMapClick={props.handleMapClick} />
     </div>
   );
 }
@@ -16,9 +16,11 @@ function MapWrapper(props) {
 MapWrapper.propTypes = {
   latitude: PropTypes.number.isRequired,
   longitude: PropTypes.number.isRequired,
+  zoom: PropTypes.number.isRequired,
   mapHeight: PropTypes.number.isRequired,
   handleMapClick: PropTypes.func.isRequired,
   handleMapMoveEnd: PropTypes.func.isRequired,
+  HandleMapZoomEnd: PropTypes.func.isRequired,
   rowPadding: PropTypes.number
 }
 
