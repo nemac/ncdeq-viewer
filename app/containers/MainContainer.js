@@ -9,7 +9,7 @@ var PropTypes = React.PropTypes;
 var MainContainer = React.createClass({
   getDefaultProps: function() {
     return {
-      latitude: 35.6683,
+      latitude: 35.6684,
       longitude: -80.4786,
       isChartsVisible: false,
       headerHeight:100,
@@ -77,6 +77,8 @@ var MainContainer = React.createClass({
     var sizes = this.setSize();
 
     return{
+      latitude: 35.6684,
+      longitude: -80.4786,
       defpad:5,
       isChartsVisible: false,
       rowPadding: 1,
@@ -100,6 +102,28 @@ var MainContainer = React.createClass({
       chartHeight: sizes.chartHeight,
       breadCrumbsHeight: sizes.breadCrumbsHeight
     })
+
+  },
+  handleSearchChange: function(comp,e){
+    console.log(e.target.value)
+
+    var input = e.target;
+    var options = {componentRestrictions: {country: 'us'}};
+    var ac = new google.maps.places.Autocomplete(input, options);
+
+    var self = this;
+
+    google.maps.event.addListener(ac, 'place_changed', function () {
+      var place = ac.getPlace();
+      var lat = place.geometry.location.lat();
+      var lng = place.geometry.location.lng();
+
+      self.setState({
+        latitude: lat,
+        longitude: lng
+      })
+
+  });
 
   },
   handleMapClick: function(e){
@@ -142,8 +166,9 @@ var MainContainer = React.createClass({
       <MainComponent
         defpad={this.state.defpad}
         latitude= {this.state.latitude}
-        longitude= {this.state.latitude}
+        longitude= {this.state.longitude}
         handleChartToggle={this.handleChartToggle}
+        handleSearchChange={this.handleSearchChange}
         isChartsVisible={this.state.isChartsVisible}
         handleMapClick={this.handleMapClick}
         headerHeight={this.state.headerHeight}

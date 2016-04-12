@@ -4,15 +4,17 @@ var MapRowComponent = require('../components/MapRowComponent');
 var PropTypes = React.PropTypes;
 
 var MapRowContainer = React.createClass({
-
+  componentDidMount: function() {
+    console.log('mount: ' + this.props.latitude)
+  },
   propTypes: {
     mapHeight: PropTypes.number,
     rowPadding: PropTypes.number
   },
   getDefaultProps: function() {
     return {
-      latitude: 35.6683,
-      longitude: -80.4786,
+      // latitude: 35.6683,
+      // longitude: -80.4786,
       mapHeight: 300,
       rowPadding: 1,
       zoom: 7
@@ -47,15 +49,15 @@ var MapRowContainer = React.createClass({
   },
   getInitialState: function () {
     return {
-      latitude: 35.6683,
-      longitude: -80.4786,
+      latitude: this.props.latitude,
+      longitude: this.props.longitude,
       rowPadding: this.props.rowPadding,
       zoom: 7
     }
   },
   render: function() {
     return (
-      <MapRowComponent HandleMapZoomEnd={this.HandleMapZoomEnd} handleMapMoveEnd={this.handleMapMoveEnd} handleCenter={this.handleCenter} latitude={this.state.latitude} longitude={this.state.longitude} zoom={this.state.zoom} handleMapClick={this.props.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.props.mapHeight} />
+      <MapRowComponent HandleMapZoomEnd={this.HandleMapZoomEnd} handleMapMoveEnd={this.handleMapMoveEnd} handleCenter={this.handleCenter} latitude={this.props.latitude} longitude={this.props.longitude} zoom={this.state.zoom} handleMapClick={this.props.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.props.mapHeight} />
     );
   }
 

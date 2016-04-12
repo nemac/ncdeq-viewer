@@ -27,7 +27,7 @@ function MenuComponent (props) {
       <div className="left menu">
         <div className="item">
           <div className="ui transparent icon input">
-            <input type="text" placeholder="Search to zoom..." />
+            <input className="mapSearch" type="text" placeholder="Search to zoom..." onChange={props.handleSearchChange.bind(null,this)} />
             <i className="search link icon"></i>
           </div>
         </div>
@@ -37,6 +37,7 @@ function MenuComponent (props) {
 }
 
 MenuComponent.PropTypes = {
+  handleSearchChange: PropTypes.func.isRequired,
   handleMenuClick: PropTypes.func.isRequired,
   getActive: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired

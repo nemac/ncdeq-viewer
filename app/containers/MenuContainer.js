@@ -11,6 +11,12 @@ var MenuContainer = React.createClass({
       {name:'HUC'}
     ])
   },
+  componentDidMount: function() {
+    //var input = document.getElementById('searchTextField');
+    //var options = {componentRestrictions: {country: 'us'}};
+    //new google.maps.places.Autocomplete(input, options);
+  },
+
   getStateObject: function(){
 
     var obj = {};
@@ -46,7 +52,9 @@ var MenuContainer = React.createClass({
   render: function() {
     return (
       <MenuComponent
+        handleSearchChange={this.props.handleSearchChange}
         handleMenuClick={this.handleMenuClick}
+        handleChange={this.handleChange}
         getActive={this.getActive}
         items = {this.defaultItems()}/>
     );
