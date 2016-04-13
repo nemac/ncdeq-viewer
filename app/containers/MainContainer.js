@@ -124,7 +124,6 @@ var MainContainer = React.createClass({
     var center = L.getCenter();
     var zoom = L.getZoom();
 
-
     this.setState({
       zoom: zoom,
       latitude: center.lat,
@@ -140,13 +139,29 @@ var MainContainer = React.createClass({
   handleSearchChange: function(comp,e){
 
     var input = e.target;
-    var options = {componentRestrictions: {country: 'us'}};
-    var ac = new google.maps.places.Autocomplete(input, options);
+    //var options = {componentRestrictions: {country: 'us'}};
+    // var ac = new google.maps.places.Autocomplete(input, options);
 
+    var defaultBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(33.6878, -84.5288),
+      new google.maps.LatLng(36.9674, -74.8169));
+
+    var options = {bounds: defaultBounds}
     var self = this;
 
-    google.maps.event.addListener(ac, 'place_changed', function () {
-      var place = ac.getPlace();
+    var ac = new google.maps.places.SearchBox(input,options);
+
+
+    google.maps.event.addListener(ac, 'places_changed', function () {
+      var place = ac.getPlaces()[0];
+
+      if (!place.geometry) return;
+
+      if (!place.address_components){
+          input.value = place.formatted_address
+      }
+
+
       var lat = place.geometry.location.lat();
       var lng = place.geometry.location.lng();
       var zoom = self.state.zoom > 12 ? self.state.zoom  : 12
@@ -156,6 +171,27 @@ var MainContainer = React.createClass({
         longitude: lng,
         zoom: zoom
       })
+
+      // google.maps.event.addDomListener(ac, 'keydown', function(e) {
+      //   if (e.keyCode == 13) {
+      //       e.preventDefault();
+      //       var place = ac.getPlaces()[0];
+      //
+      //       //var place = ac.getPlace();
+      //       var lat = place.geometry.location.lat();
+      //       var lng = place.geometry.location.lng();
+      //       var zoom = self.state.zoom > 12 ? self.state.zoom  : 12
+      //
+      //       self.setState({
+      //         latitude: lat,
+      //         longitude: lng,
+      //         zoom: zoom
+      //       })
+      //
+      //   }
+      // });
+
+
 
   });
 
