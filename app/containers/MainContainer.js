@@ -172,27 +172,6 @@ var MainContainer = React.createClass({
         zoom: zoom
       })
 
-      // google.maps.event.addDomListener(ac, 'keydown', function(e) {
-      //   if (e.keyCode == 13) {
-      //       e.preventDefault();
-      //       var place = ac.getPlaces()[0];
-      //
-      //       //var place = ac.getPlace();
-      //       var lat = place.geometry.location.lat();
-      //       var lng = place.geometry.location.lng();
-      //       var zoom = self.state.zoom > 12 ? self.state.zoom  : 12
-      //
-      //       self.setState({
-      //         latitude: lat,
-      //         longitude: lng,
-      //         zoom: zoom
-      //       })
-      //
-      //   }
-      // });
-
-
-
   });
 
 

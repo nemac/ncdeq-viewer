@@ -15,7 +15,7 @@ function MenuComponent (props) {
 
         {props.items.map(function(item) {
             return (
-              <MenuItemComponent key={item.name} name={item.name} activeValue={item.activeValue} getActive={props.getActive} handleMenuClick={props.handleMenuClick} />
+              <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getActive={props.getActive} handleMenuClick={props.handleMenuClick} />
             )
           })
         }
