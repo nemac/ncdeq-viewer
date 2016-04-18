@@ -210,6 +210,8 @@ var MainContainer = React.createClass({
 
     //for semantic-ui dropdowns..  not implemented yet
     $('.ui.dropdown').dropdown();
+    $('#search-select').dropdown();
+
   },
   render: function() {
     return (

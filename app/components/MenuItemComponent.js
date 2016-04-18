@@ -4,23 +4,28 @@ var PropTypes = React.PropTypes;
 
 function MenuItemComponent (props) {
   if (props.lists){
-     console.log(props.lists)
      var namesList = props.lists.map(function(listItem){
-                             return <div className="item" key={listItem.name}>{listItem.name}</div>;
+                             return   <option key={listItem.main} value={listItem.main}>{listItem.main}-({listItem.sub})</option>
                            })
   }
 
+//<div className="item" key={listItem.main}>{listItem.main}<span className="">-({listItem.sub})</span></div>;
+
   return (
     <a className={props.getActive(props.name)}  onClick={props.handleMenuClick.bind(null, props.name)} >
-      {/* {props.name} */}
-      <div className="ui floating dropdown labeled search icon button">
-        {/* <i className="world icon"></i> */}
+{/*
+      <div  className="ui floating dropdown labeled search icon button" onClick={props.menuChange}>
+      <i className="world icon"></i>
         <span className="text">Choose a {props.name}</span>
         <div className="menu">
           {namesList}
         </div>
       </div>
-
+*/}
+<select className="ui search selection dropdown" id="search-select" onChange={props.menuChange} >
+  <option value="">Choose a {props.name}</option>
+  {namesList}
+</select>
     </a>
   )
 }

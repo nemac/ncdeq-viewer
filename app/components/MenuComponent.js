@@ -15,7 +15,7 @@ function MenuComponent (props) {
 
         {props.items.map(function(item) {
             return (
-              <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getActive={props.getActive} handleMenuClick={props.handleMenuClick} />
+              <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getActive={props.getActive} handleMenuClick={props.handleMenuClick} menuChange={props.menuChange}/>
             )
           })
         }
@@ -39,6 +39,7 @@ function MenuComponent (props) {
 MenuComponent.PropTypes = {
   handleSearchChange: PropTypes.func.isRequired,
   handleMenuClick: PropTypes.func.isRequired,
+  menuChange: PropTypes.func.isRequired,
   getActive: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired
 }
