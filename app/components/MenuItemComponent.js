@@ -5,7 +5,8 @@ var PropTypes = React.PropTypes;
 function MenuItemComponent (props) {
   if (props.lists){
      var namesList = props.lists.map(function(listItem){
-                             return   <option key={listItem.main} value={listItem.main}>{listItem.main}-({listItem.sub})</option>
+                              //add check for listitem in case of river basins we need to make value of sub or add this to data.js?
+                             return   <option key={listItem.main} value={listItem.value ? listItem.value :listItem.main}>{listItem.main}-({listItem.sub})</option>
                            })
   }
 
