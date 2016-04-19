@@ -13,10 +13,6 @@ var MenuContainer = React.createClass({
       RiverBasinData: RiverBasinData
     };
   },
-
-  //  defaultItems: function(){
-  //    return (RiverBasinData)
-  //  },
   componentDidMount: function() {
     //var input = document.getElementById('searchTextField');
     //var options = {componentRestrictions: {country: 'us'}};
