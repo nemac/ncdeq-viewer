@@ -68,20 +68,27 @@ var MenuContainer = React.createClass({
     //set all to false
     this.setState(this.getStateObject())
   },
-  menuChange: function(e){
+  updateFilterState(level,value){
 
-    var level = this.getLevel();
     var nextLevel = this.getNextLevel(level);
-
-    //set filter and active state for next level
+    //set filter and active state for next level(s)
     if(nextLevel){
       this.setState({
         [nextLevel]:{
           'active': false,
-          'filter': e.target.value
+          'filter': value
         }
       })
+      //recursive call to update all level filters
+      return this.updateFilterState(nextLevel,value)
+    } else{
+      return
     }
+  },
+  menuChange: function(e){
+
+    var level = this.getLevel();
+    this.updateFilterState(level,e.target.value)
 
   },
   handleMenuClick: function(val,e) {
