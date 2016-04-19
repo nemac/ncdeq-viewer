@@ -15,9 +15,8 @@ function MenuItemComponent (props) {
                             var checkedValue = value.toString().substring(0, filterValue.length)
 
                             //only render options if the match the filter
-                            //still need to update data to have a value object in the json data.
                             if(filterValue === checkedValue ){
-                             return   <option key={listItem.main} value={listItem.value ? listItem.value :listItem.main}>{listItem.main}-({listItem.sub})</option>
+                             return   <option key={listItem.value} value={listItem.value}>{listItem.main}-({listItem.sub})</option>
                             }
                            })
   }
