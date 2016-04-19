@@ -5,106 +5,118 @@ var MenuComponent = require('../components/MenuComponent');
 var PropTypes = React.PropTypes;
 
 var MenuContainer = React.createClass({
-  defaultItems: function(){
-    return (RiverBasinData)
+  propTypes: {
+    RiverBasinData: PropTypes.array
   },
+  getDefaultProps: function() {
+    return {
+      RiverBasinData: RiverBasinData
+    };
+  },
+
+  //  defaultItems: function(){
+  //    return (RiverBasinData)
+  //  },
   componentDidMount: function() {
     //var input = document.getElementById('searchTextField');
     //var options = {componentRestrictions: {country: 'us'}};
     //new google.maps.places.Autocomplete(input, options);
   },
-  limitPullDown: function(value){
+  getLevel: function(){
+    var st = this.state
 
-      var st = this.state
-      var self = this;
-      var activeTab = Object.keys(st).filter(function (key) {
-          return  st[key] === true;
-      });
+    var activeTab = Object.keys(st).filter(function (key) {
+        return  st[key]['active'] === true;
+    });
 
-    var level = activeTab[0]
-    //console.log('level: ' + level)
-    var chars = 0;
-    var limitVal;
-    var nextLevel;
-    var filter;
+    return activeTab[0]
+  },
+  getNextLevel: function(level){
 
     switch (level) {
       case 'River Basins':
-        chars = 5;
-        limitVal = value;
-        nextLevel = 'Cataloging Units';
-        filter = 'main';
+        return 'Cataloging Units';
         break;
       case 'Cataloging Units':
-        chars = 7;
-        limitVal = value;
-        nextLevel = 'HUC12';
-        filter = 'main';
+        return 'HUC12';
         break;
       case 'HUC12':
-        chars = 11;
-        filter = 'main';
+        return '';
         break;
       default:
-        chars = 0;
+        return '';
     }
 
-    var defs = RiverBasinData;
-
-    var nextValues =  defs.map(function (lev) {
-      //console.log(lev)
-      var newlev = []
-      if(lev.name === nextLevel){
-        var list = lev.lists.filter(function (list) {
-          //console.log(value,list[filter].toString().substring(0,chars) )
-          //console.log(list[filter].toString().substring(0,chars) === value )
-          return list[filter].toString().substring(0,chars) === value;
-        })
-        newlev = Object.assign({}, lev, {lists:list});
-      } else{
-        newlev = lev;
-      }
-
-      //return lev.name === nextLevel;
-      //console.log(newlev)
-      return(newlev)
-    })
-
-    //console.log('default: ', RiverBasinData)
-    //console.log('next: ',nextValues)
-    return nextValues
-    // var nextLimit =  nextValues[0].lists.filter(function (lev) {
-    //   //  console.log(lev.main.toString().substring(0,chars) == value);
-    //   //  console.log(lev.main.toString().substring(0,chars) + '--' + value);
-    //   return lev.main.toString().substring(0,chars) == value;
-    // })
-    //
-    // console.log(nextLimit)
-    //object.assign
-
-    //
-    // var limitVal = initVal.substring(0,chars);
-    // console.log(limitVal);
-    //
-    // var newValues =  values[level].filter(function (hucs) {
-    //   return hucs.sub === limitVal;
-    // })
-    //
-    // cosnole.log(newValues);
-    //
-    // return newValues
   },
+  // limitPullDown: function(value){
+  //
+  //   //need to handle new river basin click.
+  //   // this should reset all menus
+  //   // right now I am mutating the RiverBasinData variable
+  //   // need to make limited the items part of the state
+  //   //var st = this.state
+  //   var self = this;
+  //
+  //   //var activeTab = Object.keys(st).filter(function (key) {
+  //   //    return  st[key] === true;
+  //   //});
+  //
+  //   var level = this.getLevel();
+  //   var chars = 0;
+  //   var limitVal;
+  //   var nextLevel;
+  //   var filter;
+  //
+  //   switch (level) {
+  //     case 'River Basins':
+  //       chars = 5;
+  //       limitVal = value;
+  //       nextLevel = 'Cataloging Units';
+  //       filter = 'main';
+  //       break;
+  //     case 'Cataloging Units':
+  //       chars = 7;
+  //       limitVal = value;
+  //       nextLevel = 'HUC12';
+  //       filter = 'main';
+  //       break;
+  //     case 'HUC12':
+  //       chars = 11;
+  //       filter = 'main';
+  //       break;
+  //     default:
+  //       chars = 0;
+  //   }
+  //
+  //   var defs = this.props.RiverBasinData;
+  //
+  //   var nextValues =  defs.map(function (lev) {
+  //     var newlev = []
+  //     if(lev.name === nextLevel){
+  //       var list = lev.lists.filter(function (list) {
+  //         return list[filter].toString().substring(0,chars) === value;
+  //       })
+  //       newlev = Object.assign({}, lev, {lists:list});
+  //     } else{
+  //       newlev = lev;
+  //     }
+  //     return(newlev)
+  //   })
+  //
+  //   return nextValues
+  //
+  // },
   getStateObject: function(){
 
     var obj = {};
-    var items = RiverBasinData;
+    var items = this.props.RiverBasinData;
 
-    //this is mutating the state tree so I need to fix this....
-    //leaving out the sub
     items.map(function(item) {
-      obj[ item.name ] = false;
-    })
-    //console.log(obj)
+      obj[ item.name ] = {
+        'active':false,
+        'filter': !this.state ? '' : this.state[item.name].filter };
+    },this)
+
     return obj
   },
   getInitialState: function () {
@@ -115,28 +127,39 @@ var MenuContainer = React.createClass({
     this.setState(this.getStateObject())
   },
   menuChange: function(e){
-    //console.log('changer:'+e.target.value)
+    //this.props.RiverBasinData =  this.limitPullDown(e.target.value);
+    var level = this.getLevel();
+    var nextLevel = this.getNextLevel(level);
 
-    //console.log(this.state)
-    RiverBasinData =  this.limitPullDown(e.target.value);
-    //console.log(test)
+    this.setState({
+      [nextLevel]:{
+        'active': this.state[nextLevel].active,
+        'filter': e.target.value
+      }
+      // [nextLevel]:{'filter': e.target.value}
+    })
 
   },
   handleMenuClick: function(val,e) {
-    //console.log(val)
     //reset menu
     this.resetMenus();
 
-    //change state to active for clicke menu
+    //change state to active for clicked menu
     this.setState({
-      [val]: true,
+      [val]:{'active': true,
+        'filter': this.state[val].filter
+      }
     })
 
   },
   getActive: function(val){
-    return  (this.state[val] ? 'active item' : 'item')
+    return  (this.state[val].active ? 'active item' : 'item')
+  },
+  getFilter: function(val){
+    return  (this.state[val].filter)
   },
   render: function() {
+    console.log(this.state)
     return (
       <MenuComponent
         handleSearchChange={this.props.handleSearchChange}
@@ -144,7 +167,8 @@ var MenuContainer = React.createClass({
         handleMenuClick={this.handleMenuClick}
         handleChange={this.handleChange}
         getActive={this.getActive}
-        items = {this.defaultItems()}/>
+        items = {this.props.RiverBasinData}
+        getFilter={this.getFilter} />
     );
   }
 

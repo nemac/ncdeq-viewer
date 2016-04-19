@@ -3,10 +3,23 @@ var PropTypes = React.PropTypes;
 
 
 function MenuItemComponent (props) {
+  //console.log()
   if (props.lists){
      var namesList = props.lists.map(function(listItem){
+
                               //add check for listitem in case of river basins we need to make value of sub or add this to data.js?
-                             return   <option key={listItem.main} value={listItem.value ? listItem.value :listItem.main}>{listItem.main}-({listItem.sub})</option>
+                            var filterValue = props.getFilter(props.name)
+
+                            var value = listItem.value ? listItem.value :listItem.main
+                            var checkedValue = value.toString().substring(0, filterValue.length)
+                            //if(props.getFilter(props.name) =  )
+                            // console.log(checkedValue.length > 0)
+                            if(filterValue === checkedValue ){
+                              //if(checkedValue.length > 0){
+                              //console.log(filterValue +'--'+ checkedValue)
+                             return   <option key={listItem.main} value={listItem.value ? listItem.value :listItem.main}>{listItem.main}-({listItem.sub})-{} </option>
+                             //}
+                            }
                            })
   }
 
@@ -36,7 +49,8 @@ MenuItemComponent.PropTypes = {
   getActive: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   lists: PropTypes.object.isRequired,
-  activeValue: PropTypes.string.isRequired
+  activeValue: PropTypes.string.isRequired,
+  getFilter: PropTypes.func.isRequired
 }
 
 module.exports = MenuItemComponent;

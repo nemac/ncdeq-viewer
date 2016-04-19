@@ -15,7 +15,7 @@ function MenuComponent (props) {
 
         {props.items.map(function(item) {
             return (
-              <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getActive={props.getActive} handleMenuClick={props.handleMenuClick} menuChange={props.menuChange}/>
+              <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getFilter={props.getFilter} getActive={props.getActive} handleMenuClick={props.handleMenuClick} menuChange={props.menuChange}/>
             )
           })
         }
@@ -41,7 +41,8 @@ MenuComponent.PropTypes = {
   handleMenuClick: PropTypes.func.isRequired,
   menuChange: PropTypes.func.isRequired,
   getActive: PropTypes.func.isRequired,
-  items: PropTypes.array.isRequired
+  items: PropTypes.array.isRequired,
+  getFilter: PropTypes.func.isRequired
 }
 
 module.exports = MenuComponent;

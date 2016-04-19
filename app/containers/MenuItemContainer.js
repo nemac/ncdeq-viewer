@@ -29,6 +29,7 @@ var MenuItemContainer = React.createClass({
         handleMenuClick={this.props.handleMenuClick}
         menuChange={this.props.menuChange}
         getActive={this.props.getActive}
+        getFilter={this.props.getFilter}
         name={this.state.name}
         lists = {this.props.lists}
         activeValue={this.state.activeValue} />
