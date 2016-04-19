@@ -3,29 +3,29 @@ var PropTypes = React.PropTypes;
 
 
 function MenuItemComponent (props) {
+  var filterValue=''
   if (props.lists){
-     var namesList = props.lists.map(function(listItem){
+    var namesList = props.lists.map(function(listItem){
 
-                            //get fiter value for current menu
-                            var filterValue = props.getFilter(props.name)
+      //get fiter value for current menu
+      filterValue = props.getFilter(props.name)
 
-                            //get value of current item in the list and get the left most characters
-                            //should match length of filter value
-                            var value = listItem.value ? listItem.value :listItem.main
-                            var checkedValue = value.toString().substring(0, filterValue.length)
+      //get value of current item in the list and get the left most characters
+      //should match length of filter value
+      var value = listItem.value ? listItem.value :listItem.main
+      var checkedValue = value.toString().substring(0, filterValue.length)
 
-                            //only render options if the match the filter
-                            //still need to update data to have a value object in the json data.
-                            if(filterValue === checkedValue ){
-                             return   <option key={listItem.main} value={listItem.value ? listItem.value :listItem.main}>{listItem.main}-({listItem.sub})</option>
-                            }
-                           })
+      //only render options if the match the filter
+      if(filterValue === checkedValue ){
+        return   <option key={listItem.value} value={listItem.value}>{listItem.main}-({listItem.sub})</option>
+      }
+    })
   }
 
 return (
   <a className={props.getActive(props.name)}  onClick={props.handleMenuClick.bind(null, props.name)} >
 
-    <select className="ui search selection dropdown" id="search-select" onChange={props.menuChange} >
+    <select className="ui search selection dropdown" id={'search-select-'+props.name.replace(' ','_')} onChange={props.menuChange} >
       <option value="">Choose a {props.name}</option>
       {namesList}
     </select>
