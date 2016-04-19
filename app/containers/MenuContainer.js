@@ -79,6 +79,10 @@ var MenuContainer = React.createClass({
           'filter': value
         }
       })
+
+      //kind of hacky
+      $('#search-select-'+nextLevel.replace(' ','_')).dropdown('set text','Choose a ' + nextLevel)
+
       //recursive call to update all level filters
       return this.updateFilterState(nextLevel,value)
     } else{
@@ -89,6 +93,8 @@ var MenuContainer = React.createClass({
 
     var level = this.getLevel();
     this.updateFilterState(level,e.target.value)
+
+    //console.log(e.target.value)
 
   },
   handleMenuClick: function(val,e) {
