@@ -32,7 +32,7 @@ var MenuContainer = React.createClass({
     return activeTab[0]
   },
   getNextLevel: function(level){
-
+    //next level is hardcoded need to make this data driven
     switch (level) {
       case 'River Basins':
         return 'Cataloging Units';
@@ -48,64 +48,6 @@ var MenuContainer = React.createClass({
     }
 
   },
-  // limitPullDown: function(value){
-  //
-  //   //need to handle new river basin click.
-  //   // this should reset all menus
-  //   // right now I am mutating the RiverBasinData variable
-  //   // need to make limited the items part of the state
-  //   //var st = this.state
-  //   var self = this;
-  //
-  //   //var activeTab = Object.keys(st).filter(function (key) {
-  //   //    return  st[key] === true;
-  //   //});
-  //
-  //   var level = this.getLevel();
-  //   var chars = 0;
-  //   var limitVal;
-  //   var nextLevel;
-  //   var filter;
-  //
-  //   switch (level) {
-  //     case 'River Basins':
-  //       chars = 5;
-  //       limitVal = value;
-  //       nextLevel = 'Cataloging Units';
-  //       filter = 'main';
-  //       break;
-  //     case 'Cataloging Units':
-  //       chars = 7;
-  //       limitVal = value;
-  //       nextLevel = 'HUC12';
-  //       filter = 'main';
-  //       break;
-  //     case 'HUC12':
-  //       chars = 11;
-  //       filter = 'main';
-  //       break;
-  //     default:
-  //       chars = 0;
-  //   }
-  //
-  //   var defs = this.props.RiverBasinData;
-  //
-  //   var nextValues =  defs.map(function (lev) {
-  //     var newlev = []
-  //     if(lev.name === nextLevel){
-  //       var list = lev.lists.filter(function (list) {
-  //         return list[filter].toString().substring(0,chars) === value;
-  //       })
-  //       newlev = Object.assign({}, lev, {lists:list});
-  //     } else{
-  //       newlev = lev;
-  //     }
-  //     return(newlev)
-  //   })
-  //
-  //   return nextValues
-  //
-  // },
   getStateObject: function(){
 
     var obj = {};
@@ -127,17 +69,19 @@ var MenuContainer = React.createClass({
     this.setState(this.getStateObject())
   },
   menuChange: function(e){
-    //this.props.RiverBasinData =  this.limitPullDown(e.target.value);
+
     var level = this.getLevel();
     var nextLevel = this.getNextLevel(level);
 
-    this.setState({
-      [nextLevel]:{
-        'active': this.state[nextLevel].active,
-        'filter': e.target.value
-      }
-      // [nextLevel]:{'filter': e.target.value}
-    })
+    //set filter and active state for next level
+    if(nextLevel){
+      this.setState({
+        [nextLevel]:{
+          'active': false,
+          'filter': e.target.value
+        }
+      })
+    }
 
   },
   handleMenuClick: function(val,e) {
@@ -159,7 +103,6 @@ var MenuContainer = React.createClass({
     return  (this.state[val].filter)
   },
   render: function() {
-    console.log(this.state)
     return (
       <MenuComponent
         handleSearchChange={this.props.handleSearchChange}

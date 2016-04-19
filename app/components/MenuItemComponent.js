@@ -3,45 +3,34 @@ var PropTypes = React.PropTypes;
 
 
 function MenuItemComponent (props) {
-  //console.log()
   if (props.lists){
      var namesList = props.lists.map(function(listItem){
 
-                              //add check for listitem in case of river basins we need to make value of sub or add this to data.js?
+                            //get fiter value for current menu
                             var filterValue = props.getFilter(props.name)
 
+                            //get value of current item in the list and get the left most characters
+                            //should match length of filter value
                             var value = listItem.value ? listItem.value :listItem.main
                             var checkedValue = value.toString().substring(0, filterValue.length)
-                            //if(props.getFilter(props.name) =  )
-                            // console.log(checkedValue.length > 0)
+
+                            //only render options if the match the filter
+                            //still need to update data to have a value object in the json data.
                             if(filterValue === checkedValue ){
-                              //if(checkedValue.length > 0){
-                              //console.log(filterValue +'--'+ checkedValue)
-                             return   <option key={listItem.main} value={listItem.value ? listItem.value :listItem.main}>{listItem.main}-({listItem.sub})-{} </option>
-                             //}
+                             return   <option key={listItem.main} value={listItem.value ? listItem.value :listItem.main}>{listItem.main}-({listItem.sub})</option>
                             }
                            })
   }
 
-//<div className="item" key={listItem.main}>{listItem.main}<span className="">-({listItem.sub})</span></div>;
+return (
+  <a className={props.getActive(props.name)}  onClick={props.handleMenuClick.bind(null, props.name)} >
 
-  return (
-    <a className={props.getActive(props.name)}  onClick={props.handleMenuClick.bind(null, props.name)} >
-{/*
-      <div  className="ui floating dropdown labeled search icon button" onClick={props.menuChange}>
-      <i className="world icon"></i>
-        <span className="text">Choose a {props.name}</span>
-        <div className="menu">
-          {namesList}
-        </div>
-      </div>
-*/}
-<select className="ui search selection dropdown" id="search-select" onChange={props.menuChange} >
-  <option value="">Choose a {props.name}</option>
-  {namesList}
-</select>
-    </a>
-  )
+    <select className="ui search selection dropdown" id="search-select" onChange={props.menuChange} >
+      <option value="">Choose a {props.name}</option>
+      {namesList}
+    </select>
+  </a>
+)
 }
 
 MenuItemComponent.PropTypes = {
