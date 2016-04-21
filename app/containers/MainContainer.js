@@ -139,8 +139,6 @@ var MainContainer = React.createClass({
   handleSearchChange: function(comp,e){
 
     var input = e.target;
-    //var options = {componentRestrictions: {country: 'us'}};
-    // var ac = new google.maps.places.Autocomplete(input, options);
 
     var defaultBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(33.6878, -84.5288),
@@ -165,6 +163,7 @@ var MainContainer = React.createClass({
       var lat = place.geometry.location.lat();
       var lng = place.geometry.location.lng();
       var zoom = self.state.zoom > 12 ? self.state.zoom  : 12
+      //will need to add ability to detect the huc's this point falls in
 
       self.setState({
         latitude: lat,
