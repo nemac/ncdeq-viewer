@@ -15,6 +15,11 @@ then
 $cd ncdeq-viewer
 ```
 
+then
+```bash
+npm install
+```
+
 finally
 ```bash
 npm run start
