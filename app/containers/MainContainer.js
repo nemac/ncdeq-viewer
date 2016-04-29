@@ -41,9 +41,9 @@ var MainContainer = React.createClass({
     // the calculate the map hieght.
     //give the rest to the chart
     var leftover = window.innerHeight -
-                        (headerHeight + breadCrumbsHeight +
-                          (padding*4)
-                        );
+    (headerHeight + breadCrumbsHeight +
+      (padding*4)
+    );
 
     if (vis){
       var mapHeight = this.setHeight(1,leftover);
@@ -55,13 +55,13 @@ var MainContainer = React.createClass({
 
     //do not let map height less than 250 pixels
     if (mapHeight < 300){
-        mapHeight = 300
+      mapHeight = 300
     }
 
     //do not let chart area less than 100 pixels
     //  may need to rethink this if the charts need more space....
     if (chartHeight < 100){
-        chartHeight = 100
+      chartHeight = 100
     }
 
     //set size varriabe
@@ -144,97 +144,97 @@ var MainContainer = React.createClass({
       new google.maps.LatLng(33.6878, -84.5288),
       new google.maps.LatLng(36.9674, -74.8169));
 
-    var options = {bounds: defaultBounds}
-    var self = this;
+      var options = {bounds: defaultBounds}
+      var self = this;
 
-    var ac = new google.maps.places.SearchBox(input,options);
+      var ac = new google.maps.places.SearchBox(input,options);
 
 
-    google.maps.event.addListener(ac, 'places_changed', function () {
-      var place = ac.getPlaces()[0];
+      google.maps.event.addListener(ac, 'places_changed', function () {
+        var place = ac.getPlaces()[0];
 
-      if (!place.geometry) return;
+        if (!place.geometry) return;
 
-      if (!place.address_components){
+        if (!place.address_components){
           input.value = place.formatted_address
-      }
+        }
 
 
-      var lat = place.geometry.location.lat();
-      var lng = place.geometry.location.lng();
-      var zoom = self.state.zoom > 12 ? self.state.zoom  : 12
-      //will need to add ability to detect the huc's this point falls in
+        var lat = place.geometry.location.lat();
+        var lng = place.geometry.location.lng();
+        var zoom = self.state.zoom > 12 ? self.state.zoom  : 12
+        //will need to add ability to detect the huc's this point falls in
 
-      self.setState({
-        latitude: lat,
-        longitude: lng,
-        zoom: zoom
+        self.setState({
+          latitude: lat,
+          longitude: lng,
+          zoom: zoom
+        })
+
+      });
+
+
+    },
+    handleMapClick: function(e){
+
+      //set new map size without chart area
+      var sizes = this.setSize(true);
+
+      this.setState({
+        isChartsVisible: sizes.isChartsVisible,
+        headerHeight: sizes.headerHeight,
+        mapHeight: sizes.mapHeight,
+        chartHeight: sizes.chartHeight,
+        breadCrumbsHeight: sizes.breadCrumbsHeight
       })
+
+    },
+    handleResize: function(e) {
+
+      //handling the scaling of map and chart areas
+      var sizes = this.setSize(this.state.isChartsVisible);
+
+      this.setState({
+        headerHeight: sizes.headerHeight,
+        mapHeight: sizes.mapHeight,
+        chartHeight: sizes.chartHeight,
+        breadCrumbsHeight: sizes.breadCrumbsHeight
+      })
+    },
+    componentDidMount: function() {
+
+      //handle resize.  - map and chart areas should scale to browser
+      //width and height
+      window.addEventListener('resize', this.handleResize);
+
+      //for semantic-ui dropdowns..  not implemented yet
+      $('.ui.dropdown').dropdown();
+      $('#search-select').dropdown();
+
+    },
+    render: function() {
+      return (
+        <MainComponent
+          defpad={this.state.defpad}
+          latitude= {this.state.latitude}
+          longitude= {this.state.longitude}
+          zoom = {this.state.zoom}
+          handleChartToggle={this.handleChartToggle}
+          handleSearchChange={this.handleSearchChange}
+          isChartsVisible={this.state.isChartsVisible}
+          handleMapClick={this.handleMapClick}
+          handleCenter={this.handleCenter}
+          handleMapMoveEnd={this.handleMapMoveEnd}
+          HandleMapZoomEnd={this.HandleMapZoomEnd}
+          headerHeight={this.state.headerHeight}
+          mapHeight={this.state.mapHeight}
+          chartHeight={this.state.chartHeight}
+          breadCrumbsHeight={this.state.breadCrumbsHeight}
+          rowPadding={this.state.rowPadding} />
+      )
+
+    }
 
   });
 
-
-  },
-  handleMapClick: function(e){
-
-    //set new map size without chart area
-    var sizes = this.setSize(true);
-
-    this.setState({
-      isChartsVisible: sizes.isChartsVisible,
-      headerHeight: sizes.headerHeight,
-      mapHeight: sizes.mapHeight,
-      chartHeight: sizes.chartHeight,
-      breadCrumbsHeight: sizes.breadCrumbsHeight
-    })
-
-  },
-  handleResize: function(e) {
-
-    //handling the scaling of map and chart areas
-    var sizes = this.setSize(this.state.isChartsVisible);
-
-    this.setState({
-      headerHeight: sizes.headerHeight,
-      mapHeight: sizes.mapHeight,
-      chartHeight: sizes.chartHeight,
-      breadCrumbsHeight: sizes.breadCrumbsHeight
-    })
-  },
-  componentDidMount: function() {
-
-    //handle resize.  - map and chart areas should scale to browser
-    //width and height
-    window.addEventListener('resize', this.handleResize);
-
-    //for semantic-ui dropdowns..  not implemented yet
-    $('.ui.dropdown').dropdown();
-    $('#search-select').dropdown();
-
-  },
-  render: function() {
-    return (
-      <MainComponent
-        defpad={this.state.defpad}
-        latitude= {this.state.latitude}
-        longitude= {this.state.longitude}
-        zoom = {this.state.zoom}
-        handleChartToggle={this.handleChartToggle}
-        handleSearchChange={this.handleSearchChange}
-        isChartsVisible={this.state.isChartsVisible}
-        handleMapClick={this.handleMapClick}
-        handleCenter={this.handleCenter}
-        handleMapMoveEnd={this.handleMapMoveEnd}
-        HandleMapZoomEnd={this.HandleMapZoomEnd}
-        headerHeight={this.state.headerHeight}
-        mapHeight={this.state.mapHeight}
-        chartHeight={this.state.chartHeight}
-        breadCrumbsHeight={this.state.breadCrumbsHeight}
-        rowPadding={this.state.rowPadding} />
-    )
-
-  }
-
-});
-
-module.exports = MainContainer;
+  module.exports = MainContainer;
