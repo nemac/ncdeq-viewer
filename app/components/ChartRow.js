@@ -2,8 +2,12 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var ChartRowWrapper = require('./ChartRowWrapper');
 var Divider = require('./Divider');
+var agoHelpers = require('../utils/ago-helpers');
 
 var ChartRow = React.createClass({
+  handleAPI: function(){
+    agoHelpers.getGeoJson()
+  },
   render: function() {
     var vis = this.props.isChartsVisible ?  'show' : 'none';
     return (
@@ -34,6 +38,7 @@ var ChartRow = React.createClass({
 
       <div className="fourteen wide column">
         <ChartRowWrapper title="TRA's" />
+        <button className="ui button" onClick={this.handleAPI}>api call</button>
       </div>
 
       <Divider columns="fourteen"/>

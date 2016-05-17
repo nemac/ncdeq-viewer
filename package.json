@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.9.1",
+    "esri-leaflet": "^2.0.0",
+    "leaflet": "^0.7.7",
     "react": "^0.14.7",
     "react-addons-css-transition-group": "^0.14.7",
     "react-dom": "^0.14.7",
