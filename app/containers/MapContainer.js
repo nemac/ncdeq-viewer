@@ -1,13 +1,29 @@
 var React = require('react');
+var ReactLeaflet = require('react-leaflet')
 var agoHelpers = require('../utils/ago-helpers');
-var L = require('leaflet');
+import ESRIBaseMap from '../components/EsriLeaflet';
+
+
+
+//var L = require('leaflet');
+//var esri = require('esri-leaflet');
 var PropTypes = React.PropTypes;
 //var MapComponent = require('../components/MapComponent');
-var ReactLeaflet = require('react-leaflet')
 
 
 var MapContainer = React.createClass({
   componentDidMount: function() {
+
+    agoHelpers.getGeoJson(this.refs.map);
+
+
+    var map = this.refs.map.getLeafletElement();
+    this.setState({map:this.refs.map})
+    //console.log(this.refs.map)
+    //console.log(this.refs.map.leafletElement)
+    //var Lf = this.refs.map.leafletElement
+    //Lf = esri.basemapLayer("Topographic").addTo(map);
+    //esri.basemapLayer("Topographic").addTo(map);
   //   var map = this.refs.map.getLeafletElement();
   //   console.log(map)
   //   var geojsonFeature = {
@@ -24,7 +40,6 @@ var MapContainer = React.createClass({
   //   };
    //
     //L.geoJson(geojsonFeature).addTo(this.refs.map);
-   agoHelpers.getGeoJson(this.refs.map);
     //console.log(GeoJson_RB)
 
   },
@@ -60,6 +75,7 @@ var MapContainer = React.createClass({
           attribution={this.state.attribution}
           url={this.state.tileUrl}
         />
+      <ESRIBaseMap d={this.state.map} layer='Topographic'/>
     </ReactLeaflet.Map>
     );
   }

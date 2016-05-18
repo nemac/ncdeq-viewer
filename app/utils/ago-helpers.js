@@ -1,6 +1,6 @@
 var axios = require('axios');
 var L = require('leaflet');
-var esri = require('esri-leaflet')
+var esri = require('esri-leaflet');
 
 var ago_URL = 'http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer'
 var dataLayer = '/3'
@@ -74,11 +74,25 @@ var helpers = {
     var map = mapComp.getLeafletElement();
     //var L = mapComp.leafletElement;
 
-     L.geoJson(result.data).addTo(map);
+     //L.geoJson(result.data).addTo(map);
+     L.esri.featureLayer({url:'http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/0'}).addTo(map);
+    // console.log(ago_URL + RiverBasin_layer);
+    //  var mapLink = '<a href="http://www.esri.com/">Esri</a>';
+    //  var wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+    //  L.tileLayer(
+    //        'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    //        attribution: '&copy; '+mapLink+', '+wholink,
+    //        maxZoom: 18,
+    //        }).addTo(map);
+     //var layer = L.esriL.basemapLayer('Topographic').addTo(map);
+
+
+     //var featLayer = new esriL.layers.FeatureLayer(ago_URL + RiverBasin_layer);
+     //console.log(L)
     //  L.esri.featureLayer({
-    //    url: 'https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/services/Heritage_Trees_Portland/FeatureServer/0'
+    //    url: ago_URL + RiverBasin_layer
     //  }).addTo(map);
-     console.log(result.data)
+     //console.log(esri)
      return result.data
    }).catch(function(err){
      console.warn('error in getGeoJson ', err);
