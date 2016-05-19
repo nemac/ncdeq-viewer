@@ -63,7 +63,15 @@ var MapContainer = React.createClass({
           attribution={this.state.attribution}
           url={this.state.tileUrl}
         />
-      <ESRIFeatureLayer url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/0' />
+      <ESRIFeatureLayer
+        layerStyle='{"color":"#696969","fillColor":"#DCDCDC","fillOpacity":0,"weight":8}'
+        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/0' />
+      <ESRIFeatureLayer
+        layerStyle='{"color":"#808080","fillColor":"#DCDCDC","fillOpacity":0,"weight":4}'
+        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/1' />
+      <ESRIFeatureLayer
+        layerStyle='{"color":"#C0C0C0","fillColor":"#DCDCDC","fillOpacity":0,"weight":1}'
+        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/2' />
     </ReactLeaflet.Map>
     );
   }
