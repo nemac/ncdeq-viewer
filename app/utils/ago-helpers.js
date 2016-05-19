@@ -7,7 +7,6 @@ var dataLayer = '/3'
 var geogLevels = '/query?where=id<>%27%27&objectIds=&time=&resultType=none&outFields=+geography_level%2Cgeography_label&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=geography_level&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&f=pgeojson&token='
 var RiverBasin_layer = '/0'
 var RiverBasin_url = '/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=*&returnGeometry=true&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
-//0/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=*&returnGeometry=true&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token=',
 
 axios.defaults.baseURL = ago_URL;
 
@@ -61,38 +60,13 @@ function getItems(response){
 var helpers = {
  getGeoJson: function(mapComp){
 
-  //  var myStyle = {
-  //    "color": "#ff7800",
-  //    "weight": 5,
-  //    "opacity": 0.65
-  //  };
-
 
   return axios.get(RiverBasin_layer + RiverBasin_url)
    .then( function(result){
-     //console.log(result.data)
     var map = mapComp.getLeafletElement();
-    //var L = mapComp.leafletElement;
 
      //L.geoJson(result.data).addTo(map);
-     L.esri.featureLayer({url:'http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/0'}).addTo(map);
-    // console.log(ago_URL + RiverBasin_layer);
-    //  var mapLink = '<a href="http://www.esri.com/">Esri</a>';
-    //  var wholink = 'i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
-    //  L.tileLayer(
-    //        'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    //        attribution: '&copy; '+mapLink+', '+wholink,
-    //        maxZoom: 18,
-    //        }).addTo(map);
-     //var layer = L.esriL.basemapLayer('Topographic').addTo(map);
 
-
-     //var featLayer = new esriL.layers.FeatureLayer(ago_URL + RiverBasin_layer);
-     //console.log(L)
-    //  L.esri.featureLayer({
-    //    url: ago_URL + RiverBasin_layer
-    //  }).addTo(map);
-     //console.log(esri)
      return result.data
    }).catch(function(err){
      console.warn('error in getGeoJson ', err);

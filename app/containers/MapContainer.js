@@ -1,8 +1,8 @@
 var React = require('react');
 var ReactLeaflet = require('react-leaflet')
 var agoHelpers = require('../utils/ago-helpers');
-import ESRIBaseMap from '../components/EsriLeaflet';
-
+import ESRIFeatureLayer from '../components/ESRIFeatureLayer';
+var L = require('leaflet');
 
 
 //var L = require('leaflet');
@@ -18,7 +18,7 @@ var MapContainer = React.createClass({
 
 
     var map = this.refs.map.getLeafletElement();
-    this.setState({map:this.refs.map})
+    this.setState({map:this.refs.map,l:L})
     //console.log(this.refs.map)
     //console.log(this.refs.map.leafletElement)
     //var Lf = this.refs.map.leafletElement
@@ -45,18 +45,6 @@ var MapContainer = React.createClass({
   },
   getInitialState: function() {
 
-    // var geojsonFeature = {
-    //     "type": "Feature",
-    //     "properties": {
-    //         "name": "Coors Field",
-    //         "amenity": "Baseball Stadium",
-    //         "popupContent": "This is where the Rockies play!"
-    //     },
-    //     "geometry": {
-    //         "type": "Point",
-    //         "coordinates": [-80.4786, 35.6684]
-    //     }
-    // };
 
     return {
       latitude: this.props.latitude,
@@ -75,7 +63,7 @@ var MapContainer = React.createClass({
           attribution={this.state.attribution}
           url={this.state.tileUrl}
         />
-      <ESRIBaseMap d={this.state.map} layer='Topographic'/>
+      <ESRIFeatureLayer url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/0' />
     </ReactLeaflet.Map>
     );
   }
