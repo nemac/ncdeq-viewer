@@ -5,7 +5,7 @@ var PropTypes = React.PropTypes;
 
 var MapRowContainer = React.createClass({
   componentDidMount: function() {
-      //
+    //do something
   },
   propTypes: {
     mapHeight: PropTypes.number,
@@ -13,11 +13,8 @@ var MapRowContainer = React.createClass({
   },
   getDefaultProps: function() {
     return {
-      // latitude: 35.6683,
-      // longitude: -80.4786,
       mapHeight: 300,
       rowPadding: 1
-      // zoom: 7
     };
   },
 

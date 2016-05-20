@@ -7,9 +7,13 @@ var PropTypes = React.PropTypes;
 
 var MapContainer = React.createClass({
   componentDidMount: function() {
-
-    agoHelpers.getGeoJson(this.refs.map);
-
+    //this.refs.map
+    var basinFilter;
+    agoHelpers.getBasins()
+      .then(function(basins){
+        basinFilter = basins
+        console.log(basins)
+      })
     var map = this.refs.map.getLeafletElement();
     this.setState({map:this.refs.map,l:L})
 

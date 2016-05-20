@@ -6,7 +6,10 @@ var agoHelpers = require('../utils/ago-helpers');
 
 var ChartRow = React.createClass({
   handleAPI: function(){
-    agoHelpers.getGeoJson()
+    agoHelpers.getBasins()
+      .then(function(basins){
+        console.log(basins.data)
+      })
   },
   render: function() {
     var vis = this.props.isChartsVisible ?  'show' : 'none';

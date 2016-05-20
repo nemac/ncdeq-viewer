@@ -17,7 +17,8 @@
     "react-addons-css-transition-group": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-leaflet": "^0.10.2",
-    "react-router": "^2.0.1"
+    "react-router": "^2.0.1",
+    "turf": "^3.0.5"
   },
   "devDependencies": {
     "babel-core": "^6.7.2",
