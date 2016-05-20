@@ -8,12 +8,15 @@ var PropTypes = React.PropTypes;
 var MapContainer = React.createClass({
   componentDidMount: function() {
     //this.refs.map
-    var basinFilter;
     agoHelpers.getBasins()
       .then(function(basins){
-        basinFilter = basins
         console.log(basins)
       })
+    // agoHelpers.getFiltered()
+    //   .then(function(data){
+    //     //console.log(data)
+    //   })
+      // console.log(basinFilter)
     var map = this.refs.map.getLeafletElement();
     this.setState({map:this.refs.map,l:L})
 
