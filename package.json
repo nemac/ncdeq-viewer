@@ -11,11 +11,16 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.9.1",
+    "esri-leaflet": "^1.0.3",
+    "leaflet": "^0.7.7",
     "react": "^0.14.7",
     "react-addons-css-transition-group": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-leaflet": "^0.10.2",
-    "react-router": "^2.0.1"
+    "react-router": "^2.0.1",
+    "turf": "^3.0.5",
+    "turf-featurecollection": "^1.0.1",
+    "turf-filter": "^1.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.7.2",
