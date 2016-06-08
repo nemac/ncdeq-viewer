@@ -14,13 +14,24 @@ var MapContainer = React.createClass({
     var catalogingUnits_features = {name:'Cataloging Units',lists:[]};
     var HUC12_features = {name:'HUC12',lists:[]};
 
+
+    agoHelpers.get_BasinsAll()
+      .then(function(returnedData){
+        console.log(JSON.stringify(returnedData))
+    })
+
+    agoHelpers.get_GeographyLevels()
+      .then(function(returnedData){
+        console.log(JSON.stringify(returnedData))
+      })
     //dataJSON.push({name:'River Basins',lists:[]});
     //var dataJSON = [{name:'River Basins',lists:[]}]
     //console.log(dataJSON[0].lists)
     //this.refs.map
-    agoHelpers.getBasins()
-      .then(function(basins){
-        console.log(basins)
+
+    agoHelpers.get_Basins()
+      .then(function(returnedData){
+        console.log(JSON.stringify(returnedData))
         // var JSONdata = [];
         // JSONdata.push(riverBasin_features);
         // //console.log(JSON.stringify(basins))
@@ -32,24 +43,24 @@ var MapContainer = React.createClass({
 
       })
 
-      agoHelpers.getAllBasins()
-        .then(function(basins){
-        //  console.log(JSON.stringify(basins))
-
-
-
-
-          //console.log(JSON.stringify(basins))
-          // //console.log(JSON.stringify(basins))
-          // basins.features.map(function(features) {
-          //   //console.log(features.properties)
-          //   dataJSON[0].lists.push(features.properties)
-          //   // features.properties.map(function(attributes) {
-          //   //     console.log(attributes.id)
-          //   // })
-          // })
-          //console.log(JSON.stringify(dataJSON));
-        })
+      // agoHelpers.getAllBasins()
+      //   .then(function(basins){
+      //   //  console.log(JSON.stringify(basins))
+      //
+      //
+      //
+      //
+      //     //console.log(JSON.stringify(basins))
+      //     // //console.log(JSON.stringify(basins))
+      //     // basins.features.map(function(features) {
+      //     //   //console.log(features.properties)
+      //     //   dataJSON[0].lists.push(features.properties)
+      //     //   // features.properties.map(function(attributes) {
+      //     //   //     console.log(attributes.id)
+      //     //   // })
+      //     // })
+      //     //console.log(JSON.stringify(dataJSON));
+      //   })
 
 
     // agoHelpers.getFiltered()

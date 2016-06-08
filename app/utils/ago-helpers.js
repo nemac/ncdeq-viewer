@@ -19,17 +19,37 @@
   //set base URL for axios
   axios.defaults.baseURL = ago_URL;
 
-  function getActualBasins(){
+  //create menu list
+  var menuLists = [];
+  menuLists.push(riverBasin_features);
+  menuLists.push(catalogingUnits_features);
+  menuLists.push(HUC12_features);
+
+  //retrieves geography levels from AGO api
+  function get_AGOGeographyLevels(){
+    return axios.get(geogLevels);
+  }
+
+  //retrieves the list basins currently available frm AGO api
+  function get_AGOBasins(){
     return axios.get(actualBasins);
   }
-  function getBasinsList(){
+
+  //retrieve a list of all the River Basins in NC from AGO api
+  function get_AGOBasinsALL(){
     return axios.get(allBasins);
   }
 
-  function getFilterValues(featureCollection){
+  //get an array of IDs from the JSON data.
+  function get_IDs(featureCollection){
+
+    //creaet emputy array to store the ids
     var  filterValues = [];
+
+    //create a copy of features of obect.
     var fc = featureCollection.data.features
 
+    //map the GeoJSON obect and build a list of the ids.
     fc.map(function(feature){
       filterValues.push(feature.properties.id);
     })
@@ -37,66 +57,104 @@
     return filterValues;
   }
 
-  function getFiltered(filterValues){
 
-    return getBasinsList()
-      .then(function(list){
-        var features = [];
-        var newFeatureCollection = [];
-        filterValues.map(function(value){
-          var filtered = turfFilter(list.data, 'ID', value);
-          features.push(filtered.features[0]);
-        })
-        newFeatureCollection = turfFC(features);
+  //returns  geojson based on an array of ids
+  function get_FilteredList(filterValues,filterList){
 
-        var JSONdata = [];
-        JSONdata.push(riverBasin_features);
+    //create an empty feature object so it can be output as a new GeoJSON object
+    var features = [];
 
-        var basins = newFeatureCollection;
-        //console.log (basins)
-        //console.log(JSON.stringify(basins))
-        basins.features.map(function(features) {
-           //console.log(JSON.stringify(features.properties))
-           JSONdata[0].lists.push(features.properties)
-        })
-        //console.log(JSON.stringify(JSONdata))
+    //get list filtered based on what's actually available
+    //in the data from AGO api
+    filterValues.map(function(value){
+      var filtered = turfFilter(filterList.data, 'ID', value);
+      features.push(filtered.features[0]);
+    })
+
+    //use turf to create a geojson feature collection (GeoJSON object) and return it
+    return turfFC(features);
 
 
-        return JSONdata;
+  }
+
+  //builds a menu list
+  function get_MenuList (name, menuList, geoJSON){
+    var ml = menuList;
+    //map the menu list
+    ml.map(function(menu){
+      //check if name matches the passed name 'River Basins'
+      if(menu.name === name){
+        //map geojson features and add the properties (attributes) to the list
+        //  this will populate the menu items
+        geoJSON.features.map(function(features) {
+           menu.lists.push(features.properties)
+         })
+      }
+    })
+
+    return ml
+
+  }
+
+  //builds the data structure for Basin Menu List
+  function get_BasinMenuList(filterValues){
+
+    //get the complete list of basins and filter it by the ids of basins avaiable for viewer
+    return get_AGOBasinsALL()
+      .then(function(filterList){
+
+        //get a filtered GeoJSON object
+        var FilteredGeoJSON = get_FilteredList(filterValues,filterList)
+
+        //get the menu list based on filtered features
+        var ml = get_MenuList( 'River Basins', menuLists,FilteredGeoJSON)
+
+        //return the JSON list
+        return ml;
       })
   }
 
   var helpers = {
-    getBasins: function(){
-      return getActualBasins()
-      .then(getFilterValues)
-      .then(function(data){
-        return  getFiltered(data);
-      })
+    //get available basins
+    get_Basins: function(){
+      return get_AGOBasins()
+      .then(function(result) {
+         return result.data
+      });
     },
-    getAllBasins: function(){
-      return getBasinsList()
-      .then(function(data){
-        return data.data;
-      })
+    //get ALl basins
+    get_BasinsAll: function(){
+      return get_AGOBasinsALL()
+      .then(function(result) {
+         return result.data
+      });
     },
+    get_MenuList: function(){
+      return get_AGOBasins()
+      .then(get_IDs)
+        .then(function(data){
+          return  get_BasinMenuList(data);
+        })
+    },
+    get_GeographyLevels: function(){
+      return get_AGOGeographyLevels()
+       .then(function(result) {
+          return result.data
+       });
+     }
+    // getAllBasins: function(){
+    //   return get_AGOBasinsALL()
+    //   .then(function(data){
+    //     return data.data;
+    //   })
+    // },
   //  getFiltered: function(){
   //      return getFiltered()
   //       .then(function(test){
   //         console.log(test)
   //       })
   //  },
-   getGeographyLevels: function(){
-      axios
-      .get(dataLayer + geogLevels)
-      .then(function(result) {
-        result.data.features.map(
-          function(d){
-            //console.log(d.properties.geography_label)
-          }
-        )
-      });
-    }
+
   };
 
   module.exports = helpers;
