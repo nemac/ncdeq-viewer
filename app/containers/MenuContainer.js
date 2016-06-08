@@ -48,7 +48,7 @@ var MenuContainer = React.createClass({
 
     var obj = {};
     var items = this.props.RiverBasinData;
-
+    
     items.map(function(item) {
       obj[ item.name ] = {
         'active':false,

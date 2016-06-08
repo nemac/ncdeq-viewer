@@ -7,11 +7,51 @@ var PropTypes = React.PropTypes;
 
 var MapContainer = React.createClass({
   componentDidMount: function() {
+
+
+
+    var riverBasin_features = {name:'River Basins',lists:[]};
+    var catalogingUnits_features = {name:'Cataloging Units',lists:[]};
+    var HUC12_features = {name:'HUC12',lists:[]};
+
+    //dataJSON.push({name:'River Basins',lists:[]});
+    //var dataJSON = [{name:'River Basins',lists:[]}]
+    //console.log(dataJSON[0].lists)
     //this.refs.map
     agoHelpers.getBasins()
       .then(function(basins){
         console.log(basins)
+        // var JSONdata = [];
+        // JSONdata.push(riverBasin_features);
+        // //console.log(JSON.stringify(basins))
+        // basins.features.map(function(features) {
+        //    //console.log(JSON.stringify(features.properties))
+        //    JSONdata[0].lists.push(features.properties)
+        // })
+        // console.log(JSON.stringify(JSONdata))
+
       })
+
+      agoHelpers.getAllBasins()
+        .then(function(basins){
+        //  console.log(JSON.stringify(basins))
+
+
+
+
+          //console.log(JSON.stringify(basins))
+          // //console.log(JSON.stringify(basins))
+          // basins.features.map(function(features) {
+          //   //console.log(features.properties)
+          //   dataJSON[0].lists.push(features.properties)
+          //   // features.properties.map(function(attributes) {
+          //   //     console.log(attributes.id)
+          //   // })
+          // })
+          //console.log(JSON.stringify(dataJSON));
+        })
+
+
     // agoHelpers.getFiltered()
     //   .then(function(data){
     //     //console.log(data)
