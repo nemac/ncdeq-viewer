@@ -8,39 +8,39 @@ var PropTypes = React.PropTypes;
 var MapContainer = React.createClass({
   componentDidMount: function() {
 
-    agoHelpers.get_BasinsAll()
-      .then(function(returnedData){
-        console.log('ALL BASINS: ' + JSON.stringify(returnedData))
-    })
-
-    agoHelpers.get_GeographyLevels()
-      .then(function(returnedData){
-        console.log('Geography Levels: ' + JSON.stringify(returnedData))
-      })
-
-    agoHelpers.get_Basins()
-      .then(function(returnedData){
-        console.log('BASINS: ' + JSON.stringify(returnedData))
-      })
-
-    agoHelpers.get_BasinMenuList()
+    // agoHelpers.get_BasinsAll()
+    //   .then(function(returnedData){
+    //     console.log('ALL BASINS: ' + JSON.stringify(returnedData))
+    // })
+    //
+    // agoHelpers.get_GeographyLevels()
+    //   .then(function(returnedData){
+    //     console.log('Geography Levels: ' + JSON.stringify(returnedData))
+    //   })
+    //
+    // agoHelpers.get_Basins()
+    //   .then(function(returnedData){
+    //     console.log('BASINS: ' + JSON.stringify(returnedData))
+    //   })
+    //
+    agoHelpers.get_MenuList()
       .then(function(returnedData){
         console.log('Menu List: ' + JSON.stringify(returnedData))
       })
-
-      agoHelpers.get_filteredIDs()
-        .then(function(returnedData){
-          console.log('filtered ids: ' + JSON.stringify(returnedData))
-        })
-
-        agoHelpers.get_CatalogingUnits()
-        .then(function(returnedData){
-          console.log('Cataloging Units: ' + JSON.stringify(returnedData))
-        })
-        agoHelpers.get_ActualHUCS()
-        .then(function(returnedData){
-          console.log('HUC 12s: ' + JSON.stringify(returnedData))
-        })
+    //
+    //   agoHelpers.get_filteredIDs()
+    //     .then(function(returnedData){
+    //       console.log('filtered ids: ' + JSON.stringify(returnedData))
+    //     })
+    //
+    //     agoHelpers.get_CatalogingUnits()
+    //     .then(function(returnedData){
+    //       console.log('Cataloging Units: ' + JSON.stringify(returnedData))
+    //     })
+    //     agoHelpers.get_ActualHUCS()
+    //     .then(function(returnedData){
+    //       console.log('HUC 12s: ' + JSON.stringify(returnedData))
+    //     })
 
     var map = this.refs.map.getLeafletElement();
     this.setState({map:this.refs.map,l:L})

@@ -15,9 +15,9 @@
 
   var chartLevel_1_2 = '/RDRBP/FeatureServer/3/query?where=ID+%3D+%27030202020403%27+and+geography_level%3D3+and+%28chart_level%3D1+or+chart_level%3D2%29+&objectIds=&time=&resultType=none&outFields=chart_level%2C+chart_label%2C+chart_value%2C+chart_description%2C+chart_type%2C+chart_level_label&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&f=pgeojson&token='
 
-  var riverBasin_features = {name:'River Basins',lists:[]};
-  var catalogingUnits_features = {name:'Cataloging Units',lists:[]};
-  var HUC12_features = {name:'HUC12',lists:[]};
+  // var riverBasin_features = {name:'River Basins',lists:[]};
+  // var catalogingUnits_features = {name:'Cataloging Units',lists:[]};
+  // var HUC12_features = {name:'HUC12',lists:[]};
 
   //set base URL for axios
   axios.defaults.baseURL = ago_URL;
@@ -44,7 +44,7 @@
   }
 
   //retrieves the list Cataloging Units currently available frm AGO api
-  function get_AGOActualHUCS(){
+  function get_AGOHUCS(){
     return axios.get(actualHUCS);
   }
 
@@ -70,14 +70,23 @@
     return filterValues;
   }
 
+  function set_NameList(name){
+      return {
+        name,
+        lists:[]
+      }
+  }
 
   //builds a menu list
-  function get_MenuList (name, menuList, geoJSON){
-    var ml = menuList;
-    ml.push(riverBasin_features);
+  function set_MenuList (name, menuList, geoJSON){
+    var ml = [];
+    var nameList = set_NameList(name);
+
+    ml.push( nameList );
+
     //map the menu list
     ml.map(function(menu){
-      //check if name matches the passed name 'River Basins'
+      //check if name matches the passed name
       if(menu.name === name){
         //map geojson features and add the properties (attributes) to the list
         //  this will populate the menu items
@@ -87,22 +96,75 @@
       }
     })
 
-    return ml
+    //return new menu list
+    return ml[0]
   }
 
+  function deNest(list){
+    var returnList = [];
+    if (list.length > 1){
+      returnList = list[0]
+    } else {
+      returnList = list;
+    }
+    return returnList;
+  }
+
+  //merges two json data lists
+  //   nested would not do {...list1, ...list2}
+  function mergeList(list1,list2){
+    var merged = [];
+
+    //get rid of nested arrays
+    var l1 = deNest(list1);
+    var l2 = deNest(list2);
+
+    merged.push(l1);
+    merged.push(l2);
+
+    return merged
+  }
   //builds the data structure for Basin Menu List
-  function get_BasinMenuList(filterValues){
+  function get_MenuLists(filterValues){
 
     //get the complete list of basins and filter it by the ids of basins avaiable for viewer
-    return get_AGOBasins()
+    return  get_AGOBasins()
       .then(function(geoJSON){
 
         //get the menu list based on filtered features
-        var ml = get_MenuList( 'River Basins', menuLists,geoJSON.data)
+        var ml = set_MenuList( 'River Basins', menuLists,geoJSON.data)
 
         //return the JSON list
         return ml;
       })
+        .then(function(list){
+          return get_AGOCatalogingUnits()
+            .then(function(geoJSON){
+
+              //get the menu list based on filtered features
+              var ml = set_MenuList( 'Cataloging Units', menuLists, geoJSON.data)
+
+              //merge lists
+              var merged = mergeList(list,ml)
+
+              return merged;
+            })
+        })
+        .then(function(list){
+          return get_AGOHUCS()
+            .then(function(geoJSON){
+
+              //get the menu list based on filtered features
+              var ml = set_MenuList( 'HUC12', menuLists,geoJSON.data)
+
+
+              //merge lists
+              var merged = mergeList(list,ml)
+
+              //return the JSON list
+              return merged;
+            })
+        })
   }
 
   var helpers = {
@@ -122,7 +184,7 @@
     },
     //get available Cataloging Units
     get_ActualHUCS: function(){
-      return get_AGOActualHUCS()
+      return get_AGOHUCS()
       .then(function(result) {
          return result.data
       });
@@ -134,12 +196,16 @@
          return result.data
       });
     },
-    get_BasinMenuList: function(){
-      return get_AGOBasins()
-      .then(get_IDs)
-        .then(function(data){
-          return  get_BasinMenuList(data);
-        })
+    get_MenuList: function(){
+      return get_MenuLists()
+        .then(function(result) {
+           return result
+        });
+      // return get_AGOBasins()
+      // .then(get_IDs)
+      //   .then(function(data){
+      //     return  get_MenuLists(data);
+      //   })
     },
     get_GeographyLevels: function(){
       return get_AGOGeographyLevels()

@@ -1,6 +1,7 @@
 var React = require('react');
-var RiverBasinData = require('../utils/data.js');
+//var RiverBasinData = require('../utils/data.js');
 var MenuComponent = require('../components/MenuComponent');
+var agoHelpers = require('../utils/ago-helpers');
 
 var PropTypes = React.PropTypes;
 
@@ -9,9 +10,15 @@ var MenuContainer = React.createClass({
     RiverBasinData: PropTypes.array
   },
   getDefaultProps: function() {
-    return {
-      RiverBasinData: RiverBasinData
-    };
+    agoHelpers.get_MenuList()
+      .then(function(returnedData){
+        console.log(returnedData)
+        return {
+          RiverBasinData: returnedData
+        };
+        //console.log('Menu List: ' + JSON.stringify(returnedData))
+      })
+
   },
   componentDidMount: function() {
     //var input = document.getElementById('searchTextField');
@@ -48,7 +55,7 @@ var MenuContainer = React.createClass({
 
     var obj = {};
     var items = this.props.RiverBasinData;
-    
+
     items.map(function(item) {
       obj[ item.name ] = {
         'active':false,
