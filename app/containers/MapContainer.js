@@ -23,10 +23,24 @@ var MapContainer = React.createClass({
         console.log('BASINS: ' + JSON.stringify(returnedData))
       })
 
-    agoHelpers.get_MenuList()
+    agoHelpers.get_BasinMenuList()
       .then(function(returnedData){
         console.log('Menu List: ' + JSON.stringify(returnedData))
       })
+
+      agoHelpers.get_filteredIDs()
+        .then(function(returnedData){
+          console.log('filtered ids: ' + JSON.stringify(returnedData))
+        })
+
+        agoHelpers.get_CatalogingUnits()
+        .then(function(returnedData){
+          console.log('Cataloging Units: ' + JSON.stringify(returnedData))
+        })
+        agoHelpers.get_ActualHUCS()
+        .then(function(returnedData){
+          console.log('HUC 12s: ' + JSON.stringify(returnedData))
+        })
 
     var map = this.refs.map.getLeafletElement();
     this.setState({map:this.refs.map,l:L})

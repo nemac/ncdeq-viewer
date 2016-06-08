@@ -10,6 +10,9 @@
   var geogLevels = '/RDRBP/FeatureServer/3/query?where=id<>%27%27&objectIds=&time=&resultType=none&outFields=+geography_level%2Cgeography_label&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=geography_level&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&f=pgeojson&token='
   var allBasins = 'RDRBP/FeatureServer/4/query?where=type%3D%27HUC+6%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
   var actualBasins = '/RDRBP/FeatureServer/0/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
+  var actualCatalogingUnits = '/RDRBP/FeatureServer/1/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
+  var actualHUCS = '/RDRBP/FeatureServer/2/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
+
   var chartLevel_1_2 = '/RDRBP/FeatureServer/3/query?where=ID+%3D+%27030202020403%27+and+geography_level%3D3+and+%28chart_level%3D1+or+chart_level%3D2%29+&objectIds=&time=&resultType=none&outFields=chart_level%2C+chart_label%2C+chart_value%2C+chart_description%2C+chart_type%2C+chart_level_label&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&f=pgeojson&token='
 
   var riverBasin_features = {name:'River Basins',lists:[]};
@@ -21,9 +24,9 @@
 
   //create menu list
   var menuLists = [];
-  menuLists.push(riverBasin_features);
-  menuLists.push(catalogingUnits_features);
-  menuLists.push(HUC12_features);
+//  menuLists.push(riverBasin_features);
+//  menuLists.push(catalogingUnits_features);
+//  menuLists.push(HUC12_features);
 
   //retrieves geography levels from AGO api
   function get_AGOGeographyLevels(){
@@ -33,6 +36,16 @@
   //retrieves the list basins currently available frm AGO api
   function get_AGOBasins(){
     return axios.get(actualBasins);
+  }
+
+  //retrieves the list Cataloging Units currently available frm AGO api
+  function get_AGOCatalogingUnits(){
+    return axios.get(actualCatalogingUnits);
+  }
+
+  //retrieves the list Cataloging Units currently available frm AGO api
+  function get_AGOActualHUCS(){
+    return axios.get(actualHUCS);
   }
 
   //retrieve a list of all the River Basins in NC from AGO api
@@ -58,28 +71,10 @@
   }
 
 
-  //returns  geojson based on an array of ids
-  function get_FilteredList(filterValues,filterList){
-
-    //create an empty feature object so it can be output as a new GeoJSON object
-    var features = [];
-
-    //get list filtered based on what's actually available
-    //in the data from AGO api
-    filterValues.map(function(value){
-      var filtered = turfFilter(filterList.data, 'ID', value);
-      features.push(filtered.features[0]);
-    })
-
-    //use turf to create a geojson feature collection (GeoJSON object) and return it
-    return turfFC(features);
-
-
-  }
-
   //builds a menu list
   function get_MenuList (name, menuList, geoJSON){
     var ml = menuList;
+    ml.push(riverBasin_features);
     //map the menu list
     ml.map(function(menu){
       //check if name matches the passed name 'River Basins'
@@ -93,21 +88,17 @@
     })
 
     return ml
-
   }
 
   //builds the data structure for Basin Menu List
   function get_BasinMenuList(filterValues){
 
     //get the complete list of basins and filter it by the ids of basins avaiable for viewer
-    return get_AGOBasinsALL()
-      .then(function(filterList){
-
-        //get a filtered GeoJSON object
-        var FilteredGeoJSON = get_FilteredList(filterValues,filterList)
+    return get_AGOBasins()
+      .then(function(geoJSON){
 
         //get the menu list based on filtered features
-        var ml = get_MenuList( 'River Basins', menuLists,FilteredGeoJSON)
+        var ml = get_MenuList( 'River Basins', menuLists,geoJSON.data)
 
         //return the JSON list
         return ml;
@@ -122,6 +113,20 @@
          return result.data
       });
     },
+    //get available Cataloging Units
+    get_CatalogingUnits: function(){
+      return get_AGOCatalogingUnits()
+      .then(function(result) {
+         return result.data
+      });
+    },
+    //get available Cataloging Units
+    get_ActualHUCS: function(){
+      return get_AGOActualHUCS()
+      .then(function(result) {
+         return result.data
+      });
+    },
     //get ALl basins
     get_BasinsAll: function(){
       return get_AGOBasinsALL()
@@ -129,7 +134,7 @@
          return result.data
       });
     },
-    get_MenuList: function(){
+    get_BasinMenuList: function(){
       return get_AGOBasins()
       .then(get_IDs)
         .then(function(data){
@@ -141,20 +146,14 @@
        .then(function(result) {
           return result.data
        });
+     },
+     get_filteredIDs: function(){
+       return get_AGOBasins()
+       .then(get_IDs)
+         .then(function(data){
+           return data;
+         })
      }
-    // getAllBasins: function(){
-    //   return get_AGOBasinsALL()
-    //   .then(function(data){
-    //     return data.data;
-    //   })
-    // },
-  //  getFiltered: function(){
-  //      return getFiltered()
-  //       .then(function(test){
-  //         console.log(test)
-  //       })
-  //  },
-
   };
 
   module.exports = helpers;
