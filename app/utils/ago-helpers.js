@@ -13,21 +13,37 @@
   var actualCatalogingUnits = '/RDRBP/FeatureServer/1/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
   var actualHUCS = '/RDRBP/FeatureServer/2/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
 
-  var chartLevel_1_2 = '/RDRBP/FeatureServer/3/query?where=ID+%3D+%27030202020403%27+and+geography_level%3D3+and+%28chart_level%3D1+or+chart_level%3D2%29+&objectIds=&time=&resultType=none&outFields=chart_level%2C+chart_label%2C+chart_value%2C+chart_description%2C+chart_type%2C+chart_level_label&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&f=pgeojson&token='
+  var chartdata = '/RDRBP/FeatureServer/3/query?where=id%3D%27030201010103%27&objectIds=&time=&resultType=none&outFields=chart_id%2C+chart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=chart_level%2Cchart_matchid&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&f=pgeojson&token='
 
-  // var riverBasin_features = {name:'River Basins',lists:[]};
-  // var catalogingUnits_features = {name:'Cataloging Units',lists:[]};
-  // var HUC12_features = {name:'HUC12',lists:[]};
 
   //set base URL for axios
   axios.defaults.baseURL = ago_URL;
 
   //create menu list
   var menuLists = [];
-//  menuLists.push(riverBasin_features);
-//  menuLists.push(catalogingUnits_features);
-//  menuLists.push(HUC12_features);
 
+  //get chart data by huc id
+  function get_ChartData_byID(hucid){
+
+     var query_URL = '/RDRBP/FeatureServer/3/query?where' +
+                      '=id%3D%27' + hucid + '%27' +
+                      '&objectIds='+
+                      '&time='+
+                      '&resultType=none'+
+                      '&outFields=chart_id%2C+chart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value'+
+                      '&returnIdsOnly=false'+
+                      '&returnCountOnly=false'+
+                      '&returnDistinctValues=true'+
+                      '&orderByFields=chart_level%2Cchart_matchid'+
+                      '&groupByFieldsForStatistics='+
+                      '&outStatistics='+
+                      '&resultOffset='+
+                      '&resultRecordCount='+
+                      '&f=pgeojson&token=';
+
+    return axios.get(query_URL);
+
+  }
   //retrieves geography levels from AGO api
   function get_AGOGeographyLevels(){
     return axios.get(geogLevels);
@@ -161,6 +177,12 @@
   }
 
   var helpers = {
+    get_ChartData_byID: function(val){
+      return get_ChartData_byID(val)
+      .then(function(result) {
+         return result.data
+      });
+    },
     //get available basins
     get_Basins: function(){
       return get_AGOBasins()

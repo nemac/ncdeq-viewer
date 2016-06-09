@@ -6,7 +6,7 @@ var agoHelpers = require('../utils/ago-helpers');
 
 var ChartRow = React.createClass({
   handleAPI: function(){
-    agoHelpers.getBasins()
+    agoHelpers.get_Basins()
       .then(function(basins){
         console.log(basins)
       })

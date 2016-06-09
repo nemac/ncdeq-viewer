@@ -6,27 +6,6 @@ var agoHelpers = require('../utils/ago-helpers');
 var PropTypes = React.PropTypes;
 
 var MenuContainer = React.createClass({
-  // propTypes: {
-  //   RiverBasinData: PropTypes.array
-  // },
-  // getDefaultProps: function() {
-  //   return {
-  //     RiverBasinData: [
-  //       {
-  //         name:'River Basins',
-  //         lists:[]
-  //       },
-  //       {
-  //         name:'Cataloging Units',
-  //         lists:[]
-  //       },
-  //       {
-  //         name:'HUC12',
-  //         lists:[]
-  //       }
-  //     ]
-  //   };
-  // },
   componentDidMount: function() {
     //var input = document.getElementById('searchTextField');
     //var options = {componentRestrictions: {country: 'us'}};
@@ -82,8 +61,7 @@ var MenuContainer = React.createClass({
         'filter': !this.state ? '' : !this.state[item.name] ? '':  this.state[item.name].filter };
     },this)
 
-    //var retobj = { [ {name:'River Basins',lists:[]} ] ,obj}
-    return obj
+     return obj
   },
   getInitialState: function () {
     return this.getStateObject();
@@ -118,11 +96,26 @@ var MenuContainer = React.createClass({
     var level = this.getLevel();
     this.updateFilterState(level,e.target.value)
 
+    console.log(level);
+    if(level === 'HUC12'){
+      agoHelpers.get_ChartData_byID(e.target.value)
+        .then(function(chartData){
+          $('#Compare_chart').html(JSON.stringify(chartData))
+        }.bind(this))
+    }
+
+    if(level === 'Cataloging Units'){
+      agoHelpers.get_ChartData_byID(e.target.value)
+        .then(function(chartData){
+          $("#HUCs_chart").html(JSON.stringify(chartData))
+          console.log(chartData)
+        }.bind(this))
+    }
+
   },
   handleMenuClick: function(val,e) {
     //reset menu
     this.resetMenus();
-
     //change state to active for clicked menu
     this.setState({
       [val]:{'active': true,
