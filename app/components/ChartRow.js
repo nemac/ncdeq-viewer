@@ -41,7 +41,6 @@ var ChartRow = React.createClass({
 
       <div className="fourteen wide column">
         <ChartRowWrapper title="TRA's" />
-        <button className="ui button" onClick={this.handleAPI}>api call</button>
       </div>
 
       <Divider columns="fourteen"/>
