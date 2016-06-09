@@ -23,6 +23,9 @@ var MenuItemContainer = React.createClass({
       activeValue: this.props.activeValue
     };
   },
+  componentDidMount: function() {
+      $('.ui.dropdown').dropdown();
+  },
   render: function() {
     return (
       <MenuItemComponent

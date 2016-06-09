@@ -6,7 +6,7 @@ var agoHelpers = require('../utils/ago-helpers');
 
 var ChartRow = React.createClass({
   handleAPI: function(){
-    agoHelpers.getBasins()
+    agoHelpers.get_Basins()
       .then(function(basins){
         console.log(basins)
       })
@@ -41,7 +41,6 @@ var ChartRow = React.createClass({
 
       <div className="fourteen wide column">
         <ChartRowWrapper title="TRA's" />
-        <button className="ui button" onClick={this.handleAPI}>api call</button>
       </div>
 
       <Divider columns="fourteen"/>

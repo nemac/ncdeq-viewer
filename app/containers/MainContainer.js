@@ -207,7 +207,7 @@ var MainContainer = React.createClass({
       //width and height
       window.addEventListener('resize', this.handleResize);
 
-      //for semantic-ui dropdowns..  not implemented yet
+      //for semantic-ui dropdowns
       $('.ui.dropdown').dropdown();
       $('#search-select').dropdown();
 

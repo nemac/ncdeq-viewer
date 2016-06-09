@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.9.1",
+    "babel-preset-stage-2": "^6.5.0",
     "esri-leaflet": "^1.0.3",
     "leaflet": "^0.7.7",
     "react": "^0.14.7",
