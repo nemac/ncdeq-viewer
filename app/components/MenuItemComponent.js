@@ -12,12 +12,16 @@ function MenuItemComponent (props) {
 
       //get value of current item in the list and get the left most characters
       //should match length of filter value
-      var value = listItem.value ? listItem.value :listItem.main
-      var checkedValue = value.toString().substring(0, filterValue.length)
+      var value = listItem.VALUE ? listItem.VALUE :listItem.MAIN
+      if(value){
+        var checkedValue = value.toString().substring(0, filterValue.length)
+      } else {
+        var checkedValue = ''
+      }
 
       //only render options if the match the filter
       if(filterValue === checkedValue ){
-        return   <option key={listItem.value} value={listItem.value}>{listItem.main}-({listItem.sub})</option>
+        return   <option key={listItem.VALUE} value={listItem.VALUE}>{listItem.MAIN}-({listItem.SUB})</option>
       }
     })
   }

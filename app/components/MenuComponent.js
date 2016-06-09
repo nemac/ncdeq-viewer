@@ -13,12 +13,15 @@ function MenuComponent (props) {
         &nbsp;
       </div>
 
-        {props.items.map(function(item) {
+
+        { props.items &&
+          props.items.map(function(item) {
             return (
               <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getFilter={props.getFilter} getActive={props.getActive} handleMenuClick={props.handleMenuClick} menuChange={props.menuChange}/>
             )
           })
         }
+
 
 
       <div className="header item" >

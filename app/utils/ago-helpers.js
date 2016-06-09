@@ -100,27 +100,21 @@
     return ml[0]
   }
 
-  function deNest(list){
-    var returnList = [];
-    if (list.length > 1){
-      returnList = list[0]
-    } else {
-      returnList = list;
-    }
-    return returnList;
-  }
 
   //merges two json data lists
   //   nested would not do {...list1, ...list2}
   function mergeList(list1,list2){
     var merged = [];
 
-    //get rid of nested arrays
-    var l1 = deNest(list1);
-    var l2 = deNest(list2);
+    //if already an array just create a new array
+    if (Array.isArray(list1)){
+      merged = list1
+    } else{
+      merged.push(list1);
+    }
 
-    merged.push(l1);
-    merged.push(l2);
+    //merged.push(l1);
+    merged.push(list2);
 
     return merged
   }
@@ -132,12 +126,12 @@
       .then(function(geoJSON){
 
         //get the menu list based on filtered features
-        var ml = set_MenuList( 'River Basins', menuLists,geoJSON.data)
+        var ml = set_MenuList( 'River Basins', menuLists, geoJSON.data)
 
         //return the JSON list
         return ml;
       })
-        .then(function(list){
+        .then(function(RBList){
           return get_AGOCatalogingUnits()
             .then(function(geoJSON){
 
@@ -145,21 +139,20 @@
               var ml = set_MenuList( 'Cataloging Units', menuLists, geoJSON.data)
 
               //merge lists
-              var merged = mergeList(list,ml)
+              var merged = mergeList(RBList,ml)
 
               return merged;
             })
         })
-        .then(function(list){
+        .then(function(CUList){
           return get_AGOHUCS()
             .then(function(geoJSON){
 
               //get the menu list based on filtered features
-              var ml = set_MenuList( 'HUC12', menuLists,geoJSON.data)
-
+              var ml = set_MenuList( 'HUC12', menuLists,  geoJSON.data)
 
               //merge lists
-              var merged = mergeList(list,ml)
+              var merged = mergeList(CUList,ml)
 
               //return the JSON list
               return merged;

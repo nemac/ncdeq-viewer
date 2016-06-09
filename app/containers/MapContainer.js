@@ -25,7 +25,7 @@ var MapContainer = React.createClass({
     //
     agoHelpers.get_MenuList()
       .then(function(returnedData){
-        console.log('Menu List: ' + JSON.stringify(returnedData))
+        //console.log('Menu List: ' + JSON.stringify(returnedData))
       })
     //
     //   agoHelpers.get_filteredIDs()

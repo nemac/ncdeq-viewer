@@ -6,24 +6,36 @@ var agoHelpers = require('../utils/ago-helpers');
 var PropTypes = React.PropTypes;
 
 var MenuContainer = React.createClass({
-  propTypes: {
-    RiverBasinData: PropTypes.array
-  },
-  getDefaultProps: function() {
-    agoHelpers.get_MenuList()
-      .then(function(returnedData){
-        console.log(returnedData)
-        return {
-          RiverBasinData: returnedData
-        };
-        //console.log('Menu List: ' + JSON.stringify(returnedData))
-      })
-
-  },
+  // propTypes: {
+  //   RiverBasinData: PropTypes.array
+  // },
+  // getDefaultProps: function() {
+  //   return {
+  //     RiverBasinData: [
+  //       {
+  //         name:'River Basins',
+  //         lists:[]
+  //       },
+  //       {
+  //         name:'Cataloging Units',
+  //         lists:[]
+  //       },
+  //       {
+  //         name:'HUC12',
+  //         lists:[]
+  //       }
+  //     ]
+  //   };
+  // },
   componentDidMount: function() {
     //var input = document.getElementById('searchTextField');
     //var options = {componentRestrictions: {country: 'us'}};
     //new google.maps.places.Autocomplete(input, options);
+    agoHelpers.get_MenuList()
+      .then(function(RiverBasinData){
+        return this.setState ({RiverBasinData})
+      }.bind(this))
+
   },
   getLevel: function(){
     var st = this.state
@@ -53,15 +65,24 @@ var MenuContainer = React.createClass({
   },
   getStateObject: function(){
 
+
     var obj = {};
-    var items = this.props.RiverBasinData;
+
+    var blankListing = {"id": "            ","NAME": "            ","VALUE": "            ","MAIN": "            ","SUB": "            "};
+
+    if(!this.state){
+      var items = [ {name:'River Basins',lists:[blankListing]},{name:'Cataloging Units',lists:[blankListing]},{name:'HUC12',lists:[blankListing]} ];
+    }else{
+      var items = this.state.RiverBasinData;
+    }
 
     items.map(function(item) {
       obj[ item.name ] = {
         'active':false,
-        'filter': !this.state ? '' : this.state[item.name].filter };
+        'filter': !this.state ? '' : !this.state[item.name] ? '':  this.state[item.name].filter };
     },this)
 
+    //var retobj = { [ {name:'River Basins',lists:[]} ] ,obj}
     return obj
   },
   getInitialState: function () {
@@ -97,8 +118,6 @@ var MenuContainer = React.createClass({
     var level = this.getLevel();
     this.updateFilterState(level,e.target.value)
 
-    //console.log(e.target.value)
-
   },
   handleMenuClick: function(val,e) {
     //reset menu
@@ -107,16 +126,24 @@ var MenuContainer = React.createClass({
     //change state to active for clicked menu
     this.setState({
       [val]:{'active': true,
-        'filter': this.state[val].filter
+        'filter': (!this.state[val] ? '' : this.state[val].filter)
       }
     })
 
   },
   getActive: function(val){
-    return  (this.state[val].active ? 'active item' : 'item')
+    if (this.state[val]) {
+      return  (this.state[val].active ? 'active item' : 'item')
+    }else{
+      return ''
+    }
   },
   getFilter: function(val){
-    return  (this.state[val].filter)
+    if (this.state[val]) {
+      return  (this.state[val].filter)
+    } else {
+      return ''
+    }
   },
   render: function() {
     return (
@@ -126,7 +153,7 @@ var MenuContainer = React.createClass({
         handleMenuClick={this.handleMenuClick}
         handleChange={this.handleChange}
         getActive={this.getActive}
-        items = {this.props.RiverBasinData}
+        items = {this.state.RiverBasinData}
         getFilter={this.getFilter} />
     );
   }
