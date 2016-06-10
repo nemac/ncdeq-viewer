@@ -4,6 +4,7 @@ var PropTypes = React.PropTypes;
 
 function MenuItemComponent (props) {
   var filterValue=''
+  $('#menu-placeholder-'+props.name.replace(' ','_')).remove();
   if (props.lists){
     var namesList = props.lists.map(function(listItem){
 

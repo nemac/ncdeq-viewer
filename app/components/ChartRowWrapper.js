@@ -27,7 +27,7 @@ var ChartRowWrapper = React.createClass({
           </h4>
         </div>
         <div className="ui basic segment">
-          <span id={this.state.title.replace("'","")+"_chart"} ></span>
+          <span id={this.state.title.replace("'","")+"_chart"} >{this.state.chartData}</span>
           <p>Navigate to a Cataloging Unit to view chart data</p>
           <div refs={this.state.title} >
           </div>
