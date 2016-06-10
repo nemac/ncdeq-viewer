@@ -1,6 +1,7 @@
 var React = require('react');
 
 var MainComponent = require('../components/MainComponent');
+import store from '../stores/RBRPStore'
 
 require('../main.css');
 

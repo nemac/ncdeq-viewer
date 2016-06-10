@@ -96,7 +96,7 @@ var MenuContainer = React.createClass({
     var level = this.getLevel();
     this.updateFilterState(level,e.target.value)
 
-    console.log(level);
+    //console.log(level);
     if(level === 'HUC12'){
       agoHelpers.get_ChartData_byID(e.target.value)
         .then(function(chartData){
@@ -109,11 +109,15 @@ var MenuContainer = React.createClass({
         }.bind(this))
     }
 
+     var testret = agoHelpers.test(e.target.value)
+     console.log(testret)
+
+
       agoHelpers.get_AllChartDataLowerLevel_byID(e.target.value,level)
         .then(function(chartData){
           //this not in state so if we re-render the the chart area it will no longer be available
           $("#HUCs_chart").html(JSON.stringify(chartData))
-          console.log({chartData})
+        //  console.log({chartData})
 
           //this state does not get passed to parents so it will need to managed by redux
           self.setState({chartData})
