@@ -67,15 +67,6 @@ function get_AllChartDataLowerLevel_byID(hucid,geogLevel){
 
 }
 
-export const TEST = 'TEST';
-
-
-function testit_Actions(results){
-  return {
-    type: TEST,
-    data: results
-  }
-}
 //get chart data by huc id
 function testit(hucid){
 
@@ -283,31 +274,6 @@ function testit(hucid){
   }
 
   var AGOHelpers = {
-    test: function(hucid){
-
-       var query_URL = '/RDRBP/FeatureServer/3/query?where' +
-                        '=id%3D%27' + hucid + '%27' +
-                        '&objectIds='+
-                        '&time='+
-                        '&resultType=none'+
-                        '&outFields=chart_id%2C+chart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value'+
-                        '&returnIdsOnly=false'+
-                        '&returnCountOnly=false'+
-                        '&returnDistinctValues=true'+
-                        '&orderByFields=chart_level%2Cchart_matchid'+
-                        '&groupByFieldsForStatistics='+
-                        '&outStatistics='+
-                        '&resultOffset='+
-                        '&resultRecordCount='+
-                        '&f=pgeojson&token=';
-
-      const request = axios.get(query_URL);
-
-      return {
-        type: 'test',
-        payload: request
-      };
-    },
     get_AllChartDataLowerLevel_byID: function(id,level){
       return get_AllChartDataLowerLevel_byID(id,level)
       .then(function(result) {

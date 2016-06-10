@@ -109,8 +109,6 @@ var MenuContainer = React.createClass({
         }.bind(this))
     }
 
-     var testret = agoHelpers.test(e.target.value)
-     console.log(testret)
 
 
       agoHelpers.get_AllChartDataLowerLevel_byID(e.target.value,level)
