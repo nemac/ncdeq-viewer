@@ -6,12 +6,14 @@ var PropTypes = React.PropTypes;
 
 function MenuComponent (props) {
 
+
   return (
 
     <div className="ui pointing menu"  >
       <div className="header item">
         &nbsp;
       </div>
+
 
 
         { props.items &&
@@ -22,7 +24,20 @@ function MenuComponent (props) {
           })
         }
 
-
+        <a className="item" id="menu-placeholder-River_Basins" >
+          <select className="ui search selection dropdown"   >
+            <option value="">Choose a River Basins</option>
+          </select>
+        </a>
+        <a className="item" id="menu-placeholder-Cataloging_Units" >
+          <select className="ui search selection dropdown"  >
+            <option value="">Choose a Cataloging Unit</option>
+          </select>        </a>
+        <a className="item" id="menu-placeholder-HUC12" >
+          <select className="ui search selection dropdown"  >
+            <option value="">Choose a HUC12</option>
+          </select>
+        </a>
 
       <div className="header item" >
         &nbsp;

@@ -20,6 +20,75 @@
   //create menu list
   var menuLists = [];
 
+//get the next level of geog for a geography level to use in ago api
+//  example this gets all the hucs for a Cataloging unit
+function getNextLevel(geogLevel){
+  switch (geogLevel) {
+    case 'River Basins':
+      return 1;
+      break;
+    case 'Cataloging Units':
+      return 3;
+      break;
+    case 'HUC12':
+      return 3;
+      break;
+    default:
+      return 3;
+    }
+}
+//get chart data by huc id
+function get_AllChartDataLowerLevel_byID(hucid,geogLevel){
+   var id = hucid;
+   var level = getNextLevel(geogLevel);
+
+   if(geogLevel === 'HUC12'){
+     id = hucid.substring(0,8);
+   }
+   var query_URL = '/RDRBP/FeatureServer/3/query?where='+
+                   'ID+like+%27' + id + '%25%27+and+geography_level%3D'+ level +
+                   '&objectIds='+
+                   '&time='+
+                   '&resultType=none'+
+                   '&outFields=chart_level%2C+chart_label%2C+chart_value%2C+chart_description%2C+chart_type%2C+chart_level_label'+
+                   '&returnIdsOnly=false'+
+                   '&returnCountOnly=false'+
+                   '&returnDistinctValues=true'+
+                   '&orderByFields=chart_level'+
+                   '&groupByFieldsForStatistics='+
+                   '&outStatistics='+
+                   '&resultOffset='+
+                   '&resultRecordCount='+
+                   '&f=pgeojson&token=';
+
+  console.log(query_URL);
+  return axios.get(query_URL);
+
+}
+
+  //get chart data by huc id
+  function get_ChartData_byID(hucid){
+
+     var query_URL = '/RDRBP/FeatureServer/3/query?where' +
+                      '=id%3D%27' + hucid + '%27' +
+                      '&objectIds='+
+                      '&time='+
+                      '&resultType=none'+
+                      '&outFields=chart_id%2C+chart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value'+
+                      '&returnIdsOnly=false'+
+                      '&returnCountOnly=false'+
+                      '&returnDistinctValues=true'+
+                      '&orderByFields=chart_level%2Cchart_matchid'+
+                      '&groupByFieldsForStatistics='+
+                      '&outStatistics='+
+                      '&resultOffset='+
+                      '&resultRecordCount='+
+                      '&f=pgeojson&token=';
+
+    return axios.get(query_URL);
+
+  }
+
   //get chart data by huc id
   function get_ChartData_byID(hucid){
 
@@ -175,6 +244,12 @@
   }
 
   var helpers = {
+    get_AllChartDataLowerLevel_byID: function(id,level){
+      return get_AllChartDataLowerLevel_byID(id,level)
+      .then(function(result) {
+         return result.data
+      });
+    },
     get_ChartData_byID: function(val){
       return get_ChartData_byID(val)
       .then(function(result) {

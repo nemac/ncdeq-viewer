@@ -92,7 +92,7 @@ var MenuContainer = React.createClass({
     }
   },
   menuChange: function(e){
-
+    var self = this;
     var level = this.getLevel();
     this.updateFilterState(level,e.target.value)
 
@@ -100,17 +100,25 @@ var MenuContainer = React.createClass({
     if(level === 'HUC12'){
       agoHelpers.get_ChartData_byID(e.target.value)
         .then(function(chartData){
+          //this not in state so if we re-render the the chart area it will no longer be available
           $('#Compare_chart').html(JSON.stringify(chartData))
+
+          //this state does not get passed to parents so it will need to managed by redux
+          self.setState(chartData)
+          return chartData
         }.bind(this))
     }
 
-    if(level === 'Cataloging Units'){
-      agoHelpers.get_ChartData_byID(e.target.value)
+      agoHelpers.get_AllChartDataLowerLevel_byID(e.target.value,level)
         .then(function(chartData){
+          //this not in state so if we re-render the the chart area it will no longer be available
           $("#HUCs_chart").html(JSON.stringify(chartData))
-          console.log(chartData)
+          console.log({chartData})
+
+          //this state does not get passed to parents so it will need to managed by redux
+          self.setState({chartData})
+          return chartData
         }.bind(this))
-    }
 
   },
   handleMenuClick: function(val,e) {
