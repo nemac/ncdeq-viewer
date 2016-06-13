@@ -1,27 +1,27 @@
 var React = require('react');
-var MapContainer = require('../containers/MapContainer')
+var MapComponent = require('../components/MapComponent')
 
 var PropTypes = React.PropTypes;
 
-
-function MapWrapper(props) {
-  var pad = props.rowPadding ? 1 : props.rowPadding;
-  return (
-    <div className="twelve wide column" style={{padding:pad + 'px',height:props.mapHeight + 'px'}}>
-      <MapContainer HandleMapZoomEnd={props.HandleMapZoomEnd} handleMapMoveEnd={props.handleMapMoveEnd} zoom={props.zoom} latitude={props.latitude} longitude={props.longitude} handleMapClick={props.handleMapClick} />
-    </div>
-  );
-}
-
-MapWrapper.propTypes = {
-  latitude: PropTypes.number.isRequired,
-  longitude: PropTypes.number.isRequired,
-  zoom: PropTypes.number.isRequired,
-  mapHeight: PropTypes.number.isRequired,
-  handleMapClick: PropTypes.func.isRequired,
-  handleMapMoveEnd: PropTypes.func.isRequired,
-  HandleMapZoomEnd: PropTypes.func.isRequired,
-  rowPadding: PropTypes.number
-}
+var MapWrapper = React.createClass({
+  propTypes: {
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired,
+    zoom: PropTypes.number.isRequired,
+    mapHeight: PropTypes.number.isRequired,
+    handleMapClick: PropTypes.func.isRequired,
+    handleMapMoveEnd: PropTypes.func.isRequired,
+    HandleMapZoomEnd: PropTypes.func.isRequired,
+    rowPadding: PropTypes.number
+  },
+  render: function() {
+    var pad = this.props.rowPadding ? 1 : this.props.rowPadding;
+    return (
+      <div className="twelve wide column" style={{padding:pad + 'px',height:this.props.mapHeight + 'px'}}>
+        <MapComponent HandleMapZoomEnd={this.props.HandleMapZoomEnd} handleMapMoveEnd={this.props.handleMapMoveEnd} zoom={this.props.zoom} latitude={this.props.latitude} longitude={this.props.longitude} handleMapClick={this.props.handleMapClick} />
+      </div>
+    );
+  }
+});
 
 module.exports = MapWrapper;
