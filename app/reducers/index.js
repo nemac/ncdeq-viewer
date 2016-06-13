@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-//import { chartVisibility } from '../actions/actions';
+import { setChartVisibility } from '../actions/actions';
 
 const testdata = 'test'
 function test() {
