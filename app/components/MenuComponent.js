@@ -1,5 +1,5 @@
 var React = require('react');
-var MenuItemComponent = require('../containers/MenuItemContainer');
+var MenuItemComponent = require('../components/MenuItemComponent');
 
 var agoHelpers = require('../utils/ago-helpers');
 
@@ -160,8 +160,6 @@ var MenuComponent = React.createClass({
         <div className="header item">
           &nbsp;
         </div>
-
-
 
           { this.state.RiverBasinData &&
             this.state.RiverBasinData.map(function(item) {
