@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var PropTypes = React.PropTypes;
 
-var HeaderContainer = require('../components/HeaderComponent');
+var HeaderComponent = require('../components/HeaderComponent');
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
 var MenuContainer = require('../containers/MenuContainer');
@@ -226,7 +226,7 @@ var MainComponent = React.createClass({
         <div className="ui one column relaxed padded grid">
 
           <RowWrapper rowPadding={this.state.rowPadding} height={this.state.headerHeight} >
-            <HeaderContainer content='To get started click a River Basin on the map, or search for a location to zoom to.'/>
+            <HeaderComponent content='To get started click a River Basin on the map, or search for a location to zoom to.'/>
           </RowWrapper>
 
           <RowWrapper rowPadding={this.state.rowPadding} height={this.state.breadCrumbsHeight}>

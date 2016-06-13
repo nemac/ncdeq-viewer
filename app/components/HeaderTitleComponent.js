@@ -1,14 +1,26 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-function HeaderTitle (props) {
-  return (
-    <h2 className="ui header">{props.title}</h2>
-  )
-}
+var HeaderTitleComponent= React.createClass({
+  propTypes: {
+    title: PropTypes.string.isRequired,
+  },
+  getDefaultProps: function() {
+    return {
+      title:'Title'
+    };
+  },
+  getInitialState: function() {
+    return {
+      title: this.props.title
+    };
+  },
+  render: function() {
+    return (
+      <h2 className="ui header">{this.state.title}</h2>
+    );
+  }
 
-HeaderTitle.PropTypes = {
-  title: PropTypes.string.isRequired
-}
+});
 
-module.exports = HeaderTitle;
+module.exports = HeaderTitleComponent;

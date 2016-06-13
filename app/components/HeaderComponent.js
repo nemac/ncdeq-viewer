@@ -1,5 +1,5 @@
 var React = require('react');
-var HeaderTitleContainer = require('../containers/HeaderTitleContainer');
+var HeaderTitleComponent = require('../components/HeaderTitleComponent');
 var SectionWrapper = require('./SectionWrapper');
 
 var HeaderComponent = require('../components/HeaderComponent')
@@ -21,7 +21,7 @@ var HeaderComponent = React.createClass({
     return (
       <SectionWrapper>
         <div className='header' >
-          <HeaderTitleContainer  title='Explore a River Basin'/>
+          <HeaderTitleComponent  title='Explore a River Basin'/>
           <p>{this.state.content}</p>
         </div>
       </SectionWrapper>
