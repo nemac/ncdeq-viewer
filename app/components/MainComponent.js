@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var PropTypes = React.PropTypes;
 
-var HeaderContainer = require('../containers/HeaderContainer');
+var HeaderContainer = require('../components/HeaderComponent');
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
 var MenuContainer = require('../containers/MenuContainer');
