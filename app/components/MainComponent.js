@@ -6,7 +6,7 @@ var HeaderComponent = require('../components/HeaderComponent');
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
 var MenuComponent = require('../components/MenuComponent');
-var MapRowContainer = require('../containers/MapRowContainer');
+var MapRowComponent = require('../components/MapRowComponent');
 var ChartRow = require('../components/ChartRow');
 
 import store from '../stores/RBRPStore'
@@ -234,7 +234,7 @@ var MainComponent = React.createClass({
           </RowWrapper>
 
           <RowWrapper rowPadding={this.state.rowPadding} >
-            <MapRowContainer zoom={this.state.zoom} latitude={this.state.latitude} longitude={this.state.longitude} HandleMapZoomEnd={this.HandleMapZoomEnd} handleMapMoveEnd={this.handleMapMoveEnd} handleCenter={this.handleCenter} handleMapClick={this.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.state.mapHeight}  />
+            <MapRowComponent zoom={this.state.zoom} latitude={this.state.latitude} longitude={this.state.longitude} HandleMapZoomEnd={this.HandleMapZoomEnd} handleMapMoveEnd={this.handleMapMoveEnd} handleCenter={this.handleCenter} handleMapClick={this.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.state.mapHeight}  />
           </RowWrapper>
 
           { this.state.isChartsVisible &&
