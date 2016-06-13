@@ -14,6 +14,7 @@
   var actualHUCS = '/RDRBP/FeatureServer/2/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
 
 
+
   //set base URL for axios
   axios.defaults.baseURL = ago_URL;
 
@@ -61,8 +62,37 @@ function get_AllChartDataLowerLevel_byID(hucid,geogLevel){
                    '&resultRecordCount='+
                    '&f=pgeojson&token=';
 
-  console.log(query_URL);
+//  console.log(query_URL);
   return axios.get(query_URL);
+
+}
+
+//get chart data by huc id
+function testit(hucid){
+
+   var query_URL = '/RDRBP/FeatureServer/3/query?where' +
+                    '=id%3D%27' + hucid + '%27' +
+                    '&objectIds='+
+                    '&time='+
+                    '&resultType=none'+
+                    '&outFields=chart_id%2C+chart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value'+
+                    '&returnIdsOnly=false'+
+                    '&returnCountOnly=false'+
+                    '&returnDistinctValues=true'+
+                    '&orderByFields=chart_level%2Cchart_matchid'+
+                    '&groupByFieldsForStatistics='+
+                    '&outStatistics='+
+                    '&resultOffset='+
+                    '&resultRecordCount='+
+                    '&f=pgeojson&token=';
+
+  const request = axios.get(query_URL);
+  console.log(request);
+
+  return {
+    type: TEST,
+    payload: request
+  };
 
 }
 
@@ -243,7 +273,7 @@ function get_AllChartDataLowerLevel_byID(hucid,geogLevel){
         })
   }
 
-  var helpers = {
+  var AGOHelpers = {
     get_AllChartDataLowerLevel_byID: function(id,level){
       return get_AllChartDataLowerLevel_byID(id,level)
       .then(function(result) {
@@ -310,4 +340,4 @@ function get_AllChartDataLowerLevel_byID(hucid,geogLevel){
      }
   };
 
-  module.exports = helpers;
+  module.exports = AGOHelpers;

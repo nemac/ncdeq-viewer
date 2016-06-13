@@ -19,7 +19,9 @@
     "react-d3-basic": "^1.6.11",
     "react-dom": "^0.14.7",
     "react-leaflet": "^0.10.2",
+    "react-redux": "^4.4.5",
     "react-router": "^2.0.1",
+    "redux": "^3.5.2",
     "turf": "^3.0.5",
     "turf-featurecollection": "^1.0.1",
     "turf-filter": "^1.0.1"
