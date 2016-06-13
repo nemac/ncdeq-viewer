@@ -1,17 +1,14 @@
-var React = require('react');
-var ReactRouter = require('react-router');
-var Router = ReactRouter.Router;
-var Route = ReactRouter.Route;
-var hashHistory = ReactRouter.hashHistory;
-var IndexRoute = ReactRouter.IndexRoute;
-var MainComponent = require('../components/MainComponent');
+import React from 'react';
+import App from '../components/App';
+import { Router, Route, IndexRoute, browserHistory} from 'react-router';
+
 import { Provider } from 'react-redux';
-import store from '../stores/RBRPStore';
+import store, {history} from '../stores/RBRPStore';
 
 var routes = (
   <Provider store={store}>
-    <Router history={hashHistory}>
-      <Route path='/' component={MainComponent}>
+    <Router history={history}>
+      <Route path='/' component={App}>
       </Route>
     </Router>
   </Provider>

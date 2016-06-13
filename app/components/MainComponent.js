@@ -1,4 +1,5 @@
-var React = require('react');
+import React from 'react';
+
 var ReactDOM = require('react-dom');
 var PropTypes = React.PropTypes;
 
