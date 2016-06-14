@@ -223,6 +223,7 @@ var MainComponent = React.createClass({
 
     },
     render: function() {
+
       return (
         <div className="ui one column relaxed padded grid">
 

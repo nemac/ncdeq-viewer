@@ -5,7 +5,7 @@ import * as actionCreators from '../actions/actionCreators';
 import MainComponent from '../components/MainComponent';
 
 function mapStateToProps(state) {
-  console.log(state.listData)
+  //console.log(state.listData)
   return {
     listData: state.listData
   }
