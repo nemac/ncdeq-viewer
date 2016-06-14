@@ -1,4 +1,5 @@
-var React = require('react');
+import React from 'react';
+
 var ReactDOM = require('react-dom');
 var PropTypes = React.PropTypes;
 
@@ -222,6 +223,7 @@ var MainComponent = React.createClass({
 
     },
     render: function() {
+
       return (
         <div className="ui one column relaxed padded grid">
 

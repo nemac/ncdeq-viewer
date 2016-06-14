@@ -1,4 +1,4 @@
-module.exports =  [
+const listData =  [
   {name:'River Basins',
      lists:[
         {
@@ -7369,4 +7369,6 @@ module.exports =  [
        }
     ]
   }
-]
+];
+
+export default listData;

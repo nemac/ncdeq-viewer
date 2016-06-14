@@ -21,6 +21,7 @@
     "react-leaflet": "^0.10.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.0.1",
+    "react-router-redux": "^4.0.5",
     "redux": "^3.5.2",
     "turf": "^3.0.5",
     "turf-featurecollection": "^1.0.1",

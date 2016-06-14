@@ -1,12 +1,17 @@
 import { combineReducers } from 'redux';
+import { routerReducer} from 'react-router-redux';
 
-import { setChartVisibility } from '../actions/actions';
+import { getLists } from '../actions/actionCreators';
 
-const testdata = 'test'
-function test() {
-  return {testdata}
+import AGOHelpers from '../utils/ago-helpers';
+
+
+function listData(state = [], action) {
+  //console.log("The post will change");
+  //console.log(state, action);
+  return state;
 }
 
-const rootReducer = combineReducers( {test} );
+const rootReducer = combineReducers( { listData, routing: routerReducer} );
 
 export default rootReducer;
