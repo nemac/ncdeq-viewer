@@ -10,8 +10,6 @@ var MenuComponent = require('../components/MenuComponent');
 var MapRowComponent = require('../components/MapRowComponent');
 var ChartRow = require('../components/ChartRow');
 
-import store from '../stores/RBRPStore'
-
 require('../main.css');
 
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
@@ -223,7 +221,6 @@ var MainComponent = React.createClass({
 
     },
     render: function() {
-
       return (
         <div className="ui one column relaxed padded grid">
 
@@ -244,7 +241,6 @@ var MainComponent = React.createClass({
               <ChartRow isChartsVisible={this.state.isChartsVisible} handleChartToggle={this.handleChartToggle} />
             </RowWrapper>
           }
-
         </div>
       );
 

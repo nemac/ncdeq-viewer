@@ -25,9 +25,14 @@ var MenuItemComponent = React.createClass({
     };
   },
   componentDidMount: function() {
+    // var store = this.context.store;
+    // var aState = store.getState();
+    // console.log(aState);
+
       $('.ui.dropdown').dropdown();
   },
   render: function() {
+
     var filterValue=''
     $('#menu-placeholder-'+this.state.name.replace(' ','_')).remove();
     if (this.props.lists){
@@ -64,5 +69,10 @@ var MenuItemComponent = React.createClass({
   }
 
 });
+
+MenuItemComponent.contextTypes = {
+  store: React.PropTypes.object.isRequired
+};
+
 
 module.exports = MenuItemComponent;

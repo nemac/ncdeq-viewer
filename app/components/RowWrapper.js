@@ -32,4 +32,8 @@ var RowWrapper = React.createClass({
 
 });
 
+RowWrapper.contextTypes = {
+  store: React.PropTypes.object.isRequired
+};
+
 module.exports = RowWrapper;

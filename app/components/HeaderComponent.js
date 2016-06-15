@@ -18,6 +18,7 @@ var HeaderComponent = React.createClass({
     };
   },
   render: function() {
+
     return (
       <SectionWrapper>
         <div className='header' >
@@ -28,5 +29,10 @@ var HeaderComponent = React.createClass({
     );
   }
 });
+
+//get store
+HeaderComponent.contextTypes = {
+  store: React.PropTypes.object.isRequired
+};
 
 module.exports = HeaderComponent;
