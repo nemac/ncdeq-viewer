@@ -1,7 +1,6 @@
 var React = require('react');
-import  MenuItemContainer from '../containers/MenuItemContainer';
-//components/MenuItemComponent
-//containers/MenuItemContainer
+var MenuItemComponent = require('../components/MenuItemComponent');
+
 var agoHelpers = require('../utils/ago-helpers');
 
 var PropTypes = React.PropTypes;
@@ -165,7 +164,7 @@ var MenuComponent = React.createClass({
           { this.state.RiverBasinData &&
             this.state.RiverBasinData.map(function(item) {
               return (
-                <MenuItemContainer key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}/>
+                <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}/>
               )
             }.bind(this))
           }

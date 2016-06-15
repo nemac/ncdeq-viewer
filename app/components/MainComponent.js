@@ -6,7 +6,8 @@ var PropTypes = React.PropTypes;
 var HeaderComponent = require('../components/HeaderComponent');
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
-var MenuComponent = require('../components/MenuComponent');
+import MenuContainer from '../containers/MenuContainer';
+
 var MapRowComponent = require('../components/MapRowComponent');
 var ChartRow = require('../components/ChartRow');
 
@@ -229,7 +230,7 @@ var MainComponent = React.createClass({
           </RowWrapper>
 
           <RowWrapper rowPadding={this.state.rowPadding} height={this.state.breadCrumbsHeight}>
-            <MenuComponent handleSearchChange={this.handleSearchChange} zoom={this.state.zoom} latitude={this.state.latitude} longitude={this.state.longitude} />
+            <MenuContainer handleSearchChange={this.handleSearchChange} zoom={this.state.zoom} latitude={this.state.latitude} longitude={this.state.longitude} />
           </RowWrapper>
 
           <RowWrapper rowPadding={this.state.rowPadding} >
