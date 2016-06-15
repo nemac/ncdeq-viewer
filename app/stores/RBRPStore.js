@@ -1,4 +1,4 @@
-import {createStore,compose} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 import {syncHistoryWithStore} from 'react-router-redux';
 import {browserHistory} from 'react-router';
 
@@ -7,9 +7,7 @@ import rootReducer from '../reducers/index';
 
 import listData from '../utils/data';
 // create an object for the default data
-const defaultState = {
-  listData
-};
+const defaultState = {};
 
 const store = createStore(rootReducer,defaultState);
 

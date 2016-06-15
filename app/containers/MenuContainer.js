@@ -1,17 +1,7 @@
 import { connect } from 'react-redux'
-import { setVisibilityFilter } from '../actions/actionCreators'
+import { menuList } from '../actions/actionCreators'
 import MenuComponent from '../components/MenuComponent'
 
-// const getVisibleTodos = (todos, filter) => {
-//   switch (filter) {
-//     case 'SHOW_ALL':
-//       return todos
-//     case 'SHOW_COMPLETED':
-//       return todos.filter(t => t.completed)
-//     case 'SHOW_ACTIVE':
-//       return todos.filter(t => !t.completed)
-//   }
-// }
 
 const mapStateToProps = (state,props) => {
   return {
@@ -22,17 +12,10 @@ const mapStateToProps = (state,props) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onMenuClick: () => {
-      dispatch(setVisibilityFilter(ownProps.filter))
+      dispatch(menuList())
     }
   }
 }
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onTodoClick: () => {
-//       dispatch(getLists())
-//     }
-//   }
-// }
 
 const MenuContainer
  = connect(

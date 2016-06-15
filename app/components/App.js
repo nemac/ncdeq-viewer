@@ -6,9 +6,10 @@ import MainComponent from '../components/MainComponent';
 
 function mapStateToProps(state) {
   //console.log(state.listData)
-  return {
-    listData: state.listData
-  }
+  // return {
+  //   listData: state.listData
+  // }
+  return {}
 }
 
 function mapDispatchToProps(dispatch) {
