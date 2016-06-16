@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { menuList } from '../actions/actionCreators'
+import { menuList, get_basinsAC } from '../actions/actionCreators'
 import MenuComponent from '../components/MenuComponent'
 
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state,props) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onMenuClick: () => {
-      dispatch(menuList())
+      dispatch(get_basinsAC())
     }
   }
 }

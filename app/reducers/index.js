@@ -12,9 +12,9 @@ function listData(state = [], action) {
   //console.log(state, action);
   switch (action.type) {
     case 'GET_LIST':
-      console.log('listdata reducer: ' + action.type);
-      console.log(action.posts);
-      console.log(action.receivedAt);
+      // console.log('listdata reducer: ' + action.type);
+      // console.log(action.posts);
+      // console.log(action.receivedAt);
       //console.log(state)
     default:
       return state
