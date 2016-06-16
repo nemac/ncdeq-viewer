@@ -16,11 +16,13 @@ var MenuComponent = React.createClass({
     //var input = document.getElementById('searchTextField');
     //var options = {componentRestrictions: {country: 'us'}};
     //new google.maps.places.Autocomplete(input, options);
-    agoHelpers.get_MenuList()
-      .then(function(RiverBasinData){
-        return this.setState ({RiverBasinData})
-      }.bind(this))
 
+    // agoHelpers.get_MenuList()
+    //   .then(function(RiverBasinData){
+    //     return this.setState ({RiverBasinData})
+    //   }.bind(this))
+
+    this.props.onMenuClick();
   },
   getLevel: function(){
     var st = this.state
@@ -58,7 +60,7 @@ var MenuComponent = React.createClass({
     if(!this.state){
       var items = [ {name:'River Basins',lists:[blankListing]},{name:'Cataloging Units',lists:[blankListing]},{name:'HUC12',lists:[blankListing]} ];
     }else{
-      var items = this.state.RiverBasinData;
+      var items = this.props.RiverBasinData;
     }
 
     items.map(function(item) {
@@ -155,14 +157,20 @@ var MenuComponent = React.createClass({
     }
   },
   render: function() {
+  //  console.log(this.props)
+  //  console.log(this.state)
+  // console.log('component state:')
+  // console.log(this.state.RiverBasinData)
+  // console.log('component props:')
+  // console.log(this.props.RiverBasinData)
     return (
       <div className="ui pointing menu"  >
         <div className="header item">
           &nbsp;
         </div>
 
-          { this.state.RiverBasinData &&
-            this.state.RiverBasinData.map(function(item) {
+          { this.props.RiverBasinData &&
+            this.props.RiverBasinData.map(function(item) {
               return (
                 <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}/>
               )

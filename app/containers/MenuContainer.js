@@ -3,10 +3,11 @@ import { menuList, get_basinsAC } from '../actions/actionCreators'
 import MenuComponent from '../components/MenuComponent'
 
 
-const mapStateToProps = (state,props) => {
-  return {
-        listData: state.listData
-  }
+const mapStateToProps = (state) => {
+  let RiverBasinData = state.listData.lists;
+  // console.log('redux props:')
+  // console.log(RiverBasinData)
+  return {RiverBasinData}
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {

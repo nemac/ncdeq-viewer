@@ -6,7 +6,7 @@ import thunkMiddleware from 'redux-thunk'
 // import the root reducer
 import rootReducer from '../reducers/index';
 
-import listData from '../utils/data';
+//import listData from '../utils/data';
 // create an object for the default data
 const defaultState = {};
 

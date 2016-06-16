@@ -8,7 +8,7 @@ var ChartRow = React.createClass({
   handleAPI: function(){
     agoHelpers.get_Basins()
       .then(function(basins){
-        console.log(basins)
+        //console.log(basins)
       })
   },
   render: function() {

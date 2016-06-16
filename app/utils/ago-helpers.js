@@ -87,7 +87,7 @@ function testit(hucid){
                     '&f=pgeojson&token=';
 
   const request = axios.get(query_URL);
-  console.log(request);
+  //console.log(request);
 
   return {
     type: TEST,
