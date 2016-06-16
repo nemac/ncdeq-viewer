@@ -7,17 +7,29 @@ const HUC12_FeatureID = 2;
 const Data_FeatureID = 3;
 const HUCNames_FeatureID = 4;
 
-const ago_URL = 'http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services'
-const actualBasins = '/RDRBP/FeatureServer/' + Basin_FeatureID + '/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
-const actualCatalogingUnits = '/RDRBP/FeatureServer/' + CatalogingUnit_FeatureID + '/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
-const actualHUCS = '/RDRBP/FeatureServer/' + HUC12_FeatureID + '/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
+const AGO_URL = 'http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services'
+const AGO_RiverBasins = '/RDRBP/FeatureServer/' + Basin_FeatureID + '/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
+const AGO_CatalogingUnits = '/RDRBP/FeatureServer/' + CatalogingUnit_FeatureID + '/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
+const AGO_HUCS = '/RDRBP/FeatureServer/' + HUC12_FeatureID + '/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
 
 
 //set base URL for axios
-axios.defaults.baseURL = ago_URL;
+axios.defaults.baseURL = AGO_URL;
 
-//create menu list
-const menuLists = [];
+
+function get_Basins(){
+  return axios.get(AGO_RiverBasins)
+}
+
+function get_CatalogingUnits(){
+  return axios.get(AGO_CatalogingUnits)
+}
+
+function get_HUCS(){
+  return axios.get(AGO_HUCS)
+}
+
+
 
 //get the next level of geog for a geography level to use in ago api
 //  example this gets all the hucs for a Cataloging unit
@@ -67,24 +79,6 @@ function buildMenuList (name, menuList, geoJSON){
   return ml[0]
 }
 
-//merges two json data lists
-//   nested would not do {...list1, ...list2}
-function mergeList(list1,list2){
-  var merged = [];
-
-  //if already an array just create a new array
-  if (Array.isArray(list1)){
-    merged = list1
-  } else{
-    merged.push(list1);
-  }
-
-  //merged.push(l1);
-  merged.push(list2);
-
-  return merged
-}
-
 function response_error(error, from) {
   return { error, type: from };
 }
@@ -99,63 +93,39 @@ function CheckReponse(response,from){
     throw error;
   }
 }
+function merge(){
+  return
+}
+export function get_MenuList(){
+    return dispatch => {
+      axios.all([get_Basins(), get_CatalogingUnits(),get_HUCS()])
+      .then(axios.spread(function (basins, catalogingUnits, HUCS) {
 
-export function get_basinsAC(){
-  return dispatch => {
-    return axios.get(actualBasins)
-    .then(response => {
+          //check repsonses for errors
+          let theBasins = CheckReponse(basins,'AGO_API_ERROR');
+          let theCatalogingUnits = CheckReponse(catalogingUnits,'AGO_API_ERROR');
+          let theHUCS = CheckReponse(HUCS,'AGO_API_ERROR');
 
-      //check reponse status
-      let data = CheckReponse(response,"AGO_API_ERROR");
+          //restructure data for menu lists
+          let basinList = buildMenuList( 'River Basins', [] , theBasins)
+          let catalogingUnitList = buildMenuList( 'Cataloging Units', [] , theCatalogingUnits)
+          let HUCList  = buildMenuList( 'HUC12', [], theHUCS)
 
-      //get the menu list based on filtered features
-      var ml = buildMenuList( 'River Basins', menuLists, data)
-      return ml;
+          //combine the lists into one
+          let all = [ {...basinList}, {...catalogingUnitList}, {...HUCList} ]
 
-    })
-     .then(RBList => {
-       return axios.get(actualCatalogingUnits)
-        .then(response => {
+          //send the lists on
+          dispatch(set_MenuList(all))
 
-          //check reponse status
-          let data = CheckReponse(response,"AGO_API_ERROR");
-
-          //get the menu list based on filtered features
-          var ml = buildMenuList( 'Cataloging Units', menuLists, data)
-
-          //merge lists
-          var merged = mergeList(RBList,ml)
-
-          return merged;
-        })
-          .then(CUList => {
-            return axios.get(actualHUCS)
-              .then(response => {
-                //check reponse status
-                let data = CheckReponse(response,"AGO_API_ERROR");
-
-                //get the menu list based on filtered features
-                var ml = buildMenuList( 'HUC12', menuLists,  data)
-
-                //merge lists
-                var merged = mergeList(CUList,ml)
-
-                //return the JSON list
-                //return merged;
-                dispatch(set_MenuList(merged));
-
-              })
-          })
-     })
-    .catch(error => { console.log('request failed', error); });
+      })
+    )
+    .catch(error => { console.log('request failed', error); });;
   }
 }
 
 function set_MenuList(json) {
-  // console.log('action json:')
-  // console.log(json)
   return {
-    type: 'GET_LIST',
+    type: 'GET_MENU_LIST',
     lists: json,
     receivedAt: Date.now()
   }

@@ -1,27 +1,24 @@
 import { connect } from 'react-redux'
-import { menuList, get_basinsAC } from '../actions/actionCreators'
+import { get_MenuList } from '../actions/actionCreators'
 import MenuComponent from '../components/MenuComponent'
 
 
 const mapStateToProps = (state) => {
-  let RiverBasinData = state.listData.lists;
-  // console.log('redux props:')
-  // console.log(RiverBasinData)
+  let RiverBasinData = state.menuLists.lists;
   return {RiverBasinData}
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onMenuClick: () => {
-      dispatch(get_basinsAC())
-    }
+    getMenus: () => {
+      dispatch(get_MenuList())
+    },
   }
 }
 
-const MenuContainer
- = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MenuComponent)
+const MenuContainer = connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(MenuComponent)
 
 export default MenuContainer

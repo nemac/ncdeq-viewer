@@ -17,12 +17,9 @@ var MenuComponent = React.createClass({
     //var options = {componentRestrictions: {country: 'us'}};
     //new google.maps.places.Autocomplete(input, options);
 
-    // agoHelpers.get_MenuList()
-    //   .then(function(RiverBasinData){
-    //     return this.setState ({RiverBasinData})
-    //   }.bind(this))
 
-    this.props.onMenuClick();
+    this.props.getMenus();
+
   },
   getLevel: function(){
     var st = this.state
@@ -157,12 +154,6 @@ var MenuComponent = React.createClass({
     }
   },
   render: function() {
-  //  console.log(this.props)
-  //  console.log(this.state)
-  // console.log('component state:')
-  // console.log(this.state.RiverBasinData)
-  // console.log('component props:')
-  // console.log(this.props.RiverBasinData)
     return (
       <div className="ui pointing menu"  >
         <div className="header item">
