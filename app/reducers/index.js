@@ -7,8 +7,6 @@ import { getLists } from '../actions/actionCreators';
 import menuLists from './getMenuLists'
 //import visibilityFilter from './visibilityFilter'
 
-
-
 //const rootReducer = combineReducers( { listData, visibilityFilter, routing: routerReducer} );
 const rootReducer = combineReducers( { menuLists, routing: routerReducer} );
 
