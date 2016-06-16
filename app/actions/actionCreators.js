@@ -12,10 +12,8 @@ const AGO_RiverBasins = '/RDRBP/FeatureServer/' + Basin_FeatureID + '/query?wher
 const AGO_CatalogingUnits = '/RDRBP/FeatureServer/' + CatalogingUnit_FeatureID + '/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
 const AGO_HUCS = '/RDRBP/FeatureServer/' + HUC12_FeatureID + '/query?where=id%3C%3E%27%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=id,NAME,VALUE,MAIN,SUB&returnGeometry=false&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&f=pgeojson&token='
 
-
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
-
 
 function get_Basins(){
   return axios.get(AGO_RiverBasins)
@@ -27,26 +25,6 @@ function get_CatalogingUnits(){
 
 function get_HUCS(){
   return axios.get(AGO_HUCS)
-}
-
-
-
-//get the next level of geog for a geography level to use in ago api
-//  example this gets all the hucs for a Cataloging unit
-function getNextLevel(geogLevel){
-  switch (geogLevel) {
-    case 'River Basins':
-      return 1;
-      break;
-    case 'Cataloging Units':
-      return 3;
-      break;
-    case 'HUC12':
-      return 3;
-      break;
-    default:
-      return 3;
-    }
 }
 
 function buildNameList(name){
@@ -93,9 +71,7 @@ function CheckReponse(response,from){
     throw error;
   }
 }
-function merge(){
-  return
-}
+
 export function get_MenuList(){
     return dispatch => {
       axios.all([get_Basins(), get_CatalogingUnits(),get_HUCS()])
