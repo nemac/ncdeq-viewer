@@ -1,17 +1,16 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
-import ChartRowWrapperContainer from '../containers/ChartRowWrapperContainer';
-
+import ChartRowWrapper from '../components/ChartRowWrapper';
+//ChartRowContainer
 var Divider = require('./Divider');
-// var agoHelpers = require('../utils/ago-helpers');
 
 var ChartRow = React.createClass({
-  // handleAPI: function(){
-  //   agoHelpers.get_Basins()
-  //     .then(function(basins){
-  //       //console.log(basins)
-  //     })
-  // },
+  componentDidMount: function() {
+    console.log('chart row did mount');
+    console.log(this.props.theChartDataByID.features);
+
+  },
+
   render: function() {
     var vis = this.props.isChartsVisible ?  'show' : 'none';
     return (
@@ -35,19 +34,19 @@ var ChartRow = React.createClass({
       <Divider />
 
       <div className="fourteen wide column">
-        <ChartRowWrapperContainer title="HUC's" />
+        <ChartRowWrapper key="HUCS" title="HUC's" id={this.props.current_id}  data="{}"  />
       </div>
 
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapperContainer title="TRA's" />
+        <ChartRowWrapper key="TRA" title="TRA's" id="" data="{}"/>
       </div>
 
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapperContainer title="Compare" />
+        <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  data={this.props.theChartDataByID.features ? this.props.theChartDataByID.features : {}}/>
       </div>
 
 

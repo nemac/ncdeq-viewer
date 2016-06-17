@@ -1,13 +1,16 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import { get_ChartData_byID, set_CurrentID } from '../actions/actionCreators'
-import ChartRowWrapper from '../components/ChartRowWrapper'
+import ChartRowComponent from '../components/ChartRowComponent'
 
 
 const mapStateToProps = (state) => {
-  console.log(state)
-  let theChartDataByID = state.chartDataByID.data;
-  return {theChartDataByID}
+  // let theChartDataByID = state.chartDataByID.chart_data;
+  // let current_id = state.setCurrentID.current_id;
+  return {
+    theChartDataByID: state.chartDataByID.chart_data,
+    current_id: state.setCurrentID.current_id
+  }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -17,9 +20,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-const ChartRowWrapperContainer = connect(
+const ChartRowContainer = connect(
       mapStateToProps,
       mapDispatchToProps
-    )(ChartRowWrapper)
+    )(ChartRowComponent)
 
-export default ChartRowWrapperContainer
+export default ChartRowContainer

@@ -6,12 +6,9 @@ import thunkMiddleware from 'redux-thunk'
 // import the root reducer
 import rootReducer from '../reducers/index';
 
-// create an object for the default data
-const defaultState = {};
 
 const store = createStore(
   rootReducer,
-  defaultState,
   applyMiddleware(thunkMiddleware)
 );
 

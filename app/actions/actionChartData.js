@@ -41,7 +41,7 @@ export function get_ChartData_byID(ID){
             let theChartDataByID = CheckReponse(response,'AGO_API_ERROR');
 
             //send the chart data on
-            dispatch(ChartDataByID(theChartDataByID.data,ID))
+            dispatch(ChartDataByID(theChartDataByID,ID))
           })
           .catch(error => { console.log('request failed', error); });
   }
@@ -50,7 +50,7 @@ export function get_ChartData_byID(ID){
 function ChartDataByID(json,id) {
   return {
     type: 'GET_CHART_DATA_BY_ID',
-    chartDataByID: json,
+    chart_data: json,
     id: id,
     receivedAt: Date.now()
   }

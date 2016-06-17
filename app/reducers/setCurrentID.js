@@ -1,7 +1,6 @@
 export function setCurrentID(state = [], action) {
-
   switch (action.type) {
-    case 'set_CurrentID':
+    case 'SET_CURRENT_ID':
       return { ...state, current_id: action.current_id}
     default:
       return state
