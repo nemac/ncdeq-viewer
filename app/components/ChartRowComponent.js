@@ -34,19 +34,19 @@ var ChartRow = React.createClass({
       <Divider />
 
       <div className="fourteen wide column">
-        <ChartRowWrapper key="HUCS" title="HUC's" id={this.props.current_id}  data="{}"  />
+        <ChartRowWrapper key="HUCS" title="HUC's" id={this.props.current_id}  data=""  />
       </div>
 
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapper key="TRA" title="TRA's" id="" data="{}"/>
+        <ChartRowWrapper key="TRA" title="TRA's" id="" data=""/>
       </div>
 
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  data={this.props.theChartDataByID.features ? this.props.theChartDataByID.features : {}}/>
+        <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  data={this.props.theChartDataByID.features}/>
       </div>
 
 
