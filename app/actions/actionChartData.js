@@ -1,6 +1,6 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, AGO_HUCS } from './actionConstants';
+import { AGO_URL } from './actionConstants';
 
 const CHART_DATA_OUT_FIELDS = 'chart_id%2Cchart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value';
 const CHART_DATA_ORDER_BY_FIELDS = 'chart_level%2Cchart_matchid';
@@ -11,9 +11,6 @@ axios.defaults.baseURL = AGO_URL;
 
 //get chart data by huc id
 function AGO_ChartData_byID(ID){
-
-  // http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/3/query?where=id%3D%27030101070504%27&objectIds=&time=&resultType=none&outFields=chart_id%2Cchart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=chart_level%2Cchart_matchid&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&f=pgeojson&token=
-  // http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/3/query?where=id%3D%27030102050103%27&objectIds=&time=&resultType=none&outFields=chart_id%2Cchart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=chart_level%2Cchart_matchid&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&f=pgeojson&token=
    const query_URL = '/RDRBP/FeatureServer/3/query' +
                      '?where=id%3D%27' + ID + '%27' +
                      '&objectIds=' +
@@ -51,7 +48,6 @@ export function get_ChartData_byID(ID){
 }
 
 function ChartDataByID(json,id) {
-  console.log('in action chart data' + id)
   return {
     type: 'GET_CHART_DATA_BY_ID',
     chartDataByID: json,

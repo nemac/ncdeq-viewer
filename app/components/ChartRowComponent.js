@@ -3,15 +3,15 @@ var PropTypes = React.PropTypes;
 import ChartRowWrapperContainer from '../containers/ChartRowWrapperContainer';
 
 var Divider = require('./Divider');
-var agoHelpers = require('../utils/ago-helpers');
+// var agoHelpers = require('../utils/ago-helpers');
 
 var ChartRow = React.createClass({
-  handleAPI: function(){
-    agoHelpers.get_Basins()
-      .then(function(basins){
-        //console.log(basins)
-      })
-  },
+  // handleAPI: function(){
+  //   agoHelpers.get_Basins()
+  //     .then(function(basins){
+  //       //console.log(basins)
+  //     })
+  // },
   render: function() {
     var vis = this.props.isChartsVisible ?  'show' : 'none';
     return (
