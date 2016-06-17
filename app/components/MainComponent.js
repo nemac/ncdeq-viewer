@@ -9,7 +9,7 @@ var RowWrapper = require('../components/RowWrapper');
 import MenuContainer from '../containers/MenuContainer';
 
 var MapRowComponent = require('../components/MapRowComponent');
-var ChartRow = require('../components/ChartRow');
+var ChartRowComponent = require('../components/ChartRowComponent');
 
 require('../main.css');
 
@@ -239,7 +239,7 @@ var MainComponent = React.createClass({
 
           { this.state.isChartsVisible &&
             <RowWrapper rowPadding={this.state.defpad} height={this.state.chartHeight} >
-              <ChartRow isChartsVisible={this.state.isChartsVisible} handleChartToggle={this.handleChartToggle} />
+              <ChartRowComponent isChartsVisible={this.state.isChartsVisible} handleChartToggle={this.handleChartToggle} />
             </RowWrapper>
           }
         </div>

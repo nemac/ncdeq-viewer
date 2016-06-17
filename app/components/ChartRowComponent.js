@@ -1,6 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
-var ChartRowWrapper = require('./ChartRowWrapper');
+import ChartRowWrapperContainer from '../containers/ChartRowWrapperContainer';
+
 var Divider = require('./Divider');
 var agoHelpers = require('../utils/ago-helpers');
 
@@ -34,19 +35,19 @@ var ChartRow = React.createClass({
       <Divider />
 
       <div className="fourteen wide column">
-        <ChartRowWrapper title="HUC's" />
+        <ChartRowWrapperContainer title="HUC's" />
       </div>
 
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapper title="TRA's" />
+        <ChartRowWrapperContainer title="TRA's" />
       </div>
 
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapper title="Compare" />
+        <ChartRowWrapperContainer title="Compare" />
       </div>
 
 

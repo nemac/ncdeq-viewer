@@ -115,6 +115,7 @@ function testit(hucid){
                       '&resultRecordCount='+
                       '&f=pgeojson&token=';
 
+    console.log('in action creator axios function: ' + AGO_URL + query_URL)
     return axios.get(query_URL);
 
   }
