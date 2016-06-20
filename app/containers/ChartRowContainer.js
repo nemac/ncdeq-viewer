@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
   return {
     theChartDataByID: state.chartDataByID.chart_data,
     AllChartDataByID: state.AllChartDataByID.all_chart_data,
-    current_id: state.setCurrentID.current_id
+    current_id: state.CurrentID.current_id
   }
 }
 

@@ -65,7 +65,7 @@ export function get_GeographyLevels(){
 }
 
 function geography_levels(json) {
-  // console.log(json)
+   console.log('geography_levels')
   return {
     type: 'GET_GEOGRAPHY_LEVELS',
     geography_levels: json,

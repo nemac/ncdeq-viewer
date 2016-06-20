@@ -16,10 +16,7 @@ var ChartRowWrapper = React.createClass({
     };
   },
   componentDidMount: function() {
-    //console.log(this.props)
-    //console.log('rowwrappercomponent')
-    //v = this.props.getChartDataByID(this.props.current_id)
-    //console.log(this.props.current_id)
+
   },
   render: function() {
     return (
