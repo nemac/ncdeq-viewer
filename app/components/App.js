@@ -11,7 +11,20 @@ function mapStateToProps(state) {
   //   listData: state.listData
   // }
   //return {}
-  return state;
+  //return state;
+  //might want to do all state and rename these in other containers to match
+  let MenuData = state.menuLists.lists;
+  let current_id = state.CurrentID.current_id;
+  let theChartDataByID = state.chartDataByID.chart_data;
+  let AllChartDataByID = state.AllChartDataByID.all_chart_data
+  let geography_levels = state.geography_levels.geography_levels;
+  return {
+    AllChartDataByID,
+    theChartDataByID,
+    MenuData,
+    current_id,
+    geography_levels
+  }
 }
 
 function mapDispatchToProps(dispatch) {

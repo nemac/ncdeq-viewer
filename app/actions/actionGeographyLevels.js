@@ -29,6 +29,14 @@ function AGO_GeographyLevels(){
 
 };
 
+function emptylList(name,level){
+    return {
+      name,
+      level
+    }
+}
+
+
 export function get_GeographyLevels(){
 
   return dispatch => {
@@ -37,16 +45,27 @@ export function get_GeographyLevels(){
 
           //check repsonses for errors
           let theGeographyLevels = CheckReponse(response,'AGO_API_ERROR');
+          let GList = [];
 
-          //send the chart data on
-          dispatch(geogLevels(theGeographyLevels))
+          theGeographyLevels.features.map(function(features) {
+
+             let geography_label = features.properties.geography_label;
+             let geography_level = features.properties.geography_level;
+
+             let thisGeographyList = {geography_level,geography_label};
+
+             GList.push(thisGeographyList)
+           })
+
+          //send the geography level data on
+          dispatch(geography_levels(GList))
         })
         .catch(error => { console.log('request failed', error); });
   }
 }
 
-function geogLevels(json) {
-  console.log(json)
+function geography_levels(json) {
+  // console.log(json)
   return {
     type: 'GET_GEOGRAPHY_LEVELS',
     geography_levels: json,

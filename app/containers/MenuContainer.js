@@ -7,7 +7,7 @@ import { get_MenuList, get_ChartData_byID, set_CurrentID, get_AllChartData_byID 
 //import components
 import MenuComponent from '../components/MenuComponent'
 
-
+//either rename this or rename it also in main
 const mapStateToProps = (state,props) => {
   let MenuData = state.menuLists.lists;
   let current_id = state.CurrentID.current_id;
