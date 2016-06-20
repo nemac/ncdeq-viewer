@@ -1,9 +1,10 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL } from './actionConstants';
+import { AGO_URL, Data_FeatureID } from './actionConstants';
 
 const CHART_DATA_OUT_FIELDS = 'chart_id%2Cchart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value';
 const CHART_DATA_ORDER_BY_FIELDS = 'chart_level%2Cchart_matchid';
+
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
@@ -31,13 +32,13 @@ function AGO_AllChartData_byID(hucid,geogLevel){
 
    var id = hucid;
    var level = getNextLevel(geogLevel);
-   console.log(level)
+
    if(geogLevel === 'HUC12'){
      id = hucid.substring(0,8);
    }
 
-   const query_URL = '/RDRBP/FeatureServer/3/query?where='+
-                   'ID+like+%27' + id + '%25%27+and+geography_level%3D'+ level +
+   const query_URL = '/RDRBP/FeatureServer/' + Data_FeatureID + '/query' +
+                   '?where=ID+like+%27' + id + '%25%27+and+geography_level%3D'+ level +
                    '&objectIds=' +
                    '&time=' +
                    '&resultType=none' +
@@ -82,7 +83,7 @@ function AllChartDatalByID(json,id) {
 
 //get chart data by huc id
 function AGO_ChartData_byID(ID){
-   const query_URL = '/RDRBP/FeatureServer/3/query' +
+   const query_URL = '/RDRBP/FeatureServer/' + Data_FeatureID + '/query' +
                      '?where=id%3D%27' + ID + '%27' +
                      '&objectIds=' +
                      '&time=' +

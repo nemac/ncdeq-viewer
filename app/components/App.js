@@ -5,11 +5,13 @@ import * as actionCreators from '../actions/actionCreators';
 import MainComponent from '../components/MainComponent';
 
 function mapStateToProps(state) {
+  //console.log(state)
   //console.log(state.listData)
   // return {
   //   listData: state.listData
   // }
-  return {}
+  //return {}
+  return state;
 }
 
 function mapDispatchToProps(dispatch) {

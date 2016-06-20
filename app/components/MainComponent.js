@@ -212,6 +212,8 @@ var MainComponent = React.createClass({
     },
     componentDidMount: function() {
 
+      this.props.get_GeographyLevels();
+    
       //handle resize.  - map and chart areas should scale to browser
       //width and height
       window.addEventListener('resize', this.handleResize);

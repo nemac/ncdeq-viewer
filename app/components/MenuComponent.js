@@ -56,7 +56,7 @@ var MenuComponent = React.createClass({
     if(!this.state){
       var items = [ {name:'River Basins',lists:[blankListing]},{name:'Cataloging Units',lists:[blankListing]},{name:'HUC12',lists:[blankListing]} ];
     }else{
-      var items = this.props.RiverBasinData;
+      var items = this.props.MenuData;
     }
 
     items.map(function(item) {
@@ -103,36 +103,12 @@ var MenuComponent = React.createClass({
     this.props.setCurrentID(e.target.value);
     this.props.getChartDataByID(e.target.value);
     this.props.getAllChartDataByID(e.target.value,level)
-    //console.log(level);
-    // if(level === 'HUC12'){
-    //   agoHelpers.get_ChartData_byID(e.target.value)
-    //     .then(function(chartData){
-    //       //this not in state so if we re-render the the chart area it will no longer be available
-    //       //$('#Compare_chart').html(JSON.stringify(chartData))
-    //
-    //       //this state does not get passed to parents so it will need to managed by redux
-    //       self.setState(chartData)
-    //       return chartData
-    //     }.bind(this))
-    // }
-
-
-
-      // agoHelpers.get_AllChartDataLowerLevel_byID(e.target.value,level)
-      //   .then(function(chartData){
-      //     //this not in state so if we re-render the the chart area it will no longer be available
-      //   //  $("#HUCs_chart").html(JSON.stringify(chartData))
-      //   //  console.log({chartData})
-      //
-      //     //this state does not get passed to parents so it will need to managed by redux
-      //     self.setState({chartData})
-      //     return chartData
-      //   }.bind(this))
 
   },
   handleMenuClick: function(val,e) {
     //reset menu
     this.resetMenus();
+
     //change state to active for clicked menu
     this.setState({
       [val]:{'active': true,
@@ -162,8 +138,8 @@ var MenuComponent = React.createClass({
           &nbsp;
         </div>
 
-          { this.props.RiverBasinData &&
-            this.props.RiverBasinData.map(function(item) {
+          { this.props.MenuData &&
+            this.props.MenuData.map(function(item) {
               return (
                 <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}/>
               )

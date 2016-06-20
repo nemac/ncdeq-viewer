@@ -9,15 +9,15 @@ import MenuComponent from '../components/MenuComponent'
 
 
 const mapStateToProps = (state,props) => {
-  let RiverBasinData = state.menuLists.lists;
-  let current_id = state.setCurrentID.current_id;
+  let MenuData = state.menuLists.lists;
+  let current_id = state.CurrentID.current_id;
   let theChartDataByID = state.chartDataByID.chart_data;
   let AllChartDataByID = state.AllChartDataByID.all_chart_data
   //console.log(state)
   return {
     AllChartDataByID,
     theChartDataByID,
-    RiverBasinData,
+    MenuData,
     current_id
   }
 }

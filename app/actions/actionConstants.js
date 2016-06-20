@@ -2,11 +2,11 @@
 
 //ArcGIS online feature layer id's - each layer in a feautre services has an unique id
 // these refer to those.  put into a const so it can be figured for different sites
-const Basin_FeatureID = 0;
-const CatalogingUnit_FeatureID = 1;
-const HUC12_FeatureID = 2;
-const Data_FeatureID = 3;
-const HUCNames_FeatureID = 4;
+export const Basin_FeatureID = 0;
+export const CatalogingUnit_FeatureID = 1;
+export const HUC12_FeatureID = 2;
+export const Data_FeatureID = 3;
+export const HUCNames_FeatureID = 4;
 
 //out fields for menu lists
 const MENU_OUT_FIELDS = 'id,NAME,VALUE,MAIN,SUB';
