@@ -35,6 +35,7 @@ var ChartRowWrapper = React.createClass({
         <div className="ui basic segment">
           <span key="1" >{this.props.id}</span>
           <span key="2" >{JSON.stringify(this.props.data)}</span>
+          <span key="3" >{JSON.stringify(this.props.alldata)}</span>
           <p>Navigate to a Cataloging Unit to view chart data</p>
           <div refs={this.state.title} >
           </div>

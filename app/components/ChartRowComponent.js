@@ -6,13 +6,14 @@ var Divider = require('./Divider');
 
 var ChartRow = React.createClass({
   componentDidMount: function() {
-    console.log('chart row did mount');
-    console.log(this.props.theChartDataByID.features);
-
   },
-
   render: function() {
-    var vis = this.props.isChartsVisible ?  'show' : 'none';
+    let vis = this.props.isChartsVisible ?  'show' : 'none';
+
+    //ensure there are features returned. if not allows blank...
+    let chartByID_Features = this.props.theChartDataByID ? this.props.theChartDataByID.features : "";
+    let AllchartByID_Features = this.props.AllChartDataByID ? this.props.AllChartDataByID.features : "";
+
     return (
 
       <div className="ui stackable centered grid" style={{display:vis}}>
@@ -34,19 +35,19 @@ var ChartRow = React.createClass({
       <Divider />
 
       <div className="fourteen wide column">
-        <ChartRowWrapper key="HUCS" title="HUC's" id={this.props.current_id}  data=""  />
+        <ChartRowWrapper key="HUCS" title="HUC's" id={this.props.current_id}  data="" alldata={AllchartByID_Features}  />
       </div>
 
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapper key="TRA" title="TRA's" id="" data=""/>
+        <ChartRowWrapper key="TRA" title="TRA's" id="" data="" alldata="" />
       </div>
 
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  data={this.props.theChartDataByID.features}/>
+        <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  data={chartByID_Features} alldata="" />
       </div>
 
 

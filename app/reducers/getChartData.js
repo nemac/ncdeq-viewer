@@ -6,3 +6,13 @@ export function chartDataByID(state = [], action) {
       return state
   }
 }
+
+//AllChartDataLevelByID
+export function AllChartDataByID(state = [], action) {
+  switch (action.type) {
+    case 'GET_ALL_CHART_DATA_BY_ID':
+      return { ...state, all_chart_data: action.all_chart_data}
+    default:
+      return state
+  }
+}

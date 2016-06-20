@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
-import { get_ChartData_byID, set_CurrentID } from '../actions/actionCreators'
+import { get_ChartData_byID, set_CurrentID, get_AllChartData_byID} from '../actions/actionCreators'
 import ChartRowComponent from '../components/ChartRowComponent'
 
 
@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
   // let current_id = state.setCurrentID.current_id;
   return {
     theChartDataByID: state.chartDataByID.chart_data,
+    AllChartDataByID: state.AllChartDataByID.all_chart_data,
     current_id: state.setCurrentID.current_id
   }
 }
@@ -16,6 +17,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
       getChartDataByID: bindActionCreators(get_ChartData_byID, dispatch),
+      getAllChartDataByID: bindActionCreators(get_AllChartData_byID, dispatch),
       setCurrentID: bindActionCreators(set_CurrentID, dispatch)
   }
 }

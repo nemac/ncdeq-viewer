@@ -102,7 +102,7 @@ var MenuComponent = React.createClass({
 
     this.props.setCurrentID(e.target.value);
     this.props.getChartDataByID(e.target.value);
-
+    this.props.getAllChartDataByID(e.target.value,level)
     //console.log(level);
     // if(level === 'HUC12'){
     //   agoHelpers.get_ChartData_byID(e.target.value)
