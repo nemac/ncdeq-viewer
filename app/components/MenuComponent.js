@@ -104,7 +104,8 @@ var MenuComponent = React.createClass({
     this.props.getChartDataByID(e.target.value);
     this.props.getAllChartDataByID(e.target.value,level);
     this.props.change_geographyLevelFilter(e.target.value,level)
-
+    // console.log(this.props.MenuData)
+    // console.log(this.props.geography_levels)
   },
   handleMenuClick: function(val,e) {
     //reset menu
