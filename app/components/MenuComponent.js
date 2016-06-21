@@ -103,12 +103,15 @@ var MenuComponent = React.createClass({
     this.props.setCurrentID(e.target.value);
     this.props.getChartDataByID(e.target.value);
     this.props.getAllChartDataByID(e.target.value,level);
+    this.props.change_geographyLevelFilter(e.target.value,level)
 
   },
   handleMenuClick: function(val,e) {
     //reset menu
     this.resetMenus();
+    var level = this.getLevel();
     this.props.change_geographyLevelActive(val);
+    //this.props.change_geographyLevelFilter(e.target.value,level)
 
     //change state to active for clicked menu
     this.setState({
