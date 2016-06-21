@@ -9,7 +9,7 @@ import MenuComponent from '../components/MenuComponent'
 
 //either rename this or rename it also in main
 const mapStateToProps = (state,props) => {
-  let MenuData = state.menuLists.lists;
+  let AllMenus = state.menuLists.lists;
   let current_id = state.CurrentID.current_id;
   let theChartDataByID = state.chartDataByID.chart_data;
   let AllChartDataByID = state.AllChartDataByID.all_chart_data;
@@ -18,7 +18,7 @@ const mapStateToProps = (state,props) => {
   return {
     AllChartDataByID,
     theChartDataByID,
-    MenuData,
+    AllMenus,
     current_id,
     geography_levels
   }

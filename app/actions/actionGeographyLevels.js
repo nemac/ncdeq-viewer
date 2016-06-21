@@ -133,39 +133,26 @@ function update_activeGeographyFilter( state, active_level, filter_value ){
      //only filter when there is a filter value
      //  otherwise get the entire menu
      if (filter.length > 0 ){
+
        //filter the menuLists for the geography_level by the filter value
        menuList.map(listItem => {
          const checkedValue = listItem.id.toString().substring(0, filter.length)
 
+         //get and trim the filter and value to limit
          const fv = filter.toString().trim();
          const cv  = checkedValue.toString().trim();
 
-        //  console.log('')
-        //  console.log('  loop')
-        //  console.log('  >>' + filter + '<<')
-        //  console.log('  >>' + checkedValue + '<<')
-        //  console.log((fv == cv))
-        //  console.log('  loop')
-        //  console.log('')
-
+         //only add filtered values
          if (fv == cv){
-
            filtered_menu_list.push(listItem)
          }
+
        })
      } else {
+
         //no filter get entire menu
         filtered_menu_list = menuList
      }
-
-    //  console.log('')
-    //  console.log('info')
-    //  console.log(geography_level)
-    //  console.log(filter)
-    //  console.log(menuList)
-    //  console.log (filtered_menu_list)
-    //  console.log('info')
-    //  console.log('')
 
      //create new geography_level object
      let thisGeographyList = {geography_level, geography_label, active, filter, current_id, filtered_menu_list};

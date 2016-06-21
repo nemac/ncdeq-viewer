@@ -21,8 +21,19 @@ var MenuComponent = React.createClass({
 
   },
   getLevel: function(){
+
+
     var st = this.state
 
+    const GL =  this.props.geography_levels.map( geography_level => {
+      console.log(geography_level)
+      geography_level.filter( key =>{
+        console.log(log)
+      })
+      //return this.props.geography_levels[key] = ''
+    })
+    console.log(GL)
+    //filter
     var activeTab = Object.keys(st).filter(function (key) {
         return  st[key]['active'] === true;
     });
@@ -56,7 +67,7 @@ var MenuComponent = React.createClass({
     if(!this.state){
       var items = [ {name:'River Basins',lists:[blankListing]},{name:'Cataloging Units',lists:[blankListing]},{name:'HUC12',lists:[blankListing]} ];
     }else{
-      var items = this.props.MenuData;
+      var items = this.props.AllMenus;
     }
 
     items.map(function(item) {
@@ -86,7 +97,7 @@ var MenuComponent = React.createClass({
         }
       })
 
-      //kind of hacky
+      //kind of hacky--how to do this in redex?
       $('#search-select-'+nextLevel.replace(' ','_')).dropdown('set text','Choose a ' + nextLevel)
 
       //recursive call to update all level filters
@@ -143,8 +154,8 @@ var MenuComponent = React.createClass({
           &nbsp;
         </div>
 
-          { this.props.MenuData &&
-            this.props.MenuData.map(function(item) {
+          { this.props.AllMenus &&
+            this.props.AllMenus.map(function(item) {
               return (
                 <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}/>
               )
