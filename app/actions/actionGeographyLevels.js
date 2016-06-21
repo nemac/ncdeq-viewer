@@ -130,16 +130,26 @@ function update_activeGeographyFilter( state, active_level, filter_value ){
      //get the menuLists for the geography_level
      const menuList = menuLists[geography_level-1].lists
 
-     console.log(geography_level)
-
      //only filter when there is a filter value
      //  otherwise get the entire menu
      if (filter.length > 0 ){
-
        //filter the menuLists for the geography_level by the filter value
        menuList.map(listItem => {
          const checkedValue = listItem.id.toString().substring(0, filter.length)
-         if (filter_value === checkedValue){
+
+         const fv = filter.toString().trim();
+         const cv  = checkedValue.toString().trim();
+
+        //  console.log('')
+        //  console.log('  loop')
+        //  console.log('  >>' + filter + '<<')
+        //  console.log('  >>' + checkedValue + '<<')
+        //  console.log((fv == cv))
+        //  console.log('  loop')
+        //  console.log('')
+
+         if (fv == cv){
+
            filtered_menu_list.push(listItem)
          }
        })
@@ -148,9 +158,15 @@ function update_activeGeographyFilter( state, active_level, filter_value ){
         filtered_menu_list = menuList
      }
 
-    //  console.log(JSON.stringify(filtered_menu_list))
+    //  console.log('')
+    //  console.log('info')
     //  console.log(geography_level)
-     //console.log(filtered_menu_list)
+    //  console.log(filter)
+    //  console.log(menuList)
+    //  console.log (filtered_menu_list)
+    //  console.log('info')
+    //  console.log('')
+
      //create new geography_level object
      let thisGeographyList = {geography_level, geography_label, active, filter, current_id, filtered_menu_list};
 
@@ -186,6 +202,8 @@ function update_activeGeographyLevel( state, active_level ){
      let filter = level['filter'];
      let current_id = level['current_id'];
      let filtered_menu_list  = level['filtered_menu_list'];
+
+
 
      //check of the labels matches the new active layer label
      //  is so set active to true.
@@ -238,7 +256,7 @@ export function change_geographyLevelActive(active_level) {
 }
 
 export function get_GeographyLevels(){
-  return dispatch => {
+  return (dispatch, getState) => {
       AGO_GeographyLevels()
         .then(function test(response){
 
@@ -251,6 +269,7 @@ export function get_GeographyLevels(){
           let filter = '';
           let current_id = '';
           let filtered_menu_list  = [];
+
 
           //loop the geography_levels and build the geography_level state obect
           theGeographyLevels.features.map(function(features) {
