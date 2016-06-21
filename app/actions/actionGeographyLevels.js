@@ -99,10 +99,11 @@ function update_activeGeographyFilter( state, active_level, filter_value ){
 
   //instatiate variables
   let GList = [];
-  let filtered_menu_list  = []
 
   //loop the geography levels
   geography_levels.map(function(level) {
+
+    let filtered_menu_list  = []
 
      //get the label, level,for the geography_level
      let geography_label = level['geography_label'];
@@ -124,67 +125,32 @@ function update_activeGeographyFilter( state, active_level, filter_value ){
      //set the filter value for lower level geographies
      if (geography_level >= nextLevel){
        filter = filter_value;
-
-
-
      }
 
-     console.log('test')
+     //get the menuLists for the geography_level
+     const menuList = menuLists[geography_level-1].lists
 
+     console.log(geography_level)
 
-     let filteredList = [];
-     //get a filtered menu list
-     const l = menuLists.map(menuList => {
+     //only filter when there is a filter value
+     //  otherwise get the entire menu
+     if (filter.length > 0 ){
 
+       //filter the menuLists for the geography_level by the filter value
+       menuList.map(listItem => {
+         const checkedValue = listItem.id.toString().substring(0, filter.length)
+         if (filter_value === checkedValue){
+           filtered_menu_list.push(listItem)
+         }
+       })
+     } else {
+        //no filter get entire menu
+        filtered_menu_list = menuList
+     }
 
-       const menuName = get_AGOGeographyLabel(menuList.name);
-      //  console.log('menu name: ' + menuName)
-      //  console.log('geography label: ' + geography_label)
-      let filteredMenuList = [];
-
-       if( menuName ===  geography_label){
-         menuList.lists.map(list => {
-
-           const checkedValue = list.id.substring(0, filter_value.length)
-           if (checkedValue === filter_value){
-             filteredMenuList.push(list)
-           }
-
-         })
-         return filteredMenuList
-         console.log('afer return')
-       }
-       return filteredMenuList
-                console.log('afer if')
-      //  if( menuName ===  geography_label){
-      //
-      //    menuList.lists.map(list => {
-      //      const checkedValue = list.id.substring(0, filter_value.length)
-      //
-      //      if (checkedValue === filter_value){
-      //         filteredList.push(list)
-      //      }
-      //
-      //    })
-      //    //console.log(filteredList)
-      //    return filteredList
-      //  }
-      // //  if (filteredList.length > 0){
-      //    console.log('here')
-      //    console.log(filteredList)
-      //    console.log(filteredList.length)
-      //    console.log('here')
-      //    //return filteredList
-      // //  }
-     })
-
-
-    //  console.log('test')
-    //  console.log(filtered_menu_list)
-    //  console.log('test')
-    console.log(l)
-    console.log('test')
-
+    //  console.log(JSON.stringify(filtered_menu_list))
+    //  console.log(geography_level)
+     //console.log(filtered_menu_list)
      //create new geography_level object
      let thisGeographyList = {geography_level, geography_label, active, filter, current_id, filtered_menu_list};
 
@@ -219,7 +185,7 @@ function update_activeGeographyLevel( state, active_level ){
      let geography_level = level['geography_level'];
      let filter = level['filter'];
      let current_id = level['current_id'];
-     let filtered_menu_list  = []
+     let filtered_menu_list  = level['filtered_menu_list'];
 
      //check of the labels matches the new active layer label
      //  is so set active to true.
