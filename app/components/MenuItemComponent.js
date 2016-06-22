@@ -5,41 +5,20 @@ var MenuItemComponent = React.createClass({
   propTypes: {
     handleMenuClick: PropTypes.func.isRequired,
     getActive: PropTypes.func.isRequired,
-    name: PropTypes.string.isRequired,
-    lists: PropTypes.array.isRequired,
-    activeValue: PropTypes.string.isRequired,
     getFilter: PropTypes.func.isRequired
   },
-  getDefaultProps: function() {
-    return {
-      name:'Item',
-      list: [],
-      activeValue:'ItemActive'
-    };
-  },
-  getInitialState: function() {
-    return {
-      name: this.props.name,
-      list: this.props.lists,
-      activeValue: this.props.activeValue
-    };
-  },
   componentDidMount: function() {
-    // var store = this.context.store;
-    // var aState = store.getState();
-    // console.log(aState);
-
       $('.ui.dropdown').dropdown();
   },
   render: function() {
 
     var filterValue=''
-    $('#menu-placeholder-'+this.state.name.replace(' ','_')).remove();
+    $('#menu-placeholder-'+this.props.name.replace(' ','_')).remove();
     if (this.props.lists){
       var namesList = this.props.lists.map(function(listItem){
 
         //get fiter value for current menu
-        filterValue = this.props.getFilter(this.state.name)
+        filterValue = this.props.getFilter(this.props.name)
 
         //get value of current item in the list and get the left most characters
         //should match length of filter value
@@ -58,10 +37,10 @@ var MenuItemComponent = React.createClass({
     }
 
     return (
-      <a className={this.props.getActive(this.state.name)}  onClick={this.props.handleMenuClick.bind(null, this.state.name)} >
+      <a className={this.props.getActive(this.props.name)}  onClick={this.props.handleMenuClick.bind(null, this.props.name)} >
 
-        <select className="ui search selection dropdown" id={'search-select-'+this.state.name.replace(' ','_')} onChange={this.props.menuChange} >
-          <option value="">Choose a {this.state.name}</option>
+        <select className="ui search selection dropdown" id={'search-select-'+this.props.name.replace(' ','_')} onChange={this.props.menuChange} >
+          <option value="">Choose a {this.props.name}</option>
           {namesList}
         </select>
       </a>

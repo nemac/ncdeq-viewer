@@ -1,8 +1,5 @@
 var React = require('react');
 var MenuItemComponent = require('../components/MenuItemComponent');
-
-//var agoHelpers = require('../utils/ago-helpers');
-
 var PropTypes = React.PropTypes;
 
 var MenuComponent = React.createClass({
