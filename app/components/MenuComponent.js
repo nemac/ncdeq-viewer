@@ -20,25 +20,44 @@ var MenuComponent = React.createClass({
     this.props.getMenus();
 
   },
+  //only needs this untill I change the data feed have named generically?
+  // or maybe control via yaml file....
+  getCategoryName: function(geogLevel){
+    switch (geogLevel) {
+      case 'huc_6':
+        return 'River Basins';
+        break;
+      case 'huc_8':
+        return 'Cataloging Units';
+        break;
+      case 'huc_12':
+        return 'HUC12';
+        break;
+      default:
+        return 'HUC12';
+      }
+  },
   getLevel: function(){
 
 
     var st = this.state
 
-    const GL =  this.props.geography_levels.map( geography_level => {
-      console.log(geography_level)
-      geography_level.filter( key =>{
-        console.log(log)
-      })
-      //return this.props.geography_levels[key] = ''
+    //filter the levels to get the active tab
+    const ActiveTabObject = this.props.geography_levels.filter( key =>{
+      return key.active === true;
     })
-    console.log(GL)
-    //filter
-    var activeTab = Object.keys(st).filter(function (key) {
-        return  st[key]['active'] === true;
-    });
 
-    return activeTab[0]
+    let activeTab = 'HUC12'
+    if (ActiveTabObject.length > 0){
+      activeTab = this.getCategoryName(ActiveTabObject[0].geography_label);
+      console.log(activeTab);
+    }
+
+    //var activeTab = Object.keys(st).filter(function (key) {
+    //    return  st[key]['active'] === true;
+    //});
+
+    return activeTab
   },
   getNextLevel: function(level){
     //next level is hardcoded need to make this data driven
@@ -67,7 +86,7 @@ var MenuComponent = React.createClass({
     if(!this.state){
       var items = [ {name:'River Basins',lists:[blankListing]},{name:'Cataloging Units',lists:[blankListing]},{name:'HUC12',lists:[blankListing]} ];
     }else{
-      var items = this.props.AllMenus;
+      var items = this.props.CompleteMenuLists;
     }
 
     items.map(function(item) {
@@ -154,8 +173,8 @@ var MenuComponent = React.createClass({
           &nbsp;
         </div>
 
-          { this.props.AllMenus &&
-            this.props.AllMenus.map(function(item) {
+          { this.props.CompleteMenuLists &&
+            this.props.CompleteMenuLists.map(function(item) {
               return (
                 <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}/>
               )

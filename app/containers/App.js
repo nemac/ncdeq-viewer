@@ -6,7 +6,7 @@ import MainComponent from '../components/MainComponent';
 
 function mapStateToProps(state) {
 
-  let AllMenus = state.menuLists.lists;
+  let CompleteMenuLists = state.menuLists.lists;
   let current_id = state.CurrentID.current_id;
   let theChartDataByID = state.chartDataByID.chart_data;
   let AllChartDataByID = state.AllChartDataByID.all_chart_data
@@ -15,7 +15,7 @@ function mapStateToProps(state) {
   return {
     AllChartDataByID,
     theChartDataByID,
-    AllMenus,
+    CompleteMenuLists,
     current_id,
     geography_levels
   }
