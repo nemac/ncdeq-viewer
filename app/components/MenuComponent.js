@@ -1,7 +1,7 @@
 var React = require('react');
 var MenuItemComponent = require('../components/MenuItemComponent');
 
-var agoHelpers = require('../utils/ago-helpers');
+//var agoHelpers = require('../utils/ago-helpers');
 
 var PropTypes = React.PropTypes;
 
@@ -34,33 +34,29 @@ var MenuComponent = React.createClass({
         return 'HUC12';
         break;
       default:
-        return 'HUC12';
+        return 'River Basins';
       }
   },
   getLevel: function(){
-
-
-    var st = this.state
 
     //filter the levels to get the active tab
     const ActiveTabObject = this.props.geography_levels.filter( key =>{
       return key.active === true;
     })
 
-    let activeTab = 'HUC12'
+    //set default active tab - as Highest level
+    let activeTab = 'River Basins'
     if (ActiveTabObject.length > 0){
+      //get the active tab and convert the name to the name used in the app.
+      //  this will eventually be driven by config or data....???
       activeTab = this.getCategoryName(ActiveTabObject[0].geography_label);
-      console.log(activeTab);
     }
-
-    //var activeTab = Object.keys(st).filter(function (key) {
-    //    return  st[key]['active'] === true;
-    //});
 
     return activeTab
   },
   getNextLevel: function(level){
     //next level is hardcoded need to make this data driven
+    //move this to a helper?
     switch (level) {
       case 'River Basins':
         return 'Cataloging Units';
@@ -76,47 +72,32 @@ var MenuComponent = React.createClass({
     }
 
   },
-  getStateObject: function(){
-
-
-    var obj = {};
-
-    const blankListing = {"id": "            ","NAME": "            ","VALUE": "            ","MAIN": "            ","SUB": "            "};
-
-    if(!this.state){
-      var items = [ {name:'River Basins',lists:[blankListing]},{name:'Cataloging Units',lists:[blankListing]},{name:'HUC12',lists:[blankListing]} ];
-    }else{
-      var items = this.props.CompleteMenuLists;
-    }
-
-    items.map(function(item) {
-      obj[ item.name ] = {
-        'active':false,
-        'filter': !this.state ? '' : !this.state[item.name] ? '':  this.state[item.name].filter };
-    },this)
-
-     return obj
-  },
-  getInitialState: function () {
-    return this.getStateObject();
-  },
-  resetMenus: function(){
-    //set all to false
-    this.setState(this.getStateObject())
+  //only needs this untill I change the data feed have named generically?
+  // or maybe control via yaml file....
+  get_AGOLevel: function(geogLevel){
+        //move this to a helper?
+    switch (geogLevel) {
+      case 'River Basins':
+        return 'huc_6';
+        break;
+      case 'Cataloging Units':
+        return 'huc_8';
+        break;
+      case 'HUC12':
+        return 'huc_12';
+        break;
+      default:
+        return 'huc_12';
+      }
   },
   updateFilterState(level,value){
 
     var nextLevel = this.getNextLevel(level);
+
     //set filter and active state for next level(s)
     if(nextLevel){
-      this.setState({
-        [nextLevel]:{
-          'active': false,
-          'filter': value
-        }
-      })
 
-      //kind of hacky--how to do this in redex?
+      //kind of hacky--how to do this in redux?
       $('#search-select-'+nextLevel.replace(' ','_')).dropdown('set text','Choose a ' + nextLevel)
 
       //recursive call to update all level filters
@@ -126,7 +107,7 @@ var MenuComponent = React.createClass({
     }
   },
   menuChange: function(e){
-    var self = this;
+
     var level = this.getLevel();
     this.updateFilterState(level,e.target.value);
 
@@ -134,37 +115,54 @@ var MenuComponent = React.createClass({
     this.props.getChartDataByID(e.target.value);
     this.props.getAllChartDataByID(e.target.value,level);
     this.props.change_geographyLevelFilter(e.target.value,level)
-    // console.log(this.props.MenuData)
-    // console.log(this.props.geography_levels)
+
   },
   handleMenuClick: function(val,e) {
-    //reset menu
-    this.resetMenus();
-    var level = this.getLevel();
-    this.props.change_geographyLevelActive(val);
-    //this.props.change_geographyLevelFilter(e.target.value,level)
 
-    //change state to active for clicked menu
-    this.setState({
-      [val]:{'active': true,
-        'filter': (!this.state[val] ? '' : this.state[val].filter)
-      }
-    })
+    //get current geography level
+    var level = this.getLevel();
+
+    //set current geography level in redux state store
+    this.props.change_geographyLevelActive(val);
 
   },
   getActive: function(val){
-    if (this.state[val]) {
-      return  (this.state[val].active ? 'active item' : 'item')
-    }else{
-      return ''
+
+    const level = this.get_AGOLevel(val)
+    //can I make this a generic function since I am using same logic over.
+    //filter the levels to get the current passed level
+    const FilterObject = this.props.geography_levels.filter( key =>{
+      return key.geography_label === level;
+    })
+
+    //set default
+    let isActive = false;
+    if (FilterObject.length > 0){
+      //get active boolen
+      isActive = FilterObject[0].active;
     }
+
+    //return active setting
+    return (isActive ? 'active item' : 'item');
+
   },
   getFilter: function(val){
-    if (this.state[val]) {
-      return  (this.state[val].filter)
-    } else {
-      return ''
+    const level = this.get_AGOLevel(val)
+
+    //filter the levels to get the current passed level
+    const FilterObject = this.props.geography_levels.filter( key =>{
+      return key.geography_label === level;
+    })
+
+    //set default
+    let theFilter = ''
+    if (FilterObject.length > 0){
+      //get the Filter
+      theFilter = FilterObject[0].filter;
     }
+
+    return theFilter;
+
   },
   render: function() {
     return (
