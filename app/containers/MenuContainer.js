@@ -13,11 +13,13 @@ const mapStateToProps = (state,props) => {
   let theChartDataByID = state.chartDataByID.chart_data;
   let AllChartDataByID = state.AllChartDataByID.all_chart_data;
   let geography_levels = state.geography_levels.geography_levels;
+  let chart_data = state.chartData.chart_data;
 
   return {
     DefaultMenuLists,
     AllChartDataByID,
     theChartDataByID,
+    chart_data,
     geography_levels
   }
 }

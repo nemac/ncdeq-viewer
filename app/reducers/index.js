@@ -5,10 +5,10 @@ import { getLists } from '../actions/actionCreators';
 
 //import each reducers
 import {menuLists} from './getMenuLists';
-import {chartDataByID, AllChartDataByID} from './ChartData';
+import {chartDataByID, AllChartDataByID,chartData} from './ChartData';
 import {CurrentID} from './setCurrentID';
 import {geography_levels, change_geographyLevelActive} from './GeographyLevels';
 
-const rootReducer = combineReducers( { menuLists, chartDataByID, AllChartDataByID, CurrentID, geography_levels, change_geographyLevelActive, routing: routerReducer} );
+const rootReducer = combineReducers( { menuLists, chartDataByID, AllChartDataByID, chartData,CurrentID, geography_levels, change_geographyLevelActive, routing: routerReducer} );
 
 export default rootReducer;

@@ -2,7 +2,7 @@ var axios = require('axios');
 import { CheckReponse } from './responses';
 import { AGO_URL, Data_FeatureID } from './actionConstants';
 
-const CHART_DATA_OUT_FIELDS = 'chart_id%2Cchart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value';
+const CHART_DATA_OUT_FIELDS = 'chart_id%2Cchart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value%2C';
 const CHART_DATA_ORDER_BY_FIELDS = 'chart_level%2Cchart_matchid';
 
 
@@ -30,15 +30,15 @@ function getNextLevel(geogLevel){
 //get chart data by huc id
 function AGO_AllChartData_byID(hucid,geogLevel){
 
-   var id = hucid;
+   var ID = hucid;
    var level = getNextLevel(geogLevel);
 
    if(geogLevel === 'HUC12'){
-     id = hucid.substring(0,8);
+     ID = hucid.substring(0,8);
    }
 
    const query_URL = '/RDRBP/FeatureServer/' + Data_FeatureID + '/query' +
-                   '?where=ID+like+%27' + id + '%25%27+and+geography_level%3D'+ level +
+                   '?where=ID+like+%27' + ID + '%25%27+and+geography_level%3D'+ level +
                    '&objectIds=' +
                    '&time=' +
                    '&resultType=none' +
@@ -59,16 +59,29 @@ function AGO_AllChartData_byID(hucid,geogLevel){
 
 export function get_AllChartData_byID(ID,LEVEL){
     return dispatch => {
-        AGO_AllChartData_byID(ID,LEVEL)
-          .then(function test(response){
+      axios.all([AGO_ChartData_byID(ID), AGO_AllChartData_byID(ID,LEVEL)])
+      .then(axios.spread(function (chartbyid, chartbylevel) {
 
-            //check repsonses for errors
-            let theChartDataByID = CheckReponse(response,'AGO_API_ERROR');
 
-            //send the chart data on
-            dispatch(AllChartDatalByID(theChartDataByID,LEVEL))
+
+            let chartData_Level = CheckReponse(chartbylevel,'AGO_API_ERROR');
+            let chartData_ID = CheckReponse(chartbyid,'AGO_API_ERROR');
+
+
+            dispatch(AllChartDatalByID(chartData_Level,LEVEL))
+            dispatch(ChartData(chartData_ID,chartData_Level,LEVEL))
+
           })
-          .catch(error => { console.log('request failed', error); });
+        )
+        .catch(error => { console.log('request failed', error); });
+  }
+}
+
+function ChartData(id_json,level_json) {
+  return {
+    type: 'GET_CHART_DATA',
+    chart_data: {id_json,level_json},
+    receivedAt: Date.now()
   }
 }
 
@@ -118,6 +131,7 @@ export function get_ChartData_byID(ID){
           .catch(error => { console.log('request failed', error); });
   }
 }
+
 
 function ChartDataByID(json,id) {
   return {

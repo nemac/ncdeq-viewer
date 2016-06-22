@@ -95,6 +95,7 @@ function update_activeGeographyFilter( state, active_level, filter_value ){
   const geography_levels = state.geography_levels.geography_levels
   const menuLists = state.menuLists.lists;
 
+
   //instatiate variables
   let GList = [];
 
