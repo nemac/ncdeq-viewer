@@ -17,6 +17,26 @@ var MenuComponent = React.createClass({
     this.props.getMenus();
 
   },
+  getDefaultMenu(level){
+    //filter the levels to get the active tab
+    const DefaultMenuObject = this.props.CompleteMenuLists.filter( key =>{
+      return key.name === level;
+    })
+
+    //set default menus for level
+    let DefaultMenu = [];
+    if (DefaultMenuObject.length > 0){
+      //get the menu
+      DefaultMenu = DefaultMenuObject[0].lists;
+    }
+
+    return DefaultMenu
+  },
+  checkList: function(list){
+    if (list){
+      return  this.props.CompleteMenuLists;
+    }
+  },
   //only needs this untill I change the data feed have named generically?
   // or maybe control via yaml file....
   getCategoryName: function(geogLevel){
@@ -108,7 +128,7 @@ var MenuComponent = React.createClass({
     var level = this.getLevel();
     this.updateFilterState(level,e.target.value);
 
-    this.props.setCurrentID(e.target.value);
+    //this.props.setCurrentID(e.target.value);
     this.props.getChartDataByID(e.target.value);
     this.props.getAllChartDataByID(e.target.value,level);
     this.props.change_geographyLevelFilter(e.target.value,level)
@@ -168,10 +188,20 @@ var MenuComponent = React.createClass({
           &nbsp;
         </div>
 
-          { this.props.CompleteMenuLists &&
-            this.props.CompleteMenuLists.map(function(item) {
+          { this.props.geography_levels &&
+            this.props.geography_levels.map(function(item) {
+              const name = this.getCategoryName(item.geography_label)
+
+              //get filtered menu list
+              let menuList = item.filtered_menu_list;
+
+              //if filtered list is not set get the default menu list
+              if (menuList.length === 0){
+                menuList = this.getDefaultMenu(name);
+              }
+
               return (
-                <MenuItemComponent key={item.name} name={item.name} lists={item.lists} activeValue={item.activeValue} getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}/>
+                <MenuItemComponent key={name} name={name} lists={menuList}  getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}/>
               )
             }.bind(this))
           }
