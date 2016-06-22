@@ -11,8 +11,8 @@ var ChartRow = React.createClass({
     let vis = this.props.isChartsVisible ?  'show' : 'none';
 
     //ensure there are features returned. if not allows blank...
-    let chartByID_Features = this.props.theChartDataByID ? this.props.theChartDataByID.features : "";
-    let AllchartByID_Features = this.props.AllChartDataByID ? this.props.AllChartDataByID.features : "";
+    let id_json = this.props.chart_data ? this.props.chart_data.id_json.features : "";
+    let level_json = this.props.chart_data ? this.props.chart_data.level_json.features : "";
 
     return (
 
@@ -35,7 +35,7 @@ var ChartRow = React.createClass({
       <Divider />
 
       <div className="fourteen wide column">
-        <ChartRowWrapper key="HUCS" title="HUC's" id={this.props.current_id}  data="" alldata={AllchartByID_Features}  />
+        <ChartRowWrapper key="HUCS" title="HUC's" id={this.props.current_id}  data="" alldata={level_json}  />
       </div>
 
       <Divider columns="fourteen"/>
@@ -47,7 +47,7 @@ var ChartRow = React.createClass({
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  data={chartByID_Features} alldata="" />
+        <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  data={id_json} alldata="" />
       </div>
 
 

@@ -57,43 +57,6 @@ function AGO_AllChartData_byID(hucid,geogLevel){
 
 }
 
-export function get_AllChartData_byID(ID,LEVEL){
-    return dispatch => {
-      axios.all([AGO_ChartData_byID(ID), AGO_AllChartData_byID(ID,LEVEL)])
-      .then(axios.spread(function (chartbyid, chartbylevel) {
-
-
-
-            let chartData_Level = CheckReponse(chartbylevel,'AGO_API_ERROR');
-            let chartData_ID = CheckReponse(chartbyid,'AGO_API_ERROR');
-
-
-            dispatch(AllChartDatalByID(chartData_Level,LEVEL))
-            dispatch(ChartData(chartData_ID,chartData_Level,LEVEL))
-
-          })
-        )
-        .catch(error => { console.log('request failed', error); });
-  }
-}
-
-function ChartData(id_json,level_json) {
-  return {
-    type: 'GET_CHART_DATA',
-    chart_data: {id_json,level_json},
-    receivedAt: Date.now()
-  }
-}
-
-function AllChartDatalByID(json,id) {
-  return {
-    type: 'GET_ALL_CHART_DATA_BY_ID',
-    all_chart_data: json,
-    id: id,
-    receivedAt: Date.now()
-  }
-}
-
 //get chart data by huc id
 function AGO_ChartData_byID(ID){
    const query_URL = '/RDRBP/FeatureServer/' + Data_FeatureID + '/query' +
@@ -117,27 +80,29 @@ function AGO_ChartData_byID(ID){
 
 }
 
-export function get_ChartData_byID(ID){
+export function get_ChartData(ID,LEVEL){
     return dispatch => {
-        AGO_ChartData_byID(ID)
-          .then(function test(response){
+      axios.all([AGO_ChartData_byID(ID), AGO_AllChartData_byID(ID,LEVEL)])
+      .then(axios.spread(function (chartbyid, chartbylevel) {
 
-            //check repsonses for errors
-            let theChartDataByID = CheckReponse(response,'AGO_API_ERROR');
+            //check for errors in responses
+            let chartData_Level = CheckReponse(chartbylevel,'AGO_API_ERROR');
+            let chartData_ID = CheckReponse(chartbyid,'AGO_API_ERROR');
 
             //send the chart data on
-            dispatch(ChartDataByID(theChartDataByID,ID))
+            dispatch(ChartData(chartData_ID,chartData_Level,LEVEL))
+
           })
-          .catch(error => { console.log('request failed', error); });
+        )
+        .catch(error => { console.log('request failed', error); });
   }
 }
 
 
-function ChartDataByID(json,id) {
+function ChartData(id_json,level_json) {
   return {
-    type: 'GET_CHART_DATA_BY_ID',
-    chart_data: json,
-    id: id,
+    type: 'GET_CHART_DATA',
+    chart_data: {id_json,level_json},
     receivedAt: Date.now()
   }
 }

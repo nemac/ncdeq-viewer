@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 //import actions
-import { get_MenuList, get_ChartData_byID, set_CurrentID, get_AllChartData_byID, change_geographyLevelActive, change_geographyLevelFilter } from '../actions/actionCreators'
+import { get_MenuList, set_CurrentID, get_ChartData, change_geographyLevelActive, change_geographyLevelFilter } from '../actions/actionCreators'
 
 //import components
 import MenuComponent from '../components/MenuComponent'
@@ -10,15 +10,11 @@ import MenuComponent from '../components/MenuComponent'
 //either rename this or rename it also in main
 const mapStateToProps = (state,props) => {
   let DefaultMenuLists = state.menuLists.lists;
-  let theChartDataByID = state.chartDataByID.chart_data;
-  let AllChartDataByID = state.AllChartDataByID.all_chart_data;
   let geography_levels = state.geography_levels.geography_levels;
   let chart_data = state.chartData.chart_data;
 
   return {
     DefaultMenuLists,
-    AllChartDataByID,
-    theChartDataByID,
     chart_data,
     geography_levels
   }
@@ -27,10 +23,9 @@ const mapStateToProps = (state,props) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getMenus: bindActionCreators(get_MenuList, dispatch),
-    getChartDataByID: bindActionCreators(get_ChartData_byID, dispatch),
-    getAllChartDataByID: bindActionCreators(get_AllChartData_byID, dispatch),
     change_geographyLevelActive: bindActionCreators(change_geographyLevelActive,dispatch),
     change_geographyLevelFilter: bindActionCreators(change_geographyLevelFilter,dispatch),
+    get_ChartData: bindActionCreators(get_ChartData,dispatch)
   }
 }
 

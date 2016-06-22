@@ -128,8 +128,7 @@ var MenuComponent = React.createClass({
     var level = this.getLevel();
     this.updateFilterState(level,e.target.value);
 
-    this.props.getChartDataByID(e.target.value);
-    this.props.getAllChartDataByID(e.target.value,level);
+    this.props.get_ChartData(e.target.value,level)
     this.props.change_geographyLevelFilter(e.target.value,level)
 
   },
