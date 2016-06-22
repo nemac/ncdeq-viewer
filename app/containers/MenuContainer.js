@@ -9,15 +9,15 @@ import MenuComponent from '../components/MenuComponent'
 
 //either rename this or rename it also in main
 const mapStateToProps = (state,props) => {
-  let CompleteMenuLists = state.menuLists.lists;
+  let DefaultMenuLists = state.menuLists.lists;
   let theChartDataByID = state.chartDataByID.chart_data;
   let AllChartDataByID = state.AllChartDataByID.all_chart_data;
   let geography_levels = state.geography_levels.geography_levels;
 
   return {
+    DefaultMenuLists,
     AllChartDataByID,
     theChartDataByID,
-    CompleteMenuLists,
     geography_levels
   }
 }
@@ -25,7 +25,6 @@ const mapStateToProps = (state,props) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getMenus: bindActionCreators(get_MenuList, dispatch),
-    //setCurrentID: bindActionCreators(set_CurrentID, dispatch),
     getChartDataByID: bindActionCreators(get_ChartData_byID, dispatch),
     getAllChartDataByID: bindActionCreators(get_AllChartData_byID, dispatch),
     change_geographyLevelActive: bindActionCreators(change_geographyLevelActive,dispatch),

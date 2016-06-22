@@ -17,9 +17,9 @@ var MenuComponent = React.createClass({
     this.props.getMenus();
 
   },
-  getDefaultMenu(level){
+  getDefaultMenu: function(level){
     //filter the levels to get the active tab
-    const DefaultMenuObject = this.props.CompleteMenuLists.filter( key =>{
+    const DefaultMenuObject = this.props.DefaultMenuLists.filter( key =>{
       return key.name === level;
     })
 
@@ -34,7 +34,7 @@ var MenuComponent = React.createClass({
   },
   checkList: function(list){
     if (list){
-      return  this.props.CompleteMenuLists;
+      return  this.props.DefaultMenuLists;
     }
   },
   //only needs this untill I change the data feed have named generically?
@@ -128,7 +128,6 @@ var MenuComponent = React.createClass({
     var level = this.getLevel();
     this.updateFilterState(level,e.target.value);
 
-    //this.props.setCurrentID(e.target.value);
     this.props.getChartDataByID(e.target.value);
     this.props.getAllChartDataByID(e.target.value,level);
     this.props.change_geographyLevelFilter(e.target.value,level)

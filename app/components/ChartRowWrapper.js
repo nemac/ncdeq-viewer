@@ -10,20 +10,12 @@ var ChartRowWrapper = React.createClass({
       title:'Title'
     };
   },
-  getInitialState: function() {
-    return {
-      title: this.props.title
-    };
-  },
-  componentDidMount: function() {
-
-  },
   render: function() {
     return (
       <div className="ui segments">
         <div className="ui grey tertiary inverted clearing segment">
           <h4 className="ui left floated header">
-            {this.state.title}
+            {this.props.title}
           </h4>
           <h4 className="ui right floated header">
             <i className="dropdown icon"></i>
@@ -33,7 +25,7 @@ var ChartRowWrapper = React.createClass({
           <span key="1" >{JSON.stringify(this.props.data)}</span>
           <span key="2" >{JSON.stringify(this.props.alldata)}</span>
           <p>Navigate to a Cataloging Unit to view chart data</p>
-          <div refs={this.state.title} >
+          <div refs={this.props.title} >
           </div>
           {/*
               add chartwrapper

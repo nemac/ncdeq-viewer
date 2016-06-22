@@ -5,17 +5,16 @@ import * as actionCreators from '../actions/actionCreators';
 import MainComponent from '../components/MainComponent';
 
 function mapStateToProps(state) {
-
-  let CompleteMenuLists = state.menuLists.lists;
+  let DefaultMenuLists = state.menuLists.lists;
   let current_id = state.CurrentID.current_id;
   let theChartDataByID = state.chartDataByID.chart_data;
   let AllChartDataByID = state.AllChartDataByID.all_chart_data
   let geography_levels = state.geography_levels.geography_levels;
 
   return {
+    DefaultMenuLists,
     AllChartDataByID,
     theChartDataByID,
-    CompleteMenuLists,
     current_id,
     geography_levels
   }
