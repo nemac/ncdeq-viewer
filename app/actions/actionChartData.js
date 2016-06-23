@@ -81,28 +81,55 @@ function AGO_ChartData_byID(ID){
 }
 
 export function get_ChartData(ID,LEVEL){
-    return dispatch => {
+    return (dispatch,getState) => {
       axios.all([AGO_ChartData_byID(ID), AGO_AllChartData_byID(ID,LEVEL)])
       .then(axios.spread(function (chartbyid, chartbylevel) {
+        const state = getState()
 
-            //check for errors in responses
-            let chartData_Level = CheckReponse(chartbylevel,'AGO_API_ERROR');
-            let chartData_ID = CheckReponse(chartbyid,'AGO_API_ERROR');
+        let visibility = false;
 
-            //send the chart data on
-            dispatch(ChartData(chartData_ID,chartData_Level,LEVEL))
+        visibility = ( state.chartData.chart_visibility === undefined ? false : state.chartData.chart_visibility);
 
-          })
-        )
-        .catch(error => { console.log('request failed', error); });
+        let chartData_Level = {};
+        let chartData_ID = {};
+        //only check responses if limiting data (ID ir LEVEL) was passed id
+        //   this would cause an error but we still want data to flow in for initializing the charts state object.
+        if(ID){
+          //check for errors in responses
+          chartData_Level = CheckReponse(chartbylevel,'AGO_API_ERROR');
+          chartData_ID = CheckReponse(chartbyid,'AGO_API_ERROR');
+        }
+        //send the chart data on
+        dispatch(ChartData('GET_CHART_DATA',chartData_ID,chartData_Level,visibility))
+
+      })
+    )
+    .catch(error => { console.log('request failed', error); });
   }
 }
 
+export function update_ChartVisiblity (visibility){
+    return (dispatch, getState) => {
+      const state = getState()
 
-function ChartData(id_json,level_json) {
+      //ensure that the chart data exists create blank if not.
+      let chartData_Level = ( state.chartData.chart_data.level_json ? state.chartData.chart_data.level_json : {});
+      let chartData_ID = ( state.chartData.chart_data.id_json ? state.chartData.chart_data.id_json : {});
+
+      //change visibility
+      let isVisible = (state.chartData.chart_visibility ? false : true);
+
+      //send visibility setting on
+      dispatch(ChartData('SET_CHART_VISIBILITY',chartData_ID,chartData_Level,isVisible))
+
+
+    }
+}
+function ChartData(type,id_json,level_json,visibility) {
   return {
-    type: 'GET_CHART_DATA',
+    type: type,
     chart_data: {id_json,level_json},
+    chart_visibility: visibility,
     receivedAt: Date.now()
   }
 }

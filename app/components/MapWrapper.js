@@ -1,5 +1,5 @@
 var React = require('react');
-var MapComponent = require('../components/MapComponent')
+import MapContainer from '../containers/MapContainer'
 
 var PropTypes = React.PropTypes;
 
@@ -18,7 +18,7 @@ var MapWrapper = React.createClass({
     var pad = this.props.rowPadding ? 1 : this.props.rowPadding;
     return (
       <div className="twelve wide column" style={{padding:pad + 'px',height:this.props.mapHeight + 'px'}}>
-        <MapComponent HandleMapZoomEnd={this.props.HandleMapZoomEnd} handleMapMoveEnd={this.props.handleMapMoveEnd} zoom={this.props.zoom} latitude={this.props.latitude} longitude={this.props.longitude} handleMapClick={this.props.handleMapClick} />
+        <MapContainer HandleMapZoomEnd={this.props.HandleMapZoomEnd} handleMapMoveEnd={this.props.handleMapMoveEnd} zoom={this.props.zoom} latitude={this.props.latitude} longitude={this.props.longitude} handleMapClick={this.props.handleMapClick} />
       </div>
     );
   }

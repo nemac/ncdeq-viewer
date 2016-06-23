@@ -11,11 +11,11 @@ import MenuComponent from '../components/MenuComponent'
 const mapStateToProps = (state,props) => {
   let DefaultMenuLists = state.menuLists.lists;
   let geography_levels = state.geography_levels.geography_levels;
-  let chart_data = state.chartData.chart_data;
+  let charts = state.chartData;
 
   return {
     DefaultMenuLists,
-    chart_data,
+    charts,
     geography_levels
   }
 }

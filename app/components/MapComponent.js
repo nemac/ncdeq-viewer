@@ -46,6 +46,12 @@ var MapContainer = React.createClass({
     this.setState({map:this.refs.map,l:L})
 
   },
+  handleMapClickComponent: function(e){
+    const isVisible = this.props.charts.chart_visibility;
+    if(!isVisible){
+      this.props.update_ChartVisiblity();
+    }
+  },
   getInitialState: function() {
     return {
       latitude: this.props.latitude,
@@ -57,7 +63,7 @@ var MapContainer = React.createClass({
   },
   render: function() {
     return (
-      <ReactLeaflet.Map  ref='map' onLeafletZoomEnd={this.props.HandleMapZoomEnd.bind(null,this)} onLeafletMoveend={this.props.handleMapMoveEnd.bind(null,this)} onLeafletClick={this.props.handleMapClick.bind(null,this)} center={[this.props.latitude,this.props.longitude]} zoom={this.props.zoom}>
+      <ReactLeaflet.Map  ref='map' onLeafletZoomEnd={this.props.HandleMapZoomEnd.bind(null,this)} onLeafletMoveend={this.props.handleMapMoveEnd.bind(null,this)} onLeafletClick={this.handleMapClickComponent.bind(null,this)} center={[this.props.latitude,this.props.longitude]} zoom={this.props.zoom}>
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
           url={this.state.tileUrl}

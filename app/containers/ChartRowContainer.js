@@ -7,7 +7,7 @@ import ChartRowComponent from '../components/ChartRowComponent'
 const mapStateToProps = (state) => {
   return {
     current_id: state.CurrentID.current_id,
-    chart_data: state.chartData.chart_data,
+    charts: state.chartData,
   }
 }
 
