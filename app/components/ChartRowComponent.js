@@ -8,11 +8,24 @@ var ChartRow = React.createClass({
   componentDidMount: function() {
   },
   render: function() {
-    let vis = this.props.isChartsVisible ?  'show' : 'none';
+    let vis = this.props.charts.chart_visibility ?  'show' : 'none';
 
-    //ensure there are features returned. if not allows blank...
-    let id_json = this.props.chart_data ? this.props.chart_data.id_json.features : "";
-    let level_json = this.props.chart_data ? this.props.chart_data.level_json.features : "";
+    let id_json = "";
+    let level_json = "";
+
+    //ensure the objects exsists
+    if ( this.props.charts ){
+      if ( this.props.charts.chart_data.id_json ){
+        if ( this.props.charts.chart_data.id_json.features ){
+           id_json =this.props.charts.chart_data.id_json.features;
+        }
+      }
+      if ( this.props.charts.chart_data.level_json ){
+        if ( this.props.charts.chart_data.level_json.features ){
+          level_json =this.props.charts.chart_data.level_json.features;
+        }
+      }
+    }
 
     return (
 
@@ -24,7 +37,7 @@ var ChartRow = React.createClass({
               Charts
             </h3>
             <div className="ui right floated compact grey inverted segment">
-              <div className="meduim basic ui button" onClick={this.props.handleChartToggle} >
+              <div className="meduim basic ui button" onClick={this.props.update_ChartVisiblity} >
                 <i className="remove icon"></i>
               </div>
           </div>

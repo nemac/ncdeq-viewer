@@ -215,7 +215,7 @@ var MainComponent = React.createClass({
       //get and populate the geography_levels state...
       this.props.get_GeographyLevels();
       this.props.get_ChartData();
-      
+
       //handle resize.  - map and chart areas should scale to browser
       //width and height
       window.addEventListener('resize', this.handleResize);
@@ -241,7 +241,7 @@ var MainComponent = React.createClass({
             <MapRowComponent zoom={this.state.zoom} latitude={this.state.latitude} longitude={this.state.longitude} HandleMapZoomEnd={this.HandleMapZoomEnd} handleMapMoveEnd={this.handleMapMoveEnd} handleCenter={this.handleCenter} handleMapClick={this.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.state.mapHeight}  />
           </RowWrapper>
 
-          { this.state.isChartsVisible &&
+          { this.props.charts.chart_visibility &&
             <RowWrapper rowPadding={this.state.defpad} height={this.state.chartHeight} >
               <ChartRowContainer isChartsVisible={this.state.isChartsVisible} handleChartToggle={this.handleChartToggle} />
             </RowWrapper>

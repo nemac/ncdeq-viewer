@@ -118,7 +118,7 @@ export function update_ChartVisiblity (visibility){
 
       //change visibility
       let isVisible = (state.chartData.chart_visibility ? false : true);
-
+      console.log(isVisible)
       //send visibility setting on
       dispatch(ChartData('SET_CHART_VISIBILITY',chartData_ID,chartData_Level,isVisible))
 
