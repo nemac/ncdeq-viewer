@@ -28,6 +28,18 @@ var ChartRow = React.createClass({
       }
     }
 
+    let CD = []
+    const test = [id_json]
+    test.map(features=>{
+      //console.log(feature)
+      const featureArray = [features]
+
+      featureArray.map(feature => {
+        console.log(feature)
+        CD.push({label:properties.chart_description,value:properties.chart_value})
+      })
+    })
+    console.log(CD)
     return (
 
       <div className="ui stackable centered grid" style={{display:vis}}>

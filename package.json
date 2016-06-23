@@ -12,8 +12,10 @@
   "dependencies": {
     "axios": "^0.9.1",
     "babel-preset-stage-2": "^6.5.0",
+    "d3": "^3.5.17",
     "esri-leaflet": "^1.0.3",
     "leaflet": "^0.7.7",
+    "rd3": "^0.6.3",
     "react": "^0.14.7",
     "react-addons-css-transition-group": "^0.14.7",
     "react-d3-basic": "^1.6.11",

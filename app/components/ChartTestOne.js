@@ -1,228 +1,223 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-import { BarChart,Treemap } from 'rd3';
+// require `react-d3-core` for Chart component, which help us build a blank svg and chart title.
+var Chart = require('react-d3-core').Chart;
+// require `react-d3-basic` for Line chart component.
+var LineChart = require('react-d3-basic').LineChart;
 
 var chartData = [{
-  "label": "Darron Weissnat IV",
-  "value": 20.72,
+  "name": "Darron Weissnat IV",
+  "BMI": 20.72,
   "age": 39,
   "birthday": "2005-01-03T00:00:00.000Z",
   "city": "East Russel",
   "married": false,
   "index": 0
 }, {
-  "label": "Pablo Ondricka",
-  "value": 19.32,
+  "name": "Pablo Ondricka",
+  "BMI": 19.32,
   "age": 38,
   "birthday": "1974-05-13T00:00:00.000Z",
   "city": "Lake Edytheville",
   "married": false,
   "index": 1
 }, {
-  "label": "Mr. Stella Kiehn Jr.",
-  "value": 16.8,
+  "name": "Mr. Stella Kiehn Jr.",
+  "BMI": 16.8,
   "age": 34,
   "birthday": "2003-07-25T00:00:00.000Z",
   "city": "Lake Veronicaburgh",
   "married": false,
   "index": 2
 }, {
-  "label": "Lavon Hilll I",
-  "value": 20.57,
+  "name": "Lavon Hilll I",
+  "BMI": 20.57,
   "age": 12,
   "birthday": "1994-10-26T00:00:00.000Z",
   "city": "Annatown",
   "married": true,
   "index": 3
 }, {
-  "label": "Clovis Pagac",
-  "value": 24.28,
+  "name": "Clovis Pagac",
+  "BMI": 24.28,
   "age": 26,
   "birthday": "1995-11-10T00:00:00.000Z",
   "city": "South Eldredtown",
   "married": false,
   "index": 4
 }, {
-  "label": "Gaylord Paucek",
-  "value": 24.41,
+  "name": "Gaylord Paucek",
+  "BMI": 24.41,
   "age": 30,
   "birthday": "1975-06-12T00:00:00.000Z",
   "city": "Koeppchester",
   "married": true,
   "index": 5
 }, {
-  "label": "Ashlynn Kuhn MD",
-  "value": 23.77,
+  "name": "Ashlynn Kuhn MD",
+  "BMI": 23.77,
   "age": 32,
   "birthday": "1985-08-09T00:00:00.000Z",
   "city": "West Josiemouth",
   "married": false,
   "index": 6
 }, {
-  "label": "Fern Schmeler IV",
-  "value": 27.33,
+  "name": "Fern Schmeler IV",
+  "BMI": 27.33,
   "age": 26,
   "birthday": "2005-02-10T00:00:00.000Z",
   "city": "West Abigaleside",
   "married": true,
   "index": 7
 }, {
-  "label": "Enid Weber",
-  "value": 18.72,
+  "name": "Enid Weber",
+  "BMI": 18.72,
   "age": 17,
   "birthday": "1998-11-30T00:00:00.000Z",
   "city": "Zackton",
   "married": true,
   "index": 8
 }, {
-  "label": "Leatha O'Hara",
-  "value": 17.68,
+  "name": "Leatha O'Hara",
+  "BMI": 17.68,
   "age": 42,
   "birthday": "2010-10-17T00:00:00.000Z",
   "city": "Lake Matilda",
   "married": false,
   "index": 9
 }, {
-  "label": "Korbin Steuber",
-  "value": 16.35,
+  "name": "Korbin Steuber",
+  "BMI": 16.35,
   "age": 39,
   "birthday": "1975-06-30T00:00:00.000Z",
   "city": "East Armandofort",
   "married": true,
   "index": 10
 }, {
-  "label": "Brennon Torphy",
-  "value": 27.37,
+  "name": "Brennon Torphy",
+  "BMI": 27.37,
   "age": 24,
   "birthday": "2003-10-21T00:00:00.000Z",
   "city": "Croninfort",
   "married": true,
   "index": 11
 }, {
-  "label": "Ms. Genoveva Bradtke",
-  "value": 28.63,
+  "name": "Ms. Genoveva Bradtke",
+  "BMI": 28.63,
   "age": 19,
   "birthday": "1983-01-10T00:00:00.000Z",
   "city": "Port Emanuel",
   "married": true,
   "index": 12
 }, {
-  "label": "Gregg Halvorson",
-  "value": 15.45,
+  "name": "Gregg Halvorson",
+  "BMI": 15.45,
   "age": 15,
   "birthday": "2004-06-15T00:00:00.000Z",
   "city": "Lake Angelinastad",
   "married": false,
   "index": 13
 }, {
-  "label": "Mr. Sabina Schroeder III",
-  "value": 24.27,
+  "name": "Mr. Sabina Schroeder III",
+  "BMI": 24.27,
   "age": 26,
   "birthday": "1980-11-22T00:00:00.000Z",
   "city": "Toyview",
   "married": true,
   "index": 14
 }, {
-  "label": "Alanna Mitchell",
-  "value": 29.25,
+  "name": "Alanna Mitchell",
+  "BMI": 29.25,
   "age": 37,
   "birthday": "1971-08-04T00:00:00.000Z",
   "city": "Lake Monserratmouth",
   "married": false,
   "index": 15
 }, {
-  "label": "Ronny Sanford",
-  "value": 29.16,
+  "name": "Ronny Sanford",
+  "BMI": 29.16,
   "age": 24,
   "birthday": "1994-11-24T00:00:00.000Z",
   "city": "New Claudhaven",
   "married": false,
   "index": 16
 }, {
-  "label": "Emmitt Pouros",
-  "value": 27.95,
+  "name": "Emmitt Pouros",
+  "BMI": 27.95,
   "age": 14,
   "birthday": "1989-04-04T00:00:00.000Z",
   "city": "Moorefurt",
   "married": true,
   "index": 17
 }, {
-  "label": "Earl Purdy",
-  "value": 18.34,
+  "name": "Earl Purdy",
+  "BMI": 18.34,
   "age": 38,
   "birthday": "2013-04-03T00:00:00.000Z",
   "city": "Lake Rowanberg",
   "married": true,
   "index": 18
 }, {
-  "label": "Cordelia Klocko",
-  "value": 25.85,
+  "name": "Cordelia Klocko",
+  "BMI": 25.85,
   "age": 36,
   "birthday": "2011-01-17T00:00:00.000Z",
   "city": "Lakinchester",
   "married": true,
   "index": 19
 }, {
-  "label": "Guido Conroy",
-  "value": 25.17,
+  "name": "Guido Conroy",
+  "BMI": 25.17,
   "age": 39,
   "birthday": "1977-04-20T00:00:00.000Z",
   "city": "Scarlettland",
   "married": true,
   "index": 20
 }, {
-  "label": "Miss Demond Weissnat V",
-  "value": 21.44,
+  "name": "Miss Demond Weissnat V",
+  "BMI": 21.44,
   "age": 19,
   "birthday": "2007-06-09T00:00:00.000Z",
   "city": "Savionberg",
   "married": false,
   "index": 21
 }, {
-  "label": "Easton Mante",
-  "value": 20.61,
+  "name": "Easton Mante",
+  "BMI": 20.61,
   "age": 43,
   "birthday": "2007-01-29T00:00:00.000Z",
   "city": "Kutchberg",
   "married": false,
   "index": 22
 }, {
-  "label": "Dayton Ebert",
-  "value": 29.88,
+  "name": "Dayton Ebert",
+  "BMI": 29.88,
   "age": 20,
   "birthday": "1978-04-27T00:00:00.000Z",
   "city": "West Wiley",
   "married": true,
   "index": 23
 }]
-
-var barData = [
-  {
-    "name": "Series A",
-    "values": [
-      { "x": "test", "y":  91},
-      { "x": 2, "y": 290},
-      { "x": 3, "y": 25},
-    ]
-  },
-  {
-    "name": "Series B",
-    "values": [
-      { "x": "test", "y":  9},
-      { "x": 2, "y": 49},
-      { "x": 3, "y": 20},
-    ]
-  },
-  {
-    "name": "Series C",
-    "values": [
-      { "x": "test", "y":  14},
-      { "x": 2, "y": 77},
-      { "x": 3, "y": 70},
-    ]
-  }
-];
+var width = 700,
+    height = 300,
+    margins = {left: 100, right: 100, top: 50, bottom: 50},
+    title = "User sample",
+    // chart series,
+    // field: is what field your data want to be selected
+    // name: the name of the field that display in legend
+    // color: what color is the line
+    chartSeries = [
+      {
+        field: 'BMI',
+        name: 'BMI',
+        color: '#ff7f0e'
+      }
+    ],
+    // your x accessor
+    x = function(d) {
+      return d.index;
+    }
 
 var ChartTest = React.createClass({
   propTypes: {
@@ -238,24 +233,24 @@ var ChartTest = React.createClass({
       <div className="ui segments">
         <div className="ui basic segment">
           <span key="1" >test</span>
-            <Treemap
-              data={chartData}
-              width={500}
-              height={200}
-              fill={'#3182bd'}
-              title="Treemap"
-              textColor="#484848"
-              fontColor="12px"
-              hoverAnimation={true}
-            />
-            <BarChart
-            data={barData}
-            width={500}
-            height={300}
-            title="Bar Chart"
-            xAxisLabel="Value"
-            yAxisLabel="Label"
-            />
+          <Chart
+            title={title}
+            width={width}
+            height={height}
+            margins= {margins}
+            >
+              <LineChart
+                showXGrid= {false}
+                showYGrid= {false}
+                margins= {margins}
+                title={title}
+                data={chartData}
+                width={width}
+                height={height}
+                chartSeries={chartSeries}
+                x={x}
+              />
+          </Chart>
         </div>
       </div>
     );
