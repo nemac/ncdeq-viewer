@@ -9,7 +9,6 @@ var MapWrapper = React.createClass({
     longitude: PropTypes.number.isRequired,
     zoom: PropTypes.number.isRequired,
     mapHeight: PropTypes.number.isRequired,
-    handleMapClick: PropTypes.func.isRequired,
     handleMapMoveEnd: PropTypes.func.isRequired,
     HandleMapZoomEnd: PropTypes.func.isRequired,
     rowPadding: PropTypes.number
@@ -18,7 +17,7 @@ var MapWrapper = React.createClass({
     var pad = this.props.rowPadding ? 1 : this.props.rowPadding;
     return (
       <div className="twelve wide column" style={{padding:pad + 'px',height:this.props.mapHeight + 'px'}}>
-        <MapContainer HandleMapZoomEnd={this.props.HandleMapZoomEnd} handleMapMoveEnd={this.props.handleMapMoveEnd} zoom={this.props.zoom} latitude={this.props.latitude} longitude={this.props.longitude} handleMapClick={this.props.handleMapClick} />
+        <MapContainer HandleMapZoomEnd={this.props.HandleMapZoomEnd} handleMapMoveEnd={this.props.handleMapMoveEnd} zoom={this.props.zoom} latitude={this.props.latitude} longitude={this.props.longitude}  />
       </div>
     );
   }

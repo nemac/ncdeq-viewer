@@ -185,7 +185,7 @@ var MainComponent = React.createClass({
 
     },
     handleMapClick: function(e){
-
+      //not used anymore. no in redux bu need to do the sizes thing in redux also
       //set new map size without chart area
       var sizes = this.setSize(true);
 
@@ -238,7 +238,7 @@ var MainComponent = React.createClass({
           </RowWrapper>
 
           <RowWrapper rowPadding={this.state.rowPadding} >
-            <MapRowComponent zoom={this.state.zoom} latitude={this.state.latitude} longitude={this.state.longitude} HandleMapZoomEnd={this.HandleMapZoomEnd} handleMapMoveEnd={this.handleMapMoveEnd} handleCenter={this.handleCenter} handleMapClick={this.handleMapClick} rowPadding={this.state.rowPadding} mapHeight={this.state.mapHeight}  />
+            <MapRowComponent zoom={this.state.zoom} latitude={this.state.latitude} longitude={this.state.longitude} HandleMapZoomEnd={this.HandleMapZoomEnd} handleMapMoveEnd={this.handleMapMoveEnd} handleCenter={this.handleCenter} rowPadding={this.state.rowPadding} mapHeight={this.state.mapHeight}  />
           </RowWrapper>
 
           { this.props.charts.chart_visibility &&
