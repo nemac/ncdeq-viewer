@@ -1,7 +1,8 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 import ChartRowWrapper from '../components/ChartRowWrapper';
-//ChartRowContainer
+var ChartTest = require('../components/ChartTest');
+
 var Divider = require('./Divider');
 
 var ChartRow = React.createClass({
@@ -44,7 +45,6 @@ var ChartRow = React.createClass({
         <div className="content"><p>Some descriptive text</p></div>
       </div>
 
-
       <Divider />
 
       <div className="fourteen wide column">
@@ -54,7 +54,7 @@ var ChartRow = React.createClass({
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapper key="TRA" title="TRA's" id="" data="" alldata="" />
+        <ChartTest key="TRA" title="TRA's" id="" data="" alldata="" />
       </div>
 
       <Divider columns="fourteen"/>

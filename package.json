@@ -17,6 +17,7 @@
     "react": "^0.14.7",
     "react-addons-css-transition-group": "^0.14.7",
     "react-d3-basic": "^1.6.11",
+    "react-d3-core": "^1.2.8",
     "react-dom": "^0.14.7",
     "react-leaflet": "^0.10.2",
     "react-redux": "^4.4.5",
