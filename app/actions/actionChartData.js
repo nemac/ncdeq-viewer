@@ -2,7 +2,7 @@ var axios = require('axios');
 import { CheckReponse } from './responses';
 import { AGO_URL, Data_FeatureID } from './actionConstants';
 
-const CHART_DATA_OUT_FIELDS = 'chart_id%2Cchart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value%2C';
+const CHART_DATA_OUT_FIELDS = 'chart_id%2Cchart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value%2Cchart_matchid';
 const CHART_DATA_ORDER_BY_FIELDS = 'chart_level%2Cchart_matchid';
 
 
