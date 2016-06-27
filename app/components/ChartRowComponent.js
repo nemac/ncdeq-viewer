@@ -18,7 +18,7 @@ var ChartRow = React.createClass({
     if ( this.props.charts ){
       if ( this.props.charts.chart_data.id_json ){
         if ( this.props.charts.chart_data.id_json.features ){
-           id_json =this.props.charts.chart_data.id_json.features;
+          id_json =this.props.charts.chart_data.id_json.features;
         }
       }
       if ( this.props.charts.chart_data.level_json ){
@@ -34,88 +34,33 @@ var ChartRow = React.createClass({
     let chartID = []
     let chardatatest = [];
 
-level_json.map(featureCollection=>{
-  if(featureCollection.properties.chart_level === 1){
-    TreemapChartData_D3.push({label:featureCollection.properties.ID,value: Number(featureCollection.properties.chart_value)})
-  }
-})
+    level_json.map(featureCollection=>{
+      if(featureCollection.properties.chart_level === 1){
+        TreemapChartData_D3.push({label:featureCollection.properties.ID,value: Number(featureCollection.properties.chart_value)})
+      }
+    })
 
 
-     id_json.map(featureCollection=>{
-        var data = levels.find( function( ele ) {
-            return ele.name && ele.name === featureCollection.properties.chart_matchid;
-        } );
+    id_json.map(featureCollection=>{
+      var data = levels.find( function( ele ) {
+        return ele.name && ele.name === featureCollection.properties.chart_matchid;
+      } );
 
-        //console.log(data)
-        if( !data ) {
-          levels.push({name: featureCollection.properties.chart_matchid, values:[]})
-        }
-     })
+      if( !data ) {
+        levels.push({name: featureCollection.properties.chart_matchid, values:[]})
+      }
+    })
 
-id_json.map(featureCollection => {
-   let valuesArray = [];
-  levels.map(level => {
-      //console.log(level.name)
-      //console.log(featureCollection.properties.chart_id)
-      // console.log(featureCollection.properties.chart_matchid)
-      // console.log(featureCollection.properties.chart_id)
-      const chartVAL = (featureCollection.properties.chart_matchid === level.name && featureCollection.properties.chart_matchid != featureCollection.properties.chart_id ? Number(featureCollection.properties.chart_value) : null);
-      valuesArray.push({"x": level.name , "y": chartVAL})
-      //console.log(chartVAL);
-  })
-  chardatatest.push({name: featureCollection.properties.chart_matchid, values:valuesArray})
-  //console.log('-----------------')
+    id_json.map(featureCollection => {
+      let valuesArray = [];
+      levels.map(level => {
 
-})
+        const chartVAL = (featureCollection.properties.chart_matchid === level.name && featureCollection.properties.chart_matchid != featureCollection.properties.chart_id ? Number(featureCollection.properties.chart_value) : null);
+        valuesArray.push({"x": level.name , "y": chartVAL})
+      })
+      BarChartData_D3.push({name: featureCollection.properties.chart_matchid, values:valuesArray})
 
-
-//
-// //test
-//   levels.map(level => {
-//     console.log('#############')
-//     console.log(level.name)
-//
-//      let valuesArray = [];
-//      id_json.map(featureCollection=>{
-//        console.log('*************')
-//        const chartVAL = (level.name === featureCollection.properties.chart_matchid && featureCollection.properties.chart_matchid != featureCollection.properties.chart_id  ? Number(featureCollection.properties.chart_value) : null);
-//       //  if(level.name === featureCollection.properties.chart_matchid){
-//       //    console.log(featureCollection.properties.chart_value)
-//       //  }else {
-//       //    console.log(null)
-//       //  }
-//        console.log(chartVAL)
-//
-//
-//        console.log('*************')
-//          //const val = featureCollection.properties.chart_matchid === level.name ? Number(featureCollection.properties.chart_value) : null;
-//          //valuesArray.push({"x": featureCollection.properties.chart_matchid, "y": val })
-//          valuesArray.push({"x":  featureCollection.properties.chart_matchid , "y": chartVAL})
-//
-//      })
-//      console.log('#############')
-//      level.values = valuesArray
-//      //console.log (valuesArray)
-//    })
-//
-// //test
-
-     //
-    //  levels.map(level => {
-     //
-    //     const levelValues = id_json.filter(feature =>{
-    //       return feature.properties.chart_matchid === level.name
-    //     })
-     //
-    //     let valuesArray = [];
-    //     const values = levelValues.map( feature => {
-    //         valuesArray.push({"x": feature.properties.chart_matchid, "y": Number(feature.properties.chart_value)})
-    //     })
-    //     level.values = valuesArray
-    //  })
-
-
-     console.log(chardatatest)
+    })
 
     return (
 
@@ -143,7 +88,7 @@ id_json.map(featureCollection => {
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartTest key="TRA" title="TRA's" id="" data="" alldata="" TreemapChartData_D3="" BarChartData_D3={chardatatest}/>
+        <ChartTest key="TRA" title="TRA's" id="" data="" alldata="" TreemapChartData_D3="" BarChartData_D3={BarChartData_D3}/>
       </div>
 
       <Divider columns="fourteen"/>
