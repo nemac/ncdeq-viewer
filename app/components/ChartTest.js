@@ -199,28 +199,8 @@ var chartData = [{
 
 var barData = [
   {
-    "name": "Series A",
-    "values": [
-      { "x": "test", "y":  91},
-      { "x": 2, "y": 290},
-      { "x": 3, "y": 25},
-    ]
-  },
-  {
-    "name": "Series B",
-    "values": [
-      { "x": "test", "y":  9},
-      { "x": 2, "y": 49},
-      { "x": 3, "y": 20},
-    ]
-  },
-  {
-    "name": "Series C",
-    "values": [
-      { "x": "test", "y":  14},
-      { "x": 2, "y": 77},
-      { "x": 3, "y": 70},
-    ]
+    "name": "Total Baseline",
+    "values": [{"x":"Total Habitat Baseline","y":0.917354555440997},{"x":"Total Hydrology Baseline","y":0.251070214379195},{"x":"Total Water Quality Baseline","y":0.032061733370518}]
   }
 ];
 
@@ -234,6 +214,7 @@ var ChartTest = React.createClass({
     };
   },
   render: function() {
+    console.log(JSON.stringify(this.props.BarChartData_D3))
     return (
       <div className="ui segments">
         <div className="ui basic segment">
@@ -249,8 +230,8 @@ var ChartTest = React.createClass({
               hoverAnimation={true}
             />
             <BarChart
-            data={barData}
-            width={500}
+            data={this.props.BarChartData_D3}
+            width={1000}
             height={300}
             title="Bar Chart"
             xAxisLabel="Value"

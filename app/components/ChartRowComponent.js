@@ -32,75 +32,84 @@ var ChartRow = React.createClass({
     let BarChartData_D3 = [];
     let levels = []
     let chartID = []
-    //console.log (id_json)
+    let chardatatest = [];
 
      id_json.map(featureCollection=>{
-        //console.log(featureCollection.properties)
         var data = levels.find( function( ele ) {
-            return ele.name && ele.name === featureCollection.properties.chart_level;
+            return ele.name && ele.name === featureCollection.properties.chart_matchid;
         } );
 
+        //console.log(data)
         if( !data ) {
-          levels.push({name: featureCollection.properties.chart_level, values:[]})
+          levels.push({name: featureCollection.properties.chart_matchid, values:[]})
         }
      })
 
-     levels.map(level => {
+id_json.map(featureCollection => {
+   let valuesArray = [];
+  levels.map(level => {
+      //console.log(level.name)
+      //console.log(featureCollection.properties.chart_id)
+      // console.log(featureCollection.properties.chart_matchid)
+      // console.log(featureCollection.properties.chart_id)
+      const chartVAL = (featureCollection.properties.chart_matchid === level.name && featureCollection.properties.chart_matchid != featureCollection.properties.chart_id ? Number(featureCollection.properties.chart_value) : null);
+      valuesArray.push({"x": level.name , "y": chartVAL})
+      //console.log(chartVAL);
+  })
+  chardatatest.push({name: featureCollection.properties.chart_matchid, values:valuesArray})
+  //console.log('-----------------')
 
-        const levelValues = id_json.filter(feature =>{
-          return feature.properties.chart_level === level.name
-        })
+})
 
-        let valuesArray = [];
-        const values = levelValues.map( feature => {
-            valuesArray.push({"x": feature.properties.chart_description, "y": feature.properties.chart_value})
-        })
-        //console.log(valuesArray)
-        //console.log({"x": levelValues.properties.chart_description, "y": levelValues.properties.chart_description.chart_value })
-        level.values = valuesArray
-        // console.log(level.values)
-        // console.log(levelValues)
-     })
 
-    //  levels.map(levels)
-     console.log(levels)
+//
+// //test
+//   levels.map(level => {
+//     console.log('#############')
+//     console.log(level.name)
+//
+//      let valuesArray = [];
+//      id_json.map(featureCollection=>{
+//        console.log('*************')
+//        const chartVAL = (level.name === featureCollection.properties.chart_matchid && featureCollection.properties.chart_matchid != featureCollection.properties.chart_id  ? Number(featureCollection.properties.chart_value) : null);
+//       //  if(level.name === featureCollection.properties.chart_matchid){
+//       //    console.log(featureCollection.properties.chart_value)
+//       //  }else {
+//       //    console.log(null)
+//       //  }
+//        console.log(chartVAL)
+//
+//
+//        console.log('*************')
+//          //const val = featureCollection.properties.chart_matchid === level.name ? Number(featureCollection.properties.chart_value) : null;
+//          //valuesArray.push({"x": featureCollection.properties.chart_matchid, "y": val })
+//          valuesArray.push({"x":  featureCollection.properties.chart_matchid , "y": chartVAL})
+//
+//      })
+//      console.log('#############')
+//      level.values = valuesArray
+//      //console.log (valuesArray)
+//    })
+//
+// //test
 
-    // GeoJSON.map(featureCollection=>{
-    //   const featureCollectionArray = [featureCollection]
-    //   featureCollectionArray.map(features => {
-    //     features.map(feature =>{
-    //       let chart_value = Number(feature.properties.chart_value).toPrecision();
-    //       //console.log(chart_value)
-    //       // if( feature.properties.chart_value  ) {
-    //       //   //console.log(feature.properties.chart_value )
-    //       //   chart_value = 0
-    //       // }
-    //
-    //       //const charValue = (isNaN(feature.properties.chart_value) ? feature.properties.chart_value : 0)
-    //       //console.log(feature.properties.chart_value)
-    //       // if (BarChartData_D3["name"] = feature.properties.chart_level){
-    //       //   console.log(feature.properties.chart_level + '= ')
-    //       // }
-    //
-    //       TreemapChartData_D3.push({label: feature.properties.chart_description,value: chart_value })
-    //       BarChartData_D3.push({"name": feature.properties.chart_level,"values":[{"x": feature.properties.chart_description, "y": chart_value }]})
-    //       //console.log({"name": feature.properties.chart_level,"values":[{"x": feature.properties.chart_description, "y": chart_value }]})
+     //
+    //  levels.map(level => {
+     //
+    //     const levelValues = id_json.filter(feature =>{
+    //       return feature.properties.chart_matchid === level.name
     //     })
-    //   })
-    // })
-
-    // var thelevels = {};
-    // RawBarChartData_D3.forEach( function( item ) {
-    //   var level = thelevels[item.name] = thelevels[item.names] || {};
-    //   level['values'] = item.values;
-    //
-    //   //level['values'] = item.values;
-    // });
-    // console.log(thelevels)
+     //
+    //     let valuesArray = [];
+    //     const values = levelValues.map( feature => {
+    //         valuesArray.push({"x": feature.properties.chart_matchid, "y": Number(feature.properties.chart_value)})
+    //     })
+    //     level.values = valuesArray
+    //  })
 
 
-    // console.log(RawBarChartData_D3)
-    // console.log(TreemapChartData_D3)
+     console.log(chardatatest)
+
     return (
 
       <div className="ui stackable centered grid" style={{display:vis}}>
@@ -127,7 +136,7 @@ var ChartRow = React.createClass({
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartTest key="TRA" title="TRA's" id="" data="" alldata="" TreemapChartData_D3={TreemapChartData_D3} BarChartData_D3={BarChartData_D3}/>
+        <ChartTest key="TRA" title="TRA's" id="" data="" alldata="" TreemapChartData_D3={TreemapChartData_D3} BarChartData_D3={chardatatest}/>
       </div>
 
       <Divider columns="fourteen"/>
