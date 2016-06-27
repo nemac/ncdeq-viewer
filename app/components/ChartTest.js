@@ -197,12 +197,17 @@ var chartData = [{
   "index": 23
 }]
 
-var barData = [
-  {
-    "name": "Total Baseline",
-    "values": [{"x":"Total Habitat Baseline","y":0.917354555440997},{"x":"Total Hydrology Baseline","y":0.251070214379195},{"x":"Total Water Quality Baseline","y":0.032061733370518}]
-  }
-];
+// var barData = [
+//   {
+//     "name": "Total Baseline",
+//     "values": [{"x":"Total Habitat Baseline","y":0.917354555440997},{"x":"Total Hydrology Baseline","y":0.251070214379195},{"x":"Total Water Quality Baseline","y":0.032061733370518}]
+//   }
+// ];
+
+// let barData = this.props.BarChartData_D3 ?  this.props.BarChartData_D3 : [{"name": null,"values": [{"x":null,"y":null}]}];
+//
+// let treemapData = this.props.TreemapChartData_D3 ? this.props.TreemapChartData_D3 : [{"label": null,"value": null}];
+
 
 var ChartTest = React.createClass({
   propTypes: {
@@ -219,9 +224,10 @@ var ChartTest = React.createClass({
       <div className="ui segments">
         <div className="ui basic segment">
           <span key="1" >test</span>
+          { this.props.TreemapChartData_D3 &&
             <Treemap
-              data={chartData}
-              width={500}
+              data={this.props.TreemapChartData_D3 ? this.props.TreemapChartData_D3 : [{"label": null,"value": null}]}
+              width={1000}
               height={200}
               fill={'#3182bd'}
               title="Treemap"
@@ -229,14 +235,18 @@ var ChartTest = React.createClass({
               fontColor="12px"
               hoverAnimation={true}
             />
+        }
+        { this.props.BarChartData_D3 &&
+
             <BarChart
-            data={this.props.BarChartData_D3}
+            data={this.props.BarChartData_D3 ?  this.props.BarChartData_D3 : [{"name": null,"values": [{"x":null,"y":null}]}]}
             width={1000}
             height={300}
             title="Bar Chart"
             xAxisLabel="Value"
             yAxisLabel="Label"
             />
+        }
         </div>
       </div>
     );

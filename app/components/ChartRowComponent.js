@@ -34,6 +34,13 @@ var ChartRow = React.createClass({
     let chartID = []
     let chardatatest = [];
 
+level_json.map(featureCollection=>{
+  if(featureCollection.properties.chart_level === 1){
+    TreemapChartData_D3.push({label:featureCollection.properties.ID,value: Number(featureCollection.properties.chart_value)})
+  }
+})
+
+
      id_json.map(featureCollection=>{
         var data = levels.find( function( ele ) {
             return ele.name && ele.name === featureCollection.properties.chart_matchid;
@@ -130,13 +137,13 @@ id_json.map(featureCollection => {
       <Divider />
 
       <div className="fourteen wide column">
-        <ChartRowWrapper key="HUCS" title="HUC's" id={this.props.current_id}  data="" alldata={level_json}  />
+        <ChartTest key="HUCS" title="HUC's" id={this.props.current_id}  data="" alldata="" TreemapChartData_D3={TreemapChartData_D3} BarChartData_D3="" />
       </div>
 
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartTest key="TRA" title="TRA's" id="" data="" alldata="" TreemapChartData_D3={TreemapChartData_D3} BarChartData_D3={chardatatest}/>
+        <ChartTest key="TRA" title="TRA's" id="" data="" alldata="" TreemapChartData_D3="" BarChartData_D3={chardatatest}/>
       </div>
 
       <Divider columns="fourteen"/>
