@@ -215,6 +215,7 @@ var MainComponent = React.createClass({
       //get and populate the geography_levels state...
       this.props.get_GeographyLevels();
       this.props.get_ChartData();
+      this.props.get_defaultMapData();
 
       //handle resize.  - map and chart areas should scale to browser
       //width and height

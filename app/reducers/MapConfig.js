@@ -1,7 +1,7 @@
 export function mapConfig(state = [], action) {
   switch (action.type) {
-    case 'SET_MAP_ZOOM':
-      return { ...state, lists: action.lists}
+    case 'MAP_DATA':
+      return { ...state, mapconfig: action.mapconfig}
     default:
       return state
   }

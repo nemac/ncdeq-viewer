@@ -54,6 +54,7 @@ var MapContainer = React.createClass({
     }
   },
   getInitialState: function() {
+
     var southWest = L.latLng(36.932330061503144, -73.970947265625),
     northEast = L.latLng(33.54139466898275, -86.98974609375),
     bounds = L.latLngBounds(southWest, northEast);
@@ -63,6 +64,7 @@ var MapContainer = React.createClass({
       longitude: this.props.longitude,
       zoom: this.props.zoom,
       minZoom: 7,
+      maxZoom: 16,
       maxBounds: bounds,
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
       tileUrl:'http://api.tiles.mapbox.com/v3/daveism.oo0p88l4/{z}/{x}/{y}.png',
@@ -70,7 +72,7 @@ var MapContainer = React.createClass({
   },
   render: function() {
     return (
-      <ReactLeaflet.Map  ref='map' onLeafletZoomEnd={this.props.HandleMapZoomEnd.bind(null,this)} onLeafletMoveend={this.props.handleMapMoveEnd.bind(null,this)} onLeafletClick={this.handleMapClick.bind(null,this)} center={[this.props.latitude,this.props.longitude]} zoom={this.props.zoom} maxBounds={this.state.maxBounds} minZoom={this.state.minZoom}>
+      <ReactLeaflet.Map  ref='map' onLeafletZoomEnd={this.props.HandleMapZoomEnd.bind(null,this)} onLeafletMoveend={this.props.handleMapMoveEnd.bind(null,this)} onLeafletClick={this.handleMapClick.bind(null,this)} center={[this.props.latitude,this.props.longitude]} zoom={this.props.zoom} maxBounds={this.state.maxBounds} maxZoom={this.state.maxZoom} minZoom={this.state.minZoom} >
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
           url={this.state.tileUrl}

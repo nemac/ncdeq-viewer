@@ -15,4 +15,4 @@ export const change_geographyLevelFilter = GeographyLevels.change_geographyLevel
 export const update_ChartVisiblity = ChartData.update_ChartVisiblity
 export const get_ChartData = ChartData.get_ChartData
 export const set_CurrentID = CurrentID.set_CurrentID;
-export const set_MapZoom = MapConfig.setMapZoom
+export const get_defaultMapData = MapConfig.get_defaultMapData;
