@@ -1,5 +1,27 @@
 //basic map (leaflet state and functions)
 
+export function set_mapToPoint(lat,lng,z,e){
+  return (dispatch, getState) => {
+
+    //get redux state
+    const state = getState()
+
+    const latitude = lat;
+    const longitude = lng;
+    const zoom =  z;
+    const minZoom = state.mapConfig.mapconfig.minZoom;
+    const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+    const maxBounds = state.mapConfig.mapconfig.maxBounds;
+    const layers = [];
+
+
+    //create map config object
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds};
+
+    dispatch(mapSate('MAP_TO_POINT',mapConfig));
+
+  }
+}
 
 export function HandleMapEnd(mapComp,e){
   return (dispatch, getState) => {
@@ -11,13 +33,12 @@ export function HandleMapEnd(mapComp,e){
     var L = mapComp.refs.map.leafletElement
     var center = L.getCenter();
 
-
     const latitude = center.lat;
     const longitude = center.lng;
     const zoom =  L.getZoom();
-    const minZoom = state.minZoom;
-    const maxZoom =  state.maxZoom;
-    const maxBounds = state.maxBounds;
+    const minZoom = state.mapConfig.mapconfig.minZoom;
+    const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+    const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = [];
 
     //create map config object

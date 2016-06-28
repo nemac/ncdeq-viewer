@@ -17,3 +17,4 @@ export const get_ChartData = ChartData.get_ChartData
 export const set_CurrentID = CurrentID.set_CurrentID;
 export const get_defaultMapData = MapConfig.get_defaultMapData;
 export const HandleMapEnd = MapConfig.HandleMapEnd;
+export const set_mapToPoint = MapConfig.set_mapToPoint;

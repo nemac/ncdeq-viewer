@@ -18,9 +18,6 @@ var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var MainComponent = React.createClass({
   getDefaultProps: function() {
     return {
-      latitude: 35.6684,
-      longitude: -80.4786,
-      zoom: 7,
       isChartsVisible: false,
       headerHeight:100,
       breadCrumbsHeight:50
@@ -87,9 +84,6 @@ var MainComponent = React.createClass({
     var sizes = this.setSize();
 
     return{
-      latitude: 35.6683,
-      longitude: -80.4786,
-      zoom: 7,
       defpad:5,
       isChartsVisible: false,
       rowPadding: 1,
@@ -116,9 +110,9 @@ var MainComponent = React.createClass({
 
   },
   handleSearchChange: function(comp,e){
-
     var input = e.target;
 
+    //add map bounds to this...
     var defaultBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(33.6878, -84.5288),
       new google.maps.LatLng(36.9674, -74.8169));
@@ -141,14 +135,11 @@ var MainComponent = React.createClass({
 
         var lat = place.geometry.location.lat();
         var lng = place.geometry.location.lng();
-        var zoom = self.state.zoom > 12 ? self.state.zoom  : 12
-        //will need to add ability to detect the huc's this point falls in
+        var zoom = self.props.map_settings.zoom > 12 ? self.props.map_settings.zoom : 12
 
-        self.setState({
-          latitude: lat,
-          longitude: lng,
-          zoom: zoom
-        })
+
+        //will need to add ability to detect the huc's this point falls in
+        self.props.set_mapToPoint(lat,lng,zoom,null);
 
       });
 
