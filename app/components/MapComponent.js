@@ -7,7 +7,9 @@ var PropTypes = React.PropTypes;
 
 var MapContainer = React.createClass({
   componentDidMount: function() {
-
+    // this.props.get_defaultMapData();
+    //
+    // console.log(this.props)
     // agoHelpers.get_BasinsAll()
     //   .then(function(returnedData){
     //     console.log('ALL BASINS: ' + JSON.stringify(returnedData))
@@ -23,10 +25,10 @@ var MapContainer = React.createClass({
     //     console.log('BASINS: ' + JSON.stringify(returnedData))
     //   })
     //
-    agoHelpers.get_MenuList()
-      .then(function(returnedData){
-        //console.log('Menu List: ' + JSON.stringify(returnedData))
-      })
+    // agoHelpers.get_MenuList()
+    //   .then(function(returnedData){
+    //     //console.log('Menu List: ' + JSON.stringify(returnedData))
+    //   })
     //
     //   agoHelpers.get_filteredIDs()
     //     .then(function(returnedData){
@@ -42,8 +44,14 @@ var MapContainer = React.createClass({
     //       console.log('HUC 12s: ' + JSON.stringify(returnedData))
     //     })
 
-    var map = this.refs.map.getLeafletElement();
-    this.setState({map:this.refs.map,l:L})
+    //console.log(this.props)
+    // this.props.get_defaultMapData();
+    // console.log(this.props)
+
+    if (this.refs.map){
+      var map = this.refs.map.getLeafletElement();
+      this.setState({map:this.refs.map,l:L})
+    }
 
   },
   handleMapClick: function(e){
@@ -58,7 +66,6 @@ var MapContainer = React.createClass({
     var southWest = L.latLng(36.932330061503144, -73.970947265625),
     northEast = L.latLng(33.54139466898275, -86.98974609375),
     bounds = L.latLngBounds(southWest, northEast);
-
     return {
       latitude: this.props.latitude,
       longitude: this.props.longitude,
@@ -71,8 +78,25 @@ var MapContainer = React.createClass({
     }
   },
   render: function() {
+    //console.log(this.props.mapConfig.mapconfig)
+    // const mapconfigset = this.props.mapConfig ? true : false;
+    //if (this.props.mapConfig.mapconfig){console.log('map not set yet')}
+    // var southWest = L.latLng(36.932330061503144, -73.970947265625),
+    // northEast = L.latLng(33.54139466898275, -86.98974609375),
+    // bounds = L.latLngBounds(southWest, northEast);
+    // console.log(this.props.mapConfig.mapconfig)
     return (
-      <ReactLeaflet.Map  ref='map' onLeafletZoomEnd={this.props.HandleMapZoomEnd.bind(null,this)} onLeafletMoveend={this.props.handleMapMoveEnd.bind(null,this)} onLeafletClick={this.handleMapClick.bind(null,this)} center={[this.props.latitude,this.props.longitude]} zoom={this.props.zoom} maxBounds={this.state.maxBounds} maxZoom={this.state.maxZoom} minZoom={this.state.minZoom} >
+      <div className="twelve wide column" style={{padding:this.props.rowPadding + 'px',height:this.props.mapHeight + 'px'}}>
+        {this.props.mapConfig.mapconfig &&
+      <ReactLeaflet.Map  ref='map'
+          onLeafletZoomEnd={this.props.HandleMapZoomEnd.bind(null,this)}
+          onLeafletMoveend={this.props.handleMapMoveEnd.bind(null,this)}
+          onLeafletClick={this.handleMapClick.bind(null,this)}
+          center={[this.props.mapConfig.mapconfig.latitude,this.props.mapConfig.mapconfig.longitude]}
+          zoom={this.props.mapConfig.mapconfig.zoom}
+          maxBounds={this.props.mapConfig.mapconfig.maxBounds}
+          maxZoom={this.props.mapConfig.mapconfig.maxZoom}
+          minZoom={this.props.mapConfig.mapconfig.minZoom} >
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
           url={this.state.tileUrl}
@@ -93,6 +117,9 @@ var MapContainer = React.createClass({
         zoom={this.props.zoom}
       />
     </ReactLeaflet.Map>
+  }
+
+  </div>
     );
   }
 });

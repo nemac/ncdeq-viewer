@@ -4,7 +4,7 @@ import { get_ChartData, update_ChartVisiblity} from '../actions/actionCreators'
 import ChartRowComponent from '../components/ChartRowComponent'
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state,props) => {
   return {
     charts: state.chartData,
   }

@@ -3,12 +3,17 @@
 export function get_defaultMapData(zoom){
   return (dispatch, getState) => {
 
-    let latitude = 0;
-    let longitude = 0;
-    let zoom = 0;
-    let minZoom = 0;
-    let maxZoom = 0;
-    let maxBounds = [];
+    //requires leaftlet to be loaded.
+    var southWest = L.latLng(36.932330061503144, -73.970947265625),
+    northEast = L.latLng(33.54139466898275, -86.98974609375),
+    bounds = L.latLngBounds(southWest, northEast);
+
+    let latitude = 35.6684;
+    let longitude = -80.4786;
+    let zoom = 7;
+    let minZoom = 7;
+    let maxZoom = 16;
+    let maxBounds = bounds;
     let layers = [];
 
     //create new map config

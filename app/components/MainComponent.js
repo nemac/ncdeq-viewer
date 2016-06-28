@@ -217,6 +217,7 @@ var MainComponent = React.createClass({
       this.props.get_ChartData();
       this.props.get_defaultMapData();
 
+
       //handle resize.  - map and chart areas should scale to browser
       //width and height
       window.addEventListener('resize', this.handleResize);
