@@ -14,7 +14,6 @@ export function set_mapToPoint(lat,lng,z,e){
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = [];
 
-
     //create map config object
     const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds};
 

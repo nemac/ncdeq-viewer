@@ -6,7 +6,9 @@ var ChartTest = require('../components/ChartTest');
 var Divider = require('./Divider');
 
 var ChartRow = React.createClass({
-  componentDidMount: function() {
+  chartToggle: function(e){
+    this.props.update_MapHeight(e);
+    this.props.update_ChartVisiblity(e);
   },
   render: function() {
     let vis = this.props.charts.chart_visibility ?  'show' : 'none';
@@ -72,7 +74,7 @@ var ChartRow = React.createClass({
               Charts
             </h3>
             <div className="ui right floated compact grey inverted segment">
-              <div className="meduim basic ui button" onClick={this.props.update_ChartVisiblity} >
+              <div className="meduim basic ui button" onClick={this.chartToggle} >
                 <i className="remove icon"></i>
               </div>
           </div>

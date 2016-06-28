@@ -19,6 +19,8 @@ var MapContainer = React.createClass({
     // need to add redux stuff for re-sizeing?
     const isVisible = this.props.charts.chart_visibility;
 
+    this.props.update_MapHeight();
+
     //update chart visibility on map click...
     if(!isVisible){
       this.props.update_ChartVisiblity();
@@ -31,8 +33,11 @@ var MapContainer = React.createClass({
       }
     },
   render: function() {
+    const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : 5;
+    const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight : 300;
+
     return (
-      <div className="twelve wide column" style={{padding:this.props.rowPadding + 'px',height:this.props.mapHeight + 'px'}}>
+      <div className="twelve wide column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
           onLeafletZoomEnd={this.props.HandleMapEnd.bind(null,this)}

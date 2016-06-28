@@ -2,20 +2,21 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 //import actions
-import { get_defaultMapData, HandleMapEnd, set_mapToPoint, update_ChartVisiblity } from '../actions/actionCreators'
+import { get_defaultMapData, HandleMapEnd, set_mapToPoint, update_ChartVisiblity, update_MapHeight } from '../actions/actionCreators'
 
 //import components
 import MapComponent from '../components/MapComponent'
 
 //either rename this or rename it also in main
 const mapStateToProps = (state,props) => {
-  let map_settings = state.mapConfig.mapconfig
-
+  let map_settings = state.mapConfig.mapconfig;
   let charts = state.chartData;
+  let default_settings = state.default_settings.default_settings;
 
   return {
     charts,
     map_settings,
+    default_settings,
   }
 }
 
@@ -25,6 +26,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     update_ChartVisiblity: bindActionCreators(update_ChartVisiblity, dispatch),
     HandleMapEnd: bindActionCreators(HandleMapEnd, dispatch),
     set_mapToPoint: bindActionCreators(set_mapToPoint, dispatch),
+    update_MapHeight: bindActionCreators(update_MapHeight, dispatch),
   }
 }
 

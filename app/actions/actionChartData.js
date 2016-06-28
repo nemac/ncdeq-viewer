@@ -1,6 +1,6 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, Data_FeatureID } from './actionConstants';
+import { AGO_URL, Data_FeatureID } from '../constants/actionConstants';
 
 const CHART_DATA_OUT_FIELDS = 'geography_label%2CID%2Cchart_id%2Cchart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value%2Cchart_matchid';
 const CHART_DATA_ORDER_BY_FIELDS = 'chart_level%2Cchart_matchid';
@@ -100,7 +100,7 @@ export function get_ChartData(ID,LEVEL){
           chartData_ID = CheckReponse(chartbyid,'AGO_API_ERROR');
         }
         //send the chart data on
-        dispatch(ChartData('GET_CHART_DATA',chartData_ID,chartData_Level,visibility))
+        dispatch(ChartData('GET_CHART_DATA', chartData_ID, chartData_Level, visibility))
 
       })
     )
