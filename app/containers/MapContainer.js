@@ -9,6 +9,9 @@ import MapComponent from '../components/MapComponent'
 
 //either rename this or rename it also in main
 const mapStateToProps = (state,props) => {
+
+  //Need to understand how to git rid of dthe double dot names... mapConfig.mapconfig default_settings.default_settings
+  //  needs to happen in reducers i think?
   let map_settings = state.mapConfig.mapconfig;
   let charts = state.chartData;
   let default_settings = state.default_settings.default_settings;

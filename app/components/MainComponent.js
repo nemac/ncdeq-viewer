@@ -19,125 +19,28 @@ require('../main.css');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 var MainComponent = React.createClass({
-  // getDefaultProps: function() {
-  //   return {
-  //     isChartsVisible: false,
-  //     headerHeight:100,
-  //     breadCrumbsHeight:50
-  //   };
-  // },
-  // setHeight(repeat,val){
-  //   //set the height of element based on a ratio 1.618
-  //   if(repeat<1){
-  //     return val
-  //   } else{
-  //     return this.setHeight(repeat-1, val/1.618)
-  //   }
-  // },
-  // setSize: function(chartVis){
-  //   //when state is not defined yet set to true
-  //   var vis = this.props.charts.chart_visibility
-  //
-  //   //this.state ? chartVis : false;
-  //
-  //   var padding = this.props.default_settings ? this.props.default_settings.rowPadding : 5;
-  //   //this.state ? this.state.rowPadding : true;
-  //
-  //   //components with fixed heights.
-  //   var headerHeight = this.props.default_settings ? this.props.default_settings.headerHeight : 100;
-  //   var breadCrumbsHeight = this.props.default_settings ? this.props.default_settings.breadCrumbsHeight : 50;
-  //
-  //   //map and chart areas should scale to browser
-  //   //for leaflet the map height needs to be explicit
-  //   //adjustable heights.
-  //   //first get whats leftover from fixed components
-  //   // the calculate the map hieght.
-  //   //give the rest to the chart
-  //   var leftover = window.innerHeight -
-  //   (headerHeight + breadCrumbsHeight +
-  //     (padding*4)
-  //   );
-  //
-  //   if (vis){
-  //     var mapHeight = this.setHeight(1,leftover);
-  //     var chartHeight = window.innerHeight - (leftover - mapHeight);
-  //   } else {
-  //     var mapHeight  = leftover
-  //     var chartHeight = 0;
-  //   }
-  //
-  //   //do not let map height less than 300 pixels
-  //   if (mapHeight < 300){
-  //     mapHeight = 300
-  //   }
-  //
-  //   //do not let chart area less than 100 pixels
-  //   //  may need to rethink this if the charts need more space....
-  //   if (chartHeight < 100){
-  //     chartHeight = 100
-  //   }
-  //
-  //   this.props.update_MapHeight();
-  //   // this.props.update_ChartHeight(chartHeight);
-  //   //set size varriabe
-  //   return {
-  //     isChartsVisible: vis,
-  //     headerHeight: headerHeight,
-  //     mapHeight: mapHeight,
-  //     chartHeight: chartHeight,
-  //     breadCrumbsHeight: breadCrumbsHeight,
-  //     rowPadding: 1
-  //   }
-  // },
-  // getInitialState: function () {
-  //   var sizes = this.setSize();
-  //
-  //   return{
-  //     // defpad:5,
-  //     isChartsVisible: false,
-  //     // rowPadding: 1,
-  //     // headerHeight: sizes.headerHeight,
-  //     // mapHeight: sizes.mapHeight,
-  //     // chartHeight: sizes.chartHeight,
-  //     // breadCrumbsHeight: sizes.breadCrumbsHeight
-  //   }
-  // },
-  // handleChartToggle: function(e){
-  //   //toggle state of chart area
-  //   //var active = !this.state.isChartsVisible;
-  //
-  //   //set new map size without chart area
-  //   var sizes = this.setSize(false);
-  //
-  //   this.setState({
-  //     isChartsVisible: sizes.isChartsVisible,
-  //     headerHeight: sizes.headerHeight,
-  //     mapHeight: sizes.mapHeight,
-  //     chartHeight: sizes.chartHeight,
-  //     breadCrumbsHeight: sizes.breadCrumbsHeight
-  //   })
-  //
-  // },
   handleSearchChange: function(comp,e){
     var input = e.target;
 
-    //get max bounds for google search limits and prefrence.
-    const nelat = this.props.map_settings.maxBounds._northEast.lat
-    const nelng = this.props.map_settings.maxBounds._northEast.lng
-
-    const swlat = this.props.map_settings.maxBounds._southWest.lat
-    const swlng = this.props.map_settings.maxBounds._southWest.lng
+    //get max bounds from props for google search limits and prefrence.
+    const northEastLatitude = this.props.map_settings.maxBounds._northEast.lat
+    const northEastlongitude = this.props.map_settings.maxBounds._northEast.lng
+    const southWestLatitude = this.props.map_settings.maxBounds._southWest.lat
+    const southWestlongitude = this.props.map_settings.maxBounds._southWest.lng
 
     //search google api
     var defaultBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(swlat,swlng),
-      new google.maps.LatLng(nelat, nelng));
+      new google.maps.LatLng(southWestLatitude, southWestlongitude),
+      new google.maps.LatLng(northEastLatitude, northEastlongitude));
 
+      //set the bouns to the optopns
       var options = {bounds: defaultBounds}
+
+      //get this so we can access in tin google maps callback
       var self = this;
 
+      //instatiate a new google maps search box api
       var ac = new google.maps.places.SearchBox(input,options);
-
 
       google.maps.event.addListener(ac, 'places_changed', function () {
         var place = ac.getPlaces()[0];
@@ -148,8 +51,11 @@ var MainComponent = React.createClass({
           input.value = place.formatted_address
         }
 
+        //get lat, long of user location
         var lat = place.geometry.location.lat();
         var lng = place.geometry.location.lng();
+
+        //set max zoom for panning to user searched point
         var zoom = self.props.map_settings.zoom > 12 ? self.props.map_settings.zoom : 12
 
         //set store to  new lat,long and zoom level
@@ -160,32 +66,26 @@ var MainComponent = React.createClass({
 
 
     },
-    // handleMapClick: function(e){
-    //   //not used anymore. no in redux bu need to do the sizes thing in redux also
-    //   //set new map size without chart area
-    //   var sizes = this.setSize(true);
-    //
-    //   this.setState({
-    //     isChartsVisible: sizes.isChartsVisible,
-    //     headerHeight: sizes.headerHeight,
-    //     mapHeight: sizes.mapHeight,
-    //     chartHeight: sizes.chartHeight,
-    //     breadCrumbsHeight: sizes.breadCrumbsHeight
-    //   })
-    //
-    // },
     handleResize: function(e) {
-      // console.log(this.props.default_settings.mapHeight)
+      //update map size when browser is reiszed.
+      //  this updates redux store - MapComponent is subscribed to it.
       this.props.update_MapHeight();
-      // console.log(this.props.default_settings.mapHeight)
     },
     componentDidMount: function() {
 
       //get and populate the geography_levels state...
       this.props.get_GeographyLevels();
+
+      //get and populate the chart data
       this.props.get_ChartData();
+
+      //get and populate the map data
       this.props.get_defaultMapData();
+
+      //set default app i.e div heights, padding, and such
       this.props.set_defaults();
+
+      //leaflet needs an actual mapheight. and we want to dynamically resize the map as the user resizes the browser....
       this.props.update_MapHeight();
 
       //handle resize.  - map and chart areas should scale to browser
@@ -199,13 +99,14 @@ var MainComponent = React.createClass({
     },
     render: function() {
 
+      //get sizes from props and check if the prop has been set.
       const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : ROW_PADDING;
       const mapHeight = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
       const breadCrumbsHeight = this.props.default_settings ? this.props.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
       const headerHeight = this.props.default_settings ? this.props.default_settings.headerHeight : HEADER_HEIGHT;
       const defpad = this.props.default_settings ? this.props.default_settings.defpad : DEF_PAD;
       const chartHeight = this.props.default_settings ? this.props.default_settings.chartHeight : CHART_HEIGHT;
-      //console.log(mapHeight)
+
       return (
         <div className="ui one column relaxed padded grid">
 
@@ -218,14 +119,12 @@ var MainComponent = React.createClass({
           </RowWrapper>
 
           <RowWrapper rowPadding={rowPadding} >
-            <MapRowComponent
-              rowPadding={rowPadding}
-              mapHeight={mapHeight}  />
+            <MapRowComponent />
           </RowWrapper>
 
           { this.props.charts.chart_visibility &&
             <RowWrapper rowPadding={defpad} height={chartHeight} >
-              <ChartRowContainer isChartsVisible={this.props.charts.chart_visibility} handleChartToggle={this.handleChartToggle} />
+              <ChartRowContainer />
             </RowWrapper>
           }
         </div>

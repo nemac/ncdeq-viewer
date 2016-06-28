@@ -30,9 +30,5 @@ var HeaderComponent = React.createClass({
   }
 });
 
-//get store
-HeaderComponent.contextTypes = {
-  store: React.PropTypes.object.isRequired
-};
 
 module.exports = HeaderComponent;

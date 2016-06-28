@@ -7,8 +7,10 @@ var Divider = require('./Divider');
 
 var ChartRow = React.createClass({
   chartToggle: function(e){
-    this.props.update_MapHeight(e);
-    this.props.update_ChartVisiblity(e);
+    
+    this.props.update_ChartVisiblity();
+    //update map height comes after chart vis sp map will resize to full hieght.
+    this.props.update_MapHeight();
   },
   render: function() {
     let vis = this.props.charts.chart_visibility ?  'show' : 'none';
