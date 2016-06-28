@@ -62,7 +62,6 @@ function get_AllChartDataLowerLevel_byID(hucid,geogLevel){
                    '&resultRecordCount='+
                    '&f=pgeojson&token=';
 
-//  console.log(query_URL);
   return axios.get(query_URL);
 
 }
@@ -87,7 +86,6 @@ function testit(hucid){
                     '&f=pgeojson&token=';
 
   const request = axios.get(query_URL);
-  console.log(request);
 
   return {
     type: TEST,
