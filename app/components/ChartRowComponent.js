@@ -7,7 +7,7 @@ var Divider = require('./Divider');
 
 var ChartRow = React.createClass({
   chartToggle: function(e){
-    
+
     this.props.update_ChartVisiblity();
     //update map height comes after chart vis sp map will resize to full hieght.
     this.props.update_MapHeight();
@@ -15,8 +15,8 @@ var ChartRow = React.createClass({
   render: function() {
     let vis = this.props.charts.chart_visibility ?  'show' : 'none';
 
-    let id_json = "";
-    let level_json = "";
+    let id_json = [];
+    let level_json = [];
 
     //ensure the objects exsists
     if ( this.props.charts ){
@@ -86,19 +86,19 @@ var ChartRow = React.createClass({
       <Divider />
 
       <div className="fourteen wide column">
-        <ChartTest key="HUCS" title="HUC's" id={this.props.current_id}  data="" alldata="" TreemapChartData_D3={TreemapChartData_D3} BarChartData_D3="" />
+        <ChartRowWrapper key="HUCS" title="HUC's" id=""  level_data={level_json} id_data=""  />
       </div>
 
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartTest key="TRA" title="TRA's" id="" data="" alldata="" TreemapChartData_D3="" BarChartData_D3={BarChartData_D3}/>
+        <ChartRowWrapper key="TRA" title="TRA's"  id=""  level_data="" id_data="" />
       </div>
 
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
-        <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  data={id_json} alldata="" />
+        <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  level_data="" id_data={id_json} />
       </div>
 
 

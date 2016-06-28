@@ -11,6 +11,9 @@ var ChartRowWrapper = React.createClass({
     };
   },
   render: function() {
+    const level_data = this.props.level_data.length > 0 ? JSON.stringify(this.props.level_data) : null;
+    const id_data =  this.props.id_data.length > 0 ? JSON.stringify(this.props.id_data) : null;
+
     return (
       <div className="ui segments">
         <div className="ui grey tertiary inverted clearing segment">
@@ -22,8 +25,10 @@ var ChartRowWrapper = React.createClass({
           </h4>
         </div>
         <div className="ui basic segment">
-          <span key="1" >{JSON.stringify(this.props.data)}</span>
-          <span key="2" >{JSON.stringify(this.props.alldata)}</span>
+          {id_data}
+          {level_data}
+          <br />
+          <br />
           <p>Navigate to a Cataloging Unit to view chart data</p>
           <div refs={this.props.title} >
           </div>

@@ -16,18 +16,23 @@ var MenuComponent = React.createClass({
   },
   getDefaultMenu: function(level){
     //filter the levels to get the active tab
-    const DefaultMenuObject = this.props.DefaultMenuLists.filter( key =>{
-      return key.name === level;
-    })
+    //check if DefaultMenuLists exsists 
+    if (this.props.DefaultMenuLists){
+      const DefaultMenuObject = this.props.DefaultMenuLists.filter( key =>{
+        return key.name === level;
+      })
 
-    //set default menus for level
-    let DefaultMenu = [];
-    if (DefaultMenuObject.length > 0){
-      //get the menu
-      DefaultMenu = DefaultMenuObject[0].lists;
+      //set default menus for level
+      let DefaultMenu = [];
+      if (DefaultMenuObject.length > 0){
+        //get the menu
+        DefaultMenu = DefaultMenuObject[0].lists;
+      }
+
+      return DefaultMenu
+    } else {
+      return null
     }
-
-    return DefaultMenu
   },
   checkList: function(list){
     if (list){

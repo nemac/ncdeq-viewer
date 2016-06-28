@@ -9,14 +9,9 @@ require('esri-leaflet');
 class MarkerCluster extends MapLayer {
   componentWillMount() {
     super.componentWillMount();
-    console.log(this.props.map)
     this.leafletElement = Leaflet.esri.basemapLayer(this.props.layer).addTo(this.props.map);
-    //this.leafletElement = Leaflet.markerClusterGroup();
-    //this.leafletElement = Leaflet.esri.basemapLayer(this.props.layer).addTo(this.props.map);
-
-
   }
-
+  
   componentDidMount() {
     const { map } = this.props;
     const el = this.leafletElement;

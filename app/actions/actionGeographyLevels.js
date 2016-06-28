@@ -252,7 +252,7 @@ export function get_GeographyLevels(){
           //instatiate variables and default values
           let GList = [];
           let active = false;
-          let filter = '';
+          let theFilter = '';
           let current_id = '';
           let filtered_menu_list  = [];
 
@@ -265,7 +265,7 @@ export function get_GeographyLevels(){
              let geography_level = features.properties.geography_level;
 
              //create new geography_level state object
-             let thisGeographyList = {geography_level, geography_label, active , filter, current_id, filtered_menu_list};
+             let thisGeographyList = {geography_level, geography_label, active , filter: theFilter, current_id, filtered_menu_list};
 
              //add the geography_level object to new state array
              GList.push(thisGeographyList)
