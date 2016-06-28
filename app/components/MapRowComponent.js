@@ -12,11 +12,6 @@ var MapRowComponent = React.createClass({
     //do something
   },
   propTypes: {
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired,
-    zoom: PropTypes.number.isRequired,
-    handleCenter: PropTypes.func.isRequired,
-    handleMapMoveEnd: PropTypes.func.isRequired,
     mapHeight: PropTypes.number.isRequired,
     rowPadding: PropTypes.number.isRequired
   },
@@ -29,10 +24,7 @@ var MapRowComponent = React.createClass({
 
   getInitialState: function () {
     return {
-      latitude: this.props.latitude,
-      longitude: this.props.longitude,
       rowPadding: this.props.rowPadding,
-      zoom: this.props.zoom
     }
   },
   render: function() {
@@ -40,7 +32,9 @@ var MapRowComponent = React.createClass({
       <div className="ui stackable internally celled grid">
         <div className="stretched row" >
 
-          <MapWrapper HandleMapZoomEnd={this.props.HandleMapZoomEnd} handleMapMoveEnd={this.props.handleMapMoveEnd} zoom={this.props.zoom} latitude={this.props.latitude} longitude={this.props.longitude} rowPadding={this.props.rowPadding} mapHeight={this.props.mapHeight} />
+          <MapWrapper
+             rowPadding={this.props.rowPadding}
+             mapHeight={this.props.mapHeight} />
 
           <div className="four wide column">
 

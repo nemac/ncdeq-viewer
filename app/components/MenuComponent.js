@@ -5,9 +5,6 @@ var PropTypes = React.PropTypes;
 var MenuComponent = React.createClass({
   propTypes: {
     handleSearchChange: PropTypes.func.isRequired,
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired,
-    zoom: PropTypes.number.isRequired
   },
   componentDidMount: function() {
     //var input = document.getElementById('searchTextField');

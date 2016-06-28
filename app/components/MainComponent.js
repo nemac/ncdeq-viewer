@@ -115,36 +115,6 @@ var MainComponent = React.createClass({
     })
 
   },
-  HandleMapZoomEnd: function(mapComp,e){
-    var L = mapComp.refs.map.leafletElement
-
-    var zoom = L.getZoom();
-    var center = L.getCenter();
-
-    this.setState({
-      zoom: zoom,
-      latitude: center.lat,
-      longitude: center.lng
-    })
-
-  },
-  handleMapMoveEnd: function(mapComp,e){
-    var L = mapComp.refs.map.leafletElement
-    var center = L.getCenter();
-    var zoom = L.getZoom();
-
-    this.setState({
-      zoom: zoom,
-      latitude: center.lat,
-      longitude: center.lng
-    })
-  },
-  handleCenter: function(e){
-    this.setState({
-      latitude: 35.6683,
-      longitude: -81.4786
-    })
-  },
   handleSearchChange: function(comp,e){
 
     var input = e.target;
@@ -236,11 +206,13 @@ var MainComponent = React.createClass({
           </RowWrapper>
 
           <RowWrapper rowPadding={this.state.rowPadding} height={this.state.breadCrumbsHeight}>
-            <MenuContainer handleSearchChange={this.handleSearchChange} zoom={this.state.zoom} latitude={this.state.latitude} longitude={this.state.longitude} />
+            <MenuContainer handleSearchChange={this.handleSearchChange} />
           </RowWrapper>
 
           <RowWrapper rowPadding={this.state.rowPadding} >
-            <MapRowComponent zoom={this.state.zoom} latitude={this.state.latitude} longitude={this.state.longitude} HandleMapZoomEnd={this.HandleMapZoomEnd} handleMapMoveEnd={this.handleMapMoveEnd} handleCenter={this.handleCenter} rowPadding={this.state.rowPadding} mapHeight={this.state.mapHeight}  />
+            <MapRowComponent
+              rowPadding={this.state.rowPadding}
+              mapHeight={this.state.mapHeight}  />
           </RowWrapper>
 
           { this.props.charts.chart_visibility &&

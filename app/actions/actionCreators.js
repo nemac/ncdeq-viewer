@@ -16,3 +16,4 @@ export const update_ChartVisiblity = ChartData.update_ChartVisiblity
 export const get_ChartData = ChartData.get_ChartData
 export const set_CurrentID = CurrentID.set_CurrentID;
 export const get_defaultMapData = MapConfig.get_defaultMapData;
+export const HandleMapEnd = MapConfig.HandleMapEnd;

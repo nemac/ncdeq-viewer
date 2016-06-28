@@ -9,14 +9,14 @@ function mapStateToProps(state) {
   let current_id = state.CurrentID.current_id;
   let geography_levels = state.geography_levels.geography_levels;
   let charts = state.chartData;
-  let mapConfig = state.mapConfig.mapconfig
+  let map_settings = state.mapConfig.mapconfig
 
   return {
     DefaultMenuLists,
     current_id,
     geography_levels,
     charts,
-    mapConfig
+    map_settings
   }
 }
 
