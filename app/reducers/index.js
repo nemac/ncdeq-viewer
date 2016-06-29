@@ -11,7 +11,7 @@ import {geography_levels, change_geographyLevelActive} from './GeographyLevels';
 import {mapConfig} from './MapConfig';
 import {default_settings} from './DefaultSettings';
 
-
+//combie all reducers for importating into connect
 const rootReducer = combineReducers( { menuLists, chartDataByID, AllChartDataByID, chartData,CurrentID, geography_levels, change_geographyLevelActive, mapConfig, default_settings,routing: routerReducer} );
 
 export default rootReducer;
