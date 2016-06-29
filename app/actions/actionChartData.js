@@ -87,9 +87,9 @@ function AGO_ChartData_byID(id){
 
 }
 //
-export function get_ChartData(ID,LEVEL){
+export function get_ChartData(id,level){
     return (dispatch,getState) => {
-      axios.all([AGO_ChartData_byID(ID), AGO_AllChartData_byID(ID,LEVEL)])
+      axios.all([AGO_ChartData_byID(id), AGO_AllChartData_byID(id,level)])
       .then(axios.spread(function (chartbyid, chartbylevel) {
         const state = getState()
 
@@ -102,7 +102,7 @@ export function get_ChartData(ID,LEVEL){
 
         //only check responses if limiting data (ID ir LEVEL) was passed id
         //   this would cause an error but we still want data to flow in for initializing the charts state object.
-        if(ID){
+        if(id){
           //check for errors in responses
           chartData_Level = CheckReponse(chartbylevel,'AGO_API_ERROR');
           chartData_ID = CheckReponse(chartbyid,'AGO_API_ERROR');
