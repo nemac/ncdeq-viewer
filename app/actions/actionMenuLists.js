@@ -78,7 +78,7 @@ export function get_MenuList(){
     .catch(error => { console.log('request failed', error); });;
   }
 }
-
+//new menu list object to pass to reducer
 function MenuList(json) {
   return {
     type: 'GET_MENU_LIST',

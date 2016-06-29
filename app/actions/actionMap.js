@@ -88,7 +88,7 @@ export function get_defaultMapData(zoom){
   }
 }
 
-//new geography_levels object to pass to reducer
+//new map state object to pass to reducer
 function mapSate(type,data) {
   return {
     type: type,
