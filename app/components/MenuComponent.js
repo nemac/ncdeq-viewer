@@ -1,6 +1,8 @@
 var React = require('react');
 var MenuItemComponent = require('../components/MenuItemComponent');
 var PropTypes = React.PropTypes;
+//  general functions and  helpers.  reuse functions
+//import { getNextLevel } from '../utils/helpers';
 
 var MenuComponent = React.createClass({
   propTypes: {
@@ -16,7 +18,7 @@ var MenuComponent = React.createClass({
   },
   getDefaultMenu: function(level){
     //filter the levels to get the active tab
-    //check if DefaultMenuLists exsists 
+    //check if DefaultMenuLists exsists
     if (this.props.DefaultMenuLists){
       const DefaultMenuObject = this.props.DefaultMenuLists.filter( key =>{
         return key.name === level;
