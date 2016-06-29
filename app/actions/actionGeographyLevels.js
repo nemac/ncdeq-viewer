@@ -2,6 +2,8 @@ var axios = require('axios');
 import { CheckReponse } from './responses';
 import { AGO_URL, AGO_RiverBasins, AGO_CatalogingUnits, AGO_HUCS, DATA_FEATUREID } from '../constants/actionConstants';
 
+//  general functions and  helpers.  reuse functions
+import { getNextLevel, getAGOGeographyLabel, getCurrentLevel } from '../utils/helpers';
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
@@ -31,59 +33,6 @@ function AGO_GeographyLevels(){
 
 };
 
-//get the current level of geog for a geography level to use in ago api
-//  example this gets all the hucs for a Cataloging unit
-function getCurrentLevel(geogLevel){
-  switch (geogLevel) {
-    case 'River Basins':
-      return 1;
-      break;
-    case 'Cataloging Units':
-      return 2;
-      break;
-    case 'HUC12':
-      return 3;
-      break;
-    default:
-      return 99;
-    }
-}
-
-//get the next level of geog for a geography level to use in ago api
-//  example this gets all the hucs for a Cataloging unit
-function getNextLevel(geogLevel){
-  switch (geogLevel) {
-    case 'River Basins':
-      return 2;
-      break;
-    case 'Cataloging Units':
-      return 3;
-      break;
-    case 'HUC12':
-      return 99;
-      break;
-    default:
-      return 99;
-    }
-}
-
-//only needs this untill I change the data feed have named generically?
-// or maybe control via yaml file....
-function get_AGOGeographyLabel(geogLevel){
-  switch (geogLevel) {
-    case 'River Basins':
-      return 'huc_6';
-      break;
-    case 'Cataloging Units':
-      return 'huc_8';
-      break;
-    case 'HUC12':
-      return 'huc_12';
-      break;
-    default:
-      return 'huc_12';
-    }
-}
 //updates the a geography level filter
 //  determined by changed menuitem value
 //  or when the user clicks on huc in map (not done yet)
@@ -172,7 +121,7 @@ function update_activeGeographyLevel( state, active_level ){
 
   //convert the active layer name to the AGO generic name
   // need to do check of active layer
-  const label = get_AGOGeographyLabel(active_level);
+  const label = getAGOGeographyLabel(active_level);
   const geography_levels = state.geography_levels.geography_levels;
 
   //instatiate variables

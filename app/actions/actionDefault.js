@@ -1,3 +1,7 @@
+//action for setting and updating varoius dom stuff. like height and width of div's
+///   this especially important for Leaflet which needs an absilte hieght to fill
+
+//get constants for default sizes and settings
 import {HEADER_HEIGHT , BREAD_CRUMBS_HEIGHT, ROW_PADDING , DEF_PAD , MAP_HEIGHT , CHART_HEIGHT , CHART_VISIBILITY} from '../constants/appConstants'
 
 function setHeight(repeat,val){

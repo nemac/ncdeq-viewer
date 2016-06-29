@@ -1,3 +1,16 @@
+
+import {
+  NORTH_EAST_LATITUDE,
+  NORTH_EAST_LONGITUDE,
+  SOUTH_WEST_LATITUDE,
+  SOUTH_WEST_LONGITUDE,
+  START_LATITUDE,
+  START_LONGITUDE,
+  START_ZOOM,
+  MIN_ZOOM,
+  MAX_ZOOM,
+} from '../constants/appConstants'
+
 //basic map (leaflet state and functions)
 
 export function set_mapToPoint(lat,lng,z,e){
@@ -54,15 +67,16 @@ export function get_defaultMapData(zoom){
     const state = getState()
 
     //requires leaftlet to be installed.
-    var southWest = L.latLng(36.932330061503144, -73.970947265625),
-    northEast = L.latLng(33.54139466898275, -86.98974609375),
+    var southWest = L.latLng(SOUTH_WEST_LATITUDE, SOUTH_WEST_LONGITUDE),
+    northEast = L.latLng(NORTH_EAST_LATITUDE, NORTH_EAST_LONGITUDE),
     bounds = L.latLngBounds(southWest, northEast);
 
-    const latitude = 35.6684;
-    const longitude = -80.4786;
-    const zoom = 7;
-    const minZoom = 7;
-    const maxZoom = 16;
+    //set default map settings form constants in ../constants/appConstants.js
+    const latitude = START_LATITUDE;
+    const longitude = START_LONGITUDE;
+    const zoom = START_ZOOM;
+    const minZoom = MIN_ZOOM;
+    const maxZoom = MAX_ZOOM;
     const maxBounds = bounds;
     const layers = [];
 
@@ -74,7 +88,8 @@ export function get_defaultMapData(zoom){
   }
 }
 
-function  mapSate(type,data) {
+//new geography_levels object to pass to reducer
+function mapSate(type,data) {
   return {
     type: type,
     mapconfig: data,

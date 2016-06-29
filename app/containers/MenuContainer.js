@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 //import actions
-import { get_MenuList, set_CurrentID, get_ChartData, change_geographyLevelActive, change_geographyLevelFilter } from '../actions/actionCreators'
+import { get_MenuList, get_ChartData, change_geographyLevelActive, change_geographyLevelFilter } from '../actions/actionCreators'
 
 //import components
 import MenuComponent from '../components/MenuComponent'

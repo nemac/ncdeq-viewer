@@ -2,7 +2,7 @@ var React = require('react');
 var MenuItemComponent = require('../components/MenuItemComponent');
 var PropTypes = React.PropTypes;
 //  general functions and  helpers.  reuse functions
-//import { getNextLevel } from '../utils/helpers';
+import { getNextLevelName, getCategoryName, getAGOGeographyLabel} from '../utils/helpers';
 
 var MenuComponent = React.createClass({
   propTypes: {
@@ -41,23 +41,7 @@ var MenuComponent = React.createClass({
       return  this.props.DefaultMenuLists;
     }
   },
-  //only needs this untill I change the data feed have named generically?
-  // or maybe control via yaml file....
-  getCategoryName: function(geogLevel){
-    switch (geogLevel) {
-      case 'huc_6':
-        return 'River Basins';
-        break;
-      case 'huc_8':
-        return 'Cataloging Units';
-        break;
-      case 'huc_12':
-        return 'HUC12';
-        break;
-      default:
-        return 'River Basins';
-      }
-  },
+
   getLevel: function(){
 
     //filter the levels to get the active tab
@@ -70,50 +54,16 @@ var MenuComponent = React.createClass({
     if (ActiveTabObject.length > 0){
       //get the active tab and convert the name to the name used in the app.
       //  this will eventually be driven by config or data....???
-      activeTab = this.getCategoryName(ActiveTabObject[0].geography_label);
+      activeTab = getCategoryName(ActiveTabObject[0].geography_label);
     }
 
     return activeTab
   },
-  getNextLevel: function(level){
-    //next level is hardcoded need to make this data driven
-    //move this to a helper?
-    switch (level) {
-      case 'River Basins':
-        return 'Cataloging Units';
-        break;
-      case 'Cataloging Units':
-        return 'HUC12';
-        break;
-      case 'HUC12':
-        return '';
-        break;
-      default:
-        return '';
-    }
 
-  },
-  //only needs this untill I change the data feed have named generically?
-  // or maybe control via yaml file....
-  get_AGOLevel: function(geogLevel){
-        //move this to a helper?
-    switch (geogLevel) {
-      case 'River Basins':
-        return 'huc_6';
-        break;
-      case 'Cataloging Units':
-        return 'huc_8';
-        break;
-      case 'HUC12':
-        return 'huc_12';
-        break;
-      default:
-        return 'huc_12';
-      }
-  },
+
   updateFilterState(level,value){
 
-    var nextLevel = this.getNextLevel(level);
+    var nextLevel = getNextLevelName(level);
 
     //set filter and active state for next level(s)
     if(nextLevel){
@@ -147,7 +97,7 @@ var MenuComponent = React.createClass({
   },
   getActive: function(val){
 
-    const level = this.get_AGOLevel(val)
+    const level = getAGOGeographyLabel(val)
     //can I make this a generic function since I am using same logic over.
     //filter the levels to get the current passed level
     const FilterObject = this.props.geography_levels.filter( key =>{
@@ -166,7 +116,7 @@ var MenuComponent = React.createClass({
 
   },
   getFilter: function(val){
-    const level = this.get_AGOLevel(val)
+    const level = getAGOGeographyLabel(val)
 
     //filter the levels to get the current passed level
     const FilterObject = this.props.geography_levels.filter( key =>{
@@ -192,7 +142,7 @@ var MenuComponent = React.createClass({
 
           { this.props.geography_levels &&
             this.props.geography_levels.map(function(item) {
-              const name = this.getCategoryName(item.geography_label)
+              const name = getCategoryName(item.geography_label)
 
               //get filtered menu list
               let menuList = item.filtered_menu_list;
