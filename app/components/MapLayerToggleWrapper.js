@@ -1,7 +1,6 @@
 var React = require('react');
 var MapLayerToggleName = require('./MapLayerToggleName');
 var MapLayerToggle = require('./MapLayerToggle');
-var SearchBar = require('./Search');
 var PropTypes = React.PropTypes;
 
 var MapLayerToggleWrapper = React.createClass({

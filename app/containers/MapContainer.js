@@ -7,7 +7,7 @@ import { get_defaultMapData, HandleMapEnd, set_mapToPoint, update_ChartVisiblity
 //import components
 import MapComponent from '../components/MapComponent'
 
-//either rename this or rename it also in main
+//either rename the properties or rename it also in main
 const mapStateToProps = (state,props) => {
 
   //Need to understand how to git rid of dthe double dot names... mapConfig.mapconfig default_settings.default_settings

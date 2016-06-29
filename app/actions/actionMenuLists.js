@@ -68,10 +68,10 @@ export function get_MenuList(){
           let HUCList  = buildMenuList( 'HUC12', [], theHUCS)
 
           //combine the lists into one
-          let all = [ {...basinList}, {...catalogingUnitList}, {...HUCList} ]
+          let allList = [ {...basinList}, {...catalogingUnitList}, {...HUCList} ]
 
           //send the lists on
-          dispatch(MenuList(all))
+          dispatch(MenuList(allList))
 
       })
     )

@@ -13,7 +13,7 @@ var MenuComponent = React.createClass({
     //var options = {componentRestrictions: {country: 'us'}};
     //new google.maps.places.Autocomplete(input, options);
 
-    this.props.getMenus();
+    this.props.get_MenuList();
 
   },
   getDefaultMenu: function(level){
