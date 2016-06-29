@@ -1,44 +1,47 @@
 var axios = require('axios');
-import { CheckReponse } from './responses';
-import { AGO_URL, Data_FeatureID } from '../constants/actionConstants';
 
-const CHART_DATA_OUT_FIELDS = 'geography_label%2CID%2Cchart_id%2Cchart_matchid%2Cchart_type%2Cchart_level%2Cchart_description%2Cchart_value%2Cchart_matchid';
-const CHART_DATA_ORDER_BY_FIELDS = 'chart_level%2Cchart_matchid';
+//import helper functions
+//  to check ajax (AXIOS) responses - error handling
+import { CheckReponse } from './responses';
+//  gener helpers
+import { getNextLevel } from '../utils/helpers';
+
+//import ACTION constants
+import { AGO_URL, DATA_FEATUREID, ENCODED_COMMAS } from '../constants/actionConstants';
+import { START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION } from '../constants/appConstants';
+
+//set consts for this module
+const CHART_DATA_OUT_FIELDS = 'geography_label' + ENCODED_COMMAS + 'ID' + ENCODED_COMMAS + 'chart_id' + ENCODED_COMMAS + 'chart_matchid' + ENCODED_COMMAS + 'chart_type' + ENCODED_COMMAS + 'chart_level' + ENCODED_COMMAS + 'chart_description' + ENCODED_COMMAS + 'chart_value' + ENCODED_COMMAS + 'chart_matchid';
+const CHART_DATA_ORDER_BY_FIELDS = 'chart_level' + ENCODED_COMMAS + 'chart_matchid';
 
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
 
-//get the next level of geog for a geography level to use in ago api
-//  example this gets all the hucs for a Cataloging unit
-function getNextLevel(geogLevel){
-  switch (geogLevel) {
-    case 'River Basins':
-      return 1;
-      break;
-    case 'Cataloging Units':
-      return 3;
-      break;
-    case 'HUC12':
-      return 3;
-      break;
-    default:
-      return 3;
-    }
-}
+//get chart data for all hucs of the next lower level in the huc heirachy (huc6,huc8,huc12) for huc id
+//   requires an id of huc6,huc8, or huc12....
+//            geogLevel which is the current geography level,
+//            need this so we can limit the
+//  the huc heirachy is huc 6 (river basins), huc 8 (Cataloging units), huc 12 (huc 12) for now will be adding
+//      TRA's and catchments
+function AGO_AllChartData_byID(hucid,current_geography_level){
 
-//get chart data by huc id
-function AGO_AllChartData_byID(hucid,geogLevel){
+   //set default id
+   var id = hucid;
 
-   var ID = hucid;
-   var level = getNextLevel(geogLevel);
+   //get the lower level in the huc heirachy
+   var next_level = getNextLevel(current_geography_level);
 
-   if(geogLevel === 'HUC12'){
-     ID = hucid.substring(0,8);
+   //if current huc hierachy is set to huc12 we do not have a lower level in the heirachy
+   //  but we want to show all the hucs in the current huc12's Cataloging unit
+   //  so we need to get the first 8 characters, which is the Cataloging Unit
+   if(current_geography_level === 'HUC12'){
+     id = hucid.substring(START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION);
    }
 
-   const query_URL = '/RDRBP/FeatureServer/' + Data_FeatureID + '/query' +
-                   '?where=ID+like+%27' + ID + '%25%27+and+geography_level%3D'+ level +
+   //build the query to arcgis online api for getting the raw chart data
+   const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
+                   '?where=ID+like+%27' + id + '%25%27+and+geography_level%3D'+ next_level +
                    '&objectIds=' +
                    '&time=' +
                    '&resultType=none' +
@@ -53,14 +56,16 @@ function AGO_AllChartData_byID(hucid,geogLevel){
                    '&resultRecordCount=' +
                    '&f=pgeojson&token=';
 
+  //send the ajax request via axios
   return axios.get(query_URL);
 
 }
 
-//get chart data by huc id
-function AGO_ChartData_byID(ID){
-   const query_URL = '/RDRBP/FeatureServer/' + Data_FeatureID + '/query' +
-                     '?where=id%3D%27' + ID + '%27' +
+//get chart data for a single huc id
+//   requires the id to search
+function AGO_ChartData_byID(id){
+   const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
+                     '?where=id%3D%27' + id + '%27' +
                      '&objectIds=' +
                      '&time=' +
                      '&resultType=none' +
@@ -76,10 +81,11 @@ function AGO_ChartData_byID(ID){
                      '&f=pgeojson' +
                      '&token=';
 
+  //send the ajax request via axios
   return axios.get(query_URL);
 
 }
-
+//
 export function get_ChartData(ID,LEVEL){
     return (dispatch,getState) => {
       axios.all([AGO_ChartData_byID(ID), AGO_AllChartData_byID(ID,LEVEL)])
@@ -92,6 +98,7 @@ export function get_ChartData(ID,LEVEL){
 
         let chartData_Level = {};
         let chartData_ID = {};
+          
         //only check responses if limiting data (ID ir LEVEL) was passed id
         //   this would cause an error but we still want data to flow in for initializing the charts state object.
         if(ID){

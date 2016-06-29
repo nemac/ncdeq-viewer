@@ -5,8 +5,11 @@
 export const Basin_FeatureID = 0;
 export const CatalogingUnit_FeatureID = 1;
 export const HUC12_FeatureID = 2;
-export const Data_FeatureID = 3;
+export const DATA_FEATUREID = 3;
 export const HUCNames_FeatureID = 4;
+
+//encoding constants to use in ArcGIS online api calls
+export const ENCODED_COMMAS = '%2C'
 
 //out fields for menu lists
 const MENU_OUT_FIELDS = 'id,NAME,VALUE,MAIN,SUB';

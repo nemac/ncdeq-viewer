@@ -5,3 +5,6 @@ export const DEF_PAD = 5;
 export const MAP_HEIGHT = 300;
 export const CHART_HEIGHT = 100;
 export const CHART_VISIBILITY = false;
+export const MAX_SEARCH_ZOOM = 12;
+export const START_POSITION = 0;
+export const CATALOGING_UNIT_FROM_HUC12_END_POISTION = 8;
