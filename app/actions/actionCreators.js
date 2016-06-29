@@ -19,6 +19,7 @@ export const get_ChartData = ChartData.get_ChartData
 export const get_defaultMapData = MapConfig.get_defaultMapData;
 export const HandleMapEnd = MapConfig.HandleMapEnd;
 export const set_mapToPoint = MapConfig.set_mapToPoint;
+export const handleSearchChange = MapConfig.handleSearchChange;
 export const set_defaults = ActionDefault.set_defaults;
 export const update_ChartHeight = ActionDefault.update_ChartHeight;
 export const update_MapHeight = ActionDefault.update_MapHeight;

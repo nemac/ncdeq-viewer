@@ -19,67 +19,6 @@ import {HEADER_HEIGHT ,
 } from '../constants/appConstants'
 
 var MainComponent = React.createClass({
-  //handle search with google api.
-  //  requires comp which is needed for binding of this
-  //           e which is the this or the dom element to add the seach and search Autocomplete too
-  handleSearchChange: function(comp,e){
-
-    //get the input dom element
-    var input = e.target;
-
-    //get max bounds from props for google search limits - prefrence.
-    const northEastLatitude = this.props.map_settings.maxBounds._northEast.lat
-    const northEastlongitude = this.props.map_settings.maxBounds._northEast.lng
-    const southWestLatitude = this.props.map_settings.maxBounds._southWest.lat
-    const southWestlongitude = this.props.map_settings.maxBounds._southWest.lng
-
-    //search google api default bounds in latitude.
-    //  this will push all locations in the searh results to the top of the Autocomplete list
-    var defaultBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(southWestLatitude, southWestlongitude),
-      new google.maps.LatLng(northEastLatitude, northEastlongitude));
-
-      //set the bounds to the optopns
-      var options = {bounds: defaultBounds}
-
-      //get this so we can access in within google maps callback
-      var self = this;
-
-      //instatiate a new google maps search box api
-      var ac = new google.maps.places.SearchBox(input,options);
-
-      //google search callback
-      google.maps.event.addListener(ac, 'places_changed', () => {
-
-        //instatiate the results object with the results of the search
-        var place = ac.getPlaces()[0];
-
-        //if none go ahead and stop and return null
-        if (!place.geometry) return;
-
-        //instatiate the address object to a varrable so we can parse the location
-        //  in latitude and longitude
-        if (!place.address_components){
-          input.value = place.formatted_address
-        }
-
-        //get lat, long of user location
-        var lat = place.geometry.location.lat();
-        var lng = place.geometry.location.lng();
-
-        //set max zoom for panning to user searched point
-        //  MAX_SEARCH_ZOOM is imported from constants/appConstants to define the max zoom leavel
-        //  when a user successfully searches and finds a locations
-        var zoom = self.props.map_settings.zoom > MAX_SEARCH_ZOOM ? self.props.map_settings.zoom : MAX_SEARCH_ZOOM
-
-        //set store to new lat,long and zoom level
-        //will need to add ability to detect the huc's this point falls in
-        self.props.set_mapToPoint(lat,lng,zoom,null);
-
-      });
-
-
-    },
     handleResize: function(e) {
       //update map size when browser is reiszed.
       //  this updates redux store - MapComponent is subscribed to it.
@@ -130,7 +69,7 @@ var MainComponent = React.createClass({
           </RowWrapper>
 
           <RowWrapper rowPadding={rowPadding} height={breadCrumbsHeight}>
-            <MenuContainer handleSearchChange={this.handleSearchChange} />
+            <MenuContainer />
           </RowWrapper>
 
           <RowWrapper rowPadding={rowPadding} >

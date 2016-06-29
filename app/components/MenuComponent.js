@@ -5,9 +5,6 @@ var PropTypes = React.PropTypes;
 import { getNextLevelName, getCategoryName, getAGOGeographyLabel} from '../utils/helpers';
 
 var MenuComponent = React.createClass({
-  propTypes: {
-    handleSearchChange: PropTypes.func.isRequired,
-  },
   componentDidMount: function() {
     //var input = document.getElementById('searchTextField');
     //var options = {componentRestrictions: {country: 'us'}};
