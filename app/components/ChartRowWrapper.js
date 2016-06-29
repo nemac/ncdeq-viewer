@@ -32,10 +32,6 @@ var ChartRowWrapper = React.createClass({
           <p>Navigate to a Cataloging Unit to view chart data</p>
           <div refs={this.props.title} >
           </div>
-          {/*
-              add chartwrapper
-                charts...
-             */}
         </div>
       </div>
     );
