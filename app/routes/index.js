@@ -11,7 +11,6 @@ var routes = (
   <Provider store={store}>
     <Router history={history}>
       <Route path='/' component={App}>
-        <IndexRoute component={MainComponent} />
       </Route>
     </Router>
   </Provider>
