@@ -31,6 +31,7 @@ var ChartTest = React.createClass({
               hoverAnimation={true}
             />
         }
+        {/* only render if data is passed  */}
         { this.props.BarChartData_D3 &&
 
             <BarChart

@@ -8,7 +8,15 @@ var MapRowComponent = require('../components/MapRowComponent');
 import ChartRowContainer from '../containers/ChartRowContainer';
 import MenuContainer from '../containers/MenuContainer';
 
-import {HEADER_HEIGHT , BREAD_CRUMBS_HEIGHT, ROW_PADDING , DEF_PAD , MAP_HEIGHT , CHART_HEIGHT , CHART_VISIBILITY, MAX_SEARCH_ZOOM} from '../constants/appConstants'
+import {HEADER_HEIGHT ,
+  BREAD_CRUMBS_HEIGHT,
+  ROW_PADDING,
+  DEF_PAD,
+  MAP_HEIGHT,
+  CHART_HEIGHT,
+  CHART_VISIBILITY,
+  MAX_SEARCH_ZOOM
+} from '../constants/appConstants'
 
 var MainComponent = React.createClass({
   //handle search with google api.
