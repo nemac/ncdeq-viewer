@@ -133,6 +133,7 @@ export function update_ChartVisiblity (visibility){
 
     }
 }
+//function to handle sending to reducer and store
 function ChartData(type,id_json,level_json,visibility) {
   return {
     type: type,
