@@ -3,7 +3,6 @@ var React = require('react');
 var MapWrapper = require('./MapWrapper');
 var ProjectMapWrapper = require('./ProjectMapWrapper');
 var MapLayerToggleWrapper = require('./MapLayerToggleWrapper');
-var SearchMapWrapper = require('./SearchMapWrapper');
 
 var PropTypes = React.PropTypes;
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { get_ChartData, update_ChartVisiblity, update_MapHeight} from '../actions/actionCreators'
 import ChartRowComponent from '../components/ChartRowComponent'
 
-
+//either rename the properties or rename it also in main
 const mapStateToProps = (state,props) => {
   return {
     charts: state.chartData,

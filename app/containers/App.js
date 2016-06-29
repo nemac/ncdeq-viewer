@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../actions/actionCreators';
 import MainComponent from '../components/MainComponent';
 
+//either rename the properties or rename it also in main
 function mapStateToProps(state) {
   let DefaultMenuLists = state.menuLists.lists;
-  let current_id = state.CurrentID.current_id;
   let geography_levels = state.geography_levels.geography_levels;
   let charts = state.chartData;
   let map_settings = state.mapConfig.mapconfig;
@@ -14,7 +14,6 @@ function mapStateToProps(state) {
 
   return {
     DefaultMenuLists,
-    current_id,
     geography_levels,
     charts,
     map_settings,

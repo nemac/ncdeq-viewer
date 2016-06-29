@@ -7,7 +7,7 @@ import { get_MenuList, get_ChartData, change_geographyLevelActive, change_geogra
 //import components
 import MenuComponent from '../components/MenuComponent'
 
-//either rename this or rename it also in main
+//either rename the properties or rename it also in main
 const mapStateToProps = (state,props) => {
   let DefaultMenuLists = state.menuLists.lists;
   let geography_levels = state.geography_levels.geography_levels;
@@ -22,7 +22,7 @@ const mapStateToProps = (state,props) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    getMenus: bindActionCreators(get_MenuList, dispatch),
+    get_MenuList: bindActionCreators(get_MenuList, dispatch),
     change_geographyLevelActive: bindActionCreators(change_geographyLevelActive,dispatch),
     change_geographyLevelFilter: bindActionCreators(change_geographyLevelFilter,dispatch),
     get_ChartData: bindActionCreators(get_ChartData,dispatch)
