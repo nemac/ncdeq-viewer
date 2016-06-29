@@ -1,6 +1,6 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, AGO_RiverBasins, AGO_CatalogingUnits, AGO_HUCS, DATA_FEATUREID } from '../constants/actionConstants';
+import { AGO_URL, AGO_RIVER_BASINS, AGO_CATALOGING_UNITS, AGO_HUCS, DATA_FEATUREID } from '../constants/actionConstants';
 
 //  general functions and  helpers.  reuse functions
 import { getNextLevel, getAGOGeographyLabel, getCurrentLevel } from '../utils/helpers';
