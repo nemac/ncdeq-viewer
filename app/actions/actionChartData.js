@@ -85,7 +85,7 @@ function AGO_ChartData_byID(id){
   return axios.get(query_URL);
 
 }
-
+//
 export function get_ChartData(ID,LEVEL){
     return (dispatch,getState) => {
       axios.all([AGO_ChartData_byID(ID), AGO_AllChartData_byID(ID,LEVEL)])
@@ -98,6 +98,7 @@ export function get_ChartData(ID,LEVEL){
 
         let chartData_Level = {};
         let chartData_ID = {};
+          
         //only check responses if limiting data (ID ir LEVEL) was passed id
         //   this would cause an error but we still want data to flow in for initializing the charts state object.
         if(ID){
