@@ -1,3 +1,8 @@
+//extension for esri data into leaflet.
+//  IMPORTANT must use older version of esri-leaflet
+///  aka esri-leaflet  Leaflet 0.7.3, please use Esri Leaflet 1.0.0.
+//   react-leaflet is dependent on Leaflet 0.7.3 working towards Leaflet version 1.0.0
+
 import {BaseTileLayer} from 'react-leaflet';
 import { PropTypes } from 'react';
 import { tileLayer } from 'leaflet';
