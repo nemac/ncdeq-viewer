@@ -13,11 +13,12 @@ var ChartTest = React.createClass({
     };
   },
   render: function() {
-    
+
     return (
       <div className="ui segments">
         <div className="ui basic segment">
           <span key="1" >test</span>
+          {/* only render if data is passed  */}
           { this.props.TreemapChartData_D3 &&
             <Treemap
               data={this.props.TreemapChartData_D3 ? this.props.TreemapChartData_D3 : [{"label": null,"value": null}]}

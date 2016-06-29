@@ -11,6 +11,8 @@ var ChartRowWrapper = React.createClass({
     };
   },
   render: function() {
+    //capture props and make sure that ther is actuall data.  in first render could come back as undefined and
+    //  this will error out. 
     const level_data = this.props.level_data.length > 0 ? JSON.stringify(this.props.level_data) : null;
     const id_data =  this.props.id_data.length > 0 ? JSON.stringify(this.props.id_data) : null;
 
