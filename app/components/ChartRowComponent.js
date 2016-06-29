@@ -15,36 +15,47 @@ var ChartRow = React.createClass({
   render: function() {
     let vis = this.props.charts.chart_visibility ?  'show' : 'none';
 
+    //blank json arrays
+    // id_json is the currently selected single id chart data.
     let id_json = [];
+    //level_json is chart data for all the huc's at a level lower then the current geography level
+    //  unless we are at huc12 then we show all the huc12's for the Cataloging unit
     let level_json = [];
 
     //ensure the objects exsists
     if ( this.props.charts ){
       if ( this.props.charts.chart_data.id_json ){
         if ( this.props.charts.chart_data.id_json.features ){
+          //if exists return the features from geosjson
           id_json =this.props.charts.chart_data.id_json.features;
         }
       }
       if ( this.props.charts.chart_data.level_json ){
         if ( this.props.charts.chart_data.level_json.features ){
+          //if exists return the features from geosjson
           level_json =this.props.charts.chart_data.level_json.features;
         }
       }
     }
 
+    //this is not used in this version but holding it for use in
+    //  chart examples from a few examples I looked at.
+    //  these basically re-org the data for use in the treemap and stacked bar charts we will start tesgting shortly
     let TreemapChartData_D3 = [];
     let BarChartData_D3 = [];
     let levels = []
     let chartID = []
     let chardatatest = [];
 
+    //this is for the tree map
     level_json.map(featureCollection=>{
       if(featureCollection.properties.chart_level === 1){
         TreemapChartData_D3.push({label:featureCollection.properties.ID,value: Number(featureCollection.properties.chart_value)})
       }
     })
 
-
+    //stack bar in d3 is a series so need to re-org the data into series format
+    // this is the first level of next in the series.
     id_json.map(featureCollection=>{
       var data = levels.find( function( ele ) {
         return ele.name && ele.name === featureCollection.properties.chart_matchid;
@@ -55,6 +66,7 @@ var ChartRow = React.createClass({
       }
     })
 
+    //this is the second level of the series. contains the values...
     id_json.map(featureCollection => {
       let valuesArray = [];
       levels.map(level => {

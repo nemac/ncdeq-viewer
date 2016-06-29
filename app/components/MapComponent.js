@@ -2,6 +2,12 @@ var React = require('react');
 var ReactLeaflet = require('react-leaflet')
 import ESRIFeatureLayer from '../components/ESRIFeatureLayer';
 
+//app constants
+import {
+  MAP_HEIGHT,
+  DEF_PAD,
+} from '../constants/appConstants'
+
 var PropTypes = React.PropTypes;
 
 var MapContainer = React.createClass({
@@ -32,8 +38,8 @@ var MapContainer = React.createClass({
       }
     },
   render: function() {
-    const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : 5;
-    const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight : 300;
+    const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;
+    const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
 
     return (
       <div className="twelve wide column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>

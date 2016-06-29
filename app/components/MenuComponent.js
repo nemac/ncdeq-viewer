@@ -27,7 +27,7 @@ var MenuComponent = React.createClass({
       //set default menus for level
       let DefaultMenu = [];
       if (DefaultMenuObject.length > 0){
-        //get the menu
+        //get the menu only need the first in array since that is all that SHOULD exsist
         DefaultMenu = DefaultMenuObject[0].lists;
       }
 
