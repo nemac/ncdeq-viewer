@@ -7,10 +7,14 @@ import { Router, Route, IndexRoute, browserHistory, hashHistory} from 'react-rou
 import { Provider } from 'react-redux';
 import store, {history} from '../stores/RBRPStore';
 
+//removed for gh-pages adds extra # hash to url. need to understand how to do this on gh-pages..
+//    <Router history={history}>
+
 var routes = (
   <Provider store={store}>
     <Router history={hashHistory}>
       <Route path='/' component={App}>
+        <IndexRoute component={MainComponent} />
       </Route>
     </Router>
   </Provider>
