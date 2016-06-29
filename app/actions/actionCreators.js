@@ -1,7 +1,7 @@
 var axios = require('axios');
 
 //import actions and action contstants
-import { AGO_URL, AGO_RiverBasins, AGO_CatalogingUnits, AGO_HUCS } from '../constants/actionConstants';
+import { AGO_URL, AGO_RIVER_BASINS, AGO_CATALOGING_UNITS, AGO_HUCS } from '../constants/actionConstants';
 import { CheckReponse } from './responses';
 import * as MenuLists from './actionMenuLists';
 import * as ChartData from './actionChartData';

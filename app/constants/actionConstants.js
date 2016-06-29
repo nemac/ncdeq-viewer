@@ -2,11 +2,11 @@
 
 //ArcGIS online feature layer id's - each layer in a feautre services has an unique id
 // these refer to those.  put into a const so it can be figured for different sites
-export const Basin_FeatureID = 0;
-export const CatalogingUnit_FeatureID = 1;
+export const BASIN_FEATUREID = 0;
+export const CATALOGING_FEATUREID = 1;
 export const HUC12_FeatureID = 2;
 export const DATA_FEATUREID = 3;
-export const HUCNames_FeatureID = 4;
+export const HUC_NAMES_FEATUREID = 4;
 
 //encoding constants to use in ArcGIS online api calls
 export const ENCODED_COMMAS = '%2C'
@@ -19,7 +19,7 @@ const MENU_OUT_FIELDS = 'id,NAME,VALUE,MAIN,SUB';
 export const AGO_URL = 'http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services'
 
 //URL or Getting RiverBasins
-export const AGO_RiverBasins = '/RDRBP/FeatureServer/' + Basin_FeatureID +
+export const AGO_RIVER_BASINS = '/RDRBP/FeatureServer/' + BASIN_FEATUREID +
                                '/query?where=id%3C%3E%27%27' +
                                '&objectIds='+
                                '&time='+
@@ -48,7 +48,7 @@ export const AGO_RiverBasins = '/RDRBP/FeatureServer/' + Basin_FeatureID +
                                '&f=pgeojson'+
                                '&token='
 
-export const AGO_CatalogingUnits = '/RDRBP/FeatureServer/' + CatalogingUnit_FeatureID +
+export const AGO_CATALOGING_UNITS = '/RDRBP/FeatureServer/' + CATALOGING_FEATUREID +
                               '/query?where=id%3C%3E%27%27'+
                               '&objectIds='+
                               '&time='+

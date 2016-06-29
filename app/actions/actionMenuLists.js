@@ -1,6 +1,6 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, AGO_RiverBasins, AGO_CatalogingUnits, AGO_HUCS } from '../constants/actionConstants';
+import { AGO_URL, AGO_RIVER_BASINS, AGO_CATALOGING_UNITS, AGO_HUCS } from '../constants/actionConstants';
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
@@ -10,11 +10,11 @@ const CHART_DATA_ORDER_BY_FIELDS = 'geography_level';
 
 
 function get_Basins(){
-  return axios.get(AGO_RiverBasins)
+  return axios.get(AGO_RIVER_BASINS)
 }
 
 function get_CatalogingUnits(){
-  return axios.get(AGO_CatalogingUnits)
+  return axios.get(AGO_CATALOGING_UNITS)
 }
 
 function get_HUCS(){
