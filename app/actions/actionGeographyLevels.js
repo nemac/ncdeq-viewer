@@ -1,6 +1,6 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, AGO_RiverBasins, AGO_CatalogingUnits, AGO_HUCS, Data_FeatureID } from '../constants/actionConstants';
+import { AGO_URL, AGO_RiverBasins, AGO_CatalogingUnits, AGO_HUCS, DATA_FEATUREID } from '../constants/actionConstants';
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
@@ -11,7 +11,7 @@ const CHART_DATA_ORDER_BY_FIELDS = 'geography_level';
 //AGO query to get list of geography levels available
 function AGO_GeographyLevels(){
 
-  const query_URL = '/RDRBP/FeatureServer/' + Data_FeatureID + '/query' +
+  const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
                     '?where=id<>%27%27&objectIds=' +
                     '&time=&resultType=none' +
                     '&outFields=' + CHART_DATA_OUT_FIELDS +

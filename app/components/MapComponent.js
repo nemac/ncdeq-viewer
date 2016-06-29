@@ -1,6 +1,5 @@
 var React = require('react');
 var ReactLeaflet = require('react-leaflet')
-var agoHelpers = require('../utils/ago-helpers');
 import ESRIFeatureLayer from '../components/ESRIFeatureLayer';
 
 var PropTypes = React.PropTypes;
