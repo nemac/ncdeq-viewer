@@ -249,9 +249,9 @@ Treemap.defaultProps = {
   value: (d) => d.chart_value,
   children: (d) => d.children,
   id: (d) => {
-    if (d.chart_level > 1) return d.chart_level_label;
-    if (d.geography_level > 2) return 'HUC12 ' + d.ID.slice(-4);
-    return d.ID;
+    if (d.chart_level > 1) return d.chart_level_label ? d.chart_level_label : d.chart_description;
+    if (d.geography_level > 2) return d.ID.slice(-4);
+    return d.ID ? d.ID : d.chart_type;
   },
 }
 

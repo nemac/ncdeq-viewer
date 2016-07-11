@@ -12,7 +12,22 @@ import { AGO_URL, DATA_FEATUREID, ENCODED_COMMAS } from '../constants/actionCons
 import { START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION } from '../constants/appConstants';
 
 //set consts for this module
-const CHART_DATA_OUT_FIELDS = 'geography_label' + ENCODED_COMMAS + 'ID' + ENCODED_COMMAS + 'chart_id' + ENCODED_COMMAS + 'chart_matchid' + ENCODED_COMMAS + 'chart_type' + ENCODED_COMMAS + 'chart_level' + ENCODED_COMMAS + 'chart_description' + ENCODED_COMMAS + 'chart_value' + ENCODED_COMMAS + 'chart_matchid';
+const CHART_DATA_OUT_FIELDS_LIST = [
+  'ID',
+  'OBJECTID',
+  'chart_description',
+  'chart_id',
+  'chart_label',
+  'chart_level',
+  'chart_level_label',
+  'chart_matchid',
+  'chart_type',
+  'chart_value',
+  'geography_label',
+  'geography_level',
+  'geography_match_id'
+];
+const CHART_DATA_OUT_FIELDS = CHART_DATA_OUT_FIELDS_LIST.join(ENCODED_COMMAS);
 const CHART_DATA_ORDER_BY_FIELDS = 'chart_level' + ENCODED_COMMAS + 'chart_matchid';
 
 
