@@ -1,8 +1,8 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
-import Treemap from '../treemap/src/components/treemap.jsx';
-require('../treemap/src/styles.css');
-var {makeTreeFromHuc12Data, makeTreeFromHuc8Data} = require('../treemap/src/core.js');
+import Treemap from '../treemap/treemap.jsx';
+require('../treemap/styles.css');
+var {makeTreeFromHuc12Data, makeTreeFromHuc8Data} = require('../treemap/core.js');
 
 var ChartRowWrapper = React.createClass({
   propTypes: {
