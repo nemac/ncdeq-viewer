@@ -12,7 +12,7 @@ var esri = require('esri-leaflet')
 export default class ESRIFeatureLayer extends BaseTileLayer {
   componentWillMount() {
     super.componentWillMount();
-    const { url,layerStyle,zoom } = this.props;
+    const { url, layerStyle, zoom, max_zoom, min_zoom } = this.props;
 
     //make sure style json is set to null
     //styles defined by leaflet path
@@ -21,12 +21,30 @@ export default class ESRIFeatureLayer extends BaseTileLayer {
     if(layerStyle){
       jsonSyle= JSON.parse(layerStyle);
     }
+    //make sure maxzoom json is set to null
+    var the_max_zoom = 19;
+    if(max_zoom){
+      the_max_zoom = max_zoom;
+    }
+    //make sure min_zoom json is set to null
+    var the_min_zoom = 0;
+    if(min_zoom){
+      the_min_zoom = min_zoom;
+    }
 
     //add layer to map with style
     this.leafletElement = esri.featureLayer({url:url,
     style: function(){
         return jsonSyle
-      }
+      },
+    maxZoom: the_max_zoom,
+    minZoom: the_min_zoom,
+
     })
+    //console.log(this.props.name)
+    var name = this.props.name
+    //this.leafletElement is the layuer to map.addLayer(name) or map.removeLayer(name) - toggle layer
+     this.setState({name:this.leafletElement })
+
   }
 }

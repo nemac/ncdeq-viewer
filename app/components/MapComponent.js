@@ -19,12 +19,22 @@ var MapContainer = React.createClass({
     }
 
   },
-  handleMapClick: function(e){
+  handleMapClick: function(e,self){
 
+    var L = this.refs.map.leafletElement
+    console.log(L)
+    // console.log(e)
+    // console.log(self)
+    // console.log(self.layer.feature.properties.ID)
     // need to add redux stuff for re-sizeing?
     const isVisible = this.props.charts.chart_visibility;
 
     this.props.update_MapHeight();
+
+    //this.updateFilterState('Cataloging Units',self.layer.feature.properties.ID);
+
+    this.props.get_ChartData(self.layer.feature.properties.ID,'HUC12')
+    this.props.change_geographyLevelFilter(self.layer.feature.properties.ID,'HUC12')
 
     //update chart visibility on map click...
     if(!isVisible){
@@ -40,7 +50,7 @@ var MapContainer = React.createClass({
   render: function() {
     const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;
     const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
-
+    // const { ESRIFeatureLayer} = ReactLeaflet.LayersControl;
     return (
       <div className="twelve wide column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
         {this.props.map_settings &&
@@ -58,19 +68,26 @@ var MapContainer = React.createClass({
           url={this.state.tileUrl}
         />
       <ESRIFeatureLayer
-        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/0'
+        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/5'
         layerStyle='{"color":"#696969","fillColor":"#DCDCDC","fillOpacity":0,"weight":8}'
         zoom={this.props.zoom}
+        onLeafletClick={this.handleMapClick.bind(null,this)}
+        name="RB"
       />
       <ESRIFeatureLayer
-        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/1'
+        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/4'
         layerStyle='{"color":"#808080","fillColor":"#DCDCDC","fillOpacity":0,"weight":6}'
         zoom={this.props.zoom}
+        onLeafletClick={this.handleMapClick.bind(null,this)}
+        name="CU"
       />
       <ESRIFeatureLayer
-        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/2'
+        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/3'
         layerStyle='{"color":"#C0C0C0","fillColor":"#DCDCDC","fillOpacity":0,"weight":2}'
         zoom={this.props.zoom}
+        min_zoom="9"
+        onLeafletClick={this.handleMapClick.bind(null,this)}
+        name="HUC"
       />
     </ReactLeaflet.Map>
   }
