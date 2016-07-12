@@ -165,6 +165,9 @@ export function handleSearchChange(comp,e){
     }
   };
 
+export function addLayer(){
+  
+}
 
 //new map state object to pass to reducer
 function mapSate(type,data) {

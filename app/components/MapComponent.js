@@ -68,21 +68,21 @@ var MapContainer = React.createClass({
           url={this.state.tileUrl}
         />
       <ESRIFeatureLayer
-        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/5'
+        url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/5'
         layerStyle='{"color":"#696969","fillColor":"#DCDCDC","fillOpacity":0,"weight":8}'
         zoom={this.props.zoom}
         onLeafletClick={this.handleMapClick.bind(null,this)}
         name="RB"
       />
       <ESRIFeatureLayer
-        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/4'
+        url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/4'
         layerStyle='{"color":"#808080","fillColor":"#DCDCDC","fillOpacity":0,"weight":6}'
         zoom={this.props.zoom}
         onLeafletClick={this.handleMapClick.bind(null,this)}
         name="CU"
       />
       <ESRIFeatureLayer
-        url='http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/3'
+        url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/3'
         layerStyle='{"color":"#C0C0C0","fillColor":"#DCDCDC","fillOpacity":0,"weight":2}'
         zoom={this.props.zoom}
         min_zoom="9"
