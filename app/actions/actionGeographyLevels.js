@@ -40,7 +40,7 @@ function update_activeGeographyFilter( state, active_level, filter_value ){
 
   //convert the active layer name to the AGO generic name
   // need to do check of active layer
-  const nextLevel = getNextLevel(active_level)
+  const nextLevel = getNextLevel(active_level) === 3 ? 99 : getNextLevel(active_level) ;
   const currentLevel = getCurrentLevel(active_level)
   const geography_levels = state.geography_levels.geography_levels
   const menuLists = state.menuLists.lists;
