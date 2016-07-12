@@ -5,6 +5,19 @@ var PropTypes = React.PropTypes;
 import { getNextLevelName, getCategoryName, getAGOGeographyLabel} from '../utils/helpers';
 
 var MenuComponent = React.createClass({
+  handleChartButtonClick: function(){
+
+    //get current visibility
+    const isVisible = this.props.charts.chart_visibility;
+
+    //update new map height for dispplaying map height
+    this.props.update_MapHeight();
+
+    //update visibility only if false.
+    if(!isVisible){
+      this.props.update_ChartVisiblity();
+    }
+  },
   componentDidMount: function() {
     //var input = document.getElementById('searchTextField');
     //var options = {componentRestrictions: {country: 'us'}};
@@ -171,7 +184,7 @@ var MenuComponent = React.createClass({
           </a>
 
         <div className="header item" >
-          &nbsp;
+          <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>Show Charts</button>
         </div>
         <div className="left menu">
           <div className="item">
