@@ -1,0 +1,90 @@
+
+div.treemap-app {
+  margin: none;
+}
+
+div.treemap-side {
+  float: left;
+  min-width: 400px;
+  margin-right: 10px;
+}
+
+div.treemap-nav {
+  
+}
+
+div.treemap-node-info {
+  padding: 0px 5px 5px 5px;
+  background-color: orange;
+  border-width: 1px;
+  border-radius: 3px;
+}
+
+button.treemap-nav-button-back,
+button.treemap-nav-button-forward {
+  width: 50%;
+  height: 30px;
+}
+
+/* TREEMAP STYLES */
+
+/*
+rect.tooltip {
+  position: relative;
+  display: inline-block;
+  fill: white;
+  stroke-width: 1px;
+  stroke: black;
+}
+*/
+
+rect.treemap-rect {
+  stroke-width: 3px;
+  stroke: #fff;
+  fill: #bbb;
+}
+
+rect.treemap-rect:hover {
+  fill-opacity: .7;
+}
+
+rect.focused-node {
+  fill-opacity: .3;
+}
+
+rect.focused-node:hover {
+  fill-opacity: .3;
+}
+
+rect.grandparent {
+  fill: orange;
+  fill-opacity: .8;
+}
+
+rect.grandparent:hover {
+  fill: orange;
+  fill-opacity: 1;
+}
+
+.children rect.parent {
+  stroke: #fff;
+  fill: #aaa;
+}
+
+.children:hover rect.parent {
+  stroke-width: 3px;
+  stroke: #fff;
+  fill: #bbb;
+  fill-opacity: .7;
+}
+
+g.grandparent,
+g.children {
+  cursor: pointer;
+}
+
+text {
+  font: 10px sans-serif;
+  font-weight: bold;
+  dominant-baseline: hanging;
+}
