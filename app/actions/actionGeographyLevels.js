@@ -3,7 +3,7 @@ import { CheckReponse } from './responses';
 import { AGO_URL, DATA_FEATUREID } from '../constants/actionConstants';
 
 //  general functions and  helpers.  reuse functions
-import { getNextLevel, getAGOGeographyLabel, getCurrentLevel } from '../utils/helpers';
+import {  getAGOGeographyLabel, getCurrentLevel } from '../utils/helpers';
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
@@ -33,6 +33,21 @@ function AGO_GeographyLevels(){
 
 };
 
+function getNextLevel(geogLevel){
+   switch (geogLevel) {
+     case 'River Basins':
+       return 2;
+       break;
+     case 'Cataloging Units':
+       return 3;
+       break;
+     case 'HUC12':
+       return 99;
+       break;
+     default:
+       return 99;
+     }
+ }
 //updates the a geography level filter
 //  determined by changed menuitem value
 //  or when the user clicks on huc in map (not done yet)
@@ -40,7 +55,7 @@ function update_activeGeographyFilter( state, active_level, filter_value ){
 
   //convert the active layer name to the AGO generic name
   // need to do check of active layer
-  const nextLevel = getNextLevel(active_level) === 3 ? 99 : getNextLevel(active_level) ;
+  const nextLevel = getNextLevel(active_level);
   const currentLevel = getCurrentLevel(active_level)
   const geography_levels = state.geography_levels.geography_levels
   const menuLists = state.menuLists.lists;

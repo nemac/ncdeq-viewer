@@ -22,7 +22,7 @@ var MapContainer = React.createClass({
   handleMapClick: function(e,self){
 
     var L = this.refs.map.leafletElement
-    console.log(L)
+    //console.log(L)
     // console.log(e)
     // console.log(self)
     // console.log(self.layer.feature.properties.ID)
@@ -33,8 +33,8 @@ var MapContainer = React.createClass({
 
     //this.updateFilterState('Cataloging Units',self.layer.feature.properties.ID);
 
-    this.props.get_ChartData(self.layer.feature.properties.ID,'HUC12')
-    this.props.change_geographyLevelFilter(self.layer.feature.properties.ID,'HUC12')
+    //this.props.get_ChartData(self.layer.feature.properties.ID,'HUC12')
+    //this.props.change_geographyLevelFilter(self.layer.feature.properties.ID,'HUC12')
 
     //update chart visibility on map click...
     if(!isVisible){
