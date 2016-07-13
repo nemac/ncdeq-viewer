@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactLeaflet = require('react-leaflet')
 import ESRIFeatureLayer from '../components/ESRIFeatureLayer';
-
+import ESRITileMapLayer from '../components/ESRITiledMapLayer'
 //app constants
 import {
   MAP_HEIGHT,
@@ -97,4 +97,10 @@ var MapContainer = React.createClass({
   }
 });
 
+//  then will have to query the feature layer based on point to get values.....
+//  build the tile locally then push to AGO.
+//<ESRITileMapLayer
+//  url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/test_huc6/MapServer"
+//  />
+//
 module.exports = MapContainer;
