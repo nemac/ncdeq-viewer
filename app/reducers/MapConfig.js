@@ -9,6 +9,9 @@ export function mapConfig(state = [], action) {
     //sets  the intial map config data.
     case 'MAP_DATA':
       return { ...state, mapconfig: action.mapconfig}
+    //sets  the map layers objects use to toggle map layer visibility
+    case 'MAP_SET_LAYERS':
+      return { ...state, mapconfig: action.mapconfig}
     default:
       return state
   }

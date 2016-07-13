@@ -14,6 +14,38 @@ import {
 
 //basic map (leaflet state and functions)
 
+export function HandleLayerToggle(mapComp,layer,e){
+  return (dispatch, getState) => {
+
+  }
+}
+export function set_MapLayers(mapLayers){
+  return (dispatch, getState) => {
+
+    //get redux state
+    const state = getState()
+
+    //get array of current layers or new array if there is no lyers
+    let CurrentLayers =  state.mapConfig.mapconfig.layers.length === 0 ? new Array() : state.mapConfig.mapconfig.layers;
+
+    //add new layer to array
+    CurrentLayers.push(mapLayers)
+
+    const latitude = state.mapConfig.mapconfig.latitude;
+    const longitude = state.mapConfig.mapconfig.longitude;
+    const zoom =  state.mapConfig.mapconfig.zoom;
+    const minZoom = state.mapConfig.mapconfig.minZoom;
+    const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+    const maxBounds = state.mapConfig.mapconfig.maxBounds;
+    const layers = CurrentLayers
+
+    //create map config object
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds};
+
+    dispatch(mapSate('MAP_SET_LAYERS',mapConfig));
+
+  }
+}
 export function set_mapToPoint(lat,lng,z,e){
   return (dispatch, getState) => {
 
@@ -26,7 +58,7 @@ export function set_mapToPoint(lat,lng,z,e){
     const minZoom = state.mapConfig.mapconfig.minZoom;
     const maxZoom =  state.mapConfig.mapconfig.maxZoom;
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
-    const layers = [];
+    const layers = state.mapConfig.mapconfig.layers;
 
     //create map config object
     const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds};
@@ -52,7 +84,7 @@ export function HandleMapEnd(mapComp,e){
     const minZoom = state.mapConfig.mapconfig.minZoom;
     const maxZoom =  state.mapConfig.mapconfig.maxZoom;
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
-    const layers = [];
+    const layers = state.mapConfig.mapconfig.layers;
 
     //create map config object
     const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds};
@@ -155,7 +187,7 @@ export function handleSearchChange(comp,e){
         const minZoom = state.mapConfig.mapconfig.minZoom;
         const maxZoom =  state.mapConfig.mapconfig.maxZoom;
         const maxBounds = state.mapConfig.mapconfig.maxBounds;
-        const layers = [];
+        const layers = state.mapConfig.mapconfig.layers;
 
         //create map config object
         const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds};
@@ -166,7 +198,7 @@ export function handleSearchChange(comp,e){
   };
 
 export function addLayer(){
-  
+
 }
 
 //new map state object to pass to reducer

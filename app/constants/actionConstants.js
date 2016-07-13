@@ -16,7 +16,7 @@ const MENU_OUT_FIELDS = 'id,NAME,VALUE,MAIN,SUB';
 
 
 //ArcGIS Online base URl
-export const AGO_URL = 'http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services'
+export const AGO_URL = 'https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services'
 
 //URL or Getting RiverBasins
 export const AGO_RIVER_BASINS = '/RDRBP/FeatureServer/' + BASIN_FEATUREID +

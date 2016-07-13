@@ -11,13 +11,15 @@ function mapStateToProps(state) {
   let charts = state.chartData;
   let map_settings = state.mapConfig.mapconfig;
   let default_settings = state.default_settings.default_settings;
+  let leafletMap = state.leafletMap;
 
   return {
     DefaultMenuLists,
     geography_levels,
     charts,
     map_settings,
-    default_settings
+    default_settings,
+    leafletMap
   }
 }
 
