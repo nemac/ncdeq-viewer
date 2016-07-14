@@ -7,7 +7,13 @@ var MapLayerToggle = React.createClass({
     toggleText: PropTypes.string,
   },
   handleLayerClick: function(e){
-    console.log(this)
+
+    const leafletMap = this.props.leafletMap;
+    const leafletLayer = this.props.layer;
+    const isLayerVis = leafletMap.hasLayer(leafletLayer);
+    isLayerVis ? leafletMap.removeLayer(leafletLayer) : leafletMap.addLayer(leafletLayer);
+    //console.log(isLayerVis)
+
   },
   getDefaultProps: function() {
     return {
@@ -23,8 +29,8 @@ var MapLayerToggle = React.createClass({
   render: function() {
     return (
       <div>
-        <div className="ui checkbox">
-          <input type="checkbox" name="togglelayer" onClick={this.handleLayerClick} />
+        <div className="ui checked checkbox">
+          <input type="checkbox"  defaultChecked  onClick={this.handleLayerClick} />
           <label>{this.state.toggleText}</label>
         </div>
       </div>

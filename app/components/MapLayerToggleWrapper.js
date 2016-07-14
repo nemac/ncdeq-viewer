@@ -19,7 +19,7 @@ var MapLayerToggleWrapper = React.createClass({
       <div className="row">
         <MapLayerToggleName  text='Toggle Layers'/>
         { layers.map(function(item) {
-           return (<MapLayerToggle  key={item.name} toggleText={item.name} layer={item.layer} />)
+           return (<MapLayerToggle  key={item.name} toggleText={item.name} layer={item.layer} leafletMap={this.props.leafletMap.leafletMap} />)
          }.bind(this))
       }
       </div>

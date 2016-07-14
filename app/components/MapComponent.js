@@ -12,12 +12,6 @@ var PropTypes = React.PropTypes;
 
 var MapContainer = React.createClass({
   handleMapLoad: function(e,self) {
-    // //inital mount the map data is not set need to make sure we don't try get ut
-    // if (this.refs.map){
-    //   var map = this.refs.map.getLeafletElement();
-    //   this.setState({map:this.refs.map,l:L})
-    // }
-    console.log("map loaded")
     var map = this.refs.map.leafletElement;
     this.props.set_LeafletMap(map)
   },
@@ -64,7 +58,6 @@ var MapContainer = React.createClass({
           onLeafletZoomEnd={this.props.HandleMapEnd.bind(null,this)}
           onLeafletMoveend={this.props.HandleMapEnd.bind(null,this)}
           onLeafletClick={this.handleMapClick.bind(null,this)}
-          onLeafletLayerAdd={this.handleMapLoad.bind(null,this)}
           center={[this.props.map_settings.latitude,this.props.map_settings.longitude]}
           zoom={this.props.map_settings.zoom}
           maxBounds={this.props.map_settings.maxBounds}
@@ -73,6 +66,7 @@ var MapContainer = React.createClass({
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
           url={this.state.tileUrl}
+          onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
       <ESRIFeatureLayer
         url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/5'
