@@ -3,9 +3,16 @@ var MenuItemComponent = require('../components/MenuItemComponent');
 var PropTypes = React.PropTypes;
 //  general functions and  helpers.  reuse functions
 import { getNextLevelName, getCategoryName, getAGOGeographyLabel} from '../utils/helpers';
+import {
+  START_LATITUDE,
+  START_LONGITUDE,
+  START_ZOOM, } from '../constants/appConstants'
 
 var MenuComponent = React.createClass({
-  handleChartButtonClick: function(){
+  handleMapFillClick: function(e){
+    this.props.set_mapToPoint(START_LATITUDE,START_LONGITUDE,START_ZOOM,e);
+  },
+  handleChartButtonClick: function(e){
 
     //toggle chart visibility with button click
     this.props.update_ChartVisiblity();
@@ -181,7 +188,9 @@ var MenuComponent = React.createClass({
         <div className="header item" >
           <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>{!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }</button>
         </div>
-        <div className="left menu">
+        <div className="header item" >
+          <button className="ui button" onClick={this.handleMapFillClick.bind(null,this)}>Map Back to Start</button>
+        </div>      <div className="left menu">
           <div className="item">
             <div className="ui transparent icon input">
               <input className="mapSearch" type="text" placeholder="Search to zoom..." onChange={this.props.handleSearchChange.bind(null,this)} />
