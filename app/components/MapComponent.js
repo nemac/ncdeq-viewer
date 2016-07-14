@@ -9,7 +9,7 @@ import {
 } from '../constants/appConstants'
 
 var PropTypes = React.PropTypes;
-
+var TempLayer;
 var MapContainer = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     // console.log("componentWillReceiveProps")
@@ -18,7 +18,20 @@ var MapContainer = React.createClass({
       const features = nextProps.map_settings.layerInfo.features
       if (features){
         const feature =  features[0].properties;
-        console.log(feature.ID)
+        //console.log(features)
+
+        var map = this.refs.map.leafletElement;
+        //console.log(map)
+
+        const isLayerVis = map.hasLayer(TempLayer);
+
+        if (isLayerVis){
+          map.removeLayer(TempLayer)
+        }
+
+        TempLayer = L.geoJson().addTo(map);
+        TempLayer.addData(features);
+        map.fitBounds(TempLayer.getBounds());
       }
       // console.log(features)
     }
@@ -109,7 +122,7 @@ var MapContainer = React.createClass({
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/HUC6/MapServer"
        setMapLayers={this.props.set_MapLayers}
-       name="HUC 6 Tile"
+       name="River Basins Tile"
        />
     </ReactLeaflet.Map>
   }
