@@ -20,18 +20,21 @@ var MapContainer = React.createClass({
         const feature =  features[0].properties;
         //console.log(features)
 
-        var map = this.refs.map.leafletElement;
-        //console.log(map)
+        // var map = this.refs.map.leafletElement;
+        const leafletMap = this.props.leafletMap.leafletMap;
 
-        const isLayerVis = map.hasLayer(TempLayer);
+        // console.log(map)
+        // console.log(leafletMap.leafletMap)
+
+        const isLayerVis = leafletMap.hasLayer(TempLayer);
 
         if (isLayerVis){
-          map.removeLayer(TempLayer)
+          leafletMap.removeLayer(TempLayer)
         }
 
-        TempLayer = L.geoJson().addTo(map);
+        TempLayer = L.geoJson().addTo(leafletMap);
         TempLayer.addData(features);
-        map.fitBounds(TempLayer.getBounds());
+        leafletMap.fitBounds(TempLayer.getBounds());
       }
       // console.log(features)
     }
