@@ -16,7 +16,6 @@ export default class ESRIFeatureLayer extends BaseTileLayer {
     super.componentWillMount();
     const { url, layerStyle, zoom, max_zoom, min_zoom, center } = this.props;
 
-    console.log(center)
     //make sure style json is set to null
     //styles defined by leaflet path
     //http://leafletjs.com/reference.html#path-options
@@ -45,7 +44,6 @@ export default class ESRIFeatureLayer extends BaseTileLayer {
 
     })
 
-    //console.log(this.props.name)
     var name = this.props.name
     //this.leafletElement is the layer to map.addLayer(name) or map.removeLayer(name) - toggle layer
     //this.setState({maplayer:[{name,layer:this.leafletElement}] })

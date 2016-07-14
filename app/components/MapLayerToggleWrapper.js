@@ -10,11 +10,6 @@ var MapLayerToggleWrapper = React.createClass({
       layers = this.props.map_settings.layers;
     }
 
-    //console.log(this.props.map_settings)
-    layers.map(function(item) {
-      console.log(item)
-    })
-
     return (
       <div className="row">
         <MapLayerToggleName  text='Toggle Layers'/>
