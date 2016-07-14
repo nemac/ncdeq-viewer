@@ -11,13 +11,9 @@ import {
 var PropTypes = React.PropTypes;
 
 var MapContainer = React.createClass({
-  componentDidMount: function() {
-    //inital mount the map data is not set need to make sure we don't try get ut
-    if (this.refs.map){
-      var map = this.refs.map.getLeafletElement();
-      this.setState({map:this.refs.map,l:L})
-    }
-
+  handleMapLoad: function(e,self) {
+    var map = this.refs.map.leafletElement;
+    this.props.set_LeafletMap(map)
   },
   handleMapClick: function(e,self){
 
@@ -27,6 +23,10 @@ var MapContainer = React.createClass({
     // console.log(self)
     // console.log(self.layer.feature.properties.ID)
     // need to add redux stuff for re-sizeing?
+
+    console.log(self.latlng);
+    //sammple api call for getting data.
+    // http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/3/query?where=&objectIds=&time=&geometry=%7Bx%3A+-79.090576171875%2C+y%3A+34.77771580360469%7D&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&resultType=standard&distance=&units=esriSRUnit_Meter&outFields=*&returnGeometry=true&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=html&token=
     const isVisible = this.props.charts.chart_visibility;
 
     this.props.update_MapHeight();
@@ -66,20 +66,23 @@ var MapContainer = React.createClass({
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
           url={this.state.tileUrl}
+          onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
       <ESRIFeatureLayer
         url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/5'
         layerStyle='{"color":"#696969","fillColor":"#DCDCDC","fillOpacity":0,"weight":8}'
         zoom={this.props.zoom}
         onLeafletClick={this.handleMapClick.bind(null,this)}
-        name="RB"
+        setMapLayers={this.props.set_MapLayers}
+        name="River Basins"
       />
       <ESRIFeatureLayer
         url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/4'
         layerStyle='{"color":"#808080","fillColor":"#DCDCDC","fillOpacity":0,"weight":6}'
         zoom={this.props.zoom}
         onLeafletClick={this.handleMapClick.bind(null,this)}
-        name="CU"
+        setMapLayers={this.props.set_MapLayers}
+        name="Cataloging Units"
       />
       <ESRIFeatureLayer
         url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/3'
@@ -87,7 +90,8 @@ var MapContainer = React.createClass({
         zoom={this.props.zoom}
         min_zoom="9"
         onLeafletClick={this.handleMapClick.bind(null,this)}
-        name="HUC"
+        setMapLayers={this.props.set_MapLayers}
+        name="HUC 12"
       />
     </ReactLeaflet.Map>
   }

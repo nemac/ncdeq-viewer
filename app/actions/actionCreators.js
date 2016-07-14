@@ -8,6 +8,7 @@ import * as ChartData from './actionChartData';
 import * as GeographyLevels from './actionGeographyLevels';
 import * as MapConfig from './actionMap';
 import * as ActionDefault from './actionDefault';
+import * as ActionLeaflet from './actionLeaflet'
 
 //create a const for each action so it can be imported and connected components
 export const get_MenuList = MenuLists.get_MenuList;
@@ -23,3 +24,5 @@ export const handleSearchChange = MapConfig.handleSearchChange;
 export const set_defaults = ActionDefault.set_defaults;
 export const update_ChartHeight = ActionDefault.update_ChartHeight;
 export const update_MapHeight = ActionDefault.update_MapHeight;
+export const set_MapLayers = MapConfig.set_MapLayers;
+export const set_LeafletMap = ActionLeaflet.set_LeafletMap;

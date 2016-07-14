@@ -2,7 +2,7 @@ var React = require('react');
 
 var MapWrapper = require('./MapWrapper');
 var ProjectMapWrapper = require('./ProjectMapWrapper');
-var MapLayerToggleWrapper = require('./MapLayerToggleWrapper');
+import MapLayerToggleContainer from '../containers/MapLayerToggleContainer';
 
 var PropTypes = React.PropTypes;
 
@@ -20,7 +20,7 @@ var MapRowComponent = React.createClass({
             <div className="ui internally celled grid">
               <div className="row">
                 <div className="sixteen wide column">
-                  <MapLayerToggleWrapper    />
+                  <MapLayerToggleContainer    />
                 </div>
               </div>
               <div className="row">

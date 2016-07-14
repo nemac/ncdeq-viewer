@@ -14,7 +14,7 @@ var esri = require('esri-leaflet')
 export default class ESRIFeatureLayer extends BaseTileLayer {
   componentWillMount() {
     super.componentWillMount();
-    const { url, layerStyle, zoom, max_zoom, min_zoom } = this.props;
+    const { url, layerStyle, zoom, max_zoom, min_zoom, center } = this.props;
 
     //make sure style json is set to null
     //styles defined by leaflet path
@@ -43,10 +43,12 @@ export default class ESRIFeatureLayer extends BaseTileLayer {
     minZoom: the_min_zoom,
 
     })
-    //console.log(this.props.name)
+
     var name = this.props.name
-    //this.leafletElement is the layuer to map.addLayer(name) or map.removeLayer(name) - toggle layer
-     this.setState({name:this.leafletElement })
+    //this.leafletElement is the layer to map.addLayer(name) or map.removeLayer(name) - toggle layer
+    //this.setState({maplayer:[{name,layer:this.leafletElement}] })
+    this.props.setMapLayers({name,layer:this.leafletElement})
+
 
   }
 }
