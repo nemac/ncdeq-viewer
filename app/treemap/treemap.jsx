@@ -66,7 +66,7 @@ export default class Treemap extends React.Component {
   handleNodeClick(node) {
     if (node !== this.state.focused) {
       this.setState({
-        focused: node,
+        focused: node, 
       })
     }
   }
