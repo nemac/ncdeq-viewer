@@ -11,6 +11,18 @@ import {
 var PropTypes = React.PropTypes;
 
 var MapContainer = React.createClass({
+  componentWillReceiveProps: function(nextProps) {
+    // console.log("componentWillReceiveProps")
+    // console.log(nextProps.map_settings.layerInfo)
+    if(nextProps.map_settings.layerInfo){
+      const features = nextProps.map_settings.layerInfo.features
+      if (features){
+        const feature =  features[0].properties;
+        console.log(feature.ID)
+      }
+      // console.log(features)
+    }
+  },
   handleMapLoad: function(e,self) {
     var map = this.refs.map.leafletElement;
     this.props.set_LeafletMap(map)
@@ -24,13 +36,14 @@ var MapContainer = React.createClass({
     // console.log(self.layer.feature.properties.ID)
     // need to add redux stuff for re-sizeing?
 
-    console.log(self.latlng);
+    //console.log(self.latlng);
     //sammple api call for getting data.
     // http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/3/query?where=&objectIds=&time=&geometry=%7Bx%3A+-79.090576171875%2C+y%3A+34.77771580360469%7D&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&resultType=standard&distance=&units=esriSRUnit_Meter&outFields=*&returnGeometry=true&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=html&token=
     const isVisible = this.props.charts.chart_visibility;
 
     this.props.update_MapHeight();
-
+    this.props.get_LayerInfo(self.latlng.lat,self.latlng.lng);
+    //console.log(this.props.map_settings.layerInfo)
     //this.updateFilterState('Cataloging Units',self.layer.feature.properties.ID);
 
     //this.props.get_ChartData(self.layer.feature.properties.ID,'HUC12')
@@ -93,6 +106,11 @@ var MapContainer = React.createClass({
         setMapLayers={this.props.set_MapLayers}
         name="HUC 12"
       />
+      <ESRITileMapLayer
+       url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/HUC6/MapServer"
+       setMapLayers={this.props.set_MapLayers}
+       name="HUC 6 Tile"
+       />
     </ReactLeaflet.Map>
   }
 

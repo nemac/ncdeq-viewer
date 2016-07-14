@@ -4,7 +4,12 @@
 // these refer to those.  put into a const so it can be figured for different sites
 export const BASIN_FEATUREID = 0;
 export const CATALOGING_FEATUREID = 1;
-export const HUC12_FeatureID = 2;
+export const HUC12_FEATUREID = 2;
+
+export const HUC12_MAP_FEATUREID = 3;
+export const CATALOGING_MAP_FEATUREID = 4;
+export const BASIN_MAP_FEATUREID = 5;
+
 export const DATA_FEATUREID = 6;
 export const HUC_NAMES_FEATUREID = 7;
 
@@ -80,7 +85,7 @@ export const AGO_CATALOGING_UNITS = '/RDRBP/FeatureServer/' + CATALOGING_FEATURE
                               '&f=pgeojson'+
                               '&token='
 
-export const AGO_HUCS = '/RDRBP/FeatureServer/' + HUC12_FeatureID +
+export const AGO_HUCS = '/RDRBP/FeatureServer/' + HUC12_FEATUREID +
                               '/query?where=id%3C%3E%27%27'+
                               '&objectIds='+
                               '&time='+

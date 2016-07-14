@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 //import actions
-import { get_defaultMapData, HandleMapEnd, set_mapToPoint, update_ChartVisiblity, update_MapHeight, get_ChartData, change_geographyLevelActive,  change_geographyLevelFilter, set_MapLayers, set_LeafletMap} from '../actions/actionCreators'
+import { get_defaultMapData, HandleMapEnd, set_mapToPoint, update_ChartVisiblity, update_MapHeight, get_ChartData, change_geographyLevelActive,  change_geographyLevelFilter, set_MapLayers, set_LeafletMap, get_LayerInfo} from '../actions/actionCreators'
 
 //import components
 import MapComponent from '../components/MapComponent'
@@ -37,6 +37,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     get_ChartData: bindActionCreators(get_ChartData,dispatch),
     set_MapLayers: bindActionCreators(set_MapLayers,dispatch),
     set_LeafletMap: bindActionCreators(set_LeafletMap,dispatch),
+    get_LayerInfo: bindActionCreators(get_LayerInfo,dispatch),
   }
 }
 
