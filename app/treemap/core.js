@@ -136,8 +136,7 @@ export const makeTreeFromHuc12Data = (features) => {
       }
     })
   })
-  console.log('level 4 done')
-
+  
   return huc12Tree
 }
 
