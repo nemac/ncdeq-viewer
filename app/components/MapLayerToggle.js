@@ -8,11 +8,18 @@ var MapLayerToggle = React.createClass({
   },
   handleLayerClick: function(e){
 
+    //get map object.  saved in redux store
     const leafletMap = this.props.leafletMap;
+
+    //get the current layer object.
     const leafletLayer = this.props.layer;
+
+    //check if the layer is vissible
     const isLayerVis = leafletMap.hasLayer(leafletLayer);
+
+    //if vissible remove (turn off) layer otherwise add (turn on)
     isLayerVis ? leafletMap.removeLayer(leafletLayer) : leafletMap.addLayer(leafletLayer);
-    //console.log(isLayerVis)
+
 
   },
   getDefaultProps: function() {
