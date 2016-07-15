@@ -12,6 +12,9 @@ export function mapConfig(state = [], action) {
     //sets  the map layers objects use to toggle map layer visibility
     case 'MAP_SET_LAYERS':
       return { ...state, mapconfig: action.mapconfig}
+    //get the attributes of a layer at user clicked point
+    case 'MAP_GET_LAYER_INFO':
+      return { ...state, mapconfig: action.mapconfig}
     default:
       return state
   }

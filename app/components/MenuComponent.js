@@ -1,8 +1,9 @@
 var React = require('react');
 var MenuItemComponent = require('../components/MenuItemComponent');
 var PropTypes = React.PropTypes;
+
 //  general functions and  helpers.  reuse functions
-import { getNextLevelName, getCategoryName, getAGOGeographyLabel} from '../utils/helpers';
+import { getNextLevelName, getCategoryName, getAGOGeographyLabel, getAGOFeatureId} from '../utils/helpers';
 import {
   START_LATITUDE,
   START_LONGITUDE,
@@ -95,6 +96,12 @@ var MenuComponent = React.createClass({
 
     this.props.get_ChartData(e.target.value,level)
     this.props.change_geographyLevelFilter(e.target.value,level)
+
+    //get the ago layer id
+    const feature_id = getAGOFeatureId(level)
+
+    //get the attributes of the huc12 layer on a user click
+    this.props.get_LayerInfo_ByValue(e.target.value, feature_id);
 
   },
   handleMenuClick: function(val,e) {

@@ -6,37 +6,47 @@ import ESRITileMapLayer from '../components/ESRITiledMapLayer'
 import {
   MAP_HEIGHT,
   DEF_PAD,
-} from '../constants/appConstants'
+} from '../constants/appConstants';
+
+import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
+
+import {zoomToGeoJson} from '../utils/helpers';
 
 var PropTypes = React.PropTypes;
 
 var MapContainer = React.createClass({
+  componentWillReceiveProps: function(nextProps) {
+
+    if(nextProps.map_settings.layerInfo){
+      //get features from user location
+      const features = nextProps.map_settings.layerInfo.features
+
+      // get map object from redux store
+      const leafletMap = this.props.leafletMap.leafletMap;
+
+      //call to zoom to geojson (from helper library)
+      zoomToGeoJson(features,leafletMap);
+    }
+  },
   handleMapLoad: function(e,self) {
     var map = this.refs.map.leafletElement;
     this.props.set_LeafletMap(map)
   },
   handleMapClick: function(e,self){
 
+    //get the leaftet map object
     var L = this.refs.map.leafletElement
-    //console.log(L)
-    // console.log(e)
-    // console.log(self)
-    // console.log(self.layer.feature.properties.ID)
-    // need to add redux stuff for re-sizeing?
 
-    console.log(self.latlng);
-    //sammple api call for getting data.
-    // http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/3/query?where=&objectIds=&time=&geometry=%7Bx%3A+-79.090576171875%2C+y%3A+34.77771580360469%7D&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&resultType=standard&distance=&units=esriSRUnit_Meter&outFields=*&returnGeometry=true&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=html&token=
+    //check if charts are visible.
     const isVisible = this.props.charts.chart_visibility;
 
+    //update map height
     this.props.update_MapHeight();
 
-    //this.updateFilterState('Cataloging Units',self.layer.feature.properties.ID);
+    //get the attributes of the huc12 layer on a user click
+    this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
 
-    //this.props.get_ChartData(self.layer.feature.properties.ID,'HUC12')
-    //this.props.change_geographyLevelFilter(self.layer.feature.properties.ID,'HUC12')
-
-    //update chart visibility on map click...
+    //update chart visibility on map click on if the visibility is false
     if(!isVisible){
       this.props.update_ChartVisiblity();
     }
@@ -69,14 +79,6 @@ var MapContainer = React.createClass({
           onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
       <ESRIFeatureLayer
-        url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/5'
-        layerStyle='{"color":"#696969","fillColor":"#DCDCDC","fillOpacity":0,"weight":8}'
-        zoom={this.props.zoom}
-        onLeafletClick={this.handleMapClick.bind(null,this)}
-        setMapLayers={this.props.set_MapLayers}
-        name="River Basins"
-      />
-      <ESRIFeatureLayer
         url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/4'
         layerStyle='{"color":"#808080","fillColor":"#DCDCDC","fillOpacity":0,"weight":6}'
         zoom={this.props.zoom}
@@ -93,6 +95,11 @@ var MapContainer = React.createClass({
         setMapLayers={this.props.set_MapLayers}
         name="HUC 12"
       />
+      <ESRITileMapLayer
+       url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/HUC6/MapServer"
+       setMapLayers={this.props.set_MapLayers}
+       name="River Basins"
+       />
     </ReactLeaflet.Map>
   }
 

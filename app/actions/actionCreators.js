@@ -11,18 +11,29 @@ import * as ActionDefault from './actionDefault';
 import * as ActionLeaflet from './actionLeaflet'
 
 //create a const for each action so it can be imported and connected components
+//menu actions
 export const get_MenuList = MenuLists.get_MenuList;
+
+//GeographyLevels Actions (really menus also)
 export const get_GeographyLevels = GeographyLevels.get_GeographyLevels;
 export const change_geographyLevelActive = GeographyLevels.change_geographyLevelActive;
 export const change_geographyLevelFilter = GeographyLevels.change_geographyLevelFilter;
+
+//chart data and state actions
 export const update_ChartVisiblity = ChartData.update_ChartVisiblity
 export const get_ChartData = ChartData.get_ChartData
+
+//map data and state actions
 export const get_defaultMapData = MapConfig.get_defaultMapData;
 export const HandleMapEnd = MapConfig.HandleMapEnd;
+export const set_MapLayers = MapConfig.set_MapLayers;
 export const set_mapToPoint = MapConfig.set_mapToPoint;
 export const handleSearchChange = MapConfig.handleSearchChange;
+export const get_LayerInfo_ByPoint = MapConfig.get_LayerInfo_ByPoint;
+export const get_LayerInfo_ByValue = MapConfig.get_LayerInfo_ByValue;
+
+//default app actions
 export const set_defaults = ActionDefault.set_defaults;
 export const update_ChartHeight = ActionDefault.update_ChartHeight;
 export const update_MapHeight = ActionDefault.update_MapHeight;
-export const set_MapLayers = MapConfig.set_MapLayers;
 export const set_LeafletMap = ActionLeaflet.set_LeafletMap;

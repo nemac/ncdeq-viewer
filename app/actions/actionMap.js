@@ -1,3 +1,10 @@
+var axios = require('axios');
+import { CheckReponse } from './responses';
+import { AGO_URL, HUC12_MAP_FEATUREID } from '../constants/actionConstants';
+
+//set base URL for axios
+axios.defaults.baseURL = AGO_URL;
+console.log(AGO_URL)
 
 import {
   NORTH_EAST_LATITUDE,
@@ -14,11 +21,145 @@ import {
 
 //basic map (leaflet state and functions)
 
-export function HandleLayerToggle(mapComp,layer,e){
+///get feature attributes for a layer at lat & long
+function AGO_get_LayerInfo_ByValue(value, layer_id){
+
+  const query_URL = '/RDRBP/FeatureServer/' + layer_id + '/query' +
+                    '?where=VALUE+%3D+%27' + value + '%27' +
+                    '&objectIds=' +
+                    '&time=' +
+                    '&resultType=standard' +
+                    '&distance=' +
+                    '&units=esriSRUnit_Meter' +
+                    '&outFields=*' +
+                    '&returnGeometry=true' +
+                    '&returnCentroid=true' +
+                    '&multipatchOption=' +
+                    '&maxAllowableOffset=' +
+                    '&geometryPrecision=' +
+                    '&outSR=4326' +
+                    '&returnIdsOnly=false' +
+                    '&returnCountOnly=false' +
+                    '&returnExtentOnly=false' +
+                    '&returnDistinctValues=true' +
+                    '&orderByFields=' +
+                    '&groupByFieldsForStatistics=' +
+                    '&outStatistics=' +
+                    '&resultOffset=' +
+                    '&resultRecordCount=' +
+                    '&returnZ=false' +
+                    '&returnM=false' +
+                    '&quantizationParameters=' +
+                    '&sqlFormat=none' +
+                    '&f=pgeojson' +
+                    '&token='
+
+  return axios.get(query_URL);
+};
+
+///get feature attributes for a layer at lat & long
+function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
+
+  const query_URL = '/RDRBP/FeatureServer/' + layer_id + '/query' +
+                    '?where=' +
+                    '&objectIds=' +
+                    '&time=' +
+                    '&geometry=%7Bx%3A+'+long+'%2C+y%3A+'+lat+'%7D' +
+                    '&geometryType=esriGeometryPoint' +
+                    '&inSR=4326' +
+                    '&spatialRel=esriSpatialRelIntersects' +
+                    '&resultType=standard' +
+                    '&distance=' +
+                    '&units=esriSRUnit_Meter' +
+                    '&outFields=*' +
+                    '&returnGeometry=true' +
+                    '&returnCentroid=true' +
+                    '&multipatchOption=' +
+                    '&maxAllowableOffset=' +
+                    '&geometryPrecision=' +
+                    '&outSR=4326' +
+                    '&returnIdsOnly=false' +
+                    '&returnCountOnly=false' +
+                    '&returnExtentOnly=false' +
+                    '&returnDistinctValues=true' +
+                    '&orderByFields=' +
+                    '&groupByFieldsForStatistics=' +
+                    '&outStatistics=' +
+                    '&resultOffset=' +
+                    '&resultRecordCount=' +
+                    '&returnZ=false' +
+                    '&returnM=false' +
+                    '&quantizationParameters=' +
+                    '&sqlFormat=none' +
+                    '&f=pgeojson' +
+                    '&token='
+
+  return axios.get(query_URL);
+};
+
+export function get_LayerInfo_ByValue(value, layer_id){
   return (dispatch, getState) => {
+    AGO_get_LayerInfo_ByValue(value, layer_id)
+      .then(function test(response){
+        //check repsonses for errors
+        const theLayerInfo = CheckReponse(response,'AGO_API_ERROR');
+
+        //get redux state
+        const state = getState()
+
+        const latitude = state.mapConfig.mapconfig.latitude;
+        const longitude = state.mapConfig.mapconfig.longitude;
+        const zoom =  state.mapConfig.mapconfig.zoom;
+        const minZoom = state.mapConfig.mapconfig.minZoom;
+        const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+        const maxBounds = state.mapConfig.mapconfig.maxBounds;
+        const layers = state.mapConfig.mapconfig.layers;
+        const layerInfo = theLayerInfo;
+
+        //create map config object
+        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+
+        dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
+    })
+
+
 
   }
 }
+
+export function get_LayerInfo_ByPoint(lat, lng, layer_id){
+  return (dispatch, getState) => {
+
+    AGO_get_LayerInfo_ByPoint(lat, lng, layer_id)
+      .then(function test(response){
+
+        //check repsonses for errors
+        const theLayerInfo = CheckReponse(response,'AGO_API_ERROR');
+
+        //get redux state
+        const state = getState()
+
+        const latitude = state.mapConfig.mapconfig.latitude;
+        const longitude = state.mapConfig.mapconfig.longitude;
+        const zoom =  state.mapConfig.mapconfig.zoom;
+        const minZoom = state.mapConfig.mapconfig.minZoom;
+        const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+        const maxBounds = state.mapConfig.mapconfig.maxBounds;
+        const layers = state.mapConfig.mapconfig.layers;
+        const layerInfo = theLayerInfo;
+
+        //create map config object
+        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+
+        dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
+
+    })
+
+
+
+  }
+}
+
 export function set_MapLayers(mapLayers){
   return (dispatch, getState) => {
 
@@ -38,9 +179,10 @@ export function set_MapLayers(mapLayers){
     const maxZoom =  state.mapConfig.mapconfig.maxZoom;
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = CurrentLayers
+    const layerInfo = state.mapConfig.mapconfig.layerinfo
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
 
     dispatch(mapSate('MAP_SET_LAYERS',mapConfig));
 
@@ -59,9 +201,10 @@ export function set_mapToPoint(lat,lng,z,e){
     const maxZoom =  state.mapConfig.mapconfig.maxZoom;
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = state.mapConfig.mapconfig.layers;
+    const layerInfo = state.mapConfig.mapconfig.layerinfo
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
 
     dispatch(mapSate('MAP_TO_POINT',mapConfig));
 
@@ -85,9 +228,10 @@ export function HandleMapEnd(mapComp,e){
     const maxZoom =  state.mapConfig.mapconfig.maxZoom;
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = state.mapConfig.mapconfig.layers;
+    const layerInfo = state.mapConfig.mapconfig.layerinfo;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
 
     //send map config data on to store
     dispatch(mapSate('MAP_END',mapConfig));
@@ -112,9 +256,10 @@ export function get_defaultMapData(zoom){
     const maxZoom = MAX_ZOOM;
     const maxBounds = bounds;
     const layers = [];
+    const layerInfo = {};
 
     //create new map config
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
 
     //send map config data on to store
     dispatch(mapSate('MAP_DATA',mapConfig));
@@ -188,9 +333,10 @@ export function handleSearchChange(comp,e){
         const maxZoom =  state.mapConfig.mapconfig.maxZoom;
         const maxBounds = state.mapConfig.mapconfig.maxBounds;
         const layers = state.mapConfig.mapconfig.layers;
+        const layerInfo = state.mapConfig.mapconfig.layerinfo;
 
         //create map config object
-        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds};
+        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
 
         dispatch(mapSate('MAP_TO_POINT',mapConfig));
       });
