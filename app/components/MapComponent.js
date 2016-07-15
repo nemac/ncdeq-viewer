@@ -79,14 +79,6 @@ var MapContainer = React.createClass({
           onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
       <ESRIFeatureLayer
-        url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/5'
-        layerStyle='{"color":"#696969","fillColor":"#DCDCDC","fillOpacity":0,"weight":8}'
-        zoom={this.props.zoom}
-        onLeafletClick={this.handleMapClick.bind(null,this)}
-        setMapLayers={this.props.set_MapLayers}
-        name="River Basins"
-      />
-      <ESRIFeatureLayer
         url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/4'
         layerStyle='{"color":"#808080","fillColor":"#DCDCDC","fillOpacity":0,"weight":6}'
         zoom={this.props.zoom}
@@ -106,7 +98,7 @@ var MapContainer = React.createClass({
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/HUC6/MapServer"
        setMapLayers={this.props.set_MapLayers}
-       name="River Basins Tile"
+       name="River Basins"
        />
     </ReactLeaflet.Map>
   }
