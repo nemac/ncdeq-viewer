@@ -96,6 +96,12 @@ var MenuComponent = React.createClass({
     this.props.get_ChartData(e.target.value,level)
     this.props.change_geographyLevelFilter(e.target.value,level)
 
+    //get the attributes of the huc12 layer on a user click
+    //this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
+
+    // get map object from redux store
+    const leafletMap = this.props.leafletMap.leafletMap;
+
   },
   handleMenuClick: function(val,e) {
 

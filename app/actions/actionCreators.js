@@ -29,7 +29,7 @@ export const HandleMapEnd = MapConfig.HandleMapEnd;
 export const set_MapLayers = MapConfig.set_MapLayers;
 export const set_mapToPoint = MapConfig.set_mapToPoint;
 export const handleSearchChange = MapConfig.handleSearchChange;
-export const get_LayerInfo = MapConfig.get_LayerInfo;
+export const get_LayerInfo_ByPoint = MapConfig.get_LayerInfo_ByPoint;
 
 //default app actions
 export const set_defaults = ActionDefault.set_defaults;

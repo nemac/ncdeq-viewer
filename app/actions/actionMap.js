@@ -23,7 +23,7 @@ import {
 
 
 ///get feature attributes for a layer at lat & long
-function AGO_get_LayerInfo(lat, long, layer_id){
+function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
 
   const query_URL = '/RDRBP/FeatureServer/' + layer_id + '/query' +
                     '?where=' +
@@ -62,10 +62,10 @@ function AGO_get_LayerInfo(lat, long, layer_id){
   return axios.get(query_URL);
 };
 
-export function get_LayerInfo(lat, lng, layer_id){
+export function get_LayerInfo_ByPoint(lat, lng, layer_id){
   return (dispatch, getState) => {
 
-    AGO_get_LayerInfo(lat, lng, layer_id)
+    AGO_get_LayerInfo_ByPoint(lat, lng, layer_id)
       .then(function test(response){
 
         //check repsonses for errors

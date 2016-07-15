@@ -44,7 +44,7 @@ var MapContainer = React.createClass({
     this.props.update_MapHeight();
 
     //get the attributes of the huc12 layer on a user click
-    this.props.get_LayerInfo(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
+    this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
 
     //update chart visibility on map click on if the visibility is false
     if(!isVisible){
