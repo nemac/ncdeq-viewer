@@ -15,7 +15,7 @@ export function zoomToGeoJson(GeoJSON,leafletMap,level){
       PastLayerStr = JSON.stringify(PastLayer.features);
     }
   }
-console.log(PastLayerStr)
+  
   if(featuresStr === PastLayerStr){
     shouldZoom = false;
   } else{
