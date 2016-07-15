@@ -12,7 +12,8 @@ export default class ESRITileMapLayer extends BaseTileLayer {
 
     //add layer to map from tiled service
     this.leafletElement = esri.tiledMapLayer({
-      url:url,
+      url: url,
+      opacity: .50,
       // maxNativeZoom:9
     })
 

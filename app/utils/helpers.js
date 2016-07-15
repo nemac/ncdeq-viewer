@@ -111,3 +111,22 @@ export function getCategoryName(geogLevel){
       return 'River Basins';
     }
 };
+
+
+//only needs this untill I change the data feed have named generically?
+// or maybe control via yaml file....
+export function getAGOFeatureId(geogLevel){
+  switch (geogLevel) {
+    case 'River Basins':
+      return '0';
+      break;
+    case 'Cataloging Units':
+      return '1';
+      break;
+    case 'HUC12':
+      return '2';
+      break;
+    default:
+      return '2';
+    }
+};

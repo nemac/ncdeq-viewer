@@ -21,6 +21,41 @@ import {
 
 //basic map (leaflet state and functions)
 
+///get feature attributes for a layer at lat & long
+function AGO_get_LayerInfo_ByValue(value, layer_id){
+
+  const query_URL = '/RDRBP/FeatureServer/' + layer_id + '/query' +
+                    '?where=VALUE+%3D+%27' + value + '%27' +
+                    '&objectIds=' +
+                    '&time=' +
+                    '&resultType=standard' +
+                    '&distance=' +
+                    '&units=esriSRUnit_Meter' +
+                    '&outFields=*' +
+                    '&returnGeometry=true' +
+                    '&returnCentroid=true' +
+                    '&multipatchOption=' +
+                    '&maxAllowableOffset=' +
+                    '&geometryPrecision=' +
+                    '&outSR=4326' +
+                    '&returnIdsOnly=false' +
+                    '&returnCountOnly=false' +
+                    '&returnExtentOnly=false' +
+                    '&returnDistinctValues=true' +
+                    '&orderByFields=' +
+                    '&groupByFieldsForStatistics=' +
+                    '&outStatistics=' +
+                    '&resultOffset=' +
+                    '&resultRecordCount=' +
+                    '&returnZ=false' +
+                    '&returnM=false' +
+                    '&quantizationParameters=' +
+                    '&sqlFormat=none' +
+                    '&f=pgeojson' +
+                    '&token='
+
+  return axios.get(query_URL);
+};
 
 ///get feature attributes for a layer at lat & long
 function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
@@ -62,6 +97,36 @@ function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
   return axios.get(query_URL);
 };
 
+export function get_LayerInfo_ByValue(value, layer_id){
+  return (dispatch, getState) => {
+    AGO_get_LayerInfo_ByValue(value, layer_id)
+      .then(function test(response){
+        //check repsonses for errors
+        const theLayerInfo = CheckReponse(response,'AGO_API_ERROR');
+
+        //get redux state
+        const state = getState()
+
+        const latitude = state.mapConfig.mapconfig.latitude;
+        const longitude = state.mapConfig.mapconfig.longitude;
+        const zoom =  state.mapConfig.mapconfig.zoom;
+        const minZoom = state.mapConfig.mapconfig.minZoom;
+        const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+        const maxBounds = state.mapConfig.mapconfig.maxBounds;
+        const layers = state.mapConfig.mapconfig.layers;
+        const layerInfo = theLayerInfo;
+
+        //create map config object
+        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+
+        dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
+    })
+
+
+
+  }
+}
+
 export function get_LayerInfo_ByPoint(lat, lng, layer_id){
   return (dispatch, getState) => {
 
@@ -88,7 +153,6 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
 
         dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
-        console.log(theLayerInfo);
     })
 
 
