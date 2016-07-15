@@ -1,4 +1,26 @@
 //general functions used in multiple components, actions, and reducers
+var TempLayer;
+
+//function to draw and zoom to select HUC geometry
+export function zoomToGeoJson(GeoJSON,leafletMap){
+  const features = GeoJSON;
+  if (features){
+    const feature =  features[0].properties;
+
+
+
+    const isLayerVis = leafletMap.hasLayer(TempLayer);
+
+    if (isLayerVis){
+      leafletMap.removeLayer(TempLayer)
+    }
+
+    TempLayer = L.geoJson().addTo(leafletMap);
+    TempLayer.addData(features);
+    leafletMap.fitBounds(TempLayer.getBounds());
+  }
+
+}
 
  //get the next level of geog for a geography level to use in ago api
 //  example this gets all the hucs for a Cataloging unit

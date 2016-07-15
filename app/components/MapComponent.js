@@ -6,37 +6,24 @@ import ESRITileMapLayer from '../components/ESRITiledMapLayer'
 import {
   MAP_HEIGHT,
   DEF_PAD,
-} from '../constants/appConstants'
+} from '../constants/appConstants';
+
+import {zoomToGeoJson} from '../utils/helpers';
 
 var PropTypes = React.PropTypes;
-var TempLayer;
+
 var MapContainer = React.createClass({
   componentWillReceiveProps: function(nextProps) {
-    // console.log("componentWillReceiveProps")
-    // console.log(nextProps.map_settings.layerInfo)
+
     if(nextProps.map_settings.layerInfo){
+      //get features from user location
       const features = nextProps.map_settings.layerInfo.features
-      if (features){
-        const feature =  features[0].properties;
-        //console.log(features)
 
-        // var map = this.refs.map.leafletElement;
-        const leafletMap = this.props.leafletMap.leafletMap;
+      // get map object from redux store
+      const leafletMap = this.props.leafletMap.leafletMap;
 
-        // console.log(map)
-        // console.log(leafletMap.leafletMap)
-
-        const isLayerVis = leafletMap.hasLayer(TempLayer);
-
-        if (isLayerVis){
-          leafletMap.removeLayer(TempLayer)
-        }
-
-        TempLayer = L.geoJson().addTo(leafletMap);
-        TempLayer.addData(features);
-        leafletMap.fitBounds(TempLayer.getBounds());
-      }
-      // console.log(features)
+      //call to zoom to geojson (from helper library)
+      zoomToGeoJson(features,leafletMap);
     }
   },
   handleMapLoad: function(e,self) {
