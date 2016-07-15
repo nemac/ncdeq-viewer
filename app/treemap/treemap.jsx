@@ -1,11 +1,11 @@
-import React from 'react';
-import d3 from 'd3';
+import React from 'react'
+import d3 from 'd3'
 
-const TOOLTIP_WIDTH = 170;
-const TOOLTIP_HEIGHT = 32;
+const TOOLTIP_WIDTH = 170
+const TOOLTIP_HEIGHT = 32
 
-const BACK_BUTTON_TEXT = 'Up';
-const FORWARD_BUTTON_TEXT = 'Down';
+const BACK_BUTTON_TEXT = 'Up'
+const FORWARD_BUTTON_TEXT = 'Down'
 
 export default class Treemap extends React.Component {
   componentWillReceiveProps(nextProps) {
@@ -15,8 +15,8 @@ export default class Treemap extends React.Component {
         .value(nextProps.value)
         .children(nextProps.children)
         .sort((a, b) => nextProps.value(a) - nextProps.value(b))
-        .ratio(1);
-    this.layout(nextProps.root);
+        .ratio(1)
+    this.layout(nextProps.root)
     this.setState({
       grandparent: nextProps.root,
       grandparentText: nextProps.id(nextProps.root),
@@ -29,18 +29,18 @@ export default class Treemap extends React.Component {
       yScale: d3.scale.linear()
         .domain([0, nextProps.height])
         .range([nextProps.rootHeight, nextProps.height + nextProps.rootHeight]),
-    });
+    })
 
   }
   constructor(props) {
-    super(props);
+    super(props)
     this.treemap = d3.layout.treemap()
         .size([props.width, props.height - props.rootHeight])
         .value(props.value)
         .children(props.children)
         .sort((a, b) => props.value(a) - props.value(b))
-        .ratio(1);
-    this.layout(props.root);
+        .ratio(1)
+    this.layout(props.root)
     this.state = {
       grandparent: props.root,
       grandparentText: props.id(props.root),
@@ -53,46 +53,46 @@ export default class Treemap extends React.Component {
       yScale: d3.scale.linear()
         .domain([0, props.height])
         .range([props.rootHeight, props.height + props.rootHeight]),
-    };
+    }
   }
 
   layout(node) {
-    this.treemap.nodes({ children: node._children });
+    this.treemap.nodes({ children: node._children })
     node._children.forEach((d) => {
-      d.parent = node;
-    });
+      d.parent = node
+    })
   }
 
   handleNodeClick(node) {
     if (node !== this.state.focused) {
       this.setState({
-        focused: node,
-      });
+        focused: node, 
+      })
     }
   }
 
   zoom(node) {
     if (node === this.state.grandparent) {
       // Zoom OUT
-      node = node.parent;
+      node = node.parent
       this.setState({
         focused: node,
         grandparentText: this.state.grandparentText
           .split(' => ').slice(0, -1).join(' => '),
-      });
+      })
     } else {
       // Zoom IN
       this.setState({
         grandparentText: this.state.grandparentText
           += ' => ' + this.props.id(node)
-      });
+      })
     }
-    this.layout(node);
+    this.layout(node)
     this.setState({
       focused: null,
       grandparent: node,
       nodes: node._children,
-    });
+    })
   }
 
 
@@ -101,10 +101,10 @@ export default class Treemap extends React.Component {
     // if the right edge of the tooltip is
     // farther right than the right edge of the node rect,
     // shift the tooltip to the left by the width of the tooltip
-    var tooltipX = event.nativeEvent.offsetX;
-    var tooltipY = event.nativeEvent.offsetY;
+    var tooltipX = event.nativeEvent.offsetX
+    var tooltipY = event.nativeEvent.offsetY
     if ( (tooltipX + TOOLTIP_WIDTH) > (node.x + node.dx) )
-      tooltipX -= TOOLTIP_WIDTH*2;
+      tooltipX -= TOOLTIP_WIDTH*2
     else if ( (tooltipY + TOOLTIP_HEIGHT) > (node.y + node.dy) )
       tooltipY -= TOOLTIP_HEIGHT*2
     this.setState({
@@ -115,7 +115,7 @@ export default class Treemap extends React.Component {
         x: event.nativeEvent.offsetX,
         y: event.nativeEvent.offsetY,
       },
-    });
+    })
   }
   */
 
@@ -273,9 +273,9 @@ Treemap.defaultProps = {
   value: (d) => d.chart_value,
   children: (d) => d.children,
   id: (d) => {
-    if (d.chart_level > 1) return d.chart_level_label ? d.chart_level_label : d.chart_description;
-    if (d.geography_level > 2) return d.ID.slice(-4);
-    return d.ID ? d.ID : d.chart_type;
+    if (d.chart_level > 1) return d.chart_level_label ? d.chart_level_label : d.chart_description
+    if (d.geography_level > 2) return d.ID.slice(-4)
+    return d.ID ? d.ID : d.chart_type
   },
 }
 

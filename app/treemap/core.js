@@ -101,6 +101,7 @@ export const makeTreeFromHuc12Data = (features) => {
     feature.chart_value = (1*feature.chart_value).toFixed(DECIMAL_PRECISION)
     if (feature.chart_value > 0) { chart_levels[feature.chart_level].push(feature) }
   })
+
   // For each feature of each chart level, find any of its children in the
   // chart hierarchy and add them to the feature's _children array.
   //
@@ -115,8 +116,10 @@ export const makeTreeFromHuc12Data = (features) => {
   })
   chart_levels[3].forEach((levelThreeFeature) => {
     huc12Tree._children.forEach((levelTwoFeature) => {
-      if (levelTwoFeature.chart_matchid === levelThreeFeature.chart_id) {
-        if (!levelTwoFeature._children) { levelTwoFeature._children = [] }
+      if (levelThreeFeature.chart_matchid === levelTwoFeature.chart_id) {
+        if (!levelTwoFeature._children) {
+          levelTwoFeature._children = []
+        }
         levelTwoFeature._children.push(levelThreeFeature)
       }
     })
@@ -133,7 +136,7 @@ export const makeTreeFromHuc12Data = (features) => {
       }
     })
   })
-
+  
   return huc12Tree
 }
 
