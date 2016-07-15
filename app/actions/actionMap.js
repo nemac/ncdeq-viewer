@@ -20,9 +20,12 @@ import {
 } from '../constants/appConstants'
 
 //basic map (leaflet state and functions)
-function AGO_get_LayerInfo(lat,long){
 
-  const query_URL = '/RDRBP/FeatureServer/' + HUC12_MAP_FEATUREID + '/query' +
+
+///get feature attributes for a layer at lat & long
+function AGO_get_LayerInfo(lat, long, layer_id){
+
+  const query_URL = '/RDRBP/FeatureServer/' + layer_id + '/query' +
                     '?where=' +
                     '&objectIds=' +
                     '&time=' +
@@ -59,10 +62,10 @@ function AGO_get_LayerInfo(lat,long){
   return axios.get(query_URL);
 };
 
-export function get_LayerInfo(lat,lng){
+export function get_LayerInfo(lat, lng, layer_id){
   return (dispatch, getState) => {
 
-    AGO_get_LayerInfo(lat,lng)
+    AGO_get_LayerInfo(lat, lng, layer_id)
       .then(function test(response){
 
         //check repsonses for errors

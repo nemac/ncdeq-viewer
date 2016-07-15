@@ -8,6 +8,8 @@ import {
   DEF_PAD,
 } from '../constants/appConstants';
 
+import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
+
 import {zoomToGeoJson} from '../utils/helpers';
 
 var PropTypes = React.PropTypes;
@@ -32,27 +34,19 @@ var MapContainer = React.createClass({
   },
   handleMapClick: function(e,self){
 
+    //get the leaftet map object
     var L = this.refs.map.leafletElement
-    //console.log(L)
-    // console.log(e)
-    // console.log(self)
-    // console.log(self.layer.feature.properties.ID)
-    // need to add redux stuff for re-sizeing?
 
-    //console.log(self.latlng);
-    //sammple api call for getting data.
-    // http://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/3/query?where=&objectIds=&time=&geometry=%7Bx%3A+-79.090576171875%2C+y%3A+34.77771580360469%7D&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&resultType=standard&distance=&units=esriSRUnit_Meter&outFields=*&returnGeometry=true&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=html&token=
+    //check if charts are visible.
     const isVisible = this.props.charts.chart_visibility;
 
+    //update map height
     this.props.update_MapHeight();
-    this.props.get_LayerInfo(self.latlng.lat,self.latlng.lng);
-    //console.log(this.props.map_settings.layerInfo)
-    //this.updateFilterState('Cataloging Units',self.layer.feature.properties.ID);
 
-    //this.props.get_ChartData(self.layer.feature.properties.ID,'HUC12')
-    //this.props.change_geographyLevelFilter(self.layer.feature.properties.ID,'HUC12')
+    //get the attributes of the huc12 layer on a user click
+    this.props.get_LayerInfo(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
 
-    //update chart visibility on map click...
+    //update chart visibility on map click on if the visibility is false
     if(!isVisible){
       this.props.update_ChartVisiblity();
     }
