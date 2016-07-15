@@ -1,23 +1,43 @@
 //general functions used in multiple components, actions, and reducers
+var PastLayer;
 var TempLayer;
+var shouldZoom = true;
+
 
 //function to draw and zoom to select HUC geometry
-export function zoomToGeoJson(GeoJSON,leafletMap){
+export function zoomToGeoJson(GeoJSON,leafletMap,level){
   const features = GeoJSON;
-  if (features){
-    const feature =  features[0].properties;
+  let featuresStr = JSON.stringify(features)
+  let PastLayerStr = ''
 
-
-
-    const isLayerVis = leafletMap.hasLayer(TempLayer);
-
-    if (isLayerVis){
-      leafletMap.removeLayer(TempLayer)
+  if (PastLayer){
+    if(PastLayer.features){
+      PastLayerStr = JSON.stringify(PastLayer.features);
     }
+  }
+console.log(PastLayerStr)
+  if(featuresStr === PastLayerStr){
+    shouldZoom = false;
+  } else{
+    shouldZoom = true;
+  }
+  if (features){
+    if(features[0]){
+      const feature =  features[0].properties;
+      const isLayerVis = leafletMap.hasLayer(TempLayer);
 
-    TempLayer = L.geoJson().addTo(leafletMap);
-    TempLayer.addData(features);
-    leafletMap.fitBounds(TempLayer.getBounds());
+      if (isLayerVis){
+        leafletMap.removeLayer(TempLayer)
+      }
+
+      TempLayer = L.geoJson().addTo(leafletMap);
+      TempLayer.addData(features);
+      PastLayer = TempLayer.toGeoJSON();
+
+      if(shouldZoom){
+        leafletMap.fitBounds(TempLayer.getBounds());
+      }
+    }
   }
 
 }
@@ -94,6 +114,24 @@ export function getNextLevelName(level){
   }
 };
 
+export function getPrevLevelName(level){
+  //next level is hardcoded need to make this data driven
+  //move this to a helper?
+  switch (level) {
+    case 'River Basins':
+      return '';
+      break;
+    case 'Cataloging Units':
+      return 'River Basins';
+      break;
+    case 'HUC12':
+      return 'Cataloging Units';
+      break;
+    default:
+      return '';
+  }
+};
+
 //only needs this untill I change the data feed have named generically?
 // or maybe control via yaml file....
 export function getCategoryName(geogLevel){
@@ -128,5 +166,23 @@ export function getAGOFeatureId(geogLevel){
       break;
     default:
       return '2';
+    }
+};
+
+//only needs this untill I change the data feed have named generically?
+// or maybe control via yaml file....
+export function get_matchEnd(geogLevel){
+  switch (geogLevel) {
+    case 'River Basins':
+      return '6';
+      break;
+    case 'Cataloging Units':
+      return '8';
+      break;
+    case 'HUC12':
+      return '12';
+      break;
+    default:
+      return '12';
     }
 };

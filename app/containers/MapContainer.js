@@ -16,12 +16,15 @@ const mapStateToProps = (state,props) => {
   let charts = state.chartData;
   let default_settings = state.default_settings.default_settings;
   let leafletMap = state.leafletMap;
-
+  let geography_levels = state.geography_levels.geography_levels;
+  let layerInfo = state.mapConfig.layerinfo;
   return {
     charts,
+    geography_levels,
     map_settings,
     default_settings,
     leafletMap,
+    layerInfo,
   }
 }
 

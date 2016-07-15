@@ -4,7 +4,6 @@ import { AGO_URL, HUC12_MAP_FEATUREID } from '../constants/actionConstants';
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
-console.log(AGO_URL)
 
 import {
   NORTH_EAST_LATITUDE,
@@ -135,7 +134,6 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
 
         //check repsonses for errors
         const theLayerInfo = CheckReponse(response,'AGO_API_ERROR');
-
         //get redux state
         const state = getState()
 
@@ -150,7 +148,7 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
 
         //create map config object
         const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
-
+        //console.log(mapConfig)
         dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
     })

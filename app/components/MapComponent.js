@@ -10,27 +10,114 @@ import {
 
 import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
 
-import {zoomToGeoJson} from '../utils/helpers';
+import {zoomToGeoJson, getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd} from '../utils/helpers';
 
 var PropTypes = React.PropTypes;
 
 var MapContainer = React.createClass({
   componentWillReceiveProps: function(nextProps) {
+    if(nextProps.layerInfo){
 
-    if(nextProps.map_settings.layerInfo){
       //get features from user location
-      const features = nextProps.map_settings.layerInfo.features
+      const features = nextProps.layerInfo.features
 
       // get map object from redux store
       const leafletMap = this.props.leafletMap.leafletMap;
 
+      const level = this.getLevel();
+
       //call to zoom to geojson (from helper library)
-      zoomToGeoJson(features,leafletMap);
+      zoomToGeoJson(features,leafletMap,level);
+
+      //only zoom first time this is called otherwise this will force a rezoom everythome prop is changed
     }
   },
+  getLevel: function(){
+
+    if (this.props.geography_levels){
+      //filter the levels to get the active tab
+      const ActiveTabObject = this.props.geography_levels.filter( key =>{
+        return key.active === true;
+      })
+
+      //set default active tab - as Highest level
+      let activeTab = 'River Basins'
+      if (ActiveTabObject.length > 0){
+        //get the active tab and convert the name to the name used in the app.
+        //  this will eventually be driven by config or data....???
+        activeTab = getCategoryName(ActiveTabObject[0].geography_label);
+      }
+
+      return activeTab
+    }else{
+      return null
+    }
+  },
+  updateFilterState(level,value){
+
+    var nextLevel = getNextLevelName(level);
+
+    //set filter and active state for next level(s)
+    if(nextLevel){
+
+      //kind of hacky--how to do this in redux?
+      $('#search-select-'+nextLevel.replace(' ','_')).dropdown('set text','Choose a ' + nextLevel)
+
+      //recursive call to update all level filters
+      return this.updateFilterState(nextLevel,value)
+    } else{
+      return
+    }
+  },
+  updateFilterStateReverse(level,value){
+
+    var prevLevel = getPrevLevelName(level);
+
+    //set filter and active state for next level(s)
+    if(prevLevel){
+
+
+      const matchEnd = get_matchEnd(prevLevel);
+      if(value){
+        const selectedValue = value.substring(0,matchEnd)
+
+        //kind of hacky--how to do this in redux?
+        $('#search-select-'+prevLevel.replace(' ','_')).dropdown('set selected',selectedValue)
+  
+      }
+
+      //recursive call to update all level filters
+      return this.updateFilterStateReverse(prevLevel,value)
+    } else{
+      return
+    }
+  },
+
+
   handleMapLoad: function(e,self) {
     var map = this.refs.map.leafletElement;
     this.props.set_LeafletMap(map)
+
+    if(this.props.layerInfo){
+      const features = this.props.layerInfo.features
+      if (features){
+        if (features[0]){
+
+          const level = this.getLevel();
+          const value = features[0].properties.ID;
+
+          this.props.change_geographyLevelFilter(value,level)
+
+          this.updateFilterState(level,value);
+
+          this.updateFilterStateReverse(level,value);
+
+          //again kind of hacky
+          $('#search-select-'+level.replace(' ','_')).dropdown('set selected',value)
+        }
+
+      }
+    }
   },
   handleMapClick: function(e,self){
 
@@ -45,6 +132,9 @@ var MapContainer = React.createClass({
 
     //get the attributes of the huc12 layer on a user click
     this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
+
+    //set current geography level in redux state store
+    this.props.change_geographyLevelActive("HUC12");
 
     //update chart visibility on map click on if the visibility is false
     if(!isVisible){
