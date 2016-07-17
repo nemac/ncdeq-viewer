@@ -183,10 +183,12 @@ export function change_geographyLevelFilter(filter_value, active_level) {
     const state = getState()
 
     //create new geography_level state object
-    const newLevels = update_activeGeographyFilter( state, active_level, filter_value );
+    if (filter_value){
+      const newLevels = update_activeGeographyFilter( state, active_level, filter_value );
 
-    //send the new geography level data on
-    dispatch(geography_levels('CHANGE_FILTER_GEOGRAPHY_LEVEL',newLevels))
+      //send the new geography level data on
+      dispatch(geography_levels('CHANGE_FILTER_GEOGRAPHY_LEVEL',newLevels))
+    }
 
   }
 }

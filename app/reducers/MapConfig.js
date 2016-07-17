@@ -14,7 +14,7 @@ export function mapConfig(state = [], action) {
       return { ...state, mapconfig: action.mapconfig}
     //get the attributes of a layer at user clicked point
     case 'MAP_GET_LAYER_INFO':
-      return { ...state, mapconfig: action.mapconfig}
+      return { ...state, layerinfo: action.mapconfig.layerInfo}
     default:
       return state
   }
