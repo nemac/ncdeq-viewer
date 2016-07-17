@@ -15,7 +15,7 @@ export function zoomToGeoJson(GeoJSON,leafletMap,level){
       PastLayerStr = JSON.stringify(PastLayer.features);
     }
   }
-  
+
   if(featuresStr === PastLayerStr){
     shouldZoom = false;
   } else{
@@ -37,6 +37,7 @@ export function zoomToGeoJson(GeoJSON,leafletMap,level){
       if(shouldZoom){
         leafletMap.fitBounds(TempLayer.getBounds());
       }
+      return TempLayer;
     }
   }
 

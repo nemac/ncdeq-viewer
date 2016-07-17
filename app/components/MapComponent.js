@@ -27,7 +27,7 @@ var MapContainer = React.createClass({
       const level = this.getLevel();
 
       //call to zoom to geojson (from helper library)
-      zoomToGeoJson(features,leafletMap,level);
+      const layer = zoomToGeoJson(features,leafletMap,level);
 
       //only zoom first time this is called otherwise this will force a rezoom everythome prop is changed
     }
@@ -80,10 +80,11 @@ var MapContainer = React.createClass({
       const matchEnd = get_matchEnd(prevLevel);
       if(value){
         const selectedValue = value.substring(0,matchEnd)
-
         //kind of hacky--how to do this in redux?
         $('#search-select-'+prevLevel.replace(' ','_')).dropdown('set selected',selectedValue)
-  
+
+        //get text	 TO COMPARE then if not matching make blank? or add text
+
       }
 
       //recursive call to update all level filters
@@ -168,27 +169,25 @@ var MapContainer = React.createClass({
           url={this.state.tileUrl}
           onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
-      <ESRIFeatureLayer
-        url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/4'
-        layerStyle='{"color":"#808080","fillColor":"#DCDCDC","fillOpacity":0,"weight":6}'
-        zoom={this.props.zoom}
-        onLeafletClick={this.handleMapClick.bind(null,this)}
-        setMapLayers={this.props.set_MapLayers}
-        name="Cataloging Units"
-      />
-      <ESRIFeatureLayer
-        url='https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services/RDRBP/FeatureServer/3'
-        layerStyle='{"color":"#C0C0C0","fillColor":"#DCDCDC","fillOpacity":0,"weight":2}'
-        zoom={this.props.zoom}
-        min_zoom="9"
-        onLeafletClick={this.handleMapClick.bind(null,this)}
-        setMapLayers={this.props.set_MapLayers}
-        name="HUC 12"
-      />
       <ESRITileMapLayer
-       url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/HUC6/MapServer"
+       url="http://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc12/MapServer"
        setMapLayers={this.props.set_MapLayers}
+       name="HUC 12"
+       min_zoom="9"
+       onLeafletClick={this.handleMapClick.bind(null,this)}
+       />
+      <ESRITileMapLayer
+       url="http://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc8/MapServer"
+       setMapLayers={this.props.set_MapLayers}
+       name="Cataloging Units"
+       onLeafletClick={this.handleMapClick.bind(null,this)}
+       />
+      <ESRITileMapLayer
+       url="http://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc6/MapServer"
+       setMapLayers={this.props.set_MapLayers}
+       opacity="0.5"
        name="River Basins"
+       onLeafletClick={this.handleMapClick.bind(null,this)}
        />
     </ReactLeaflet.Map>
   }
