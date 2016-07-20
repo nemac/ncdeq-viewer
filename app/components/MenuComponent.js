@@ -71,9 +71,12 @@ var MenuComponent = React.createClass({
 
     return activeTab
   },
+  handleSearch: function(comp,e){
+    this.props.handleSearchChange(comp,e)
 
-
-  updateFilterState(level,value){
+    console.log(this.props.map_settings.latitude)
+  },
+  updateFilterState: function(level,value){
 
     var nextLevel = getNextLevelName(level);
 
@@ -200,7 +203,7 @@ var MenuComponent = React.createClass({
         </div>      <div className="left menu">
           <div className="item">
             <div className="ui transparent icon input">
-              <input className="mapSearch" type="text" placeholder="Search to zoom..." onChange={this.props.handleSearchChange.bind(null,this)} />
+              <input className="mapSearch" type="text" placeholder="Search to zoom..." onChange={this.handleSearch.bind(null,this)} />
               <i className="search link icon"></i>
             </div>
           </div>

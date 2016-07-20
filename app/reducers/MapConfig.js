@@ -1,6 +1,9 @@
 export function mapConfig(state = [], action) {
   switch (action.type) {
     //move map to a point and zoom
+    case 'MAP_SEARCH':
+      return { ...state, mapconfig: action.mapconfig, layerinfo: action.mapconfig.layerInfo}
+    //move map to a point and zoom
     case 'MAP_TO_POINT':
       return { ...state, mapconfig: action.mapconfig}
     //handle zoom or move end map interation

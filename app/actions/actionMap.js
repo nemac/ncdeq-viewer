@@ -320,23 +320,33 @@ export function handleSearchChange(comp,e){
         //  when a user successfully searches and finds a locations
         var currentZoom = state.mapConfig.mapconfig.zoom > MAX_SEARCH_ZOOM ? state.mapConfig.mapconfig.zoom : MAX_SEARCH_ZOOM
 
-        //NOT THE CLEANIST but works need to understand how to call set_mapToPoint from here
-        //set store to new lat,long and zoom level
-        //will need to add ability to detect the huc's this point falls in
-        //get redux state
-        const latitude = lat;
-        const longitude = lng;
-        const zoom =  currentZoom;
-        const minZoom = state.mapConfig.mapconfig.minZoom;
-        const maxZoom =  state.mapConfig.mapconfig.maxZoom;
-        const maxBounds = state.mapConfig.mapconfig.maxBounds;
-        const layers = state.mapConfig.mapconfig.layers;
-        const layerInfo = state.mapConfig.mapconfig.layerinfo;
+        AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID)
+          .then(function test(response){
 
-        //create map config object
-        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+            //check repsonses for errors
+            const theLayerInfo = CheckReponse(response,'AGO_API_ERROR');
+            //get redux state
+            const state = getState()
 
-        dispatch(mapSate('MAP_TO_POINT',mapConfig));
+          //NOT THE CLEANIST but works need to understand how to call set_mapToPoint from here
+          //set store to new lat,long and zoom level
+          //will need to add ability to detect the huc's this point falls in
+          //get redux state
+          const latitude = lat;
+          const longitude = lng;
+          const zoom =  currentZoom;
+          const minZoom = state.mapConfig.mapconfig.minZoom;
+          const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+          const maxBounds = state.mapConfig.mapconfig.maxBounds;
+          const layers = state.mapConfig.mapconfig.layers;
+          const layerInfo = theLayerInfo;
+
+          //create map config object
+          const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+
+          dispatch(mapSate('MAP_SEARCH',mapConfig));
+        })
+
       });
     }
   };

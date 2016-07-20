@@ -80,10 +80,24 @@ var MapContainer = React.createClass({
       const matchEnd = get_matchEnd(prevLevel);
       if(value){
         const selectedValue = value.substring(0,matchEnd)
+
         //kind of hacky--how to do this in redux?
         $('#search-select-'+prevLevel.replace(' ','_')).dropdown('set selected',selectedValue)
+        const HTMLvalue = $('#search-select-'+prevLevel.replace(' ','_')).dropdown('get value')
 
-        //get text	 TO COMPARE then if not matching make blank? or add text
+
+        // //get text	 TO COMPARE then if not matching make blank? or add text
+        // //check the selected value to see if matches what was passed in.
+        // //  if they match then the value exists in menu list otherwise change to the menu's to
+        // //  so user sees full list again
+        //  STILL NEES FILTERED
+        if (HTMLvalue[0] != selectedValue){
+          //  $('#search-select-'+prevLevel.replace(' ','_')).dropdown('set text','Choose a ' + prevLevel)
+        } else {
+          // this.updateFilterState(selectedValue,prevLevel);
+          // this.props.change_geographyLevelFilter(selectedValue,prevLevel)
+        }
+
 
       }
 
@@ -107,14 +121,26 @@ var MapContainer = React.createClass({
           const level = this.getLevel();
           const value = features[0].properties.ID;
 
-          this.props.change_geographyLevelFilter(value,level)
-
-          this.updateFilterState(level,value);
-
-          this.updateFilterStateReverse(level,value);
-
           //again kind of hacky
           $('#search-select-'+level.replace(' ','_')).dropdown('set selected',value)
+
+          const HTMLvalue = $('#search-select-'+level.replace(' ','_')).dropdown('get value')
+
+          //get text TO COMPARE then if not matching make blank? or add text
+          // check the selected value to see if matches what was passed in.
+          //   if they match then the value exists in menu list otherwise change to the menu's to
+          //   so user sees full list again
+          //  STILL NEEDS FILTERED in menus...  when zooom or other action happens map_load is kicked off
+          //    and returns blank or unfiltered menus
+
+          if (HTMLvalue[0] != value){
+            //  $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level)
+          }else{
+            // this.props.change_geographyLevelFilter(value,level)
+            // this.updateFilterState(level,value);
+          }
+
+          this.updateFilterStateReverse(level,value);
         }
 
       }
@@ -185,7 +211,7 @@ var MapContainer = React.createClass({
       <ESRITileMapLayer
        url="http://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc6/MapServer"
        setMapLayers={this.props.set_MapLayers}
-       opacity="0.5"
+       tileOpacity="0.5"
        name="River Basins"
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
