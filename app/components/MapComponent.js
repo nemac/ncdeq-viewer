@@ -33,10 +33,19 @@ var MapContainer = React.createClass({
     }
   },
   HandleMapEnd: function(mapComp,e){
+
+    //on any map move get the current level and filtered id
     const level = this.getLevel();
     const filterId = this.getLevelFilter();
-    $('#search-select-'+level.replace(' ','_')).dropdown('set selected',filterId);
+
+    //reset the selector picklist for that layer to the id.
+    // there are times when promises from the AGO api did not finish and the menus where not
+    // updated this ensures the menus are updated...
+    //$('#search-select-'+level.replace(' ','_')).dropdown('set selected',filterId);
     this.props.HandleMapEnd(mapComp,e);
+    this.updateFilterStateReverse(filterId);
+    //just in case the menus are not updated.
+
   },
   getLevelFilter: function(){
 
@@ -45,7 +54,7 @@ var MapContainer = React.createClass({
       const activeFilterObject = this.props.geography_levels.filter( key =>{
         return key.active === true;
       })
-      console.log(activeFilterObject)
+
       //set default active tab - as Highest level
       let activeFilter = ''
       if (activeFilterObject.length > 0){
@@ -80,68 +89,44 @@ var MapContainer = React.createClass({
       return null
     }
   },
-  updateFilterStateReverse: function(alevel,value){
+  updateFilterStateReverse: function(value){
 
+    //loop all levels - probably need to get this from data, but for now hardcoded
     const levels = ['River Basins','Cataloging Units','HUC12']
 
-
-
+    //loop the levels object
     levels.map((level)=>{
 
-      // console.log(level)
+      //get the string length for substring'  the current value.
+      //  the current value should always be huc 12 so River Basins and Cataloging Units
+      //  should be 2 and 4 lengths less..
       const matchEnd = get_matchEnd(level);
-      // console.log(matchEnd)
+
+      //ensure value was defined.
       if(value){
-        // if(level === alevel){
 
-
-
+          //get the value for the level
           const selectedValue = value.substring(0,matchEnd)
 
-          // console.log(selectedValue)
-          // console.log(alevel)
-          // console.log(level)
-          // console.log(selectedValue)
-
+          //set the filter in redux store for the level
+          //  this will ensure the menus/breadcrumbs will also update appropiately
           this.props.change_geographyLevelFilter(selectedValue,level)
-          //$('#search-select-'+level.replace(' ','_')).dropdown('set text',selectedValue)
 
           //kind of hacky--how to do this in redux?
           $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
+
+          //get the value selected.
+          // there are times when the value dose not exists in the selector so we need overcome this
           let HTMLvalue = $('#search-select-'+level.replace(' ','_')).dropdown('get value');
 
-
-          // console.log(HTMLvalue)
-
+          //if the value in the selector does not match what the user selected. that means there was no
+          //  value in the selector (pick list).  lets slet that to select
           if (HTMLvalue[0] != selectedValue){
+            $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level);
             $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
-
-          //  $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level)
           }
-
-
-        // }
-
-
-
-
-        // get map object from redux store
-        const leafletMap = this.props.leafletMap.leafletMap;
-        // leafletMap.setView(new L.LatLng(this.props.map_settings.latitude,this.props.map_settings.longitude),this.props.map_settings.zoomå)
-
-
-
-        // if (HTMLvalue[0] != selectedValue){
-        //    $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level)
-        // } else {
-        //   this.updateFilterState(selectedValue,level);
-        //   this.props.change_geographyLevelFilter(selectedValue,level)
-        // }
-
       }
-
     })
-
   },
   handleMapLoad: function(e,self) {
     var map = this.refs.map.leafletElement;
@@ -149,17 +134,16 @@ var MapContainer = React.createClass({
 
     if(this.props.layerInfo){
       const features = this.props.layerInfo.features
+      //make sure objects are defined.
+      //  there are times when these are not defined
       if (features){
         if (features[0]){
 
-          const level = this.getLevel();
+          //get the current featires ID
           const value = features[0].properties.ID;
 
-          //again kind of hacky
-          //$('#search-select-'+level.replace(' ','_')).dropdown('set selected',value)
-
-          //update all selectors so
-          this.updateFilterStateReverse(level,value);
+          //update all selectors menus to match map selection or google search
+          this.updateFilterStateReverse(value);
         }
 
       }
@@ -183,9 +167,9 @@ var MapContainer = React.createClass({
     this.props.change_geographyLevelActive("HUC12");
 
     //update chart visibility on map click on if the visibility is false
-    if(!isVisible){
-      this.props.update_ChartVisiblity();
-    }
+    // if(!isVisible){
+    //   this.props.update_ChartVisiblity();
+    // }
   },
   getInitialState: function() {
       return {
@@ -202,7 +186,7 @@ var MapContainer = React.createClass({
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
           onLeafletZoomEnd={this.HandleMapEnd.bind(null,this)}
-          onLeafletMoveend={this.HandleMapEnd.bind(null,this)}
+          onLeafletMoveEnd={this.HandleMapEnd.bind(null,this)}
           onLeafletClick={this.handleMapClick.bind(null,this)}
           center={[this.props.map_settings.latitude,this.props.map_settings.longitude]}
           zoom={this.props.map_settings.zoom}

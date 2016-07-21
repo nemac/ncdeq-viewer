@@ -10,22 +10,6 @@ import {
   START_ZOOM, } from '../constants/appConstants'
 
 var MenuComponent = React.createClass({
-  // componentWillReceiveProps: function(nextProps) {
-  //    const level = this.getLevel();
-  //
-  //    //const value = $('#search-select-'+level.replace(' ','_')).dropdown('get value');
-  //    console.log('menu recieve props')
-  //    console.log(level)
-  //    console.log(nextProps)
-  //    if(nextProps.layerInfo){
-  //      const features = nextProps.layerInfo.features
-  //
-  //       const value = features[0].properties.ID;
-  //       console.log(value)
-  //
-  //    }
-  //
-  // },
   handleMapFillClick: function(e){
     this.props.set_mapToPoint(START_LATITUDE,START_LONGITUDE,START_ZOOM,e);
   },
@@ -111,8 +95,11 @@ var MenuComponent = React.createClass({
     }
   },
   menuChange: function(e){
-    console.log("menu changed")
+
+    //get the current level
     var level = this.getLevel();
+
+    //update the chartdata redux store
     this.props.get_ChartData(e.target.value,level)
 
     //get the ago layer id
@@ -121,7 +108,12 @@ var MenuComponent = React.createClass({
     //get the attributes of the huc12 layer on a user click
     this.props.get_LayerInfo_ByValue(e.target.value, feature_id);
 
+    //update the menu filter for the level
     this.props.change_geographyLevelFilter(e.target.value,level)
+
+    //update all menus based on the menu change
+    //  this will make sure the child menus are filtered by the parents
+    //  value
     this.updateFilterState(level,e.target.value);
 
   },
