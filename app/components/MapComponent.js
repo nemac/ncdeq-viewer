@@ -29,6 +29,14 @@ var MapContainer = React.createClass({
       //call to zoom to geojson (from helper library)
       const layer = zoomToGeoJson(features,leafletMap,level);
 
+      //when geojson is added on top of map.  it also needs map click enabled.
+      const mapClickHandler = this.handleMapClick
+      if(layer){
+        layer.on('click', function(e,mapClickHandler) {
+          mapClickHandler.bind(null,this)
+        }.bind(this));
+      }
+
       //only zoom first time this is called otherwise this will force a rezoom everythome prop is changed
     }
   },
