@@ -8,12 +8,12 @@ var esri = require('esri-leaflet')
 export default class ESRITileMapLayer extends BaseTileLayer {
   componentWillMount() {
     super.componentWillMount();
-    const { url, max_zoom, min_zoom, opacity } = this.props;
+    const { url, max_zoom, min_zoom, tileOpacity } = this.props;
 
     //MAKE sure opacity is set
     var the_opacity = 1.0;
-    if(opacity){
-      the_opacity = opacity;
+    if(tileOpacity){
+      the_opacity = Number(tileOpacity);
     }
 
     //make sure maxzoom json is set to null

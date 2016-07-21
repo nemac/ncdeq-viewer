@@ -55,25 +55,30 @@ var MenuComponent = React.createClass({
   },
 
   getLevel: function(){
+    if (this.props.geography_levels){
 
-    //filter the levels to get the active tab
-    const ActiveTabObject = this.props.geography_levels.filter( key =>{
-      return key.active === true;
-    })
+      //filter the levels to get the active tab
+      const ActiveTabObject = this.props.geography_levels.filter( key =>{
+        return key.active === true;
+      })
 
-    //set default active tab - as Highest level
-    let activeTab = 'River Basins'
-    if (ActiveTabObject.length > 0){
-      //get the active tab and convert the name to the name used in the app.
-      //  this will eventually be driven by config or data....???
-      activeTab = getCategoryName(ActiveTabObject[0].geography_label);
+      //set default active tab - as Highest level
+      let activeTab = 'River Basins'
+      if (ActiveTabObject.length > 0){
+        //get the active tab and convert the name to the name used in the app.
+        //  this will eventually be driven by config or data....???
+        activeTab = getCategoryName(ActiveTabObject[0].geography_label);
+      }
+
+      return activeTab
+    } else {
+      return null;
     }
-
-    return activeTab
   },
-
-
-  updateFilterState(level,value){
+  handleSearch: function(comp,e){
+    this.props.handleSearchChange(comp,e)
+  },
+  updateFilterState: function(level,value){
 
     var nextLevel = getNextLevelName(level);
 
@@ -91,17 +96,25 @@ var MenuComponent = React.createClass({
   },
   menuChange: function(e){
 
+    //get the current level
     var level = this.getLevel();
-    this.updateFilterState(level,e.target.value);
 
+    //update the chartdata redux store
     this.props.get_ChartData(e.target.value,level)
-    this.props.change_geographyLevelFilter(e.target.value,level)
 
     //get the ago layer id
     const feature_id = getAGOFeatureId(level)
 
     //get the attributes of the huc12 layer on a user click
     this.props.get_LayerInfo_ByValue(e.target.value, feature_id);
+
+    //update the menu filter for the level
+    this.props.change_geographyLevelFilter(e.target.value,level)
+
+    //update all menus based on the menu change
+    //  this will make sure the child menus are filtered by the parents
+    //  value
+    this.updateFilterState(level,e.target.value);
 
   },
   handleMenuClick: function(val,e) {
@@ -197,10 +210,11 @@ var MenuComponent = React.createClass({
         </div>
         <div className="header item" >
           <button className="ui button" onClick={this.handleMapFillClick.bind(null,this)}>Map Back to Start</button>
-        </div>      <div className="left menu">
+        </div>
+        <div className="left menu">
           <div className="item">
             <div className="ui transparent icon input">
-              <input className="mapSearch" type="text" placeholder="Search to zoom..." onChange={this.props.handleSearchChange.bind(null,this)} />
+              <input className="mapSearch" type="text" placeholder="Search to zoom..." onChange={this.handleSearch.bind(null,this)} />
               <i className="search link icon"></i>
             </div>
           </div>

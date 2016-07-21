@@ -32,6 +32,42 @@ var MapContainer = React.createClass({
       //only zoom first time this is called otherwise this will force a rezoom everythome prop is changed
     }
   },
+  HandleMapEnd: function(mapComp,e){
+
+    //on any map move get the current level and filtered id
+    const level = this.getLevel();
+    const filterId = this.getLevelFilter();
+
+    //reset the selector picklist for that layer to the id.
+    // there are times when promises from the AGO api did not finish and the menus where not
+    // updated this ensures the menus are updated...
+    //$('#search-select-'+level.replace(' ','_')).dropdown('set selected',filterId);
+    this.props.HandleMapEnd(mapComp,e);
+    this.updateFilterStateReverse(filterId);
+
+
+  },
+  getLevelFilter: function(){
+
+    if (this.props.geography_levels){
+      //filter the levels to get the active tab
+      const activeFilterObject = this.props.geography_levels.filter( key =>{
+        return key.active === true;
+      })
+
+      //set default active tab - as Highest level
+      let activeFilter = ''
+      if (activeFilterObject.length > 0){
+        //get the active tab and convert the name to the name used in the app.
+        //  this will eventually be driven by config or data....???
+        activeFilter = activeFilterObject[0].current_id;
+      }
+
+      return activeFilter
+    }else{
+      return null
+    }
+  },
   getLevel: function(){
 
     if (this.props.geography_levels){
@@ -53,68 +89,61 @@ var MapContainer = React.createClass({
       return null
     }
   },
-  updateFilterState(level,value){
+  updateFilterStateReverse: function(value){
 
-    var nextLevel = getNextLevelName(level);
+    //loop all levels - probably need to get this from data, but for now hardcoded
+    const levels = ['River Basins','Cataloging Units','HUC12']
 
-    //set filter and active state for next level(s)
-    if(nextLevel){
+    //loop the levels object
+    levels.map((level)=>{
 
-      //kind of hacky--how to do this in redux?
-      $('#search-select-'+nextLevel.replace(' ','_')).dropdown('set text','Choose a ' + nextLevel)
+      //get the string length for substring'  the current value.
+      //  the current value should always be huc 12 so River Basins and Cataloging Units
+      //  should be 2 and 4 lengths less..
+      const matchEnd = get_matchEnd(level);
 
-      //recursive call to update all level filters
-      return this.updateFilterState(nextLevel,value)
-    } else{
-      return
-    }
-  },
-  updateFilterStateReverse(level,value){
-
-    var prevLevel = getPrevLevelName(level);
-
-    //set filter and active state for next level(s)
-    if(prevLevel){
-
-
-      const matchEnd = get_matchEnd(prevLevel);
+      //ensure value was defined.
       if(value){
-        const selectedValue = value.substring(0,matchEnd)
-        //kind of hacky--how to do this in redux?
-        $('#search-select-'+prevLevel.replace(' ','_')).dropdown('set selected',selectedValue)
 
-        //get text	 TO COMPARE then if not matching make blank? or add text
+          //get the value for the level
+          const selectedValue = value.substring(0,matchEnd)
 
+          //set the filter in redux store for the level
+          //  this will ensure the menus/breadcrumbs will also update appropiately
+          this.props.change_geographyLevelFilter(selectedValue,level)
+
+          //kind of hacky--how to do this in redux?
+          $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
+
+          //get the value selected.
+          // there are times when the value dose not exists in the selector so we need overcome this
+          let HTMLvalue = $('#search-select-'+level.replace(' ','_')).dropdown('get value');
+
+          //if the value in the selector does not match what the user selected. that means there was no
+          //  value in the selector (pick list).  lets slet that to select
+          if (HTMLvalue[0] != selectedValue){
+            $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level);
+            $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
+          }
       }
-
-      //recursive call to update all level filters
-      return this.updateFilterStateReverse(prevLevel,value)
-    } else{
-      return
-    }
+    })
   },
-
-
   handleMapLoad: function(e,self) {
     var map = this.refs.map.leafletElement;
     this.props.set_LeafletMap(map)
 
     if(this.props.layerInfo){
       const features = this.props.layerInfo.features
+      //make sure objects are defined.
+      //  there are times when these are not defined
       if (features){
         if (features[0]){
 
-          const level = this.getLevel();
+          //get the current featires ID
           const value = features[0].properties.ID;
 
-          this.props.change_geographyLevelFilter(value,level)
-
-          this.updateFilterState(level,value);
-
-          this.updateFilterStateReverse(level,value);
-
-          //again kind of hacky
-          $('#search-select-'+level.replace(' ','_')).dropdown('set selected',value)
+          //update all selectors menus to match map selection or google search
+          this.updateFilterStateReverse(value);
         }
 
       }
@@ -138,9 +167,9 @@ var MapContainer = React.createClass({
     this.props.change_geographyLevelActive("HUC12");
 
     //update chart visibility on map click on if the visibility is false
-    if(!isVisible){
-      this.props.update_ChartVisiblity();
-    }
+    // if(!isVisible){
+    //   this.props.update_ChartVisiblity();
+    // }
   },
   getInitialState: function() {
       return {
@@ -156,8 +185,8 @@ var MapContainer = React.createClass({
       <div className="twelve wide column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
-          onLeafletZoomEnd={this.props.HandleMapEnd.bind(null,this)}
-          onLeafletMoveend={this.props.HandleMapEnd.bind(null,this)}
+          onLeafletZoomEnd={this.HandleMapEnd.bind(null,this)}
+          onLeafletMoveEnd={this.HandleMapEnd.bind(null,this)}
           onLeafletClick={this.handleMapClick.bind(null,this)}
           center={[this.props.map_settings.latitude,this.props.map_settings.longitude]}
           zoom={this.props.map_settings.zoom}
@@ -185,7 +214,7 @@ var MapContainer = React.createClass({
       <ESRITileMapLayer
        url="http://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc6/MapServer"
        setMapLayers={this.props.set_MapLayers}
-       opacity="0.5"
+       tileOpacity="0.5"
        name="River Basins"
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
