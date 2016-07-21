@@ -32,6 +32,33 @@ var MapContainer = React.createClass({
       //only zoom first time this is called otherwise this will force a rezoom everythome prop is changed
     }
   },
+  HandleMapEnd: function(mapComp,e){
+    const level = this.getLevel();
+    const filterId = this.getLevelFilter();
+    $('#search-select-'+level.replace(' ','_')).dropdown('set selected',filterId);
+    this.props.HandleMapEnd(mapComp,e);
+  },
+  getLevelFilter: function(){
+
+    if (this.props.geography_levels){
+      //filter the levels to get the active tab
+      const activeFilterObject = this.props.geography_levels.filter( key =>{
+        return key.active === true;
+      })
+      console.log(activeFilterObject)
+      //set default active tab - as Highest level
+      let activeFilter = ''
+      if (activeFilterObject.length > 0){
+        //get the active tab and convert the name to the name used in the app.
+        //  this will eventually be driven by config or data....???
+        activeFilter = activeFilterObject[0].current_id;
+      }
+
+      return activeFilter
+    }else{
+      return null
+    }
+  },
   getLevel: function(){
 
     if (this.props.geography_levels){
@@ -53,62 +80,69 @@ var MapContainer = React.createClass({
       return null
     }
   },
-  updateFilterState(level,value){
+  updateFilterStateReverse: function(alevel,value){
 
-    var nextLevel = getNextLevelName(level);
-
-    //set filter and active state for next level(s)
-    if(nextLevel){
-
-      //kind of hacky--how to do this in redux?
-      $('#search-select-'+nextLevel.replace(' ','_')).dropdown('set text','Choose a ' + nextLevel)
-
-      //recursive call to update all level filters
-      return this.updateFilterState(nextLevel,value)
-    } else{
-      return
-    }
-  },
-  updateFilterStateReverse(level,value){
-
-    var prevLevel = getPrevLevelName(level);
-
-    //set filter and active state for next level(s)
-    if(prevLevel){
+    const levels = ['River Basins','Cataloging Units','HUC12']
 
 
-      const matchEnd = get_matchEnd(prevLevel);
+
+    levels.map((level)=>{
+
+      // console.log(level)
+      const matchEnd = get_matchEnd(level);
+      // console.log(matchEnd)
       if(value){
-        const selectedValue = value.substring(0,matchEnd)
-
-        //kind of hacky--how to do this in redux?
-        $('#search-select-'+prevLevel.replace(' ','_')).dropdown('set selected',selectedValue)
-        const HTMLvalue = $('#search-select-'+prevLevel.replace(' ','_')).dropdown('get value')
+        // if(level === alevel){
 
 
-        // //get text	 TO COMPARE then if not matching make blank? or add text
-        // //check the selected value to see if matches what was passed in.
-        // //  if they match then the value exists in menu list otherwise change to the menu's to
-        // //  so user sees full list again
-        //  STILL NEES FILTERED
-        if (HTMLvalue[0] != selectedValue){
-          //  $('#search-select-'+prevLevel.replace(' ','_')).dropdown('set text','Choose a ' + prevLevel)
-        } else {
-          // this.updateFilterState(selectedValue,prevLevel);
-          // this.props.change_geographyLevelFilter(selectedValue,prevLevel)
-        }
 
+          const selectedValue = value.substring(0,matchEnd)
+
+          // console.log(selectedValue)
+          // console.log(alevel)
+          // console.log(level)
+          // console.log(selectedValue)
+
+          this.props.change_geographyLevelFilter(selectedValue,level)
+          //$('#search-select-'+level.replace(' ','_')).dropdown('set text',selectedValue)
+
+          //kind of hacky--how to do this in redux?
+          $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
+          let HTMLvalue = $('#search-select-'+level.replace(' ','_')).dropdown('get value');
+
+
+          // console.log(HTMLvalue)
+
+          if (HTMLvalue[0] != selectedValue){
+            $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
+
+          //  $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level)
+          }
+
+
+        // }
+
+
+
+
+        // get map object from redux store
+        const leafletMap = this.props.leafletMap.leafletMap;
+        // leafletMap.setView(new L.LatLng(this.props.map_settings.latitude,this.props.map_settings.longitude),this.props.map_settings.zoomå)
+
+
+
+        // if (HTMLvalue[0] != selectedValue){
+        //    $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level)
+        // } else {
+        //   this.updateFilterState(selectedValue,level);
+        //   this.props.change_geographyLevelFilter(selectedValue,level)
+        // }
 
       }
 
-      //recursive call to update all level filters
-      return this.updateFilterStateReverse(prevLevel,value)
-    } else{
-      return
-    }
+    })
+
   },
-
-
   handleMapLoad: function(e,self) {
     var map = this.refs.map.leafletElement;
     this.props.set_LeafletMap(map)
@@ -122,24 +156,9 @@ var MapContainer = React.createClass({
           const value = features[0].properties.ID;
 
           //again kind of hacky
-          $('#search-select-'+level.replace(' ','_')).dropdown('set selected',value)
+          //$('#search-select-'+level.replace(' ','_')).dropdown('set selected',value)
 
-          const HTMLvalue = $('#search-select-'+level.replace(' ','_')).dropdown('get value')
-
-          //get text TO COMPARE then if not matching make blank? or add text
-          // check the selected value to see if matches what was passed in.
-          //   if they match then the value exists in menu list otherwise change to the menu's to
-          //   so user sees full list again
-          //  STILL NEEDS FILTERED in menus...  when zooom or other action happens map_load is kicked off
-          //    and returns blank or unfiltered menus
-
-          if (HTMLvalue[0] != value){
-            //  $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level)
-          }else{
-            // this.props.change_geographyLevelFilter(value,level)
-            // this.updateFilterState(level,value);
-          }
-
+          //update all selectors so
           this.updateFilterStateReverse(level,value);
         }
 
@@ -182,8 +201,8 @@ var MapContainer = React.createClass({
       <div className="twelve wide column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
-          onLeafletZoomEnd={this.props.HandleMapEnd.bind(null,this)}
-          onLeafletMoveend={this.props.HandleMapEnd.bind(null,this)}
+          onLeafletZoomEnd={this.HandleMapEnd.bind(null,this)}
+          onLeafletMoveend={this.HandleMapEnd.bind(null,this)}
           onLeafletClick={this.handleMapClick.bind(null,this)}
           center={[this.props.map_settings.latitude,this.props.map_settings.longitude]}
           zoom={this.props.map_settings.zoom}
