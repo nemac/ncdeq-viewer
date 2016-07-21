@@ -14,24 +14,46 @@ import {zoomToGeoJson, getCategoryName, getNextLevelName, getPrevLevelName, get_
 
 var PropTypes = React.PropTypes;
 
+let  MAP_CLICK = false;
+
 var MapContainer = React.createClass({
   componentDidUpdate: function(prevProps, prevState) {
+
     if(this.props.layerInfo){
 
       //get features from user location
       const features = this.props.layerInfo.features
 
+      const level = this.getLevel();
+
+
+
+      // if (actualValue === expextedValue){
+      //   console.log(actualValue)
+      //   console.log(expextedValue)
+      //   this.props.get_ChartData(e.target.value,currentLevel)
+      //   $('#search-select-'+level.replace(' ','_')).dropdown('set selected',actualValue);
+      // }
       // get map object from redux store
       const leafletMap = this.props.leafletMap.leafletMap;
 
-      const level = this.getLevel();
-
       //call to zoom to geojson (from helper library)
       const layer = zoomToGeoJson(features,leafletMap,level);
+      // const HTMLvalue = $('#search-select-'+level.replace(' ','_')).dropdown('get value');
+      // const actualValue = (features[0].properties.VALUE);
+      // const expextedValue = (HTMLvalue[0]);
+      // //          $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
+      // if(expextedValue.length === 0 && actualValue.length > 0 ){
+      //   console.log('expected: ' + expextedValue)
+      //   console.log('actualValue: ' + actualValue)
+      //
+      //    //this.props.get_ChartData(actualValue,level)
+      //    $('#search-select-'+level.replace(' ','_')).dropdown('set selected',actualValue);
+      // }
 
-      //when geojson is added on top of map.  it also needs map click enabled.
-      const mapClickHandler = this.handleMapClick
+      //when geojson is added on top of map.  it also needs a map click handler enabled.
       if(layer){
+        const mapClickHandler = this.handleMapClick
         layer.on('click', function(e,mapClickHandler) {
           mapClickHandler.bind(null,this)
         }.bind(this));
@@ -47,10 +69,8 @@ var MapContainer = React.createClass({
     //reset the selector picklist for that layer to the id.
     // there are times when promises from the AGO api did not finish and the menus where not
     // updated this ensures the menus are updated...
-    //$('#search-select-'+level.replace(' ','_')).dropdown('set selected',filterId);
     this.props.HandleMapEnd(mapComp,e);
     this.updateFilters(filterId);
-
 
   },
   getLevelFilter: function(){
@@ -157,6 +177,10 @@ var MapContainer = React.createClass({
   },
   handleMapClick: function(e,self){
 
+
+    //set current geography level in redux state store
+    this.props.change_geographyLevelActive("HUC12");
+
     //get the leaftet map object
     var L = this.refs.map.leafletElement
 
@@ -166,12 +190,11 @@ var MapContainer = React.createClass({
     //update map height
     this.props.update_MapHeight();
 
+
     //get the attributes of the huc12 layer on a user click
     this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
 
-    //set current geography level in redux state store
-    this.props.change_geographyLevelActive("HUC12");
-
+    MAP_CLICK  = false;
     //update chart visibility on map click on if the visibility is false
     // if(!isVisible){
     //   this.props.update_ChartVisiblity();

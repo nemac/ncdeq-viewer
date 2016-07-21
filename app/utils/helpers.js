@@ -6,6 +6,7 @@ var shouldZoom = true;
 
 //function to draw and zoom to select HUC geometry
 export function zoomToGeoJson(GeoJSON,leafletMap,level){
+
   const features = GeoJSON;
   let featuresStr = JSON.stringify(features)
   let PastLayerStr = ''
@@ -20,25 +21,27 @@ export function zoomToGeoJson(GeoJSON,leafletMap,level){
     shouldZoom = false;
   } else{
     shouldZoom = true;
-  }
-  if (features){
-    if(features[0]){
-      const feature =  features[0].properties;
-      const isLayerVis = leafletMap.hasLayer(TempLayer);
+    // console.log(GeoJSON[0].properties.VALUE)
+    // console.log(GeoJSON[0].properties.VALUE)
 
-      if (isLayerVis){
-        leafletMap.removeLayer(TempLayer)
-      }
+    if (features){
+      if(features[0]){
+        const feature =  features[0].properties;
+        const isLayerVis = leafletMap.hasLayer(TempLayer);
 
-      TempLayer = L.geoJson().addTo(leafletMap);
-      TempLayer.addData(features);
-      TempLayer.setZIndex(-1);
-      PastLayer = TempLayer.toGeoJSON();
+        if (isLayerVis){
+          leafletMap.removeLayer(TempLayer)
+        }
 
-      if(shouldZoom){
+        TempLayer = L.geoJson().addTo(leafletMap);
+        TempLayer.addData(features);
+        TempLayer.setZIndex(-1);
+        PastLayer = TempLayer.toGeoJSON();
+
         leafletMap.fitBounds(TempLayer.getBounds());
+
+        return TempLayer;
       }
-      return TempLayer;
     }
   }
 
@@ -158,16 +161,16 @@ export function getCategoryName(geogLevel){
 export function getAGOFeatureId(geogLevel){
   switch (geogLevel) {
     case 'River Basins':
-      return '0';
+      return '5';
       break;
     case 'Cataloging Units':
-      return '1';
+      return '4';
       break;
     case 'HUC12':
-      return '2';
+      return '3';
       break;
     default:
-      return '2';
+      return '3';
     }
 };
 
