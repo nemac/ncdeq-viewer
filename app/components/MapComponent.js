@@ -15,11 +15,11 @@ import {zoomToGeoJson, getCategoryName, getNextLevelName, getPrevLevelName, get_
 var PropTypes = React.PropTypes;
 
 var MapContainer = React.createClass({
-  componentWillReceiveProps: function(nextProps) {
-    if(nextProps.layerInfo){
+  componentDidUpdate: function(prevProps, prevState) {
+    if(this.props.layerInfo){
 
       //get features from user location
-      const features = nextProps.layerInfo.features
+      const features = this.props.layerInfo.features
 
       // get map object from redux store
       const leafletMap = this.props.leafletMap.leafletMap;
@@ -36,8 +36,6 @@ var MapContainer = React.createClass({
           mapClickHandler.bind(null,this)
         }.bind(this));
       }
-
-      //only zoom first time this is called otherwise this will force a rezoom everythome prop is changed
     }
   },
   HandleMapEnd: function(mapComp,e){
@@ -51,7 +49,7 @@ var MapContainer = React.createClass({
     // updated this ensures the menus are updated...
     //$('#search-select-'+level.replace(' ','_')).dropdown('set selected',filterId);
     this.props.HandleMapEnd(mapComp,e);
-    this.updateFilterStateReverse(filterId);
+    this.updateFilters(filterId);
 
 
   },
@@ -97,7 +95,7 @@ var MapContainer = React.createClass({
       return null
     }
   },
-  updateFilterStateReverse: function(value){
+  updateFilters: function(value){
 
     //loop all levels - probably need to get this from data, but for now hardcoded
     const levels = ['River Basins','Cataloging Units','HUC12']
@@ -128,7 +126,7 @@ var MapContainer = React.createClass({
           let HTMLvalue = $('#search-select-'+level.replace(' ','_')).dropdown('get value');
 
           //if the value in the selector does not match what the user selected. that means there was no
-          //  value in the selector (pick list).  lets slet that to select
+          //  value in the selector (pick list).
           if (HTMLvalue[0] != selectedValue){
             $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level);
             $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
@@ -151,7 +149,7 @@ var MapContainer = React.createClass({
           const value = features[0].properties.ID;
 
           //update all selectors menus to match map selection or google search
-          this.updateFilterStateReverse(value);
+          this.updateFilters(value);
         }
 
       }
@@ -188,7 +186,7 @@ var MapContainer = React.createClass({
   render: function() {
     const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;
     const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
-    // const { ESRIFeatureLayer} = ReactLeaflet.LayersControl;
+
     return (
       <div className="twelve wide column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
         {this.props.map_settings &&
@@ -234,10 +232,4 @@ var MapContainer = React.createClass({
   }
 });
 
-//  then will have to query the feature layer based on point to get values.....
-//  build the tile locally then push to AGO.
-//<ESRITileMapLayer
-//  url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/test_huc6/MapServer"
-//  />
-//
 module.exports = MapContainer;

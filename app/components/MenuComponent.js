@@ -3,7 +3,7 @@ var MenuItemComponent = require('../components/MenuItemComponent');
 var PropTypes = React.PropTypes;
 
 //  general functions and  helpers.  reuse functions
-import { getNextLevelName, getCategoryName, getAGOGeographyLabel, getAGOFeatureId} from '../utils/helpers';
+import { getNextLevelName, getCategoryName, getAGOGeographyLabel, getAGOFeatureId, get_matchEnd} from '../utils/helpers';
 import {
   START_LATITUDE,
   START_LONGITUDE,
@@ -21,12 +21,7 @@ var MenuComponent = React.createClass({
 
   },
   componentDidMount: function() {
-    //var input = document.getElementById('searchTextField');
-    //var options = {componentRestrictions: {country: 'us'}};
-    //new google.maps.places.Autocomplete(input, options);
-
     this.props.get_MenuList();
-
   },
   getDefaultMenu: function(level){
     //filter the levels to get the active tab
@@ -76,6 +71,7 @@ var MenuComponent = React.createClass({
     }
   },
   handleSearch: function(comp,e){
+    this.props.change_geographyLevelActive("HUC12");
     this.props.handleSearchChange(comp,e)
   },
   updateFilterState: function(level,value){
@@ -94,33 +90,101 @@ var MenuComponent = React.createClass({
       return
     }
   },
+  updateFilters: function(value){
+
+    //loop all levels - probably need to get this from data, but for now hardcoded
+    const levels = ['River Basins','Cataloging Units','HUC12']
+
+    //loop the levels object
+    levels.map((level)=>{
+
+      //get the string length for substring'  the current value.
+      //  the current value should always be huc 12 so River Basins and Cataloging Units
+      //  should be 2 and 4 lengths less..
+      const matchEnd = get_matchEnd(level);
+
+      //ensure value was defined.
+      if(value){
+
+          //get the value for the level
+          const selectedValue = value.substring(0,matchEnd)
+
+          //set the filter in redux store for the level
+          //  this will ensure the menus/breadcrumbs will also update appropiately
+          this.props.change_geographyLevelFilter(selectedValue,level)
+
+          //kind of hacky--how to do this in redux?
+          $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
+
+          //get the value selected.
+          // there are times when the value dose not exists in the selector so we need overcome this
+          let HTMLvalue = $('#search-select-'+level.replace(' ','_')).dropdown('get value');
+
+          //if the value in the selector does not match what the user selected. that means there was no
+          //  value in the selector (pick list).
+          if (HTMLvalue[0] != selectedValue){
+            $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level);
+            $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
+          }
+      }
+    })
+  },
   menuChange: function(e){
 
-    //get the current level
+    // //get the current level
     var level = this.getLevel();
 
-    //update the chartdata redux store
-    this.props.get_ChartData(e.target.value,level)
+    const expectedLength = get_matchEnd(level);
+    const valueLength = e.target.value.length;
 
-    //get the ago layer id
-    const feature_id = getAGOFeatureId(level)
+    this.updateFilters(e.target.value)
 
-    //get the attributes of the huc12 layer on a user click
-    this.props.get_LayerInfo_ByValue(e.target.value, feature_id);
+    //only get chart data and feature data when expectedLength and the value lengh.
+    //  not sure why values from other geography levels are making it here.
+    if (Number(valueLength) === Number(expectedLength)){
+      //update the chartdata redux store
+      this.props.get_ChartData(e.target.value,level)
 
-    //update the menu filter for the level
-    this.props.change_geographyLevelFilter(e.target.value,level)
+      //get the ago layer id
+      const feature_id = getAGOFeatureId(level)
 
-    //update all menus based on the menu change
-    //  this will make sure the child menus are filtered by the parents
-    //  value
-    this.updateFilterState(level,e.target.value);
+      //get the attributes of the huc12 layer on a user click
+      this.props.get_LayerInfo_ByValue(e.target.value, feature_id);
+
+      // console.log('menu change start')
+      // console.log(level)
+      // console.log(feature_id)
+      // console.log(e.target.value)
+      // console.log(expectedLength)
+      // console.log(e.target.value.length)
+      // console.log('menu change end')
+
+    }
+
+
+    //
+    // //update the chartdata redux store
+    // this.props.get_ChartData(e.target.value,level)
+    //
+    // //get the ago layer id
+    // const feature_id = getAGOFeatureId(level)
+    //
+    // //get the attributes of the huc12 layer on a user click
+    // this.props.get_LayerInfo_ByValue(e.target.value, feature_id);
+    //
+    // //update the menu filter for the level
+    // this.props.change_geographyLevelFilter(e.target.value,level)
+    //
+    // //update all menus based on the menu change
+    // //  this will make sure the child menus are filtered by the parents
+    // //  value
+    // this.updateFilterState(level,e.target.value);
 
   },
   handleMenuClick: function(val,e) {
 
     //get current geography level
-    var level = this.getLevel();
+    //var level = this.getLevel();
 
     //set current geography level in redux state store
     this.props.change_geographyLevelActive(val);
