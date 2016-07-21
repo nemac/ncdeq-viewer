@@ -332,8 +332,8 @@ export function handleSearchChange(comp,e){
           //set store to new lat,long and zoom level
           //will need to add ability to detect the huc's this point falls in
           //get redux state
-          const latitude = lat;
-          const longitude = lng;
+          const latitude = state.mapConfig.mapconfig.latitude;
+          const longitude = state.mapConfig.mapconfig.longitude;
           const zoom =  currentZoom;
           const minZoom = state.mapConfig.mapconfig.minZoom;
           const maxZoom =  state.mapConfig.mapconfig.maxZoom;

@@ -44,7 +44,7 @@ var MapContainer = React.createClass({
     //$('#search-select-'+level.replace(' ','_')).dropdown('set selected',filterId);
     this.props.HandleMapEnd(mapComp,e);
     this.updateFilterStateReverse(filterId);
-    //just in case the menus are not updated.
+
 
   },
   getLevelFilter: function(){
