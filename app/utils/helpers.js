@@ -32,6 +32,7 @@ export function zoomToGeoJson(GeoJSON,leafletMap,level){
 
       TempLayer = L.geoJson().addTo(leafletMap);
       TempLayer.addData(features);
+      TempLayer.setZIndex(-1);
       PastLayer = TempLayer.toGeoJSON();
 
       if(shouldZoom){
