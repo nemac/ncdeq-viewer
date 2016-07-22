@@ -111,7 +111,7 @@ var MenuComponent = React.createClass({
           //if the value in the selector does not match what the user selected. that means there was no
           //  value in the selector (pick list).
           if (HTMLvalue[0] != selectedValue){
-            $('#search-select-'+level.replace(' ','_')).dropdown('set text',selectedValue);
+            //$('#search-select-'+level.replace(' ','_')).dropdown('set text',selectedValue);
             $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
           }
       }

@@ -14,101 +14,113 @@ import {zoomToGeoJson, getCategoryName, getNextLevelName, getPrevLevelName, get_
 
 var PropTypes = React.PropTypes;
 
-let  MAP_CLICK = false;
+var TempLayer;
 
 var MapContainer = React.createClass({
+  add_GeoJSON: function(features,leafletMap){
+
+    //check if the layer has been added yes it is global varriable :)
+    const isLayerVis = leafletMap.hasLayer(TempLayer);
+
+    //if a geojson layer has been added remove it.
+    //  eventually we want to only remove when user elects too.
+    if (isLayerVis){
+      leafletMap.removeLayer(TempLayer)
+    }
+
+    //add ta blank layer to leaflet
+    TempLayer = L.geoJson().addTo(leafletMap);
+
+    //add the GeoJSON data to the layer
+    TempLayer.addData(features);
+
+    //pan and zoom to bounds of layers bounds
+    leafletMap.fitBounds(TempLayer.getBounds());
+
+    //return the layer
+    return TempLayer
+
+  },
   componentDidUpdate: function(prevProps, prevState) {
+
+    //check if there was a prevProps
     if (prevProps){
+      //check if there is a layerinfo object in the redux store
       if(this.props.layerInfo){
+
         let LastFeatures;
+
+        //get the feaures in the current redux store
         let CurrentFeatures = this.props.layerInfo.features;
+
+        //check if there was a layerinfo object in the prevous state redux store
         if(prevProps.layerInfo){
           LastFeatures = prevProps.layerInfo.features;
         }
 
+        //get the string of the current features so we can compare the JSON data
         let CurrentFeaturesStr = JSON.stringify(CurrentFeatures)
         let LastLayerStr = ''
 
-        if(LastLayerStr){
+        //if the last features existed make it string for comparison otherwise leave it as a blank substring
+        if(LastFeatures){
           LastLayerStr = JSON.stringify(LastFeatures)
         }
 
+        //in initial state there will not be an objet we still need to zoom and get the data...
         if(CurrentFeatures && !LastFeatures){
           console.log('one: ' + CurrentFeatures[0].properties.ID)
         }
+
+        //when there are both a last feaures and current feautes JSON object
         if(LastFeatures && CurrentFeatures){
+
+          //when the last features JSON and Current Features JSON do not match
+          //  it is a new feature.  so we should select and zoom
           if(CurrentFeatures[0].properties.ID != LastFeatures[0].properties.ID){
             // console.log('Two: ' + CurrentFeatures[0].properties.ID)
             // console.log('Two: ' + LastFeatures[0].properties.ID)
 
             //get features from user location
-            const features = this.props.layerInfo.features
+            //const features = this.props.layerInfo.features
 
-            const level = this.getLevel();
-
-            // get map object from redux store
+            //get the leaflet Map object
             const leafletMap = this.props.leafletMap.leafletMap;
 
-            //call to zoom to geojson (from helper library)
-            const layer = zoomToGeoJson(features,leafletMap,level);
+            //add geojson and retrieve the new geojson leaflet layer
+            const layer = this.add_GeoJSON(CurrentFeatures,leafletMap);
 
-            this.updateFilters(CurrentFeatures[0].properties.VALUE);
+            //add a click event to the new layer so the new layer does not steal the state...
+            //  w/out this when a user clicked on geojson like a huc 6 or huc 8 (riverbasin or Cataloging unit)
+            //  nothing would happen.
+            const mapClickHandler = this.handleMapClick
 
             //when geojson is added on top of map.  it also needs a map click handler enabled.
             if(layer){
-              const mapClickHandler = this.handleMapClick
               layer.on('click', function(e,mapClickHandler) {
                 mapClickHandler.bind(null,this)
               }.bind(this));
             }
+            // //get the current active geography level
+            // const level = this.getLevel();
+            //
+            // // get map object from redux store
+            // const leafletMap = this.props.leafletMap.leafletMap;
+            //
+            // //call to zoom to geojson (from helper library)
+            // const layer = zoomToGeoJson(features,leafletMap,level);
+            //
+            this.updateFilters(CurrentFeatures[0].properties.VALUE);
+
+
 
           }
         }
-
-        // console.log(CurrentFeatures[0].properties.ID)
-        // console.log(LastFeatures[0].properties.ID)
-
-        // if(!LastFeatures){
-        //   console.log(CurrentFeatures)
-        // }
-        //if(LastFeatures){
-          // if(LastLayerStr === CurrentFeaturesStr){
-          //   console.log(LastLayerStr)
-          //   console.log(CurrentFeaturesStr)
-          //
-          // }
-        // }
-
 
       }
     }
 
   },
-  // componentDidUpdate: function(prevProps, prevState) {
-  //
-  //   if(this.props.layerInfo){
-  //
-  //     //get features from user location
-  //     const features = this.props.layerInfo.features
-  //
-  //     const level = this.getLevel();
-  //
-  //     // get map object from redux store
-  //     const leafletMap = this.props.leafletMap.leafletMap;
-  //
-  //     //call to zoom to geojson (from helper library)
-  //     const layer = zoomToGeoJson(features,leafletMap,level);
-  //     //console.log(layer)
-  //     //layer.redraw()
-  //     //when geojson is added on top of map.  it also needs a map click handler enabled.
-  //     if(layer){
-  //       const mapClickHandler = this.handleMapClick
-  //       layer.on('click', function(e,mapClickHandler) {
-  //         mapClickHandler.bind(null,this)
-  //       }.bind(this));
-  //     }
-  //   }
-  // },
   HandleMapEnd: function(mapComp,e){
 
     //on any map move get the current level and filtered id
@@ -242,7 +254,6 @@ var MapContainer = React.createClass({
     //get the attributes of the huc12 layer on a user click
     this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
 
-    MAP_CLICK  = false;
     //update chart visibility on map click on if the visibility is false
     // if(!isVisible){
     //   this.props.update_ChartVisiblity();
