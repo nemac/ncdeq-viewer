@@ -14,6 +14,7 @@ const mapStateToProps = (state,props) => {
   let charts = state.chartData;
   let map_settings = state.mapConfig.mapconfig;
   let leafletMap = state.leafletMap;
+  let layerInfo = state.mapConfig.layerinfo;
 
   return {
     DefaultMenuLists,
@@ -21,6 +22,7 @@ const mapStateToProps = (state,props) => {
     geography_levels,
     map_settings,
     leafletMap,
+    layerInfo
   }
 }
 

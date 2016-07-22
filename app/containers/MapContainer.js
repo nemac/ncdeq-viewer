@@ -13,13 +13,13 @@ const mapStateToProps = (state,props) => {
   //Need to understand how to git rid of dthe double dot names... mapConfig.mapconfig default_settings.default_settings
   //  needs to happen in reducers i think?
   let map_settings = state.mapConfig.mapconfig;
-  let charts = state.chartData;
+  // let charts = state.chartData;
   let default_settings = state.default_settings.default_settings;
   let leafletMap = state.leafletMap;
   let geography_levels = state.geography_levels.geography_levels;
   let layerInfo = state.mapConfig.layerinfo;
   return {
-    charts,
+    // charts,
     geography_levels,
     map_settings,
     default_settings,
