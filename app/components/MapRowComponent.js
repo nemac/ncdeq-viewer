@@ -3,6 +3,7 @@ var React = require('react');
 var MapWrapper = require('./MapWrapper');
 var ProjectMapWrapper = require('./ProjectMapWrapper');
 import MapLayerToggleContainer from '../containers/MapLayerToggleContainer';
+import ChartRowContainer from '../containers/ChartRowContainer';
 
 var PropTypes = React.PropTypes;
 
@@ -12,10 +13,15 @@ var MapRowComponent = React.createClass({
     return (
       <div className="ui stackable internally celled grid">
         <div className="stretched row" >
+          <div className="three wide column">
+            <div className="row">
+                <ChartRowContainer />
+            </div>
+          </div>
 
           <MapWrapper />
 
-          <div className="four wide column">
+          <div className="two wide column">
 
             <div className="ui internally celled grid">
               <div className="row">
