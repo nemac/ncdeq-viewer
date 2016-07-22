@@ -315,11 +315,7 @@ export function handleSearchChange(comp,e){
         var lat = place.geometry.location.lat();
         var lng = place.geometry.location.lng();
 
-        //set max zoom for panning to user searched point
-        //  MAX_SEARCH_ZOOM is imported from constants/appConstants to define the max zoom leavel
-        //  when a user successfully searches and finds a locations
-        var currentZoom = state.mapConfig.mapconfig.zoom > MAX_SEARCH_ZOOM ? state.mapConfig.mapconfig.zoom : MAX_SEARCH_ZOOM
-
+        //retreive the layerinfo object (huc12) at the google api places lat long
         AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID)
           .then(function test(response){
 
@@ -334,7 +330,7 @@ export function handleSearchChange(comp,e){
           //get redux state
           const latitude = state.mapConfig.mapconfig.latitude;
           const longitude = state.mapConfig.mapconfig.longitude;
-          const zoom =  currentZoom;
+          const zoom =   state.mapConfig.mapconfig.zoom;
           const minZoom = state.mapConfig.mapconfig.minZoom;
           const maxZoom =  state.mapConfig.mapconfig.maxZoom;
           const maxBounds = state.mapConfig.mapconfig.maxBounds;

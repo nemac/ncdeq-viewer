@@ -17,7 +17,10 @@ var PropTypes = React.PropTypes;
 var TempLayer;
 
 var MapContainer = React.createClass({
-  add_GeoJSON: function(features,leafletMap){
+  add_GeoJSON: function(features){
+
+    //get the leaflet Map object
+    const leafletMap = this.props.leafletMap.leafletMap;
 
     //check if the layer has been added yes it is global varriable :)
     const isLayerVis = leafletMap.hasLayer(TempLayer);
@@ -37,9 +40,25 @@ var MapContainer = React.createClass({
     //pan and zoom to bounds of layers bounds
     leafletMap.fitBounds(TempLayer.getBounds());
 
+    //when geojson is added on top of map.  it also needs a map click handler enabled.
+    this.add_GeoJSON_ClickEvent(TempLayer);
+
     //return the layer
     return TempLayer
 
+  },
+  add_GeoJSON_ClickEvent(layer){
+    //add a click event to the new layer so the new layer does not steal the state...
+    //  w/out this when a user clicked on geojson like a huc 6 or huc 8 (riverbasin or Cataloging unit)
+    //  nothing would happen.
+
+    //when geojson is added on top of map.  it also needs a map click handler enabled.
+    if(layer){
+      const mapClickHandler = this.handleMapClick
+      layer.on('click', function(e,mapClickHandler) {
+        mapClickHandler.bind(null,this)
+      }.bind(this));
+    }
   },
   componentDidUpdate: function(prevProps, prevState) {
 
@@ -69,7 +88,11 @@ var MapContainer = React.createClass({
 
         //in initial state there will not be an objet we still need to zoom and get the data...
         if(CurrentFeatures && !LastFeatures){
-          console.log('one: ' + CurrentFeatures[0].properties.ID)
+          //add geojson
+          this.add_GeoJSON(CurrentFeatures);
+
+          //update menus
+          this.updateFilters(CurrentFeatures[0].properties.VALUE);
         }
 
         //when there are both a last feaures and current feautes JSON object
@@ -78,45 +101,14 @@ var MapContainer = React.createClass({
           //when the last features JSON and Current Features JSON do not match
           //  it is a new feature.  so we should select and zoom
           if(CurrentFeatures[0].properties.ID != LastFeatures[0].properties.ID){
-            // console.log('Two: ' + CurrentFeatures[0].properties.ID)
-            // console.log('Two: ' + LastFeatures[0].properties.ID)
 
-            //get features from user location
-            //const features = this.props.layerInfo.features
+            //add geojson
+            this.add_GeoJSON(CurrentFeatures);
 
-            //get the leaflet Map object
-            const leafletMap = this.props.leafletMap.leafletMap;
-
-            //add geojson and retrieve the new geojson leaflet layer
-            const layer = this.add_GeoJSON(CurrentFeatures,leafletMap);
-
-            //add a click event to the new layer so the new layer does not steal the state...
-            //  w/out this when a user clicked on geojson like a huc 6 or huc 8 (riverbasin or Cataloging unit)
-            //  nothing would happen.
-            const mapClickHandler = this.handleMapClick
-
-            //when geojson is added on top of map.  it also needs a map click handler enabled.
-            if(layer){
-              layer.on('click', function(e,mapClickHandler) {
-                mapClickHandler.bind(null,this)
-              }.bind(this));
-            }
-            // //get the current active geography level
-            // const level = this.getLevel();
-            //
-            // // get map object from redux store
-            // const leafletMap = this.props.leafletMap.leafletMap;
-            //
-            // //call to zoom to geojson (from helper library)
-            // const layer = zoomToGeoJson(features,leafletMap,level);
-            //
+            //update menus
             this.updateFilters(CurrentFeatures[0].properties.VALUE);
-
-
-
           }
         }
-
       }
     }
 
@@ -219,22 +211,22 @@ var MapContainer = React.createClass({
     var map = this.refs.map.leafletElement;
     this.props.set_LeafletMap(map)
 
-    // if(this.props.layerInfo){
-    //   const features = this.props.layerInfo.features
-    //   //make sure objects are defined.
-    //   //  there are times when these are not defined
-    //   if (features){
-    //     if (features[0]){
-    //
-    //       //get the current featires ID
-    //       const value = features[0].properties.ID;
-    //
-    //       //update all selectors menus to match map selection or google search
-    //       this.updateFilters(value);
-    //     }
-    //
-    //   }
-    // }
+    if(this.props.layerInfo){
+      const features = this.props.layerInfo.features
+      //make sure objects are defined.
+      //  there are times when these are not defined
+      if (features){
+        if (features[0]){
+
+          //get the current featires ID
+          const value = features[0].properties.ID;
+
+          //update all selectors menus to match map selection or google search
+          this.updateFilters(value);
+        }
+
+      }
+    }
   },
   handleMapClick: function(e,self){
 
