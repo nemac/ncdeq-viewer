@@ -10,14 +10,6 @@ import {
   START_ZOOM, } from '../constants/appConstants'
 
 var MenuComponent = React.createClass({
-  // componentDidUpdate: function(prevProps, prevState) {
-  //   console.log(prevProps)
-  //   if(prevProps.layerInfo){
-  //     //if(prevProps.layerInfo.features){
-  //       console.log('menus updated layerInfo')
-  //     //}
-  //   }
-  // },
   handleMapFillClick: function(e){
     this.props.set_mapToPoint(START_LATITUDE,START_LONGITUDE,START_ZOOM,e);
   },
@@ -169,6 +161,8 @@ var MenuComponent = React.createClass({
       //get the attributes of the huc12 layer on a user click
       this.props.get_LayerInfo_ByValue(e.target.value, feature_id);
 
+      //$('#search-select-'+currentLevel.replace(' ','_')).dropdown('set text',e.target.value);
+      $('#search-select-'+currentLevel.replace(' ','_')).dropdown('set selected',e.target.value);
       // console.log('menu change start')
       // console.log(level)
       // console.log(feature_id)

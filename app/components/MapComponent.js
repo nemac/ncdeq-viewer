@@ -18,48 +18,97 @@ let  MAP_CLICK = false;
 
 var MapContainer = React.createClass({
   componentDidUpdate: function(prevProps, prevState) {
+    if (prevProps){
+      if(this.props.layerInfo){
+        let LastFeatures;
+        let CurrentFeatures = this.props.layerInfo.features;
+        if(prevProps.layerInfo){
+          LastFeatures = prevProps.layerInfo.features;
+        }
 
-    if(this.props.layerInfo){
+        let CurrentFeaturesStr = JSON.stringify(CurrentFeatures)
+        let LastLayerStr = ''
 
-      //get features from user location
-      const features = this.props.layerInfo.features
+        if(LastLayerStr){
+          LastLayerStr = JSON.stringify(LastFeatures)
+        }
 
-      const level = this.getLevel();
+        if(CurrentFeatures && !LastFeatures){
+          console.log('one: ' + CurrentFeatures[0].properties.ID)
+        }
+        if(LastFeatures && CurrentFeatures){
+          if(CurrentFeatures[0].properties.ID != LastFeatures[0].properties.ID){
+            // console.log('Two: ' + CurrentFeatures[0].properties.ID)
+            // console.log('Two: ' + LastFeatures[0].properties.ID)
+
+            //get features from user location
+            const features = this.props.layerInfo.features
+
+            const level = this.getLevel();
+
+            // get map object from redux store
+            const leafletMap = this.props.leafletMap.leafletMap;
+
+            //call to zoom to geojson (from helper library)
+            const layer = zoomToGeoJson(features,leafletMap,level);
+
+            this.updateFilters(CurrentFeatures[0].properties.VALUE);
+
+            //when geojson is added on top of map.  it also needs a map click handler enabled.
+            if(layer){
+              const mapClickHandler = this.handleMapClick
+              layer.on('click', function(e,mapClickHandler) {
+                mapClickHandler.bind(null,this)
+              }.bind(this));
+            }
+
+          }
+        }
+
+        // console.log(CurrentFeatures[0].properties.ID)
+        // console.log(LastFeatures[0].properties.ID)
+
+        // if(!LastFeatures){
+        //   console.log(CurrentFeatures)
+        // }
+        //if(LastFeatures){
+          // if(LastLayerStr === CurrentFeaturesStr){
+          //   console.log(LastLayerStr)
+          //   console.log(CurrentFeaturesStr)
+          //
+          // }
+        // }
 
 
-
-      // if (actualValue === expextedValue){
-      //   console.log(actualValue)
-      //   console.log(expextedValue)
-      //   this.props.get_ChartData(e.target.value,currentLevel)
-      //   $('#search-select-'+level.replace(' ','_')).dropdown('set selected',actualValue);
-      // }
-      // get map object from redux store
-      const leafletMap = this.props.leafletMap.leafletMap;
-
-      //call to zoom to geojson (from helper library)
-      const layer = zoomToGeoJson(features,leafletMap,level);
-      // const HTMLvalue = $('#search-select-'+level.replace(' ','_')).dropdown('get value');
-      // const actualValue = (features[0].properties.VALUE);
-      // const expextedValue = (HTMLvalue[0]);
-      // //          $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
-      // if(expextedValue.length === 0 && actualValue.length > 0 ){
-      //   console.log('expected: ' + expextedValue)
-      //   console.log('actualValue: ' + actualValue)
-      //
-      //    //this.props.get_ChartData(actualValue,level)
-      //    $('#search-select-'+level.replace(' ','_')).dropdown('set selected',actualValue);
-      // }
-
-      //when geojson is added on top of map.  it also needs a map click handler enabled.
-      if(layer){
-        const mapClickHandler = this.handleMapClick
-        layer.on('click', function(e,mapClickHandler) {
-          mapClickHandler.bind(null,this)
-        }.bind(this));
       }
     }
+
   },
+  // componentDidUpdate: function(prevProps, prevState) {
+  //
+  //   if(this.props.layerInfo){
+  //
+  //     //get features from user location
+  //     const features = this.props.layerInfo.features
+  //
+  //     const level = this.getLevel();
+  //
+  //     // get map object from redux store
+  //     const leafletMap = this.props.leafletMap.leafletMap;
+  //
+  //     //call to zoom to geojson (from helper library)
+  //     const layer = zoomToGeoJson(features,leafletMap,level);
+  //     //console.log(layer)
+  //     //layer.redraw()
+  //     //when geojson is added on top of map.  it also needs a map click handler enabled.
+  //     if(layer){
+  //       const mapClickHandler = this.handleMapClick
+  //       layer.on('click', function(e,mapClickHandler) {
+  //         mapClickHandler.bind(null,this)
+  //       }.bind(this));
+  //     }
+  //   }
+  // },
   HandleMapEnd: function(mapComp,e){
 
     //on any map move get the current level and filtered id
@@ -158,22 +207,22 @@ var MapContainer = React.createClass({
     var map = this.refs.map.leafletElement;
     this.props.set_LeafletMap(map)
 
-    if(this.props.layerInfo){
-      const features = this.props.layerInfo.features
-      //make sure objects are defined.
-      //  there are times when these are not defined
-      if (features){
-        if (features[0]){
-
-          //get the current featires ID
-          const value = features[0].properties.ID;
-
-          //update all selectors menus to match map selection or google search
-          this.updateFilters(value);
-        }
-
-      }
-    }
+    // if(this.props.layerInfo){
+    //   const features = this.props.layerInfo.features
+    //   //make sure objects are defined.
+    //   //  there are times when these are not defined
+    //   if (features){
+    //     if (features[0]){
+    //
+    //       //get the current featires ID
+    //       const value = features[0].properties.ID;
+    //
+    //       //update all selectors menus to match map selection or google search
+    //       this.updateFilters(value);
+    //     }
+    //
+    //   }
+    // }
   },
   handleMapClick: function(e,self){
 
@@ -185,11 +234,10 @@ var MapContainer = React.createClass({
     var L = this.refs.map.leafletElement
 
     //check if charts are visible.
-    const isVisible = this.props.charts.chart_visibility;
+    //const isVisible = this.props.charts.chart_visibility;
 
     //update map height
     this.props.update_MapHeight();
-
 
     //get the attributes of the huc12 layer on a user click
     this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);

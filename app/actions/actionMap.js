@@ -148,7 +148,7 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
 
         //create map config object
         const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
-        //console.log(mapConfig)
+
         dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
     })
@@ -177,7 +177,7 @@ export function set_MapLayers(mapLayers){
     const maxZoom =  state.mapConfig.mapconfig.maxZoom;
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = CurrentLayers
-    const layerInfo = state.mapConfig.mapconfig.layerinfo
+    const layerInfo = state.mapConfig.layerinfo
 
     //create map config object
     const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
@@ -199,7 +199,7 @@ export function set_mapToPoint(lat,lng,z,e){
     const maxZoom =  state.mapConfig.mapconfig.maxZoom;
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = state.mapConfig.mapconfig.layers;
-    const layerInfo = state.mapConfig.mapconfig.layerinfo
+    const layerInfo = state.mapConfig.layerinfo
 
     //create map config object
     const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
@@ -226,7 +226,7 @@ export function HandleMapEnd(mapComp,e){
     const maxZoom =  state.mapConfig.mapconfig.maxZoom;
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = state.mapConfig.mapconfig.layers;
-    const layerInfo = state.mapConfig.mapconfig.layerinfo;
+    const layerInfo = state.mapConfig.layerinfo;
 
     //create map config object
     const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
