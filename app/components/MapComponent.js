@@ -88,25 +88,46 @@ var MapContainer = React.createClass({
 
         //in initial state there will not be an objet we still need to zoom and get the data...
         if(CurrentFeatures && !LastFeatures){
-          //add geojson
-          this.add_GeoJSON(CurrentFeatures);
 
-          //update menus
-          this.updateFilters(CurrentFeatures[0].properties.VALUE);
-        }
-
-        //when there are both a last feaures and current feautes JSON object
-        if(LastFeatures && CurrentFeatures){
-
-          //when the last features JSON and Current Features JSON do not match
-          //  it is a new feature.  so we should select and zoom
-          if(CurrentFeatures[0].properties.ID != LastFeatures[0].properties.ID){
+          //make sure there is a feature in the array.  when searching outside of NorthCarolina
+          //   this may return a blank features object.
+          if(CurrentFeatures[0]){
 
             //add geojson
             this.add_GeoJSON(CurrentFeatures);
 
             //update menus
             this.updateFilters(CurrentFeatures[0].properties.VALUE);
+
+          }
+        }
+
+        //when there are both a last feaures and current feautes JSON object
+        if(LastFeatures && CurrentFeatures){
+
+          //make sure there is a feature in the array.  when searching outside of NorthCarolina
+          //   this may return a blank features object.
+          if(CurrentFeatures[0]){
+
+              if(LastFeatures.length === 0){
+                //add geojson
+                this.add_GeoJSON(CurrentFeatures);
+
+                //update menus
+                this.updateFilters(CurrentFeatures[0].properties.VALUE);
+              } else {
+
+              //when the last features JSON and Current Features JSON do not match
+              //  it is a new feature.  so we should select and zoom
+              if(CurrentFeatures[0].properties.ID != LastFeatures[0].properties.ID){
+
+                //add geojson
+                this.add_GeoJSON(CurrentFeatures);
+
+                //update menus
+                this.updateFilters(CurrentFeatures[0].properties.VALUE);
+              }
+           }
           }
         }
       }

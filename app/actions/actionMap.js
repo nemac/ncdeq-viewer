@@ -321,6 +321,8 @@ export function handleSearchChange(comp,e){
 
             //check repsonses for errors
             const theLayerInfo = CheckReponse(response,'AGO_API_ERROR');
+
+
             //get redux state
             const state = getState()
 
