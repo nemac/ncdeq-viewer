@@ -279,20 +279,20 @@ var MapContainer = React.createClass({
           onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
       <ESRITileMapLayer
-       url="http://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc12/MapServer"
+       url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc12/MapServer"
        setMapLayers={this.props.set_MapLayers}
        name="HUC 12"
        min_zoom="9"
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
       <ESRITileMapLayer
-       url="http://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc8/MapServer"
+       url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc8/MapServer"
        setMapLayers={this.props.set_MapLayers}
        name="Cataloging Units"
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
       <ESRITileMapLayer
-       url="http://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc6/MapServer"
+       url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc6/MapServer"
        setMapLayers={this.props.set_MapLayers}
        tileOpacity="0.5"
        name="River Basins"
