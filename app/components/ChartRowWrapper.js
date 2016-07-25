@@ -30,7 +30,8 @@ var ChartRowWrapper = React.createClass({
       id_data = true;
     }
 
-    //console.log(id_props)
+    //build chart data component and when there is no data returned
+    //  Tell user no chart data Available
     let chart;
     if (id_data){
       chart = <Treemap {...id_props}/>
@@ -45,7 +46,6 @@ var ChartRowWrapper = React.createClass({
         <div className="ui grey tertiary inverted clearing segment">
           <h4 className="ui left floated header">
             {this.props.title}
-            {this.props.id_data.length}
           </h4>
           <h4 className="ui right floated header">
             <i className="dropdown icon"></i>

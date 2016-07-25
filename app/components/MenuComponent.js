@@ -252,7 +252,6 @@ var MenuComponent = React.createClass({
               <option value="">Choose a HUC12</option>
             </select>
           </a>
-
         <div className="header item" >
           <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>{!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }</button>
         </div>
