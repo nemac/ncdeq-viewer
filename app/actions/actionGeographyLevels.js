@@ -100,7 +100,7 @@ function update_activeGeographyFilter( state, active_level, filter_value ){
 
        //filter the menuLists for the geography_level by the filter value
        menuList.map(listItem => {
-         const checkedValue = listItem.id.toString().substring(0, filter.length)
+         const checkedValue = listItem.ID.toString().substring(0, filter.length)
 
          //get and trim the filter and value to limit
          const fv = filter.toString().trim();

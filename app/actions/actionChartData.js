@@ -106,6 +106,7 @@ export function get_ChartData(id,level){
     return (dispatch,getState) => {
       axios.all([AGO_ChartData_byID(id), AGO_AllChartData_byID(id,level)])
       .then(axios.spread(function (chartbyid, chartbylevel) {
+
         const state = getState()
 
         let visibility = false;

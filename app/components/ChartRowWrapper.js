@@ -30,7 +30,16 @@ var ChartRowWrapper = React.createClass({
       id_data = true;
     }
 
-    //console.log(id_props)
+    //build chart data component and when there is no data returned
+    //  Tell user no chart data Available
+    let chart;
+    if (id_data){
+      chart = <Treemap {...id_props}/>
+    } else if (level_data) {
+      chart = <Treemap {...level_props}/>
+    } else {
+      chart = "No Chart Data Available"
+    }
 
     return (
       <div className="ui segments">
@@ -43,11 +52,10 @@ var ChartRowWrapper = React.createClass({
           </h4>
         </div>
         <div className="ui basic segment">
-          {id_data ? <Treemap {...id_props}/> : ""}
-          {level_data ? <Treemap {...level_props}/> : ""}
+          {chart}
           <br />
           <br />
-          <p>Navigate to a Cataloging Unit to view chart data</p>
+          <p>Navigate to a view chart data</p>
           <div refs={this.props.title} >
           </div>
         </div>

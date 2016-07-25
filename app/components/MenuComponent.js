@@ -148,7 +148,7 @@ var MenuComponent = React.createClass({
 
     this.updateFilters(e.target.value)
 
-    //only get chart data and feature data when expectedLength and the value lengh.
+    //only get chart data and feature data when expectedLength and the value lenght match.
     //  not sure why values from other geography levels are making it here.
     if (Number(valueLength) === Number(expectedLength)){
       //update the chartdata redux store
@@ -252,7 +252,6 @@ var MenuComponent = React.createClass({
               <option value="">Choose a HUC12</option>
             </select>
           </a>
-
         <div className="header item" >
           <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>{!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }</button>
         </div>

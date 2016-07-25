@@ -24,7 +24,7 @@ const MENU_OUT_FIELDS = 'id,NAME,VALUE,MAIN,SUB';
 export const AGO_URL = 'https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services'
 
 //URL or Getting RiverBasins
-export const AGO_RIVER_BASINS = '/RDRBP/FeatureServer/' + BASIN_FEATUREID +
+export const AGO_RIVER_BASINS = '/RDRBP/FeatureServer/' + BASIN_MAP_FEATUREID +
                                '/query?where=id%3C%3E%27%27' +
                                '&objectIds='+
                                '&time='+
@@ -53,7 +53,7 @@ export const AGO_RIVER_BASINS = '/RDRBP/FeatureServer/' + BASIN_FEATUREID +
                                '&f=pgeojson'+
                                '&token='
 
-export const AGO_CATALOGING_UNITS = '/RDRBP/FeatureServer/' + CATALOGING_FEATUREID +
+export const AGO_CATALOGING_UNITS = '/RDRBP/FeatureServer/' + CATALOGING_MAP_FEATUREID +
                               '/query?where=id%3C%3E%27%27'+
                               '&objectIds='+
                               '&time='+
@@ -85,7 +85,7 @@ export const AGO_CATALOGING_UNITS = '/RDRBP/FeatureServer/' + CATALOGING_FEATURE
                               '&f=pgeojson'+
                               '&token='
 
-export const AGO_HUCS = '/RDRBP/FeatureServer/' + HUC12_FEATUREID +
+export const AGO_HUCS = '/RDRBP/FeatureServer/' + HUC12_MAP_FEATUREID +
                               '/query?where=id%3C%3E%27%27'+
                               '&objectIds='+
                               '&time='+
