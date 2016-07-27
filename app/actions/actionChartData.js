@@ -30,6 +30,7 @@ const CHART_DATA_OUT_FIELDS_LIST = [
 const CHART_DATA_OUT_FIELDS = CHART_DATA_OUT_FIELDS_LIST.join(ENCODED_COMMAS);
 const CHART_DATA_ORDER_BY_FIELDS = 'chart_level' + ENCODED_COMMAS + 'chart_matchid';
 
+const CHART_TYPE = 'BASELINE';
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
@@ -57,7 +58,7 @@ function AGO_AllChartData_byID(hucid,current_geography_level){
 
    //build the query to arcgis online api for getting the raw chart data
    const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
-                   '?where=ID+like+%27' + id + '%25%27+and+geography_level%3D'+ next_level +
+                   '?where=ID+like+%27' + id + '%25%27+and+geography_level%3D'+ next_level + '+and+chart_type%3D%27' + CHART_TYPE + '%27' +
                    '&objectIds=' +
                    '&time=' +
                    '&resultType=none' +
@@ -71,7 +72,6 @@ function AGO_AllChartData_byID(hucid,current_geography_level){
                    '&resultOffset=' +
                    '&resultRecordCount=' +
                    '&f=pgeojson&token=';
-
   //send the ajax request via axios
   return axios.get(query_URL);
 
@@ -81,7 +81,7 @@ function AGO_AllChartData_byID(hucid,current_geography_level){
 //   requires the id to search
 function AGO_ChartData_byID(id){
    const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
-                     '?where=id%3D%27' + id + '%27' +
+                     '?where=id%3D%27' + id + '%27' + ' +and+chart_type%3D%27' + CHART_TYPE + '%27' +
                      '&objectIds=' +
                      '&time=' +
                      '&resultType=none' +
