@@ -123,7 +123,7 @@ export function get_ChartData(id,level){
         // if(id){
         //   //check for errors in responses
         //   chartData_Level = CheckReponse(chartbylevel,'AGO_API_ERROR');
-        //   chartData_ID = CheckReponse(chartbyid,'AGO_API_ERROR');
+        //   ≈ = CheckReponse(chartbyid,'AGO_API_ERROR');
         // }
         //
         let chart_all_base = [];
@@ -143,10 +143,10 @@ export function get_ChartData(id,level){
             return key.properties.chart_type === 'UPLIFT';
           })
 
-          // chart_id_base = chart_data.features.filter( key =>{
-          //   return key.properties.ID === id && key.properties.chart_type === 'BASELINE';
-          // })
-          //
+          chart_id_base = chart_data.features.filter( key =>{
+            return key.properties.ID === id && key.properties.chart_type === 'BASELINE';
+          })
+
           // chart_id_upflift = chart_data.features.filter( key =>{
           //   return key.properties.ID === id && key.properties.chart_type === 'UPLIFT';
           // })
@@ -160,23 +160,14 @@ export function get_ChartData(id,level){
                 {chart_type: 'baseline',
                   chart_features: chart_all_base,
                   chart_limit: id,
-                  // chartdata: [
-                  //   {chart:'all' , features: chart_all_base},
-                  //   {chart:'id', features: chart_id_base},
-                  // ]
                  },
                 {chart_type: 'uplift',
                  chart_features: chart_all_upflift,
                  chart_limit: id,
-                  // chartdata: [
-                  //   {chart:'all' , features: chart_all_upflift},
-                  //   {chart:'id', features: chart_id_upflift},
-                  // ]
                 },
               ];
 
         //send the chart data on
-        //dispatch(ChartData('GET_CHART_DATA', chartData_ID, chartData_Level, visibility))
         dispatch(
           ChartData('GET_CHART_DATA', chartData_ID_fc, chartData_Level_fc, visibility, types)
         )
