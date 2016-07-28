@@ -106,43 +106,40 @@ function AGO_ChartData_byID(id){
 export function get_ChartData(id,level){
     return (dispatch,getState) => {
       AGO_AllChartData_byID(id,level)
-      //.then(axios.spread(function (chartbyid, chartbylevel) {
       .then(function test(response){
         const state = getState()
 
         let visibility = false;
 
+        //get visibility state of charts
         visibility = ( state.chartData.chart_visibility === undefined ? false : state.chartData.chart_visibility);
 
+        //instatiate variables
         let chart_data = {};
-        // let chartData_Level = {};
-        // let chartData_ID = {};
-
-        // //only check responses if limiting data (ID ir LEVEL) was passed id
-        // //   this would cause an error but we still want data to flow in for initializing the charts state object.
-        // if(id){
-        //   //check for errors in responses
-        //   chartData_Level = CheckReponse(chartbylevel,'AGO_API_ERROR');
-        //   ≈ = CheckReponse(chartbyid,'AGO_API_ERROR');
-        // }
-        //
         let chart_all_base = [];
         let chart_id_base = [];
-
-        chart_data = CheckReponse(response,'AGO_API_ERROR');
         let chart_all_upflift = [];
         let chart_id_upflift = [];
 
+        //check response and get response data
+        chart_data = CheckReponse(response,'AGO_API_ERROR');
+
+
+        //if the chart_data_features is returned.
+        //  filter the data for the different parts
         if(chart_data.features){
 
+          //get all the chart features objects for baseline
           chart_all_base = chart_data.features.filter( key =>{
             return key.properties.chart_type === 'BASELINE';
           })
 
+          //get all the chart features objects for uplift
           chart_all_upflift = chart_data.features.filter( key =>{
             return key.properties.chart_type === 'UPLIFT';
           })
 
+          //this is for legacy method where we did this in action creator. do this in the component in the new version
           chart_id_base = chart_data.features.filter( key =>{
             return key.properties.ID === id && key.properties.chart_type === 'BASELINE';
           })
@@ -152,10 +149,12 @@ export function get_ChartData(id,level){
           // })
         }
 
-
+        //user TURF.JS to create geoJSON feature collections
         var chartData_ID_fc = turf_FC(chart_id_base);
         var chartData_Level_fc = turf_FC(chart_all_base);
 
+        //create a array objects for the chart types: baseline and uplift
+        //  this chart limit is passed so we can limit the charts for a spefic huc N level 
         const types = [
                 {chart_type: 'baseline',
                   chart_features: chart_all_base,
