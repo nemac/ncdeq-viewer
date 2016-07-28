@@ -1,4 +1,5 @@
 var axios = require('axios');
+var turf_FC = require('turf-featurecollection');
 
 //import helper functions
 //  to check ajax (AXIOS) responses - error handling
@@ -58,7 +59,7 @@ function AGO_AllChartData_byID(hucid,current_geography_level){
 
    //build the query to arcgis online api for getting the raw chart data
    const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
-                   '?where=ID+like+%27' + id + '%25%27+and+geography_level%3D'+ next_level + '+and+chart_type%3D%27' + CHART_TYPE + '%27' +
+                   '?where=ID+like+%27' + id + '%25%27+and+geography_level%3D'+ next_level + //'+and+chart_type%3D%27' + CHART_TYPE + '%27' +
                    '&objectIds=' +
                    '&time=' +
                    '&resultType=none' +
@@ -81,7 +82,7 @@ function AGO_AllChartData_byID(hucid,current_geography_level){
 //   requires the id to search
 function AGO_ChartData_byID(id){
    const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
-                     '?where=id%3D%27' + id + '%27' + ' +and+chart_type%3D%27' + CHART_TYPE + '%27' +
+                     '?where=id%3D%27' + id + '%27' + //' +and+chart_type%3D%27' + CHART_TYPE + '%27' +
                      '&objectIds=' +
                      '&time=' +
                      '&resultType=none' +
@@ -104,29 +105,82 @@ function AGO_ChartData_byID(id){
 //
 export function get_ChartData(id,level){
     return (dispatch,getState) => {
-      axios.all([AGO_ChartData_byID(id), AGO_AllChartData_byID(id,level)])
-      .then(axios.spread(function (chartbyid, chartbylevel) {
-
+      AGO_AllChartData_byID(id,level)
+      //.then(axios.spread(function (chartbyid, chartbylevel) {
+      .then(function test(response){
         const state = getState()
 
         let visibility = false;
 
         visibility = ( state.chartData.chart_visibility === undefined ? false : state.chartData.chart_visibility);
 
-        let chartData_Level = {};
-        let chartData_ID = {};
+        let chart_data = {};
+        // let chartData_Level = {};
+        // let chartData_ID = {};
 
-        //only check responses if limiting data (ID ir LEVEL) was passed id
-        //   this would cause an error but we still want data to flow in for initializing the charts state object.
-        if(id){
-          //check for errors in responses
-          chartData_Level = CheckReponse(chartbylevel,'AGO_API_ERROR');
-          chartData_ID = CheckReponse(chartbyid,'AGO_API_ERROR');
+        // //only check responses if limiting data (ID ir LEVEL) was passed id
+        // //   this would cause an error but we still want data to flow in for initializing the charts state object.
+        // if(id){
+        //   //check for errors in responses
+        //   chartData_Level = CheckReponse(chartbylevel,'AGO_API_ERROR');
+        //   chartData_ID = CheckReponse(chartbyid,'AGO_API_ERROR');
+        // }
+        //
+        let chart_all_base = [];
+        let chart_id_base = [];
+
+        chart_data = CheckReponse(response,'AGO_API_ERROR');
+        let chart_all_upflift = [];
+        let chart_id_upflift = [];
+
+        if(chart_data.features){
+
+          chart_all_base = chart_data.features.filter( key =>{
+            return key.properties.chart_type === 'BASELINE';
+          })
+
+          chart_all_upflift = chart_data.features.filter( key =>{
+            return key.properties.chart_type === 'UPLIFT';
+          })
+
+          // chart_id_base = chart_data.features.filter( key =>{
+          //   return key.properties.ID === id && key.properties.chart_type === 'BASELINE';
+          // })
+          //
+          // chart_id_upflift = chart_data.features.filter( key =>{
+          //   return key.properties.ID === id && key.properties.chart_type === 'UPLIFT';
+          // })
         }
-        //send the chart data on
-        dispatch(ChartData('GET_CHART_DATA', chartData_ID, chartData_Level, visibility))
 
-      })
+
+        var chartData_ID_fc = turf_FC(chart_id_base);
+        var chartData_Level_fc = turf_FC(chart_all_base);
+
+        const types = [
+                {chart_type: 'baseline',
+                  chart_features: chart_all_base,
+                  chart_limit: id,
+                  // chartdata: [
+                  //   {chart:'all' , features: chart_all_base},
+                  //   {chart:'id', features: chart_id_base},
+                  // ]
+                 },
+                {chart_type: 'uplift',
+                 chart_features: chart_all_upflift,
+                 chart_limit: id,
+                  // chartdata: [
+                  //   {chart:'all' , features: chart_all_upflift},
+                  //   {chart:'id', features: chart_id_upflift},
+                  // ]
+                },
+              ];
+
+        //send the chart data on
+        //dispatch(ChartData('GET_CHART_DATA', chartData_ID, chartData_Level, visibility))
+        dispatch(
+          ChartData('GET_CHART_DATA', chartData_ID_fc, chartData_Level_fc, visibility, types)
+        )
+      }//)
     )
     .catch(error => { console.log('request failed', error); });
   }
@@ -143,18 +197,32 @@ export function update_ChartVisiblity (visibility){
       //change visibility
       let isVisible = (state.chartData.chart_visibility ? false : true);
 
+      const types = ( state.chartData.chart_data.types ? state.chartData.chart_data.types : []);
+
       //send visibility setting on
-      dispatch(ChartData('SET_CHART_VISIBILITY',chartData_ID,chartData_Level,isVisible))
+      dispatch(ChartData('SET_CHART_VISIBILITY', chartData_ID, chartData_Level, isVisible, types))
 
 
     }
 }
+
+
 //function to handle sending to reducer and store
-function ChartData(type,id_json,level_json,visibility) {
+function ChartData(type,id_json, level_json, visibility, types) {
+  // return {
+  //   type: type,
+  //   chart_data: {id_json,level_json},
+  //   chart_visibility: visibility,
+  //   receivedAt: Date.now()
+  // }
   return {
-    type: type,
-    chart_data: {id_json,level_json},
-    chart_visibility: visibility,
-    receivedAt: Date.now()
-  }
+   type: type,
+   chart_data: {
+     id_json,
+     level_json,
+     chart_types: types,
+   },
+   chart_visibility: visibility,
+   receivedAt: Date.now()
+ }
 }
