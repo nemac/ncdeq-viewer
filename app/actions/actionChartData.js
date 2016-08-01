@@ -154,7 +154,7 @@ export function get_ChartData(id,level){
         var chartData_Level_fc = turf_FC(chart_all_base);
 
         //create a array objects for the chart types: baseline and uplift
-        //  this chart limit is passed so we can limit the charts for a spefic huc N level 
+        //  this chart limit is passed so we can limit the charts for a spefic huc N level
         const types = [
                 {chart_type: 'baseline',
                   chart_features: chart_all_base,
@@ -187,10 +187,10 @@ export function update_ChartVisiblity (visibility){
       //change visibility
       let isVisible = (state.chartData.chart_visibility ? false : true);
 
-      const types = ( state.chartData.chart_data.types ? state.chartData.chart_data.types : []);
+      const types = ( state.chartData.chart_data.chart_types ? state.chartData.chart_data.chart_types : []);
 
       //send visibility setting on
-      dispatch(ChartData('SET_CHART_VISIBILITY', chartData_ID, chartData_Level, isVisible, types))
+      dispatch(ChartData('SET_CHART_VISIBILITY', chartData_ID, chartData_Level, isVisible, types ))
 
 
     }

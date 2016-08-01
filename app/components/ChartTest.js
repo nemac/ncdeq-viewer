@@ -41,6 +41,7 @@ var ChartTest = React.createClass({
             title="Bar Chart"
             xAxisLabel="Value"
             yAxisLabel="Label"
+            legend={true}
             />
         }
         </div>
