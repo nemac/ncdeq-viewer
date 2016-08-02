@@ -186,20 +186,39 @@ var ChartRow = React.createClass({
     // })
 
 
-    const chart_levels = [...new Set(baseline_data_limited.map(item => item.properties.chart_matchid))];
+    const allhucs = [...new Set(levelTop.map(item => item.properties.ID))];
+    allhucs.map(huc => {
+      console.log(huc)
 
-    var i = 0;
-    levelTop.map(level => {
-      var value = Number(level.properties.chart_value);
-
-      var name = level.properties.ID;
+      var name = huc;
       var o = new Object;
       o["name"] =  name;
-      o["value"] =  value;
+
+      const levelones = levelone.filter(item => {
+        return item.properties.ID === huc;
+      })
+
+      levelones.map(item => {
+        console.log(item.properties)
+        var value = Number(item.properties.chart_value);
+        o[item.properties.chart_description] =  value;
+      })
       rechart_bar.push(o);
-      i++
     })
-    // console.log(rechart_bar)
+
+
+      // var i = 0;
+      // levelTop.map(level => {
+      //   var value = Number(level.properties.chart_value);
+      //
+      //   var name = level.properties.ID;
+      //   var o = new Object;
+      //   o["name"] =  name;
+      //   o["value"] =  value;
+      //   rechart_bar.push(o);
+      //   i++
+      // })
+      // console.log(rechart_bar)
 
     const rechart_bar2 = [
       {name: "030201010904", pv: 0.900637814497369, uv: 1000},
@@ -350,12 +369,9 @@ var ChartRow = React.createClass({
             <h3 className="ui left floated  header">
               Charts
             </h3>
-            <div className="ui right floated compact grey inverted segment">
-              <div className="meduim basic ui button" onClick={this.chartToggle} >
+              <div className="small basic ui button" onClick={this.chartToggle} >
                 <i className="remove icon"></i>
               </div>
-          </div>
-        <div className="content"><p>Some descriptive text</p></div>
       </div>
 
       <Divider />

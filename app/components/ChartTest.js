@@ -17,6 +17,9 @@ var ChartTest = React.createClass({
       title:'Title'
     };
   },
+  handleClick(data, index) {
+    console.log(data)
+  },
   render: function() {
 
     return (
@@ -55,7 +58,7 @@ var ChartTest = React.createClass({
             return idx
             }
           }
-
+ffff99
           />
 
           */}
@@ -67,10 +70,24 @@ var ChartTest = React.createClass({
             <CartesianGrid strokeDasharray="3 3"/>
             <Tooltip/>
             <Legend />
-            <Bar dataKey="value" stackId="a" fill="#8884d8" >
+            <Bar dataKey="Total Water Quality Baseline" stackId="a" fill="#fdc086"  onClick={this.handleClick} >
               {
                 this.props.BarChartData_D3.map((entry, index) => (
-                  <Cell cursor="pointer" fill={entry.name === this.props.baseline_filter ? '#82ca9d' : '#8884d8' } key={`cell-${index}`}/>
+                  <Cell ref={entry.name} cursor="pointer" strokeWidth={entry.name === this.props.baseline_filter ? 2 : 0 } stroke={entry.name === this.props.baseline_filter ? '#fc9636' : '#fdc086' } fill={entry.name === this.props.baseline_filter ? '#fc9636' : '#fdc086' } key={`cell-${index}`}/>
+                ))
+              }
+            </Bar>
+            <Bar dataKey="Total Hydrology Baseline" stackId="a" fill="#beaed4"  onClick={this.handleClick} >
+              {
+                this.props.BarChartData_D3.map((entry, index) => (
+                  <Cell ref={entry.name} cursor="pointer" strokeWidth={entry.name === this.props.baseline_filter ? 2 : 0 } stroke={entry.name === this.props.baseline_filter ? '#9479b9' : '#beaed4' } fill={entry.name === this.props.baseline_filter ? '#9479b9' : '#beaed4' } key={`cell-${index}`}/>
+                ))
+              }
+            </Bar>
+            <Bar dataKey="Total Habitat Baseline" stackId="a" fill="#7fc97f"  onClick={this.handleClick} >
+              {
+                this.props.BarChartData_D3.map((entry, index) => (
+                  <Cell ref={entry.name} cursor="pointer" strokeWidth={entry.name === this.props.baseline_filter ? 2 : 0 } stroke={entry.name === this.props.baseline_filter ? '#44a244' : '#7fc97f' } fill={entry.name === this.props.baseline_filter ? '#44a244' : '#7fc97f' } key={`cell-${index}`}/>
                 ))
               }
             </Bar>
