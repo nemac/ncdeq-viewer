@@ -108,28 +108,55 @@ var ChartRow = React.createClass({
       return chart_objects.properties.chart_matchid === 1 && chart_objects.properties.chart_id != 1
     })
 
-    console.log(levelone)
+    let levelTop =  baseline_data[0].chart_features.filter ( chart_objects => {
+      return chart_objects.properties.chart_id === 1;
+    })
+
+
+    // console.log(levelone)
     // let series = levelone.
 
     const series = [...new Set(levelone.map(item => item.properties.chart_id))];
 
+
+    // sort by value
+    let levelSort = levelTop.sort(function (a, b) {
+      if (a.properties.chart_value > b.properties.chart_value) {
+        return -1;
+      }
+      if (a.properties.chart_value < b.properties.chart_value) {
+        return 1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+
+    const sortedhucs = [...new Set(levelSort.map(item => item.properties.ID))];
+    // console.log(levelonesort);
+
+    //create series data fro stack bar
     series.map(level => {
-      console.log(level)
+      // console.log(level)
       let all_hucs_values = [];
 
       const cname_arry = this.getJSONElement_ById(baseline_data[0].chart_features,level);
       const x_name = cname_arry[0].properties.chart_description;
-      console.log(x_name);
+      // console.log(x_name);
+
+
+
 
       levelone.map(chart => {
+
         if (chart.properties.chart_id === level){
 
 
-          const cname_arry = this.getJSONElement_ById(baseline_data[0].chart_features,chart.properties.chart_matchid);
-          const x_name = cname_arry[0].properties.chart_description;
+          const cname_value_arry = this.getJSONElement_ById(baseline_data[0].chart_features,chart.properties.chart_matchid);
+          const x_value_name = cname_value_arry[0].properties.chart_description;
 
           // console.log(chart.properties.ID + ' (' + x_name + ')')
-          all_hucs_values.push({"x": chart.properties.ID + ' (' + x_name + ')', "y": Number(chart.properties.chart_value)})
+          // console.log(baseline_filter)
+          all_hucs_values.push({"x":  chart.properties.ID , "y": Number(chart.properties.chart_value) })
         }
       })
 
@@ -141,6 +168,49 @@ var ChartRow = React.createClass({
       all_hucs_bar.push({name: x_name , values: all_hucs_values})
 
     })
+    let rechart_bar = [];
+
+    // levelone.map(chart => {
+    //
+    //   let value = 0;
+    //   if (Number(chart.properties.chart_value)){
+    //     value =  Number(chart.properties.chart_value);
+    //   }
+    //
+    //   var o = new Object;
+    //   o["name"] =  chart.properties.ID;
+    //   o["pv"] =  value*1000;
+    //   o["uv"] = 1000;
+    //   rechart_bar.push(o);
+    //   // console.log(o)
+    // })
+
+
+    const chart_levels = [...new Set(baseline_data_limited.map(item => item.properties.chart_matchid))];
+
+    var i = 0;
+    levelTop.map(level => {
+      var value = Number(level.properties.chart_value);
+
+      var name = level.properties.ID;
+      var o = new Object;
+      o["name"] =  name;
+      o["value"] =  value;
+      rechart_bar.push(o);
+      i++
+    })
+    // console.log(rechart_bar)
+
+    const rechart_bar2 = [
+      {name: "030201010904", pv: 0.900637814497369, uv: 1000},
+      {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
+      {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
+      {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
+      {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
+      {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
+]
+
+// console.log(rechart_bar2)
 
     // levelone.map(level => {
     //   // console.log(level)
@@ -158,7 +228,7 @@ var ChartRow = React.createClass({
     //   // all_hucs_bar.push({name: level.properties.chart_description + '-' + level.properties.ID, values: all_hucs_values})
     //
     // })
-    console.log(all_hucs_bar)
+    // console.log(all_hucs_bar)
     //     let this_chart = baseline_data_limited.filter( chart_objects => {
     //       return chart_objects.properties.chart_level === level
     //     })
@@ -269,6 +339,7 @@ var ChartRow = React.createClass({
 
     })
 
+
     // console.log(BarChartData_D3)
     return (
 
@@ -291,9 +362,12 @@ var ChartRow = React.createClass({
 
       <div className="fourteen wide column">
         {/* <ChartRowWrapper key="HUCS" title="HUC's" id=""  level_data={level_json} id_data=""  /> */}
-        <ChartTest BarChartData_D3={all_hucs_bar} />
-      </div>
+        {/* <ChartTest BarChartData_D3={rechart_bar} /> */}
+        {/* <ChartTest BarChartData_D3={all_hucs_bar} /> */}
 
+        <ChartTest BarChartData_D3={rechart_bar} baseline_filter={baseline_filter} />
+
+      </div>
       <Divider columns="fourteen"/>
 
       <div className="fourteen wide column">
@@ -304,7 +378,7 @@ var ChartRow = React.createClass({
 
       <div className="fourteen wide column">
         {/* <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  level_data="" id_data={id_json} /> */}
-        <ChartTest BarChartData_D3={BarChartData_D3} />
+        {/* <ChartTest BarChartData_D3={BarChartData_D3} /> */}
       </div>
 
 
