@@ -26,6 +26,7 @@ var MainComponent = React.createClass({
     },
     componentDidMount: function() {
 
+
       //get and populate the geography_levels state...
       this.props.get_GeographyLevels();
 
@@ -38,6 +39,8 @@ var MainComponent = React.createClass({
       //set default app i.e div heights, padding, and such
       this.props.set_defaults();
 
+      this.props.update_ChartVisiblity();
+      
       //leaflet needs an actual mapheight. and we want to dynamically resize the map as the user resizes the browser....
       this.props.update_MapHeight();
 

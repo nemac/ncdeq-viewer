@@ -180,14 +180,24 @@ export function update_ChartVisiblity (visibility){
     return (dispatch, getState) => {
       const state = getState()
 
-      //ensure that the chart data exists create blank if not.
-      let chartData_Level = ( state.chartData.chart_data.level_json ? state.chartData.chart_data.level_json : {});
-      let chartData_ID = ( state.chartData.chart_data.id_json ? state.chartData.chart_data.id_json : {});
+      let chartData_Level = [];
+      let chartData_ID = [];
+      let types = [];
+      let isVisible = true;
+      
+      if(state.chartData.chart_data){
+        //ensure that the chart data exists create blank if not.
+         chartData_Level = ( state.chartData.chart_data.level_json ? state.chartData.chart_data.level_json : {});
+        chartData_ID = ( state.chartData.chart_data.id_json ? state.chartData.chart_data.id_json : {});
+
 
       //change visibility
-      let isVisible = (state.chartData.chart_visibility ? false : true);
+       isVisible = (state.chartData.chart_visibility ? false : true);
 
-      const types = ( state.chartData.chart_data.chart_types ? state.chartData.chart_data.chart_types : []);
+      types = ( state.chartData.chart_data.chart_types ? state.chartData.chart_data.chart_types : []);
+
+      }
+
 
       //send visibility setting on
       dispatch(ChartData('SET_CHART_VISIBILITY', chartData_ID, chartData_Level, isVisible, types ))

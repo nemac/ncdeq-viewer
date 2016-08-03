@@ -22,13 +22,27 @@ var ChartTest = React.createClass({
   componentDidUpdate: function(prevProps, prevState) {
   },
   render: function() {
+    //build chart data component and when there is no data returned
+    //  Tell user no chart data Available
+    let title;
+    if (this.props.baseline_filter){
+      // title =  <div key="1" >ALL HUC's in the Cataloging Unit {this.props.baseline_filter.substring(0,8)}</div>
+      // title =  title + <div key="2" >Click on the Chart to go to the HUC <strong>OR</strong> Place you mouse cursor over bar to get more information</div>
+      if(this.props.BarChartData_D3.length === 0){
+        title = "No Data was found HUC's for the HUC " + this.props.baseline_filter + "! Try to click the map, choose a HUC, or Search for a location again."
+      } else {
+        title = "ALL HUC's in the Cataloging Unit " + this.props.baseline_filter.substring(0,8) + "Click on the Chart to go to the HUC OR Place you mouse cursor over bar to get more information"
+      }
+
+    } else {
+      title = "No Charts Available Yet Please Click on the map, choose a HUC, or Search for a location"
+    }
 
     return (
+
       <div className="ui segments">
         <div className="ui basic segment">
-          <div key="1" >ALL HUC's in the Cataloging Unit {this.props.baseline_filter.substring(0,8)}</div>
-          <div key="2" >Click on the Chart to go to the HUC or </div>
-          <div>Place you mouse cursor over bar to get more information</div>
+         <div key="1" >{title}</div>
         {/* only render if data is passed  */}
         { this.props.BarChartData_D3 &&
 

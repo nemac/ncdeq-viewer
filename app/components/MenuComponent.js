@@ -22,6 +22,7 @@ var MenuComponent = React.createClass({
   },
   componentDidMount: function() {
     this.props.get_MenuList();
+
   },
   getDefaultMenu: function(level){
     //filter the levels to get the active tab
