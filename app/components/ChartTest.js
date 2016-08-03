@@ -26,7 +26,9 @@ var ChartTest = React.createClass({
     return (
       <div className="ui segments">
         <div className="ui basic segment">
-          <span key="1" >ALL </span>
+          <div key="1" >ALL HUC's in the Cataloging Unit {this.props.baseline_filter.substring(0,8)}</div>
+          <div key="2" >Click on the Chart to go to the HUC or </div>
+          <div>Place you mouse cursor over bar to get more information</div>
         {/* only render if data is passed  */}
         { this.props.BarChartData_D3 &&
 

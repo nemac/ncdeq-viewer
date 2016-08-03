@@ -75,6 +75,20 @@ var ChartRow = React.createClass({
       return chart_objects.properties.chart_id === 1;
     })
 
+    // sort by value
+     let levelSort = levelTop.sort(function (a, b) {
+       if (a.properties.chart_value > b.properties.chart_value) {
+         return -1;
+       }
+       if (a.properties.chart_value < b.properties.chart_value) {
+         return 1;
+       }
+       // a must be equal to b
+       return 0;
+     });
+
+     const sortedhucs = [...new Set(levelSort.map(item => item.properties.ID))];
+
 
     let rechart_bar = [];
 
