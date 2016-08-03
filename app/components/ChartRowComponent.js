@@ -104,6 +104,30 @@ var ChartRow = React.createClass({
 
     let all_hucs_bar = [];
 
+    const matchids = [...new Set(baseline_data[0].chart_features.map(item => item.properties.chart_matchid))];
+
+    let levelsix =  baseline_data[0].chart_features.filter ( chart_objects => {
+      return chart_objects.properties.chart_matchid === 6 && chart_objects.properties.chart_id != 6
+    })
+
+    let levelfive =  baseline_data[0].chart_features.filter ( chart_objects => {
+      return chart_objects.properties.chart_matchid === 5 && chart_objects.properties.chart_id != 5
+    })
+
+    let levelfour =  baseline_data[0].chart_features.filter ( chart_objects => {
+      return chart_objects.properties.chart_matchid === 4 && chart_objects.properties.chart_id != 4
+    })
+
+
+    let levelthree =  baseline_data[0].chart_features.filter ( chart_objects => {
+      return chart_objects.properties.chart_matchid === 3 && chart_objects.properties.chart_id != 3
+    })
+
+    let leveltwo =  baseline_data[0].chart_features.filter ( chart_objects => {
+      return chart_objects.properties.chart_matchid === 2 && chart_objects.properties.chart_id != 2
+    })
+
+
     let levelone =  baseline_data[0].chart_features.filter ( chart_objects => {
       return chart_objects.properties.chart_matchid === 1 && chart_objects.properties.chart_id != 1
     })
@@ -188,7 +212,7 @@ var ChartRow = React.createClass({
 
     const allhucs = [...new Set(levelTop.map(item => item.properties.ID))];
     allhucs.map(huc => {
-      console.log(huc)
+      // console.log(huc)
 
       var name = huc;
       var o = new Object;
@@ -199,9 +223,10 @@ var ChartRow = React.createClass({
       })
 
       levelones.map(item => {
-        console.log(item.properties)
+        // console.log(item.properties)
         var value = Number(item.properties.chart_value);
         o[item.properties.chart_description] =  value;
+        o["chart_id"] =  item.properties.chart_id;
       })
       rechart_bar.push(o);
     })
@@ -381,7 +406,7 @@ var ChartRow = React.createClass({
         {/* <ChartTest BarChartData_D3={rechart_bar} /> */}
         {/* <ChartTest BarChartData_D3={all_hucs_bar} /> */}
 
-        <ChartTest BarChartData_D3={rechart_bar} baseline_filter={baseline_filter} />
+        <ChartTest BarChartData_D3={rechart_bar} baseline_filter={baseline_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
 
       </div>
       <Divider columns="fourteen"/>

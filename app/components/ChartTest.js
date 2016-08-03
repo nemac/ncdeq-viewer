@@ -6,6 +6,8 @@ var PropTypes = React.PropTypes;
 //
 import { BarChart, Bar, Brush, Cell, CartesianGrid, ReferenceLine, ReferenceDot, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { scaleOrdinal, schemeCategory10 } from 'd3-scale';
+import { getAGOFeatureId} from '../utils/helpers';
+import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
 
 
 var ChartTest = React.createClass({
@@ -17,8 +19,10 @@ var ChartTest = React.createClass({
       title:'Title'
     };
   },
-  handleClick(data, index) {
-    console.log(data)
+  handleClick(e, name, data, index) {
+    this.props.get_LayerInfo_ByValue(name, HUC12_MAP_FEATUREID)
+  },
+  componentDidUpdate: function(prevProps, prevState) {
   },
   render: function() {
 
@@ -60,7 +64,8 @@ var ChartTest = React.createClass({
           }
 ffff99
           />
-
+          $('path').attr('stroke','0302010109')
+=== this.props.baseline_filter ? '#fc9636' : '#fdc086'
           */}
         { this.props.BarChartData_D3 &&
 
@@ -71,23 +76,39 @@ ffff99
             <Tooltip/>
             <Legend />
             <Bar dataKey="Total Water Quality Baseline" stackId="a" fill="#fdc086"  onClick={this.handleClick} >
+
               {
                 this.props.BarChartData_D3.map((entry, index) => (
-                  <Cell ref={entry.name} cursor="pointer" strokeWidth={entry.name === this.props.baseline_filter ? 2 : 0 } stroke={entry.name === this.props.baseline_filter ? '#fc9636' : '#fdc086' } fill={entry.name === this.props.baseline_filter ? '#fc9636' : '#fdc086' } key={`cell-${index}`}/>
+                  <Cell ref={entry.name}
+                        stroke={entry.name}
+                        cursor="pointer"
+                        fill={entry.name === this.props.baseline_filter ? '#fc9636' : '#fdc086' }
+                        key={`cell-${index}`}
+                        onClick={this.handleClick}   />
                 ))
               }
             </Bar>
             <Bar dataKey="Total Hydrology Baseline" stackId="a" fill="#beaed4"  onClick={this.handleClick} >
               {
                 this.props.BarChartData_D3.map((entry, index) => (
-                  <Cell ref={entry.name} cursor="pointer" strokeWidth={entry.name === this.props.baseline_filter ? 2 : 0 } stroke={entry.name === this.props.baseline_filter ? '#9479b9' : '#beaed4' } fill={entry.name === this.props.baseline_filter ? '#9479b9' : '#beaed4' } key={`cell-${index}`}/>
+                  <Cell ref={entry.name}
+                        stroke={entry.name}
+                        cursor="pointer"
+                        fill={entry.name === this.props.baseline_filter ? '#9479b9' : '#beaed4' }
+                        key={`cell-${index}`}/>
                 ))
               }
             </Bar>
             <Bar dataKey="Total Habitat Baseline" stackId="a" fill="#7fc97f"  onClick={this.handleClick} >
               {
                 this.props.BarChartData_D3.map((entry, index) => (
-                  <Cell ref={entry.name} cursor="pointer" strokeWidth={entry.name === this.props.baseline_filter ? 2 : 0 } stroke={entry.name === this.props.baseline_filter ? '#44a244' : '#7fc97f' } fill={entry.name === this.props.baseline_filter ? '#44a244' : '#7fc97f' } key={`cell-${index}`}/>
+                  <Cell ref={entry.name}
+                        stroke={entry.name}
+                        cursor="pointer"
+                        fill={entry.name === this.props.baseline_filter ? '#44a244' : '#7fc97f' }
+                        key={`cell-${index}`}
+                        id={entry.name}
+                        onClick={this.handleClick.bind(null,this,entry.name)} />
                 ))
               }
             </Bar>
