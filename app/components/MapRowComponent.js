@@ -20,12 +20,12 @@ var MapRowComponent = React.createClass({
             <div className="ui internally celled grid">
               <div className="row">
                 <div className="sixteen wide column">
-                  <MapLayerToggleContainer    />
+                  <ProjectMapWrapper />
                 </div>
               </div>
               <div className="row">
                 <div className="sixteen wide column">
-                  <ProjectMapWrapper />
+                  <MapLayerToggleContainer    />
                 </div>
               </div>
             </div>

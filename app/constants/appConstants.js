@@ -1,9 +1,9 @@
-export const HEADER_HEIGHT = 100;
+export const HEADER_HEIGHT = 0;
 export const BREAD_CRUMBS_HEIGHT = 50;
 export const ROW_PADDING = 1;
 export const DEF_PAD = 5;
-export const MAP_HEIGHT = 300;
-export const CHART_HEIGHT = 100;
+export const MAP_HEIGHT = 275;
+export const CHART_HEIGHT = 125;
 export const CHART_VISIBILITY = false;
 export const MAX_SEARCH_ZOOM = 12;
 export const START_POSITION = 0;

@@ -40,7 +40,7 @@ var MainComponent = React.createClass({
       this.props.set_defaults();
 
       this.props.update_ChartVisiblity();
-      
+
       //leaflet needs an actual mapheight. and we want to dynamically resize the map as the user resizes the browser....
       this.props.update_MapHeight();
 
@@ -67,9 +67,7 @@ var MainComponent = React.createClass({
       return (
         <div className="ui one column relaxed padded grid">
 
-          <RowWrapper rowPadding={rowPadding} height={headerHeight} >
-            <HeaderComponent content='To get started click a River Basin on the map, or search for a location to zoom to.'/>
-          </RowWrapper>
+
 
           <RowWrapper rowPadding={rowPadding} height={breadCrumbsHeight}>
             <MenuContainer />

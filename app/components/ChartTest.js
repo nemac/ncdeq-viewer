@@ -61,7 +61,8 @@ var ChartTest = React.createClass({
                         cursor="pointer"
                         fill={entry.name === this.props.baseline_filter ? '#fc9636' : '#fdc086' }
                         key={`cell-${index}`}
-                        onClick={this.handleClick}   />
+                        id={entry.name}
+                        onClick={this.handleClick.bind(null,this,entry.name)}  />
                 ))
               }
             </Bar>
@@ -72,7 +73,9 @@ var ChartTest = React.createClass({
                         stroke={entry.name}
                         cursor="pointer"
                         fill={entry.name === this.props.baseline_filter ? '#9479b9' : '#beaed4' }
-                        key={`cell-${index}`}/>
+                        key={`cell-${index}`}
+                        id={entry.name}
+                        onClick={this.handleClick.bind(null,this,entry.name)}/>
                 ))
               }
             </Bar>

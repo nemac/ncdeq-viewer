@@ -9,7 +9,8 @@ function setHeight(repeat,val){
   if(repeat<1){
     return val
   } else{
-    return setHeight(repeat-1, val/1.618)
+    // return setHeight(repeat-1, val/1.618)
+    return  val * .5
   }
 }
 
