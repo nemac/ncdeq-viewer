@@ -30,12 +30,16 @@ var ChartTest = React.createClass({
     props_filtered.map( chartclickvalues => {
       for (var prop in chartclickvalues) {
         if (chartclickvalues.hasOwnProperty(prop)) {
-          values = values + prop + ":" + chartclickvalues[prop] + "<BR />"
+          if(typeof chartclickvalues[prop] === 'object'){
+            values = values + prop + ": " + JSON.stringify(chartclickvalues[prop]) + "<BR />"
+          }else{
+            values = values + prop + ": " + chartclickvalues[prop] + "<BR />"
+          }
         }
       }
 
     })
-    //  $("#data").html(values);
+    $("#data").html(values);
   },
   componentDidUpdate: function(prevProps, prevState) {
   },
@@ -49,29 +53,29 @@ var ChartTest = React.createClass({
       if(this.props.BarChartData_D3.length === 0){
         title = "No Data was found HUC's for the HUC " + this.props.baseline_filter + "! Try to click the map, choose a HUC, or Search for a location again."
       } else {
-        title = "ALL HUC's in the Cataloging Unit " + this.props.baseline_filter.substring(0,8) + "Click on the Chart to go to the HUC OR Place you mouse cursor over bar to get more information"
+        title = "This chart displays ALL HUC's in the Cataloging Unit " + this.props.baseline_filter.substring(0,8) + ". Click on the Chart to go to the HUC OR Place you mouse cursor over bar to get more information."
       }
 
     } else {
       title = "No Charts Available Yet Please Click on the map, choose a HUC, or Search for a location"
     }
+    $('#description').html(title);
 
     return (
 
-      <div className="ui segments">
-        <div className="ui basic segment">
-         <div key="1" >{title}</div>
+      <div >
+
+           <div id="chart" style={{float:"left"}} >
         {/* only render if data is passed  */}
         { this.props.BarChartData_D3 &&
 
-          <BarChart width={1000} height={175} data={this.props.BarChartData_D3} margin={{top: 20, right: 30, left: 20, bottom: 5}}>
+          <BarChart width={1000} height={200} data={this.props.BarChartData_D3} margin={{top: 20, right: 30, left: 20, bottom: 5}} >
             <XAxis dataKey="name"/>
             <YAxis/>
             <CartesianGrid strokeDasharray="3 3"/>
-            <Tooltip/>
+            <Tooltip coordinate={{x:500,y:540}} />
             <Legend />
-            <Bar dataKey="Total Water Quality Baseline" stackId="a" fill="#fdc086"   >
-
+            <Bar dataKey="Total Water Quality Baseline" stackId="a" fill="#fdc086"  >
               {
                 this.props.BarChartData_D3.map((entry, index) => (
                   <Cell ref={entry.name}
@@ -109,11 +113,13 @@ var ChartTest = React.createClass({
             </Bar>
           </BarChart>
 
-
         }
-        <div id="data" />
+      </div>
+      <div className="ui basic segment">
+        <div id="data" style={{float:"right",width:225}}>
         </div>
       </div>
+    </div>
     );
   }
 });

@@ -24,27 +24,109 @@ var ChartRow = React.createClass({
     //update map height comes after chart vis sp map will resize to full hieght.
     this.props.update_MapHeight();
   },
-  render: function() {
-    let vis = this.props.charts.chart_visibility ?  'show' : 'none';
+  getChildChart: function(chartid,huc){
 
     const chart_types = this.props.charts.chart_data.chart_types
-
 
     let baseline_data = chart_types.filter( key => {
       return key.chart_type === 'baseline'
     })
 
-    let baseline_filter = "";
+    let baseline_data_limited = baseline_data[0].chart_features.filter( key => {
+      return key.properties.ID === huc && key.properties.chart_matchid === chartid
+    })
+
+    console.log(baseline_data_limited)
+  },
+  getCharType_Data: function(type){
+
+    //get all chart data for chart type of  {baseline,uplift, maybe TRA}
+    //  this is the most current or actual data from model outputs
+
+    //get the chart types object this holds the chartdata for each chartype {baseline,uplift, maybe TRA}
+    const chart_types = this.props.charts.chart_data.chart_types
+
+    //get the baseline data
+    let chart_type_data = chart_types.filter( key => {
+      return key.chart_type === type
+    })
+
+    //return the chart data for the type {baseline,uplift, maybe TRA}
+    return chart_type_data
+  },
+  getChart_Filter: function(chart_data){
+    //gets the HUC value for the filtering the chart data or get
+    //  the current HUC that a user located by searching or clicking
+
+    //set initial value blank in case if has not been set Yet
+    let filter_value = '';
+
+    //make sure the data has been set
+    if(chart_data){
+      //extract the limit
+      filter_value = chart_data.chart_limit;
+    }
+    return filter_value;
+  },
+  getChart_FilteredByHUC: function(chart_data, filter_value){
+  //gets the chart data Filtered by the chart limit or HUC
+
+  let chart_data_limited =[];
+
+    //make sure the data has been set
+    if(chart_data[0]){
+      chart_data_limited = chart_data[0].chart_features.filter( key => {
+        return key.properties.ID === filter_value
+      })
+    }
+    //returned the filtered chart data
+    return chart_data_limited
+  },
+  getChart_FilteredByChartLevel: function(chart_data, filter_value, is_top){
+  //gets the chart data Filtered by the chart limit or HUC
+
+    let use_top = true;
+    //make sure something was passed so arg is optional if
+    //  nothing passed awesome its false or not a top level chart.
+    //  a top level chart is only used to do the sort... and has children that comprise it's total.
+    if(!is_top){
+      use_top = false;
+    }
+
+    let chart_data_limited =[];
+
+    //make sure the data has been set
+    if(chart_data){
+      if(use_top){
+        chart_data_limited =  chart_data.chart_features.filter ( chart_objects => {
+          return chart_objects.properties.chart_id === filter_value;
+        })
+      } else {
+        chart_data_limited =  chart_data.chart_features.filter ( chart_objects => {
+          return chart_objects.properties.chart_matchid === filter_value && chart_objects.properties.chart_id != filter_value
+        })
+      }
+    }
+    //returned the filtered chart data
+    return chart_data_limited
+  },
+  render: function() {
+    let vis = this.props.charts.chart_visibility ?  'show' : 'none';
+
+    let baseline_data = this.getCharType_Data('baseline');
+    let baseline_filter = this.getChart_Filter(baseline_data);
+    let baseline_data_limited = this.getChart_FilteredByHUC(baseline_data, baseline_filter);
+
     let rechart_bar = [];
     let all_hucs_bar = [];
 
     if(baseline_data[0]){
 
-      baseline_filter = baseline_data[0].chart_limit
-
-      let baseline_data_limited = baseline_data[0].chart_features.filter( key => {
-        return key.properties.ID === baseline_filter
-      })
+      // baseline_filter = baseline_data[0].chart_limit
+      //
+      // let baseline_data_limited = baseline_data[0].chart_features.filter( key => {
+      //   return key.properties.ID === baseline_filter
+      // })
 
 
       //this is not used in this version but holding it for use in
@@ -76,32 +158,31 @@ var ChartRow = React.createClass({
       // })
 
 
-      let levelone =  baseline_data[0].chart_features.filter ( chart_objects => {
-        return chart_objects.properties.chart_matchid === 1 && chart_objects.properties.chart_id != 1
-      })
+      // let levelone =  baseline_data[0].chart_features.filter ( chart_objects => {
+      //   return chart_objects.properties.chart_matchid === 1 && chart_objects.properties.chart_id != 1
+      // })
+      let levelone =  this.getChart_FilteredByChartLevel( baseline_data[0], 1, false )
 
-      let levelTop =  baseline_data[0].chart_features.filter ( chart_objects => {
-        return chart_objects.properties.chart_id === 1;
-      })
-
+      let levelTop =  this.getChart_FilteredByChartLevel( baseline_data[0], 1, true )
       // sort by value
        let levelSort = levelTop.sort(function (a, b) {
+
          if (a.properties.chart_value > b.properties.chart_value) {
            return -1;
          }
          if (a.properties.chart_value < b.properties.chart_value) {
            return 1;
          }
-         // a must be equal to b
+         // a must be equal to b or must be a null value?
          return 0;
        });
 
-       //const sortedhucs = [...new Set(levelSort.map(item => item.properties.ID))];
+       const sortedhucs = [...new Set(levelSort.map(item => item.properties.ID))];
 
        //get all unique hucs in the top level of charts
-       const allhucs = [...new Set(levelTop.map(item => item.properties.ID))];
+       //const allhucs = [...new Set(levelTop.map(item => item.properties.ID))];
 
-       allhucs.map(huc => {
+       sortedhucs.map(huc => {
 
          var name = huc;
          var o = new Object;
@@ -115,18 +196,25 @@ var ChartRow = React.createClass({
            var value = Number(item.properties.chart_value);
            o[item.properties.chart_description] =  value;
            o["chart_id"] =  item.properties.chart_id;
+           o["children"] = [{name:"test",value:100}]
+           this.getChildChart(item.properties.chart_id, name, )
+
+           //pass chart id get all matchids of current chart of there is data that exists then add to children
+           // this will create for drilldown bar charts
          })
          rechart_bar.push(o);
        })
     }
 
     return (
-      <SectionWrapper>
+      <div className="ui basic segment">
         <div className='header' >
-            <h2 className="ui block header">Bar Charts Example</h2>
-            <ChartTest BarChartData_D3={rechart_bar} baseline_filter={baseline_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
+            <h2 className="ui block header">Bar Charts Example
+              <div id="description" className="sub header">Check out our plug-in marketplace</div>
+            </h2>
         </div>
-      </SectionWrapper>
+        <ChartTest BarChartData_D3={rechart_bar} baseline_filter={baseline_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
+      </div>
     );
   }
 
