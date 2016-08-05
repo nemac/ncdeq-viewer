@@ -76,6 +76,16 @@ var ChartTest = React.createClass({
     }
     return key_colors;
   },
+  get_legend_payload: function(chart_type){
+    let custom_payload = [];
+    const chart_keys = this.get_datakeys(chart_type);
+    chart_keys.map( key => {
+      const color_keys = this.get_keyColors(key);
+      custom_payload.push({ value: key, type:'rect', id:key, color: color_keys[1] })
+    })
+    return custom_payload
+    // payload={[{ value: 'Registered Users', type: 'line', id: 'pv', color: '#8884d8' }]}
+  },
   get_datakeys: function(chart_type){
     let data_keys = [];
     switch (chart_type) {
@@ -95,8 +105,7 @@ var ChartTest = React.createClass({
     if(this.props.chart_data){
       return (
           this.props.chart_data.map((entry, index) => (
-            <Cell ref={entry.name}
-                  cursor="pointer"
+            <Cell cursor="pointer"
                   fill={entry.name === this.props.chart_filter ? colors[0] : colors[1]}
                   key={`cell-${index}`}
                   id={entry.name}
@@ -110,11 +119,11 @@ var ChartTest = React.createClass({
 
     const chart_type = this.props.chart_type;
     const chart_keys = this.get_datakeys(chart_type);
-
+    let keycnt = 0;
     if(chart_keys){
       return (
         chart_keys.map(key => (
-          <Bar dataKey={key} stackId="a" fill="#beaed4" >
+          <Bar key={keycnt++} dataKey={key} stackId="a" fill="#beaed4" >
             {this.get_cell(key)}
           </Bar>
         ))
@@ -164,7 +173,7 @@ var ChartTest = React.createClass({
             <YAxis/>
             <CartesianGrid strokeDasharray="3 3"/>
             <Tooltip  />
-            <Legend />
+            <Legend payload={this.get_legend_payload(this.props.chart_type)}  />
             {this.get_bars()}
            </BarChart>
         </div>
