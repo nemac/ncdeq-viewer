@@ -16,8 +16,26 @@ var ChartTest = React.createClass({
       title:'Title'
     };
   },
-  handleClick(e, name, data, index) {
+  handleClick(constructor, name, data, index, test, d) {
     this.props.get_LayerInfo_ByValue(name, HUC12_MAP_FEATUREID)
+    // const id = $("#data").html(name);
+
+    //super hacky way to get values into webpage.
+    // need to pass chart data for other levels so we can "drilldown"
+    const props = constructor.props.BarChartData_D3
+    let props_filtered = props.filter(item => {
+      return item.name === name
+    })
+    let values = ''
+    props_filtered.map( chartclickvalues => {
+      for (var prop in chartclickvalues) {
+        if (chartclickvalues.hasOwnProperty(prop)) {
+          values = values + prop + ":" + chartclickvalues[prop] + "<BR />"
+        }
+      }
+
+    })
+    //  $("#data").html(values);
   },
   componentDidUpdate: function(prevProps, prevState) {
   },
@@ -46,31 +64,29 @@ var ChartTest = React.createClass({
         {/* only render if data is passed  */}
         { this.props.BarChartData_D3 &&
 
-          <BarChart width={1000} height={300} data={this.props.BarChartData_D3} margin={{top: 20, right: 30, left: 20, bottom: 5}}>
+          <BarChart width={1000} height={175} data={this.props.BarChartData_D3} margin={{top: 20, right: 30, left: 20, bottom: 5}}>
             <XAxis dataKey="name"/>
             <YAxis/>
             <CartesianGrid strokeDasharray="3 3"/>
             <Tooltip/>
             <Legend />
-            <Bar dataKey="Total Water Quality Baseline" stackId="a" fill="#fdc086"  onClick={this.handleClick} >
+            <Bar dataKey="Total Water Quality Baseline" stackId="a" fill="#fdc086"   >
 
               {
                 this.props.BarChartData_D3.map((entry, index) => (
                   <Cell ref={entry.name}
-                        stroke={entry.name}
                         cursor="pointer"
                         fill={entry.name === this.props.baseline_filter ? '#fc9636' : '#fdc086' }
                         key={`cell-${index}`}
                         id={entry.name}
-                        onClick={this.handleClick.bind(null,this,entry.name)}  />
+                        onClick={this.handleClick.bind(null,this,entry.name )}  />
                 ))
               }
             </Bar>
-            <Bar dataKey="Total Hydrology Baseline" stackId="a" fill="#beaed4"  onClick={this.handleClick} >
+            <Bar dataKey="Total Hydrology Baseline" stackId="a" fill="#beaed4" >
               {
                 this.props.BarChartData_D3.map((entry, index) => (
                   <Cell ref={entry.name}
-                        stroke={entry.name}
                         cursor="pointer"
                         fill={entry.name === this.props.baseline_filter ? '#9479b9' : '#beaed4' }
                         key={`cell-${index}`}
@@ -79,11 +95,10 @@ var ChartTest = React.createClass({
                 ))
               }
             </Bar>
-            <Bar dataKey="Total Habitat Baseline" stackId="a" fill="#7fc97f"  onClick={this.handleClick} >
+            <Bar dataKey="Total Habitat Baseline" stackId="a" fill="#7fc97f" >
               {
                 this.props.BarChartData_D3.map((entry, index) => (
                   <Cell ref={entry.name}
-                        stroke={entry.name}
                         cursor="pointer"
                         fill={entry.name === this.props.baseline_filter ? '#44a244' : '#7fc97f' }
                         key={`cell-${index}`}
@@ -96,6 +111,7 @@ var ChartTest = React.createClass({
 
 
         }
+        <div id="data" />
         </div>
       </div>
     );

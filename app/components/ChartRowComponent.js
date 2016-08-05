@@ -96,9 +96,9 @@ var ChartRow = React.createClass({
          return 0;
        });
 
-       const sortedhucs = [...new Set(levelSort.map(item => item.properties.ID))];
+       //const sortedhucs = [...new Set(levelSort.map(item => item.properties.ID))];
 
-       //get all hucs in the top level of charts
+       //get all unique hucs in the top level of charts
        const allhucs = [...new Set(levelTop.map(item => item.properties.ID))];
 
        allhucs.map(huc => {
@@ -119,11 +119,6 @@ var ChartRow = React.createClass({
          rechart_bar.push(o);
        })
     }
-
-
-
-
-
 
     return (
       <SectionWrapper>
