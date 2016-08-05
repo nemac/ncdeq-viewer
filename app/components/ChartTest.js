@@ -84,7 +84,6 @@ var ChartTest = React.createClass({
       custom_payload.push({ value: key, type:'rect', id:key, color: color_keys[1] })
     })
     return custom_payload
-    // payload={[{ value: 'Registered Users', type: 'line', id: 'pv', color: '#8884d8' }]}
   },
   get_datakeys: function(chart_type){
     let data_keys = [];

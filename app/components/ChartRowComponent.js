@@ -181,9 +181,6 @@ var ChartRow = React.createClass({
 
          //pass chart id get all matchids of current chart of there is data that exists then add to children
          // this will create for drilldown bar charts
-
-         //o["children"] = [{name:"test",value:100}]
-         //this.getChildChart(item.properties.chart_id, name, )
          let next_limit = this.getChart_FilteredByHUC(chart_data, name);
          let next_level =  this.getChart_FilteredByChartLevel( next_limit, item.properties.chart_id, false );
 
