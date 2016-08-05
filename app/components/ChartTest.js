@@ -42,11 +42,45 @@ var ChartTest = React.createClass({
     //$("#data").html(values);
     $("#data").html(name);
   },
+  get_keyColors: function(key){
+    let key_colors = [];
+
+    switch (key) {
+      case 'Total Water Quality Baseline':
+        key_colors = ['#fc9636' , '#fdc086']
+        break;
+      case 'Total Hydrology Baseline':
+        key_colors = ['#9479b9' , '#beaed4']
+        break;
+      case 'Total Habitat Baseline':
+        key_colors = ['#44a244' , '#7fc97f' ]
+        break;
+      case 'Total Water Quality Uplift':
+        key_colors = ['#fc9636' , '#fdc086']
+        break;
+      case 'Total Hydrology Uplift':
+        key_colors = ['#9479b9' , '#beaed4']
+        break;
+      case 'Habitat Uplift Aquatic Connectivity':
+        key_colors = ['#44a244' , '#7fc97f']
+        break;
+      case 'Habitat Uplift Avoided Conversion':
+        key_colors = ['#ffff33' , '#ffff99']
+        break;
+      case 'Habitat Uplift Restoration':
+        key_colors = ['#1f3b61' , '#386cb0']
+        break;
+      default:
+        key_colors = ['#fc9636' , '#fdc086']
+        break;
+    }
+    return key_colors;
+  },
   get_datakeys: function(chart_type){
     let data_keys = [];
     switch (chart_type) {
       case 'baseline':
-        data_keys = ['Total Water Quality Baseline','Total Hydrology Uplift','Total Habitat Baseline'];
+        data_keys = ['Total Water Quality Baseline','Total Hydrology Baseline','Total Habitat Baseline'];
         break;
       case 'uplift':
         data_keys = ['Total Water Quality Uplift','Total Hydrology Uplift','Habitat Uplift Aquatic Connectivity','Habitat Uplift Avoided Conversion','Habitat Uplift Restoration'];
@@ -57,13 +91,13 @@ var ChartTest = React.createClass({
     return data_keys;
   },
   get_cell: function(key){
+    const colors = this.get_keyColors(key)
     if(this.props.chart_data){
-      console.log(this.props.chart_data)
       return (
           this.props.chart_data.map((entry, index) => (
             <Cell ref={entry.name}
                   cursor="pointer"
-                  fill={entry.name === this.props.chart_filter ? '#9479b9' : '#beaed4' }
+                  fill={entry.name === this.props.chart_filter ? colors[0] : colors[1]}
                   key={`cell-${index}`}
                   id={entry.name}
                   onClick={this.handleClick.bind(null,this,entry.name)}/>
@@ -89,6 +123,16 @@ var ChartTest = React.createClass({
     return null;
 
   },
+  get_title: function(){
+    if(this.props.chart_data.length > 0){
+      return (
+        <div key={this.props.chart_type + 'header1'} className='header' >
+            <h2 key={this.props.chart_type + 'header2'} className="ui header">{this.props.chart_type} </h2>
+        </div>
+      )
+    }
+    return null
+  },
   render: function() {
     //build chart data component and when there is no data returned
     //  Tell user no chart data Available
@@ -110,7 +154,7 @@ var ChartTest = React.createClass({
     return (
       <div >
         <div id="chart" style={{float:"left"}} >
-          {/* only render if data is passed  ffff99 (ffff33) 386cb0 (1f3b61)*/}
+          {this.get_title()}
           <BarChart key={this.props.chart_type}
                     width={1000}
                     height={200}
