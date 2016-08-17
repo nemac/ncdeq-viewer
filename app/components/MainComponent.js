@@ -4,6 +4,7 @@ import React from 'react';
 var HeaderComponent = require('../components/HeaderComponent');
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
+var MapRowWrapper = require('../components/MapRowWrapper');
 var MapRowComponent = require('../components/MapRowComponent');
 import ChartRowContainer from '../containers/ChartRowContainer';
 import MenuContainer from '../containers/MenuContainer';
@@ -60,6 +61,7 @@ var MainComponent = React.createClass({
       const headerHeight = this.props.default_settings ? this.props.default_settings.headerHeight : HEADER_HEIGHT;
       const defpad = this.props.default_settings ? this.props.default_settings.defpad : DEF_PAD;
       const chartHeight = this.props.default_settings ? this.props.default_settings.chartHeight : CHART_HEIGHT;
+      const columnWidth = this.props.charts.chart_visibility ? "seven" : "sixteen";
 
       return (
         <div className="ui one column relaxed padded grid">
@@ -72,15 +74,13 @@ var MainComponent = React.createClass({
             <MenuContainer />
           </RowWrapper>
 
-          <RowWrapper rowPadding={rowPadding} >
-            <MapRowComponent />
-          </RowWrapper>
-          {/* only render the charts section when the user has made the charts visibility true */}
-          { this.props.charts.chart_visibility &&
-            <RowWrapper rowPadding={defpad} height={chartHeight} >
+          <MapRowWrapper rowPadding={rowPadding} >
+            {/* only render the charts section when the user has made the charts visibility true */}
+            { this.props.charts.chart_visibility &&
               <ChartRowContainer />
-            </RowWrapper>
-          }
+            }
+            <MapRowComponent columnWidth={columnWidth}/>
+          </MapRowWrapper>
         </div>
       );
 

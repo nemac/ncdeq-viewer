@@ -87,42 +87,21 @@ var ChartRow = React.createClass({
 
     return (
 
-      <div className="ui stackable centered grid" style={{display:vis}}>
-        <div className="row" >
-
-      <div className="sixteen wide grey tertiary column" >
-            <h3 className="ui left floated  header">
-              Charts
-            </h3>
-            <div className="ui right floated compact grey inverted segment">
-              <div className="meduim basic ui button" onClick={this.chartToggle} >
-                <i className="remove icon"></i>
-              </div>
+      <div className="ui nine wide column vertically divided items" style={{display:vis}}>
+        <div className="ui item" >
+          <div className="content"><p>Some descriptive text</p></div>
+          <div className="meduim basic ui button icon right floated" onClick={this.chartToggle} >
+            <i className="remove icon"></i>
           </div>
-        <div className="content"><p>Some descriptive text</p></div>
-      </div>
+        </div>
 
-      <Divider />
-
-      <div className="fourteen wide column">
         <ChartRowWrapper key="HUCS" title="HUC's" id=""  level_data={level_json} id_data=""  />
-      </div>
 
-      <Divider columns="fourteen"/>
-
-      <div className="fourteen wide column">
         <ChartRowWrapper key="TRA" title="TRA's"  id=""  level_data="" id_data="" />
-      </div>
 
-      <Divider columns="fourteen"/>
-
-      <div className="fourteen wide column">
         <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  level_data="" id_data={id_json} />
+
       </div>
-
-
-    </div>
-  </div>
     );
   }
 
