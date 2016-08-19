@@ -5,7 +5,9 @@ var HeaderComponent = require('../components/HeaderComponent');
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
 var MapRowWrapper = require('../components/MapRowWrapper');
+var HeaderRowWrapper = require('../components/HeaderRowWrapper');
 var MapRowComponent = require('../components/MapRowComponent');
+var ModalAbout = require('../components/ModalAbout');
 import ChartRowContainer from '../containers/ChartRowContainer';
 import MenuContainer from '../containers/MenuContainer';
 
@@ -49,7 +51,6 @@ var MainComponent = React.createClass({
       //for semantic-ui dropdowns
       $('.ui.dropdown').dropdown();
       $('#search-select').dropdown();
-
     },
     render: function() {
 
@@ -66,11 +67,11 @@ var MainComponent = React.createClass({
       return (
         <div className="ui one column relaxed padded grid">
 
-          <RowWrapper rowPadding={rowPadding} height={headerHeight} >
+          <HeaderRowWrapper rowPadding={rowPadding} height={headerHeight}>
             <HeaderComponent content='To get started click a River Basin on the map, or search for a location to zoom to.'/>
-          </RowWrapper>
+          </HeaderRowWrapper>
 
-          <RowWrapper rowPadding={rowPadding} height={breadCrumbsHeight}>
+          <RowWrapper rowPadding={"0"} height={breadCrumbsHeight}>
             <MenuContainer />
           </RowWrapper>
 
@@ -81,6 +82,7 @@ var MainComponent = React.createClass({
             }
             <MapRowComponent columnWidth={columnWidth}/>
           </MapRowWrapper>
+          <ModalAbout />
         </div>
       );
 

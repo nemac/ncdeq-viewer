@@ -17,7 +17,7 @@ var HeaderTitleComponent= React.createClass({
   },
   render: function() {
     return (
-      <h2 className="ui header">{this.state.title}</h2>
+      <h2 className="ui header" style={{color: "#fff"}}>{this.state.title}</h2>
     );
   }
 
