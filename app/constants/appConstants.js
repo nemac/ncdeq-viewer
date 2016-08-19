@@ -19,3 +19,8 @@ export const START_LONGITUDE = -80.4786;
 export const START_ZOOM = 7;
 export const MIN_ZOOM = 7;
 export const MAX_ZOOM = 16;
+
+// semantic constants
+export const MAP_FULL_WIDTH = "sixteen"
+export const MAP_CHART_WIDTH = "nine"; // these two need to add up to sixteen
+export const CHART_WIDTH = "seven";

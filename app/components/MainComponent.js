@@ -18,7 +18,9 @@ import {HEADER_HEIGHT ,
   MAP_HEIGHT,
   CHART_HEIGHT,
   CHART_VISIBILITY,
-  MAX_SEARCH_ZOOM
+  MAX_SEARCH_ZOOM,
+  MAP_FULL_WIDTH,
+  MAP_CHART_WIDTH
 } from '../constants/appConstants'
 
 var MainComponent = React.createClass({
@@ -62,7 +64,7 @@ var MainComponent = React.createClass({
       const headerHeight = this.props.default_settings ? this.props.default_settings.headerHeight : HEADER_HEIGHT;
       const defpad = this.props.default_settings ? this.props.default_settings.defpad : DEF_PAD;
       const chartHeight = this.props.default_settings ? this.props.default_settings.chartHeight : CHART_HEIGHT;
-      const columnWidth = this.props.charts.chart_visibility ? "seven" : "sixteen";
+      const columnWidth = this.props.charts.chart_visibility ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
 
       return (
         <div className="ui one column relaxed padded grid">

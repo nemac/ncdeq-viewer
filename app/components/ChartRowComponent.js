@@ -5,6 +5,10 @@ var ChartTest = require('../components/ChartTest');
 
 var Divider = require('./Divider');
 
+import {
+  CHART_WIDTH
+} from '../constants/appConstants'
+
 var ChartRow = React.createClass({
   chartToggle: function(e){
 
@@ -87,7 +91,7 @@ var ChartRow = React.createClass({
 
     return (
 
-      <div className="ui nine wide column vertically divided items" style={{display:vis}}>
+      <div className={"ui " + CHART_WIDTH + " wide column vertically divided items"} style={{display:vis}}>
         <div className="ui item" >
           <div className="content"><p>Some descriptive text</p></div>
           <div className="meduim basic ui button icon right floated" onClick={this.chartToggle} >
