@@ -260,8 +260,8 @@ var ChartRow = React.createClass({
             <i className="remove icon"></i>
           </div>
         </div>
-        <ChartTest key="baseline" chart_type="baseline" chart_data={chart_baseline_bar} chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
-        <ChartTest key="uplift" chart_type="uplift" chart_data={chart_upflift_bar}  chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
+        <ChartRowWrapper key="baseline" chart_width={575} title="baseline" chart_type="baseline" chart_data={chart_baseline_bar} chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
+        <ChartRowWrapper key="uplift" chart_width={575} title="uplift" chart_type="uplift" chart_data={chart_upflift_bar}  chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
         {/*
         <ChartRowWrapper key="HUCS" title="HUC's" id=""  level_data={level_json} id_data=""  />
 

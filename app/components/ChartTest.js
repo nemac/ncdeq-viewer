@@ -64,12 +64,8 @@ var ChartTest = React.createClass({
       case 'Total Habitat Uplift':
         key_colors = ['#44a244' , '#7fc97f']
         break;
-      // case 'Habitat Uplift Avoided Conversion':
       //   key_colors = ['#ffff33' , '#ffff99']
-      //   break;
-      // case 'Habitat Uplift Restoration':
       //   key_colors = ['#1f3b61' , '#386cb0']
-      //   break;
       default:
         key_colors = ['#fc9636' , '#fdc086']
         break;
@@ -161,13 +157,14 @@ var ChartTest = React.createClass({
       title = "No Charts Available Yet Please Click on the map, choose a HUC, or Search for a location"
     }
     $('#description').html(title);
-
+    console.log(this.props.chart_width)
     return (
+
       <div >
         <div id="chart" style={{float:"left"}} >
           {this.get_title()}
           <BarChart key={this.props.chart_type}
-                    width={1000}
+                    width={this.props.chart_width}
                     height={200}
                     data={this.props.chart_data}
                     margin={{top: 20, right: 30, left: 20, bottom: 5}} >

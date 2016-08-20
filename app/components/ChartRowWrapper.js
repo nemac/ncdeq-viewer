@@ -1,5 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
+var ChartTest = require('../components/ChartTest');
+
 import Treemap from '../treemap/treemap.jsx';
 require('../treemap/styles.css');
 var {makeTreeFromHuc12Data, makeTreeFromHuc8Data} = require('../treemap/core.js');
@@ -14,32 +16,32 @@ var ChartRowWrapper = React.createClass({
     };
   },
   render: function() {
-    //capture props and make sure that ther is actuall data.  in first render could come back as undefined and
-    //  this will error out.
-    var level_data = false;
-    var level_props = {};
-    if (this.props.level_data.length > 0) {
-      level_props.root = makeTreeFromHuc8Data(this.props.level_data);
-      level_data = true;
-    }
-
-    var id_data = false;
-    var id_props = {};
-    if (this.props.id_data.length > 0) {
-      id_props.root = makeTreeFromHuc12Data(this.props.id_data);
-      id_data = true;
-    }
-
-    //build chart data component and when there is no data returned
-    //  Tell user no chart data Available
-    let chart;
-    if (id_data){
-      chart = <Treemap {...id_props}/>
-    } else if (level_data) {
-      chart = <Treemap {...level_props}/>
-    } else {
-      chart = "No Chart Data Available"
-    }
+    // //capture props and make sure that ther is actuall data.  in first render could come back as undefined and
+    // //  this will error out.
+    // var level_data = false;
+    // var level_props = {};
+    // if (this.props.level_data.length > 0) {
+    //   level_props.root = makeTreeFromHuc8Data(this.props.level_data);
+    //   level_data = true;
+    // }
+    //
+    // var id_data = false;
+    // var id_props = {};
+    // if (this.props.id_data.length > 0) {
+    //   id_props.root = makeTreeFromHuc12Data(this.props.id_data);
+    //   id_data = true;
+    // }
+    //
+    // //build chart data component and when there is no data returned
+    // //  Tell user no chart data Available
+    // let chart;
+    // if (id_data){
+    //   chart = <Treemap {...id_props}/>
+    // } else if (level_data) {
+    //   chart = <Treemap {...level_props}/>
+    // } else {
+    //   chart = "No Chart Data Available"
+    // }
 
     return (
       <div className="item" style={{display: "block"}}>
@@ -50,10 +52,12 @@ var ChartRowWrapper = React.createClass({
           </h4>
         </div>
         <div className="item" style={{display: "block"}}>
-          {chart}
-          <br />
-          <br />
-          <p>Navigate to a view chart data</p>
+            {/*{chart} */}
+          <ChartTest key="baseline" chart_width={this.props.chart_width}
+                                    chart_type={this.props.chart_type}
+                                    chart_data={this.props.chart_data}
+                                    chart_filter={this.props.chart_filter}
+                                    get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
           <div refs={this.props.title} >
           </div>
         </div>
