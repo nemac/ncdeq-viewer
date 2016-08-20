@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
-import { get_ChartData, update_ChartVisiblity, update_MapHeight} from '../actions/actionCreators'
+import { get_ChartData, update_ChartVisiblity, update_MapHeight, get_LayerInfo_ByValue} from '../actions/actionCreators'
 import ChartRowComponent from '../components/ChartRowComponent'
 
 //either rename the properties or rename it also in main
@@ -16,6 +16,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     get_ChartData: bindActionCreators(get_ChartData,dispatch),
     update_ChartVisiblity: bindActionCreators(update_ChartVisiblity, dispatch),
     update_MapHeight: bindActionCreators(update_MapHeight, dispatch),
+    get_LayerInfo_ByValue: bindActionCreators(get_LayerInfo_ByValue, dispatch),
   }
 }
 
