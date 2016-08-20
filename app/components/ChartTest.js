@@ -85,7 +85,7 @@ var ChartTest = React.createClass({
     })
     return custom_payload
   },
-  //keys for main chart 
+  //keys for main chart
   get_datakeys: function(chart_type){
     let data_keys = [];
     switch (chart_type) {
@@ -107,6 +107,8 @@ var ChartTest = React.createClass({
           this.props.chart_data.map((entry, index) => (
             <Cell cursor="pointer"
                   fill={entry.name === this.props.chart_filter ? colors[0] : colors[1]}
+                  stroke={entry.name === this.props.chart_filter ? colors[0] : colors[1]}
+                  strokeWidth={entry.name === this.props.chart_filter ? 5 : 0}
                   key={`cell-${index}`}
                   id={entry.name}
                   onClick={this.handleClick.bind(null,this,entry.name)}/>
@@ -177,94 +179,10 @@ var ChartTest = React.createClass({
             {this.get_bars()}
            </BarChart>
         </div>
-        {/*
-        <div className="ui basic segment" style={{float:"left",width:350}}>
-          <div id="data" />
-        </div>
-        */}
       </div>
     );
   }
 });
 
-// { this.props.chart_data && this.props.chart_type === 'uplift' &&
-//
-//   <BarChart key={this.props.chart_type} width={1000} height={200} data={this.props.chart_data} margin={{top: 20, right: 30, left: 20, bottom: 5}} >
-//     <XAxis dataKey="name"/>
-//     <YAxis/>
-//     <CartesianGrid strokeDasharray="3 3"/>
-//     <Tooltip  />
-//     <Legend />
-//       <Bar dataKey="Total Water Quality Uplift" stackId="a" fill="#fdc086"  >
-//         {
-//           this.props.chart_data.map((entry, index) => (
-//             <Cell ref={entry.name}
-//                   cursor="pointer"
-//                   fill={entry.name === this.props.chart_filter ? '#fc9636' : '#fdc086' }
-//                   key={`cell-${index}`}
-//                   id={entry.name}
-//                   onClick={this.handleClick.bind(null,this,entry.name )}  />
-//           ))
-//         }
-//       </Bar>
-//       <Bar dataKey="Total Hydrology Uplift" stackId="a" fill="#beaed4" >
-//         {
-//           this.props.chart_data.map((entry, index) => (
-//             <Cell ref={entry.name}
-//                   cursor="pointer"
-//                   fill={entry.name === this.props.chart_filter ? '#9479b9' : '#beaed4' }
-//                   key={`cell-${index}`}
-//                   id={entry.name}
-//                   onClick={this.handleClick.bind(null,this,entry.name)}/>
-//           ))
-//         }
-//       </Bar>
-//     </BarChart>
-//     }
-//     { this.props.chart_data && this.props.chart_type === 'baseline' &&
-//       <BarChart key={this.props.chart_type} width={1000} height={200} data={this.props.chart_data} margin={{top: 20, right: 30, left: 20, bottom: 5}} >
-//         <XAxis dataKey="name"/>
-//         <YAxis/>
-//         <CartesianGrid strokeDasharray="3 3"/>
-//         <Tooltip  />
-//         <Legend />
-//     <Bar dataKey="Total Water Quality Baseline" stackId="a" fill="#fdc086"  >
-//       {
-//         this.props.chart_data.map((entry, index) => (
-//           <Cell ref={entry.name}
-//                 cursor="pointer"
-//                 fill={entry.name === this.props.chart_filter ? '#fc9636' : '#fdc086' }
-//                 key={`cell-${index}`}
-//                 id={entry.name}
-//                 onClick={this.handleClick.bind(null,this,entry.name )}  />
-//         ))
-//       }
-//     </Bar>
-//     <Bar dataKey="Total Hydrology Baseline" stackId="a" fill="#beaed4" >
-//       {
-//         this.props.chart_data.map((entry, index) => (
-//           <Cell ref={entry.name}
-//                 cursor="pointer"
-//                 fill={entry.name === this.props.chart_filter ? '#9479b9' : '#beaed4' }
-//                 key={`cell-${index}`}
-//                 id={entry.name}
-//                 onClick={this.handleClick.bind(null,this,entry.name)}/>
-//         ))
-//       }
-//     </Bar>
-//     <Bar dataKey="Total Habitat Baseline" stackId="a" fill="#7fc97f" >
-//       {
-//         this.props.chart_data.map((entry, index) => (
-//           <Cell ref={entry.name}
-//                 cursor="pointer"
-//                 fill={entry.name === this.props.chart_filter ? '#44a244' : '#7fc97f' }
-//                 key={`cell-${index}`}
-//                 id={entry.name}
-//                 onClick={this.handleClick.bind(null,this,entry.name)} />
-//         ))
-//       }
-//     </Bar>
-//   </BarChart>
-//
-// }
+
 module.exports = ChartTest;
