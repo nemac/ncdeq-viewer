@@ -34,3 +34,6 @@ node_modules
 
 # Emacs backups
 *~
+
+# Mac Icon stores
+.DS_STORE

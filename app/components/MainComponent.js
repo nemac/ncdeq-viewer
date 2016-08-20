@@ -4,7 +4,10 @@ import React from 'react';
 var HeaderComponent = require('../components/HeaderComponent');
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
+var MapRowWrapper = require('../components/MapRowWrapper');
+var HeaderRowWrapper = require('../components/HeaderRowWrapper');
 var MapRowComponent = require('../components/MapRowComponent');
+var ModalAbout = require('../components/ModalAbout');
 import ChartRowContainer from '../containers/ChartRowContainer';
 import MenuContainer from '../containers/MenuContainer';
 
@@ -15,7 +18,9 @@ import {HEADER_HEIGHT ,
   MAP_HEIGHT,
   CHART_HEIGHT,
   CHART_VISIBILITY,
-  MAX_SEARCH_ZOOM
+  MAX_SEARCH_ZOOM,
+  MAP_FULL_WIDTH,
+  MAP_CHART_WIDTH
 } from '../constants/appConstants'
 
 var MainComponent = React.createClass({
@@ -48,7 +53,6 @@ var MainComponent = React.createClass({
       //for semantic-ui dropdowns
       $('.ui.dropdown').dropdown();
       $('#search-select').dropdown();
-
     },
     render: function() {
 
@@ -60,27 +64,27 @@ var MainComponent = React.createClass({
       const headerHeight = this.props.default_settings ? this.props.default_settings.headerHeight : HEADER_HEIGHT;
       const defpad = this.props.default_settings ? this.props.default_settings.defpad : DEF_PAD;
       const chartHeight = this.props.default_settings ? this.props.default_settings.chartHeight : CHART_HEIGHT;
+      const columnWidth = this.props.charts.chart_visibility ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
 
       return (
         <div className="ui one column relaxed padded grid">
 
-          <RowWrapper rowPadding={rowPadding} height={headerHeight} >
+          <HeaderRowWrapper rowPadding={rowPadding} height={headerHeight}>
             <HeaderComponent content='To get started click a River Basin on the map, or search for a location to zoom to.'/>
-          </RowWrapper>
+          </HeaderRowWrapper>
 
-          <RowWrapper rowPadding={rowPadding} height={breadCrumbsHeight}>
+          <RowWrapper rowPadding={"0"} height={breadCrumbsHeight}>
             <MenuContainer />
           </RowWrapper>
 
-          <RowWrapper rowPadding={rowPadding} >
-            <MapRowComponent />
-          </RowWrapper>
-          {/* only render the charts section when the user has made the charts visibility true */}
-          { this.props.charts.chart_visibility &&
-            <RowWrapper rowPadding={defpad} height={chartHeight} >
+          <MapRowWrapper rowPadding={rowPadding} >
+            {/* only render the charts section when the user has made the charts visibility true */}
+            { this.props.charts.chart_visibility &&
               <ChartRowContainer />
-            </RowWrapper>
-          }
+            }
+            <MapRowComponent columnWidth={columnWidth}/>
+          </MapRowWrapper>
+          <ModalAbout />
         </div>
       );
 

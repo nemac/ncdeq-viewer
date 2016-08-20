@@ -18,7 +18,11 @@ var MenuComponent = React.createClass({
     //toggle chart visibility with button click
     this.props.update_ChartVisiblity();
     this.props.update_MapHeight();
-
+    //leaflet map dosenot update size this forces the issue
+    if(this.props.leafletMap){
+      const leafletMap = this.props.leafletMap.leafletMap;
+      setTimeout(function(){ leafletMap.invalidateSize()}, 100);
+    };
   },
   componentDidMount: function() {
     this.props.get_MenuList();

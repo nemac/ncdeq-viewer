@@ -42,16 +42,14 @@ var ChartRowWrapper = React.createClass({
     }
 
     return (
-      <div className="ui segments">
-        <div className="ui grey tertiary inverted clearing segment">
+      <div className="item" style={{display: "block"}}>
+        <div className="item" style={{display: "block", minHeight: "30px"}}>
+          <i className="left floated dropdown icon"></i>
           <h4 className="ui left floated header">
             {this.props.title}
           </h4>
-          <h4 className="ui right floated header">
-            <i className="dropdown icon"></i>
-          </h4>
         </div>
-        <div className="ui basic segment">
+        <div className="item" style={{display: "block"}}>
           {chart}
           <br />
           <br />

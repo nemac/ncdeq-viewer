@@ -17,6 +17,13 @@ var PropTypes = React.PropTypes;
 var TempLayer;
 
 var MapContainer = React.createClass({
+  handleResize: function(){
+    //leaflet map dosenot update size this forces the issue
+    if(this.props.leafletMap){
+      const leafletMap = this.props.leafletMap.leafletMap;
+      setTimeout(function(){ leafletMap.invalidateSize()}, 400);
+    };
+  },
   add_GeoJSON: function(features){
 
     //get the leaflet Map object
@@ -283,12 +290,13 @@ var MapContainer = React.createClass({
     const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
 
     return (
-      <div className="twelve wide column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
+      <div className="sixteen wide column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
           onLeafletZoomEnd={this.HandleMapEnd.bind(null,this)}
           onLeafletMoveEnd={this.HandleMapEnd.bind(null,this)}
           onLeafletClick={this.handleMapClick.bind(null,this)}
+          onLeafletResize={this.handleResize.bind(null,this)}
           center={[this.props.map_settings.latitude,this.props.map_settings.longitude]}
           zoom={this.props.map_settings.zoom}
           maxBounds={this.props.map_settings.maxBounds}
