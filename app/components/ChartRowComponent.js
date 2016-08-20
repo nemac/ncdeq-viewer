@@ -130,28 +130,43 @@ var ChartRow = React.createClass({
     //returned the filtered chart data
     return chart_data_limited
   },
+  getChat_GroupSum: function(chart_data){
+    //returns an array of hucs and their summed value for any level
+    // aget unique set of of hucs and sum their values.
+    // this will ensure the sum of the values for the chart level are aggregated
+    const groupsum = chart_data.reduce(function(acc, x) {
+      // first check if the given group is in the object
+      acc[x.properties.ID + '_' + x.properties.chart_matchid] = acc[x.properties.ID + '_' + x.properties.chart_matchid] ?  acc[x.properties.ID + '_' + x.properties.chart_matchid] + Number([x.properties.chart_value] ): Number([x.properties.chart_value]);
+
+      return acc;
+
+    }, {});
+
+    return groupsum
+
+  },
   getChart_Sorted: function(chart_data){
-  //returns an array of hucids sorted by thier value
-  // will use this to loop through and create the chart values
+    //returns an array of hucids sorted by thier value
+    // will use this to loop through and create the chart values
 
+    const grouped_sum =  this.getChat_GroupSum(chart_data)
 
-
-  //not always right and when uplift there is no habitat total no total which throws this off.  need to talk to jamie about this.
-    let sorted_charts = chart_data.sort(function (a, b) {
-      if (a.properties.chart_value > b.properties.chart_value) {
+    //now sort the grouped hucs
+    const sorted_hucs = Object.keys(grouped_sum).sort(function (a, b) {
+      if (grouped_sum[a] > grouped_sum[b]) {
         return -1;
       }
-      if (a.properties.chart_value < b.properties.chart_value) {
+      if (grouped_sum[a] < grouped_sum[b]) {
         return 1;
       }
+
       // a must be equal to b or must be a null value?
       return 0;
     });
 
-    //return a unique list of hucs
-    const sorted_hucs = [...new Set(sorted_charts.map(item => item.properties.ID))];
 
-    return sorted_hucs
+    return sorted_hucs;
+
   },
   getChart_data: function(chart_data){
     // builds chart data into proper format for rechart library (bar charts)
@@ -162,30 +177,16 @@ var ChartRow = React.createClass({
       //get fist level chart
       let levelone =  this.getChart_FilteredByChartLevel( chart_data, 1, false );
 
-      //get the avg for each level one. item below is avg of all need to do for each chart_matchid and create a new array of sorted hucs
-      var sum = levelone.reduce(function(sum, item){
-        return sum + Number(item.properties.chart_value);
-      }, 0);
-
-      // console.log(sum)
-      // console.log(levelone.length)
-
-      var avg = sum / levelone.length;
-      // console.log(avg)
-
-      //get the top level chart for sorting
-      let levelTop =  this.getChart_FilteredByChartLevel( chart_data, 1, true );
-
       // sort by value
-      let sorted_hucs = this.getChart_Sorted(levelTop);
+      let sorted_hucs = this.getChart_Sorted(levelone);
 
       sorted_hucs.map(huc => {
 
-       var name = huc;
+       var name = huc.substring(0,12);
        var chart_object = new Object;
        chart_object["name"] =  name;
 
-       const levelones = this.getChart_FilteredByHUC(levelone, huc);
+       const levelones = this.getChart_FilteredByHUC(levelone, name);
        let children = [];
 
        levelones.map(item => {
@@ -217,7 +218,7 @@ var ChartRow = React.createClass({
 
     //get data for chart type of baseline
     let uplift_data = this.getCharType_Data('uplift');
-
+    //console.log(uplift_data[0])
     //get the user selected huc so we can filter
     let chart_filter = this.getChart_Filter(baseline_data[0]);
 

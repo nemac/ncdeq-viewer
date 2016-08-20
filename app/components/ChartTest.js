@@ -40,7 +40,7 @@ var ChartTest = React.createClass({
 
     })
     //$("#data").html(values);
-    $("#data").html(name);
+    //$("#data").html(name);
   },
   get_keyColors: function(key){
     let key_colors = [];
@@ -61,15 +61,15 @@ var ChartTest = React.createClass({
       case 'Total Hydrology Uplift':
         key_colors = ['#9479b9' , '#beaed4']
         break;
-      case 'Habitat Uplift Aquatic Connectivity':
+      case 'Total Habitat Uplift':
         key_colors = ['#44a244' , '#7fc97f']
         break;
-      case 'Habitat Uplift Avoided Conversion':
-        key_colors = ['#ffff33' , '#ffff99']
-        break;
-      case 'Habitat Uplift Restoration':
-        key_colors = ['#1f3b61' , '#386cb0']
-        break;
+      // case 'Habitat Uplift Avoided Conversion':
+      //   key_colors = ['#ffff33' , '#ffff99']
+      //   break;
+      // case 'Habitat Uplift Restoration':
+      //   key_colors = ['#1f3b61' , '#386cb0']
+      //   break;
       default:
         key_colors = ['#fc9636' , '#fdc086']
         break;
@@ -85,6 +85,7 @@ var ChartTest = React.createClass({
     })
     return custom_payload
   },
+  //keys for main chart 
   get_datakeys: function(chart_type){
     let data_keys = [];
     switch (chart_type) {
@@ -92,7 +93,7 @@ var ChartTest = React.createClass({
         data_keys = ['Total Water Quality Baseline','Total Hydrology Baseline','Total Habitat Baseline'];
         break;
       case 'uplift':
-        data_keys = ['Total Water Quality Uplift','Total Hydrology Uplift','Habitat Uplift Aquatic Connectivity','Habitat Uplift Avoided Conversion','Habitat Uplift Restoration'];
+        data_keys = ['Total Water Quality Uplift','Total Hydrology Uplift','Total Habitat Uplift'];
         break;
       default:
 
@@ -176,9 +177,11 @@ var ChartTest = React.createClass({
             {this.get_bars()}
            </BarChart>
         </div>
+        {/*
         <div className="ui basic segment" style={{float:"left",width:350}}>
           <div id="data" />
         </div>
+        */}
       </div>
     );
   }
