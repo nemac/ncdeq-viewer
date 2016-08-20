@@ -9,7 +9,7 @@ function setHeight(repeat,val){
   if(repeat<1){
     return val
   } else{
-    return setHeight(repeat-1, val/1.618)
+    return setHeight(repeat-1, val - (ROW_PADDING*2))
   }
 }
 
@@ -36,10 +36,10 @@ function calculate_NewHeights(state){
                     );
 
   if (vis){
-    var mapHeight = setHeight(1,leftover);
-    var chartHeight = window.innerHeight - (leftover - mapHeight);
+    var mapHeight = leftover - 25; //setHeight(1,leftover);
+    var chartHeight = 0; //window.innerHeight - (leftover - mapHeight);
   } else {
-    var mapHeight  = leftover
+    var mapHeight  = leftover + 50;
     var chartHeight = 0;
   }
 

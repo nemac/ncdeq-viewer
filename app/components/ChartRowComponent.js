@@ -242,7 +242,6 @@ var ChartRow = React.createClass({
     let uplift_data_limited = this.getChart_FilteredByHUC(uplift_data[0], chart_filter);
 
 
-
     let chart_baseline_bar = [];
     let chart_upflift_bar = [];
     let all_hucs_bar = [];
@@ -262,13 +261,6 @@ var ChartRow = React.createClass({
         </div>
         <ChartRowWrapper key="baseline" chart_width={575} title="baseline" chart_type="baseline" chart_data={chart_baseline_bar} chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
         <ChartRowWrapper key="uplift" chart_width={575} title="uplift" chart_type="uplift" chart_data={chart_upflift_bar}  chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
-        {/*
-        <ChartRowWrapper key="HUCS" title="HUC's" id=""  level_data={level_json} id_data=""  />
-
-        <ChartRowWrapper key="TRA" title="TRA's"  id=""  level_data="" id_data="" />
-
-        <ChartRowWrapper  key="COMPARE"  title="Compare" id=""  level_data="" id_data={id_json} />
-        */}
       </div>
     );
   }

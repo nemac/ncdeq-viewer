@@ -162,14 +162,14 @@ var ChartTest = React.createClass({
 
       <div >
         <div id="chart" style={{float:"left"}} >
-          {this.get_title()}
+          {/* {this.get_title()} */}
           <BarChart key={this.props.chart_type}
                     width={this.props.chart_width}
                     height={200}
                     data={this.props.chart_data}
                     margin={{top: 20, right: 30, left: 20, bottom: 5}} >
             <XAxis dataKey="name"/>
-            <YAxis/>
+            <YAxis hide={{true}}/>
             <CartesianGrid strokeDasharray="3 3"/>
             <Tooltip  />
             <Legend payload={this.get_legend_payload(this.props.chart_type)}  />
