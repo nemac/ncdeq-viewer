@@ -149,6 +149,7 @@ var ChartRow = React.createClass({
     //returns an array of hucids sorted by thier value
     // will use this to loop through and create the chart values
 
+    //get the hucs grouped and summed (grouped by the huc and the machted chart id which is the next level up chart...)
     const grouped_sum =  this.getChat_GroupSum(chart_data)
 
     //now sort the grouped hucs
@@ -182,10 +183,17 @@ var ChartRow = React.createClass({
 
       sorted_hucs.map(huc => {
 
-       var name = huc.substring(0,12);
+        //find the underscore sperates the huc id from the id of chart_matchid  only need the huc_id
+       const underscore = huc.indexOf('_');
+
+       //get the huc id from the array
+       var name = huc.substring(0,underscore);
+
+       //create an object to hold the chart data
        var chart_object = new Object;
        chart_object["name"] =  name;
 
+       //get the chat for each indivual huc
        const levelones = this.getChart_FilteredByHUC(levelone, name);
        let children = [];
 
