@@ -2,16 +2,15 @@
 ///   this especially important for Leaflet which needs an absilte hieght to fill
 
 //get constants for default sizes and settings
-import {HEADER_HEIGHT , BREAD_CRUMBS_HEIGHT, ROW_PADDING , DEF_PAD , MAP_HEIGHT , CHART_HEIGHT , CHART_VISIBILITY} from '../constants/appConstants'
+import {HEADER_HEIGHT ,
+        BREAD_CRUMBS_HEIGHT,
+        ROW_PADDING ,
+        DEF_PAD ,
+        MAP_HEIGHT ,
+        CHART_HEIGHT ,
+        CHART_VISIBILITY,
+        MAP_HEIGHT_OFFSET} from '../constants/appConstants'
 
-function setHeight(repeat,val){
-  //set the height of element based on a ratio 1.618
-  if(repeat<1){
-    return val
-  } else{
-    return setHeight(repeat-1, val - (ROW_PADDING*2))
-  }
-}
 
 function calculate_NewHeights(state){
 
@@ -36,10 +35,10 @@ function calculate_NewHeights(state){
                     );
 
   if (vis){
-    var mapHeight = leftover - 25; //setHeight(1,leftover);
-    var chartHeight = 0; //window.innerHeight - (leftover - mapHeight);
+    var mapHeight = leftover - MAP_HEIGHT_OFFSET;
+    var chartHeight = 0;
   } else {
-    var mapHeight  = leftover + 50;
+    var mapHeight  = leftover - MAP_HEIGHT_OFFSET;
     var chartHeight = 0;
   }
 
