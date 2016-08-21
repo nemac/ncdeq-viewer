@@ -27,6 +27,12 @@ var ChartRow = React.createClass({
     this.props.update_ChartVisiblity();
     //update map height comes after chart vis sp map will resize to full hieght.
     this.props.update_MapHeight();
+
+    if(this.props.leafletMap){
+      const leafletMap = this.props.leafletMap.leafletMap;
+      setTimeout(function(){ leafletMap.invalidateSize()}, 100);
+    };
+
   },
   getChildChart: function(chartid,huc){
 
@@ -252,7 +258,7 @@ var ChartRow = React.createClass({
 
     return (
 
-      <div className={"ui " + CHART_WIDTH + " wide column vertically divided items"} style={{display:vis}}>
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items"} style={{display:vis}}>
         <div className="ui item" >
           <div className="content"><p>Some descriptive text</p></div>
           <div className="meduim basic ui button icon right floated" onClick={this.chartToggle} >

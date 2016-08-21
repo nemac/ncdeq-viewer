@@ -33,7 +33,6 @@ function calculate_NewHeights(state){
                     (headerHeight + breadCrumbsHeight +
                       (rowPadding*4)
                     );
-
   if (vis){
     var mapHeight = leftover - MAP_HEIGHT_OFFSET;
     var chartHeight = 0;

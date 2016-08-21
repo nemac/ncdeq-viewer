@@ -1,9 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-import { BarChart, Bar, Brush, Cell, CartesianGrid, ReferenceLine, ReferenceDot, XAxis, YAxis, Tooltip, Legend } from 'recharts';
-import { scaleOrdinal, schemeCategory10 } from 'd3-scale';
-import { getAGOFeatureId} from '../utils/helpers';
+import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
 
 
@@ -157,19 +155,18 @@ var ChartTest = React.createClass({
       title = "No Charts Available Yet Please Click on the map, choose a HUC, or Search for a location"
     }
     $('#description').html(title);
-    console.log(this.props.chart_width)
+
     return (
 
       <div >
-        <div id="chart" style={{float:"left"}} >
-          {/* {this.get_title()} */}
+        <div id="bar-chart" style={{float:"left"}} >
           <BarChart key={this.props.chart_type}
                     width={this.props.chart_width}
                     height={200}
                     data={this.props.chart_data}
-                    margin={{top: 20, right: 30, left: 20, bottom: 5}} >
+                    margin={{top: 20, right: 30, left: 20, bottom: 5}}  >
             <XAxis dataKey="name"/>
-            <YAxis hide={{true}}/>
+            <YAxis hide={true}/>
             <CartesianGrid strokeDasharray="3 3"/>
             <Tooltip  />
             <Legend payload={this.get_legend_payload(this.props.chart_type)}  />
