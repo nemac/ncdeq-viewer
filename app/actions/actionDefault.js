@@ -13,7 +13,8 @@ import {HEADER_HEIGHT ,
         MAP_FULL_WIDTH_INT,
         MAP_CHART_WIDTH_INT,
         CHART_WIDTH_INT,
-        CHART_BORDER} from '../constants/appConstants'
+        CHART_BORDER,
+        HEADER_PADDING} from '../constants/appConstants'
 
 
 function calculate_NewHeights(state){
@@ -24,6 +25,8 @@ function calculate_NewHeights(state){
   const headerHeight = state.default_settings.default_settings ? state.default_settings.default_settings.headerHeight : HEADER_HEIGHT ;
   const breadCrumbsHeight = state.default_settings.default_settings ? state.default_settings.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
   const rowPadding = state.default_settings.default_settings ? state.default_settings.default_settings.rowPadding : ROW_PADDING;
+  const headerPadding =  HEADER_PADDING;
+
   const defpad = state.default_settings.default_settings ? state.default_settings.default_settings.defpad : DEF_PAD;
 
 
@@ -36,7 +39,7 @@ function calculate_NewHeights(state){
   const leftover = window.innerHeight -
                     (headerHeight + breadCrumbsHeight +
                       (rowPadding*4)
-                    );
+                    )- (headerPadding*4);
 
   const chart_px_width = (window.innerWidth * (CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (CHART_BORDER)
   const map_px_width = (window.innerWidth * (MAP_CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (rowPadding*3)

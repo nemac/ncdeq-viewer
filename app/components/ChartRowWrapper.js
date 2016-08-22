@@ -2,10 +2,6 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var ChartBars = require('../components/ChartBars');
 
-import Treemap from '../treemap/treemap.jsx';
-require('../treemap/styles.css');
-var {makeTreeFromHuc12Data, makeTreeFromHuc8Data} = require('../treemap/core.js');
-
 var ChartRowWrapper = React.createClass({
   propTypes: {
     title: PropTypes.string,
@@ -23,6 +19,10 @@ var ChartRowWrapper = React.createClass({
           <h4 className="ui left floated header">
             {this.props.title}
           </h4>
+          <div className="meta">
+            <span className="description">{this.props.title_description}</span>
+            <span className="note">{this.props.note}</span>
+          </div>
         </div>
         <div className="item" style={{display: "block"}}>
           <ChartBars key="baseline" chart_width={this.props.chart_width}
@@ -30,8 +30,6 @@ var ChartRowWrapper = React.createClass({
                                     chart_data={this.props.chart_data}
                                     chart_filter={this.props.chart_filter}
                                     get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
-          <div refs={this.props.title} >
-          </div>
         </div>
       </div>
     );

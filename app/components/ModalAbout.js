@@ -11,14 +11,16 @@ var ModalAbout = React.createClass({
           </div>
         </div>
         <div className="header">
-          About the North Carolina DEQ Watershed Viewer
+          About the River Basin Restoration Priorities Web Application
         </div>
         <div className="content">
           <div className="description">
-            <div className="ui header">Here is a description</div>
-            <p>Oni on patro veadi, duon ferio malpli ja enz. Multa tutampleksa as mia. Sat jo gardi kunskribado, movi vendo pronomeca e igi. Pli danke ekkrio rolfinaĵo in, hura helpverbo bedaŭrinde nek he, tera esperanto aspektismo ts veo. Be dev kelka leteri frazetvortigo, tuje substantiva respondvorto duo ig.</p>
-            <p>Nun mili duto definitive mo, si onklo hodiaŭa deciliono tuj. Sur veadi kvanta ju, kasedo multiplikite ore it. Nk gibi intere solstariva kun. E vice tiama ano, sat aperi frato substantivo ni.</p>
-            <p>Ad maldekstre komentofrazo dum. Hoj sola halo anstataŭe ge. Jen da movi jesigi, ekde ekesti dividostreko hav u. Lipa nura havi ko poe. Loka samtempe la bis.</p>
+            <p> NCDEQ-Division of Mitigation Services River Basin Restoration Priorities (RBRPs) are plans developed to identify priorities for
+              the protection and enhancement of water quality, fisheries, wildlife habitat and recreational opportunities. DMS uses these priorities to guide its stream,
+              wetland and riparian restoration and protection activities in the state’s 17 major river basins.
+              The updated RBRP process identifies priorities as Targeted  Resource Areas(TRAs).
+              TRAs are collections of clustered NHD+ catchments that receive priority for DMS planning and restoration project funds.
+              Find out more at <a href="http://deq.nc.gov/"> http://deq.nc.gov/ </a></p>
           </div>
         </div>
       </div>

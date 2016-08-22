@@ -66,14 +66,19 @@ var MainComponent = React.createClass({
       const chartHeight = this.props.default_settings ? this.props.default_settings.chartHeight : CHART_HEIGHT;
       const columnWidth = this.props.charts.chart_visibility ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
 
+      const HeaderContent = "The purpose of this tool is to display the Division of Mitigation Services Targeted Resource Areas (TRAs) and " +
+                      "identify watersheds where ecological and hydrological function can be improved.  " +
+                      "TRAs identify clusters of areas where habitat, hydrology and/or water quality variables " +
+                      "can be managed to improve watershed function. " +
+                      "  To get started click a River Basin on the map, " +
+                      "or search for a location to zoom to."
       return (
         <div className="ui one column relaxed padded grid">
 
-          <HeaderRowWrapper rowPadding={rowPadding} height={headerHeight}>
-            <HeaderComponent content='To get started click a River Basin on the map, or search for a location to zoom to.'/>
-          </HeaderRowWrapper>
+          <HeaderComponent content={HeaderContent}/>
 
-          <RowWrapper rowPadding={"0"} height={breadCrumbsHeight}>
+
+          <RowWrapper rowPadding={"1"} height={breadCrumbsHeight}>
             <MenuContainer />
           </RowWrapper>
 
