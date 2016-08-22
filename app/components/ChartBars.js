@@ -157,7 +157,6 @@ var ChartBars = React.createClass({
       title = "No Charts Available Yet Please Click on the map, choose a HUC, or Search for a location"
     }
     $('#description').html(title);
-    
     return (
 
       <div >
