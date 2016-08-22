@@ -14,7 +14,9 @@ var ChartTest = React.createClass({
       title:'Title'
     };
   },
-  handleClick(constructor, name, data, index, test) {
+  handleClick(constructor, entry, data, index, test) {
+    const name = entry.name
+    console.log(entry)
     this.props.get_LayerInfo_ByValue(name, HUC12_MAP_FEATUREID)
     // const id = $("#data").html(name);
 
@@ -105,7 +107,7 @@ var ChartTest = React.createClass({
                   strokeWidth={entry.name === this.props.chart_filter ? 5 : 0}
                   key={`cell-${index}`}
                   id={entry.name}
-                  onClick={this.handleClick.bind(null,this,entry.name)}/>
+                  onClick={this.handleClick.bind(null,this,entry)}/>
               ))
       )
     }

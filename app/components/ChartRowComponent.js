@@ -260,10 +260,18 @@ var ChartRow = React.createClass({
 
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items"} style={{display:vis}}>
         <div className="ui item" >
-          <div className="content"><p>Some descriptive text</p></div>
+          <div className="content">
+          <div className="ui header left floated">
+            Charts Showing Baseline and Uplift for the Cataloging Unit {chart_filter.substring(0,8)}
+          </div>
           <div className="meduim basic ui button icon right floated" onClick={this.chartToggle} >
             <i className="remove icon"></i>
           </div>
+          <br />
+          <div className="meta">
+            <span className="stay">The HUC{chart_filter}is currently selected.</span>
+          </div>
+        </div>
         </div>
         <ChartRowWrapper key="baseline" chart_width={575} title="baseline" chart_type="baseline" chart_data={chart_baseline_bar} chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
         <ChartRowWrapper key="uplift" chart_width={575} title="uplift" chart_type="uplift" chart_data={chart_upflift_bar}  chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
