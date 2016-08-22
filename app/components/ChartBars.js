@@ -47,27 +47,27 @@ var ChartBars = React.createClass({
 
     switch (key) {
       case 'Total Water Quality Baseline':
-        key_colors = ['#3cdd6f' , '#1a9641']
+        key_colors = ['#1a9641' , '#3cdd6f']
         break;
       case 'Total Hydrology Baseline':
-        key_colors = ['#6eb3dd' , '#2b83ba']
+        key_colors = ['#2b83ba' , '#6eb3dd']
         break;
       case 'Total Habitat Baseline':
-        key_colors = ['#ec5f62' , '#d7191c' ]
+        key_colors = ['#d7191c' , '#ec5f62' ]
         break;
       case 'Total Water Quality Uplift':
-        key_colors = ['#3cdd6f' , '#1a9641']
+        key_colors = ['#1a9641' , '#3cdd6f']
         break;
       case 'Total Hydrology Uplift':
-        key_colors = ['#6eb3dd' , '#2b83ba']
+        key_colors = ['#2b83ba' , '#6eb3dd']
         break;
       case 'Total Habitat Uplift':
-        key_colors = ['#ec5f62' , '#d7191c' ]
+        key_colors = ['#d7191c' , '#ec5f62' ]
         break;
       //   key_colors = ['#ffff33' , '#ffff99']
       //   key_colors = ['#1f3b61' , '#386cb0']
       default:
-        key_colors = ['#3cdd6f' , '#1a9641']
+        key_colors = ['#1a9641' , '#3cdd6f']
         break;
     }
     return key_colors;
