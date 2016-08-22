@@ -230,7 +230,7 @@ var ChartRow = React.createClass({
     return chart_data_array
   },
   render: function() {
-
+    //get chart width inpixl from redux should handle resize in actiion creators
     let chart_width_px = CHART_WIDTH_PX;
     if(this.props.default_settings){
       chart_width_px = this.props.default_settings.chartWidth;
