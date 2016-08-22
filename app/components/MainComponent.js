@@ -69,7 +69,8 @@ var MainComponent = React.createClass({
       const HeaderContent = "The purpose of this tool is to display the Division of Mitigation Services Targeted Resource Areas (TRAs) and " +
                       "identify watersheds where ecological and hydrological function can be improved.  " +
                       "TRAs identify clusters of areas where habitat, hydrology and/or water quality variables " +
-                      "can be managed to improve watershed function. To get started click a River Basin on the map, " +
+                      "can be managed to improve watershed function. " +
+                      "  To get started click a River Basin on the map, " +
                       "or search for a location to zoom to."
       return (
         <div className="ui one column relaxed padded grid">

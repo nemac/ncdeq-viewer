@@ -33,6 +33,7 @@ var HeaderComponent = React.createClass({
             </div>
             <div className="description">
               <span style={{color: "#fff"}} >{ this.state.content}<br /><br /></span>
+                <span style={{color: "#fff"}} >From North Carolina Department of Environmental Quality (NCDEQ) -Division of Mitigation Services</span>
             </div>
               <button className="ui right floated inverted button">
                 Resources
