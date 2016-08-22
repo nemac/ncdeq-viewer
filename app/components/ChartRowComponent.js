@@ -261,11 +261,11 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0]);
     chart_upflift_bar = this.getChart_data(uplift_data[0]);
 
-    let chart_cataloging_unit = 'Please Click on the Map, Search, or Choose a River Basin to get started.'
+    let chart_cataloging_unit = 'Please Click on the Map, Search, or Choose something to get started.'
     let huc_message = "No HUC's Selected yet."
     if(chart_filter){
       chart_cataloging_unit = 'Charts Showing Baseline and Uplift for the Cataloging Unit ' +chart_filter.substring(0,8)
-      huc_message = "The HUC " +  chart_filter + " is currently Highlighted."
+      huc_message = "The HUC " +  chart_filter + " is currently highlighted."
     }
     return (
 
@@ -284,24 +284,8 @@ var ChartRow = React.createClass({
           </div>
         </div>
         </div>
-        <ChartRowWrapper key="baseline"
-          chart_width={chart_width_px}
-          title="baseline"
-          title_description="The watershed conditions prior to management strategy."
-          note="The taller the bar chart the more impaired"
-          chart_type="baseline"
-          chart_data={chart_baseline_bar}
-          chart_filter={chart_filter}
-          get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
-        <ChartRowWrapper key="uplift"
-          chart_width={chart_width_px}
-          title="uplift"
-          title_description="The difference between baseline conditions and post-management values."
-          note="The taller the bar chart the more potential for improvement"
-          chart_type="uplift"
-          chart_data={chart_upflift_bar}
-          chart_filter={chart_filter}
-           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
+        <ChartRowWrapper key="baseline" chart_width={chart_width_px} title="BASELINE" chart_type="baseline" chart_data={chart_baseline_bar} chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
+        <ChartRowWrapper key="uplift" chart_width={chart_width_px} title="UPLIFT" chart_type="uplift" chart_data={chart_upflift_bar}  chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
       </div>
     );
   }

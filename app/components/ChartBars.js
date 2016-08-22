@@ -31,15 +31,21 @@ var ChartBars = React.createClass({
       for (var prop in chartclickvalues) {
         if (chartclickvalues.hasOwnProperty(prop)) {
           if(typeof chartclickvalues[prop] === 'object'){
-            values = values + prop + ": " + JSON.stringify(chartclickvalues[prop]) + "<BR />"
+            // values = values + prop + ": " + JSON.stringify(chartclickvalues[prop]) + "<BR />"
           }else{
-            values = values + prop + ": " + chartclickvalues[prop] + "<BR />"
+            if(prop != 'chart_id'){
+              if(prop === 'name'){
+                values = values + "HUC: " + chartclickvalues[prop] + "<BR />"
+              }else{
+                values = values + prop + ": " + chartclickvalues[prop] + "<BR />"
+              }
+            }
           }
         }
       }
 
     })
-    //$("#data").html(values);
+    $("#cdata").html(values);
     //$("#data").html(name);
   },
   get_keyColors: function(key){
@@ -140,10 +146,53 @@ var ChartBars = React.createClass({
     }
     return null
   },
+  set_toolTip: function(payload, label){
+    return (
+      <div className="custom-tooltip">
+        <p className="label">{`${label} : ${payload[0].value}`}</p>
+      </div>
+    )
+  },
+
   render: function() {
     //build chart data component and when there is no data returned
     //  Tell user no chart data Available
     let title;
+
+    const self = this;
+    const CustomTooltip  = React.createClass({
+      propTypes: {
+        type: PropTypes.string,
+        payload: PropTypes.array,
+        label: PropTypes.string,
+      },
+
+
+
+      render() {
+        const { active } = this.props;
+        let html_hov = '';
+        if (active) {
+          const { payload, label } = this.props;
+
+          //const tip = self.set_toolTip(payload, label);
+          //console.log(tip)
+          payload.map( bar_segment => {
+            html_hov = html_hov + "<span >" + bar_segment.name + ': ' + bar_segment.value + "</span >" ;
+          })
+          html_hov = "<span>" + label + "</span>" + html_hov;
+          $("#hdata").html(html_hov);
+
+          return (
+          	<div/>
+          );
+        }
+
+        return null;
+      }
+    });
+
+
     if (this.props.chart_filter){
       // title =  <div key="1" >ALL HUC's in the Cataloging Unit {this.props.chart_filter.substring(0,8)}</div>
       // title =  title + <div key="2" >Click on the Chart to go to the HUC <strong>OR</strong> Place you mouse cursor over bar to get more information</div>
@@ -160,16 +209,17 @@ var ChartBars = React.createClass({
     return (
 
       <div >
+        <div id="hdata" />
+        <div id="cdata" />
         <div id="bar-chart" style={{float:"left"}} >
           <BarChart key={this.props.chart_type}
                     width={this.props.chart_width}
                     height={200}
                     data={this.props.chart_data}
                     margin={{top: 20, right: 30, left: 20, bottom: 5}}  >
-            <XAxis dataKey="name"/>
+            <XAxis dataKey="name" hide={true}/>
             <YAxis hide={true}/>
-            <CartesianGrid strokeDasharray="3 3"/>
-            <Tooltip  />
+            <Tooltip content={<CustomTooltip/>}/>
             <Legend payload={this.get_legend_payload(this.props.chart_type)}  />
             {this.get_bars()}
            </BarChart>
