@@ -265,7 +265,7 @@ var ChartRow = React.createClass({
     let huc_message = "No HUC's Selected yet."
     if(chart_filter){
       chart_cataloging_unit = 'Charts Showing Baseline and Uplift for the Cataloging Unit ' +chart_filter.substring(0,8)
-      huc_message = "The HUC " +  chart_filter + "is currently selected."
+      huc_message = "The HUC " +  chart_filter + " is currently selected."
     }
     return (
 
