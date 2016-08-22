@@ -1,12 +1,12 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 import ChartRowWrapper from '../components/ChartRowWrapper';
-var ChartTest = require('../components/ChartTest');
 var SectionWrapper = require('./SectionWrapper');
 var HeaderTitleComponent = require('../components/HeaderTitleComponent');
 
 import {
-  CHART_WIDTH
+  CHART_WIDTH,
+  CHART_WIDTH_PX
 } from '../constants/appConstants'
 
 
@@ -230,6 +230,12 @@ var ChartRow = React.createClass({
     return chart_data_array
   },
   render: function() {
+
+    let chart_width_px = CHART_WIDTH_PX;
+    if(this.props.default_settings){
+      chart_width_px = this.props.default_settings.chartWidth;
+    }
+
     let vis = this.props.charts.chart_visibility ?  'show' : 'none';
 
     //get data for chart type of baseline
@@ -255,26 +261,31 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0]);
     chart_upflift_bar = this.getChart_data(uplift_data[0]);
 
-
+    let chart_cataloging_unit = 'Please Click on the Map, Search, or Choose something to get started.'
+    let huc_message = "No HUC's Selected yet."
+    if(chart_filter){
+      chart_cataloging_unit = 'Charts Showing Baseline and Uplift for the Cataloging Unit ' +chart_filter.substring(0,8)
+      huc_message = "The HUC{chart_filter}is currently selected."
+    }
     return (
 
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items"} style={{display:vis}}>
         <div className="ui item" >
           <div className="content">
           <div className="ui header left floated">
-            Charts Showing Baseline and Uplift for the Cataloging Unit {chart_filter.substring(0,8)}
+            {chart_cataloging_unit}
           </div>
           <div className="meduim basic ui button icon right floated" onClick={this.chartToggle} >
             <i className="remove icon"></i>
           </div>
           <br />
           <div className="meta">
-            <span className="stay">The HUC{chart_filter}is currently selected.</span>
+            <span className="stay">{huc_message}</span>
           </div>
         </div>
         </div>
-        <ChartRowWrapper key="baseline" chart_width={575} title="baseline" chart_type="baseline" chart_data={chart_baseline_bar} chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
-        <ChartRowWrapper key="uplift" chart_width={575} title="uplift" chart_type="uplift" chart_data={chart_upflift_bar}  chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
+        <ChartRowWrapper key="baseline" chart_width={chart_width_px} title="baseline" chart_type="baseline" chart_data={chart_baseline_bar} chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
+        <ChartRowWrapper key="uplift" chart_width={chart_width_px} title="uplift" chart_type="uplift" chart_data={chart_upflift_bar}  chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
       </div>
     );
   }

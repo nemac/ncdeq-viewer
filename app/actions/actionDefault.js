@@ -9,7 +9,11 @@ import {HEADER_HEIGHT ,
         MAP_HEIGHT ,
         CHART_HEIGHT ,
         CHART_VISIBILITY,
-        MAP_HEIGHT_OFFSET} from '../constants/appConstants'
+        MAP_HEIGHT_OFFSET,
+        MAP_FULL_WIDTH_INT,
+        MAP_CHART_WIDTH_INT,
+        CHART_WIDTH_INT,
+        CHART_BORDER} from '../constants/appConstants'
 
 
 function calculate_NewHeights(state){
@@ -33,6 +37,10 @@ function calculate_NewHeights(state){
                     (headerHeight + breadCrumbsHeight +
                       (rowPadding*4)
                     );
+
+  const chart_px_width = (window.innerWidth * (CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (CHART_BORDER)
+  const map_px_width = (window.innerWidth * (MAP_CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (rowPadding*3)
+
   if (vis){
     var mapHeight = leftover - MAP_HEIGHT_OFFSET;
     var chartHeight = 0;
@@ -54,7 +62,9 @@ function calculate_NewHeights(state){
 
   return {
     mapHeight,
-    chartHeight
+    chartHeight,
+    chart_px_width,
+    map_px_width
   }
 
 }
@@ -71,9 +81,11 @@ export function update_ChartHeight(){
       const defpad = state.default_settings.default_settings.defpad;
       const mapHeight = heights.mapHeight;
       const chartHeight = heights.chartHeight;
+      const mapWidth = heights.map_px_width;
+      const chartWidth = heights.chart_px_width;
 
       //create map config object
-      const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad};
+      const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth};
 
       dispatch(defaultSate('UPDATE_CHART_HEIGHT',default_settings));
 
@@ -92,9 +104,11 @@ export function update_MapHeight(){
       const defpad = state.default_settings.default_settings ? state.default_settings.default_settings.defpad : DEF_PAD;
       const mapHeight = heights.mapHeight;
       const chartHeight = heights.chartHeight;
+      const mapWidth = heights.map_px_width;
+      const chartWidth = heights.chart_px_width;
 
       //create map config object
-      const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad};
+      const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth};
 
       dispatch(defaultSate('UPDATE_MAP_HEIGHT',default_settings));
 
@@ -113,9 +127,12 @@ export function set_defaults(e){
     const defpad = DEF_PAD;
     const mapHeight = MAP_HEIGHT;
     const chartHeight = CHART_HEIGHT;
+    const mapWidth = MAP_HEIGHT;
+    const chartWidth = CHART_HEIGHT;
+
 
     //create map config object
-    const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad};
+    const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth};
 
     dispatch(defaultSate('SET_DEFAULT_SETTINGS',default_settings));
 

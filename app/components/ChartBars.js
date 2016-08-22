@@ -5,7 +5,7 @@ import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Resp
 import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
 
 
-var ChartTest = React.createClass({
+var ChartBars = React.createClass({
   propTypes: {
     title: PropTypes.string,
   },
@@ -157,7 +157,7 @@ var ChartTest = React.createClass({
       title = "No Charts Available Yet Please Click on the map, choose a HUC, or Search for a location"
     }
     $('#description').html(title);
-
+    
     return (
 
       <div >
@@ -181,4 +181,4 @@ var ChartTest = React.createClass({
 });
 
 
-module.exports = ChartTest;
+module.exports = ChartBars;
