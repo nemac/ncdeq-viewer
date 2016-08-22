@@ -1,6 +1,6 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
-var ChartTest = require('../components/ChartTest');
+var ChartBars = require('../components/ChartBars');
 
 import Treemap from '../treemap/treemap.jsx';
 require('../treemap/styles.css');
@@ -25,7 +25,7 @@ var ChartRowWrapper = React.createClass({
           </h4>
         </div>
         <div className="item" style={{display: "block"}}>
-          <ChartTest key="baseline" chart_width={this.props.chart_width}
+          <ChartBars key="baseline" chart_width={this.props.chart_width}
                                     chart_type={this.props.chart_type}
                                     chart_data={this.props.chart_data}
                                     chart_filter={this.props.chart_filter}

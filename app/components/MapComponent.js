@@ -291,6 +291,7 @@ var MapContainer = React.createClass({
 
     return (
       <div className="sixteen wide column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
+
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
           onLeafletZoomEnd={this.HandleMapEnd.bind(null,this)}

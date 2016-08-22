@@ -8,6 +8,9 @@ export const CHART_VISIBILITY = false;
 export const MAX_SEARCH_ZOOM = 12;
 export const START_POSITION = 0;
 export const CATALOGING_UNIT_FROM_HUC12_END_POISTION = 8;
+export const MAP_HEIGHT_OFFSET = 25;
+export const CHART_BORDER = 30;
+export const CHART_WIDTH_PX = 100;
 
 //map constants
 export const NORTH_EAST_LATITUDE = 33.7528762817383;
@@ -24,3 +27,6 @@ export const MAX_ZOOM = 16;
 export const MAP_FULL_WIDTH = "sixteen"
 export const MAP_CHART_WIDTH = "nine"; // these two need to add up to sixteen
 export const CHART_WIDTH = "seven";
+export const MAP_FULL_WIDTH_INT = 16;
+export const MAP_CHART_WIDTH_INT = 9; // these two need to add up to sixteen
+export const CHART_WIDTH_INT= 7;
