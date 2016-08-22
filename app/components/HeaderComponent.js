@@ -25,18 +25,24 @@ var HeaderComponent = React.createClass({
   render: function() {
 
     return (
-      <SectionWrapper>
-        <div className="ui menu" style={{backgroundColor: "#2b4559", border: "0", boxShadow: "initial"}}>
-          <div className='header' >
-            <HeaderTitleComponent  title='Explore a River Basin'/>
-            <p>{this.state.content}</p>
-          </div>
-          <div className="right menu" style={{padding: "25px 80px 0 0"}}>
-            <a className="ui item" id="about" style={{color: "#fff", padding: "0 15px", cursor: "pointer"}}>About</a>
-            <a className="ui item" style={{color: "#fff", padding: "0 15px", cursor: "pointer"}}>Resources</a>
+      <div className="ui items" style={{borderWidth:'1px', backgroundColor: "#2b4559", color: "#fff" ,padding:"10px", marginBottom: "0px"}}>
+        <div className="item">
+          <div className="content">
+            <div className="ui large header" style={{color: "#fff" }} >
+              River Basin Restoration Priorities Web Application
+            </div>
+            <div className="description">
+              <span style={{color: "#fff"}} >{ this.state.content}<br /><br /></span>
+            </div>
+              <button className="ui right floated inverted button">
+                Resources
+              </button>
+              <button id="about" className="ui right floated inverted button"  >
+                About
+              </button>
           </div>
         </div>
-      </SectionWrapper>
+      </div>
     );
   }
 });
