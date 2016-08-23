@@ -269,7 +269,7 @@ var ChartRow = React.createClass({
     }
     return (
 
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items"} style={{display:vis}}>
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis}}>
         <div className="ui item" >
           <div className="content">
           <div className="ui header left floated">
