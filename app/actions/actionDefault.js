@@ -19,7 +19,7 @@ import {HEADER_HEIGHT ,
 
 function calculate_NewHeights(state){
 
-  //when state is not defined yet set to true
+  //when state is not defined yet set to default CHART_VISIBILITY
   var vis = state.chartData.chart_visibility ? state.chartData.chart_visibility : CHART_VISIBILITY;
 
   const headerHeight = state.default_settings.default_settings ? state.default_settings.default_settings.headerHeight : HEADER_HEIGHT ;

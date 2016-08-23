@@ -259,9 +259,11 @@ var MenuComponent = React.createClass({
         <div className="header item" >
           <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>{!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }</button>
         </div>
+        {/*
         <div className="header item" >
           <button className="ui button" onClick={this.handleMapFillClick.bind(null,this)}>Map Back to Start</button>
         </div>
+        */}
         <div className="left menu">
           <div className="item">
             <div className="ui transparent icon input">

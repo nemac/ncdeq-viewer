@@ -10,7 +10,7 @@ import { getNextLevel } from '../utils/helpers';
 
 //import ACTION constants
 import { AGO_URL, DATA_FEATUREID, ENCODED_COMMAS } from '../constants/actionConstants';
-import { START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION } from '../constants/appConstants';
+import { START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION, CHART_VISIBILITY} from '../constants/appConstants';
 
 //set consts for this module
 const CHART_DATA_OUT_FIELDS_LIST = [
@@ -109,10 +109,11 @@ export function get_ChartData(id,level){
       .then(function test(response){
         const state = getState()
 
-        let visibility = false;
+        let visibility = CHART_VISIBILITY;
 
         //get visibility state of charts
-        visibility = ( state.chartData.chart_visibility === undefined ? false : state.chartData.chart_visibility);
+        visibility = ( state.chartData.chart_visibility === undefined? CHART_VISIBILITY : state.chartData.chart_visibility);
+        console.log(visibility)
 
         //instatiate variables
         let chart_data = {};
