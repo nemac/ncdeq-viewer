@@ -258,7 +258,10 @@ var MenuComponent = React.createClass({
             </select>
           </a>
         <div className="header item" >
-          <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>{!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }</button>
+          <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>
+            <i className={!this.props.charts.chart_visibility ? "bar black chart icon" : "bar grey chart icon" }></i>
+            {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
+          </button>
         </div>
         {/*
         <div className="header item" >
