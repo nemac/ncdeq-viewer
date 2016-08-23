@@ -45,7 +45,7 @@ var ChartBars = React.createClass({
       }
 
     })
-    $("#cdata").html(values);
+    // $("#cdata").html(values);
     //$("#data").html(name);
   },
   get_keyColors: function(key){
@@ -153,12 +153,35 @@ var ChartBars = React.createClass({
       </div>
     )
   },
+  set_Info: function(){
 
+
+    if(this.props.chart_data){
+       this.props.chart_data.map( data  => {
+        if(data.name === this.props.chart_filter){
+          this.setState({ data });
+          //return (this.test(data))
+        }
+      })
+    }
+
+    return null;
+
+  },
+  // test: function(test){
+  //   let values = ''
+  //   let values = test.map( prop => {
+  //     return <div> prop + ': ' + test[prop] </div>
+  //
+  //   })
+  //   }
+  //
+  //   return(values)
+  // },
   render: function() {
     //build chart data component and when there is no data returned
     //  Tell user no chart data Available
     let title;
-
     const self = this;
     const CustomTooltip  = React.createClass({
       propTypes: {
@@ -219,8 +242,8 @@ var ChartBars = React.createClass({
                     margin={{top: 20, right: 30, left: 20, bottom: 5}}  >
             <XAxis dataKey="name" hide={true}/>
             <YAxis hide={true}/>
-            <Tooltip content={<CustomTooltip/>}/>
-            <Legend payload={this.get_legend_payload(this.props.chart_type)}  />
+            <Tooltip />
+            <Legend   payload={this.get_legend_payload(this.props.chart_type)}  />
             {this.get_bars()}
            </BarChart>
         </div>
@@ -229,5 +252,6 @@ var ChartBars = React.createClass({
   }
 });
 
+//            <Tooltip content={<CustomTooltip/>}/>
 
 module.exports = ChartBars;
