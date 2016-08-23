@@ -250,7 +250,8 @@ var MenuComponent = React.createClass({
           <a className="item" id="menu-placeholder-Cataloging_Units" >
             <select className="ui search selection dropdown"  >
               <option value="">Choose a Cataloging Unit</option>
-            </select>        </a>
+            </select>
+          </a>
           <a className="item" id="menu-placeholder-HUC12" >
             <select className="ui search selection dropdown"  >
               <option value="">Choose a HUC12</option>

@@ -22,12 +22,12 @@ var MenuItemComponent = React.createClass({
     }
 
     return (
-      <a className={this.props.getActive(this.props.name)}  onClick={this.props.handleMenuClick.bind(null, this.props.name)} >
-        <select className="ui search selection dropdown" id={'search-select-'+this.props.name.replace(' ','_')} onChange={this.props.menuChange} >
-          <option value="">Choose a {this.props.name}</option>
-          {namesList}
-        </select>
-      </a>
+        <a className={this.props.getActive(this.props.name)}  onClick={this.props.handleMenuClick.bind(null, this.props.name)} >
+          <select className="ui search selection dropdown" id={'search-select-'+this.props.name.replace(' ','_')} onChange={this.props.menuChange} >
+            <option value="">Choose a {this.props.name}</option>
+            {namesList}
+          </select>
+        </a>
     )
   }
 
