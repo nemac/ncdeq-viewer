@@ -287,8 +287,24 @@ var ChartRow = React.createClass({
           </div>
         </div>
         </div>
-        <ChartRowWrapper key="baseline" chart_width={chart_width_px} title="BASELINE" chart_type="baseline" chart_data={chart_baseline_bar} chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
-        <ChartRowWrapper key="uplift" chart_width={chart_width_px} title="UPLIFT" chart_type="uplift" chart_data={chart_upflift_bar}  chart_filter={chart_filter} get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
+        <ChartRowWrapper key="baseline"
+          chart_width={chart_width_px}
+          title="baseline"
+          title_description="The watershed conditions prior to management strategy."
+          note="The taller the bar chart the more impaired."
+          chart_type="baseline"
+          chart_data={chart_baseline_bar}
+          chart_filter={chart_filter}
+          get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
+        <ChartRowWrapper key="uplift"
+          chart_width={chart_width_px}
+          title="uplift"
+          title_description="The difference between baseline conditions and post-management values."
+          note="The taller the bar chart the more potential for improvement."
+          chart_type="uplift"
+          chart_data={chart_upflift_bar}
+          chart_filter={chart_filter}
+           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}/>
       </div>
     );
   }
