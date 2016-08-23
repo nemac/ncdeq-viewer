@@ -6,7 +6,8 @@ var HeaderTitleComponent = require('../components/HeaderTitleComponent');
 
 import {
   CHART_WIDTH,
-  CHART_WIDTH_PX
+  CHART_WIDTH_PX,
+  MAP_HEIGHT
 } from '../constants/appConstants'
 
 
@@ -232,8 +233,10 @@ var ChartRow = React.createClass({
   render: function() {
     //get chart width inpixl from redux should handle resize in actiion creators
     let chart_width_px = CHART_WIDTH_PX;
+    let chart_grid_height =  MAP_HEIGHT;
     if(this.props.default_settings){
       chart_width_px = this.props.default_settings.chartWidth;
+      chart_grid_height = this.props.default_settings.mapHeight;
     }
 
     let vis = this.props.charts.chart_visibility ?  'show' : 'none';
@@ -269,7 +272,7 @@ var ChartRow = React.createClass({
     }
     return (
 
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis}}>
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden"}}>
         <div className="ui item" >
           <div className="content">
           <div className="ui header left floated">
