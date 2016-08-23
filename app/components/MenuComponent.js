@@ -223,7 +223,17 @@ var MenuComponent = React.createClass({
         <div className="header item">
           &nbsp;
         </div>
-
+        <div className="menu">
+          <div className="item">
+            <div className="ui transparent icon input">
+              <input className="mapSearch" type="text" placeholder="Search to identify a HUC..." onChange={this.handleSearch.bind(null,this)} style={{width:"200px"}}/>
+              <i className="search link icon"></i>
+            </div>
+          </div>
+        </div>
+        <div className="header item">
+          OR
+        </div>
           { this.props.geography_levels &&
             this.props.geography_levels.map(function(item) {
               const name = getCategoryName(item.geography_label)
@@ -268,14 +278,7 @@ var MenuComponent = React.createClass({
           <button className="ui button" onClick={this.handleMapFillClick.bind(null,this)}>Map Back to Start</button>
         </div>
         */}
-        <div className="left menu">
-          <div className="item">
-            <div className="ui transparent icon input">
-              <input className="mapSearch" type="text" placeholder="Search to zoom..." onChange={this.handleSearch.bind(null,this)} />
-              <i className="search link icon"></i>
-            </div>
-          </div>
-        </div>
+
       </div>
 
 
