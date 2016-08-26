@@ -16,7 +16,10 @@ var ChartBars = React.createClass({
   },
   handleClick(constructor, entry, data, index, test) {
     const name = entry.name
-    console.log(entry)
+
+    //set current geography level in redux state store
+    this.props.change_geographyLevelActive("HUC12");
+
     this.props.get_LayerInfo_ByValue(name, HUC12_MAP_FEATUREID)
     // const id = $("#data").html(name);
 
@@ -53,22 +56,22 @@ var ChartBars = React.createClass({
 
     switch (key) {
       case 'Total Water Quality Baseline':
-        key_colors = ['#1a9641' , '#3cdd6f']
+        key_colors = ['#22c355' , '#67e48f']
         break;
       case 'Total Hydrology Baseline':
         key_colors = ['#2b83ba' , '#6eb3dd']
         break;
       case 'Total Habitat Baseline':
-        key_colors = ['#d7191c' , '#ec5f62' ]
+        key_colors = ['#ec5f62' , '#f7bbbc' ]
         break;
       case 'Total Water Quality Uplift':
-        key_colors = ['#1a9641' , '#3cdd6f']
+        key_colors = ['#22c355' , '#67e48f']
         break;
       case 'Total Hydrology Uplift':
         key_colors = ['#2b83ba' , '#6eb3dd']
         break;
       case 'Total Habitat Uplift':
-        key_colors = ['#d7191c' , '#ec5f62' ]
+        key_colors = ['#ec5f62' , '#f7bbbc' ]
         break;
       //   key_colors = ['#ffff33' , '#ffff99']
       //   key_colors = ['#1f3b61' , '#386cb0']
