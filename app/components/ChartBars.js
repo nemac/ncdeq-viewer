@@ -62,7 +62,7 @@ var ChartBars = React.createClass({
         key_colors = ['#2b83ba' , '#6eb3dd']
         break;
       case 'Total Habitat Baseline':
-        key_colors = ['#ec5f62' , '#f7bbbc' ]
+        key_colors = ['#fd9935' , '#fecc9a' ]
         break;
       case 'Total Water Quality Uplift':
         key_colors = ['#22c355' , '#67e48f']
@@ -71,10 +71,8 @@ var ChartBars = React.createClass({
         key_colors = ['#2b83ba' , '#6eb3dd']
         break;
       case 'Total Habitat Uplift':
-        key_colors = ['#ec5f62' , '#f7bbbc' ]
+        key_colors = ['#fd9935' , '#fecc9a' ]
         break;
-      //   key_colors = ['#ffff33' , '#ffff99']
-      //   key_colors = ['#1f3b61' , '#386cb0']
       default:
         key_colors = ['#1a9641' , '#3cdd6f']
         break;
@@ -171,16 +169,6 @@ var ChartBars = React.createClass({
     return null;
 
   },
-  // test: function(test){
-  //   let values = ''
-  //   let values = test.map( prop => {
-  //     return <div> prop + ': ' + test[prop] </div>
-  //
-  //   })
-  //   }
-  //
-  //   return(values)
-  // },
   render: function() {
     //build chart data component and when there is no data returned
     //  Tell user no chart data Available
@@ -220,8 +208,6 @@ var ChartBars = React.createClass({
 
 
     if (this.props.chart_filter){
-      // title =  <div key="1" >ALL HUC's in the Cataloging Unit {this.props.chart_filter.substring(0,8)}</div>
-      // title =  title + <div key="2" >Click on the Chart to go to the HUC <strong>OR</strong> Place you mouse cursor over bar to get more information</div>
       if(this.props.chart_data.length === 0){
         title = "No Data was found HUC's for the HUC " + this.props.chart_filter + "! Try to click the map, choose a HUC, or Search for a location again."
       } else {
