@@ -219,19 +219,19 @@ var MenuComponent = React.createClass({
   //{this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
   render: function() {
     return (
-      <div className="ui pointing menu"  >
-        <div className="header item">
-          &nbsp;
-        </div>
-        <div className="menu">
-          <div className="item">
-            <div className="ui transparent icon input">
-              <input className="mapSearch" type="text" placeholder="Search to identify a HUC..." onChange={this.handleSearch.bind(null,this)} style={{width:"200px"}}/>
-              <i className="search link icon"></i>
+      <div className="ui tablet stackable steps"  stye={{height:"100px"}}>
+        <div className="step">
+          <i className="search link icon" ></i>
+          <div className="content">
+            <div className="title">Search for a Location</div>
+             <div className="description" >
+               <div className="ui fluid input">
+                 <input className="mapSearch" type="text" placeholder="Search for a Location..." onChange={this.handleSearch.bind(null,this)} />
+              </div>
             </div>
           </div>
         </div>
-        <div className="header item">
+        <div className="step">
           OR
         </div>
           { this.props.geography_levels &&
@@ -251,22 +251,6 @@ var MenuComponent = React.createClass({
               )
             }.bind(this))
           }
-
-          <a className="item" id="menu-placeholder-River_Basins" >
-            <select className="ui search selection dropdown"   >
-              <option value="">Choose a River Basins</option>
-            </select>
-          </a>
-          <a className="item" id="menu-placeholder-Cataloging_Units" >
-            <select className="ui search selection dropdown"  >
-              <option value="">Choose a Cataloging Unit</option>
-            </select>
-          </a>
-          <a className="item" id="menu-placeholder-HUC12" >
-            <select className="ui search selection dropdown"  >
-              <option value="">Choose a HUC12</option>
-            </select>
-          </a>
         <div className="header item" >
           <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>
             <i className={!this.props.charts.chart_visibility ? "bar black chart icon" : "bar grey chart icon" }></i>

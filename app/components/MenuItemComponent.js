@@ -20,14 +20,34 @@ var MenuItemComponent = React.createClass({
           return   <option key={listItem.VALUE} value={listItem.VALUE}>{listItem.MAIN}-({listItem.SUB})</option>
       }.bind(this))
     }
+    // <a className={this.props.getActive(this.props.name)}  onClick={this.props.handleMenuClick.bind(null, this.props.name)} >
+///  </a>
 
+
+
+// <div className="step"  onClick={this.props.handleMenuClick.bind(null, this.props.name)} className={this.props.getActive(this.props.name)} >
+//   <div className="content">
+//     <div className="title">{this.props.name}</div>
+//     <div className="description" >
+//       {this.props.name}
+//     </div>
+//   </div>
+// </div>
     return (
-        <a className={this.props.getActive(this.props.name)}  onClick={this.props.handleMenuClick.bind(null, this.props.name)} >
-          <select className="ui search selection dropdown" id={'search-select-'+this.props.name.replace(' ','_')} onChange={this.props.menuChange} >
-            <option value="">Choose a {this.props.name}</option>
-            {namesList}
-          </select>
-        </a>
+      <div className="step"  onClick={this.props.handleMenuClick.bind(null, this.props.name)} >
+        <div className="content">
+          <div className="title">{this.props.name}</div>
+           <div className="description" >
+             <div className="ui fluid input">
+               <select className="ui fluid search selection dropdown" id={'search-select-'+this.props.name.replace(' ','_')} onChange={this.props.menuChange}   >
+                 <option value="">Choose a {this.props.name}</option>
+                 {namesList}
+               </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
     )
   }
 
