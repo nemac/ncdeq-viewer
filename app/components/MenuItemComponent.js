@@ -30,11 +30,10 @@ var MenuItemComponent = React.createClass({
     const HUC_desgination = get_HUC(this.props.name);
 
     return (
-        <div className="column" style={{width:"350px"}}>
+        <div className="stackable column" style={{width:"350px"}}>
           <div className="ui form">
             <div className="field">
               <label>
-                <i className="search link icon" ></i>
                 Choose a {this.props.name}  ({HUC_desgination})
               </label>
               <div className="ui input" onClick={this.props.handleMenuClick.bind(null, this.props.name)} >

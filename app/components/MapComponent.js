@@ -2,6 +2,10 @@ var React = require('react');
 var ReactLeaflet = require('react-leaflet')
 import ESRIFeatureLayer from '../components/ESRIFeatureLayer';
 import ESRITileMapLayer from '../components/ESRITiledMapLayer'
+import Control from 'react-leaflet-control';
+
+
+
 //app constants
 import {
   MAP_HEIGHT,
@@ -22,6 +26,17 @@ var MapContainer = React.createClass({
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
       setTimeout(function(){ leafletMap.invalidateSize()}, 400);
+    };
+  },
+  handleChartButtonClick: function(e){
+
+    //toggle chart visibility with button click
+    this.props.update_ChartVisiblity();
+    this.props.update_MapHeight();
+    //leaflet map dosenot update size this forces the issue
+    if(this.props.leafletMap){
+      const leafletMap = this.props.leafletMap.leafletMap;
+      setTimeout(function(){ leafletMap.invalidateSize()}, 100);
     };
   },
   add_GeoJSON: function(features){
@@ -292,8 +307,7 @@ var MapContainer = React.createClass({
     const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
 
     return (
-      <div className="sixteen wide column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
-
+      <div className="sixteen wide stackable column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
           onLeafletZoomEnd={this.HandleMapEnd.bind(null,this)}
@@ -330,6 +344,13 @@ var MapContainer = React.createClass({
        name="River Basins"
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
+
+     <Control position="topright" >
+         <button className="ui black button" onClick={this.handleChartButtonClick.bind(null,this)}>
+           <i className={!this.props.charts.chart_visibility ? "bar chart icon" : "bar chart icon" }></i>
+           {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
+         </button>
+       </Control>
     </ReactLeaflet.Map>
   }
 

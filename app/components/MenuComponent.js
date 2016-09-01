@@ -219,10 +219,10 @@ var MenuComponent = React.createClass({
   //{this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
   render: function() {
     return (
-      <div className="html ui top attached segment">
-        <div className="ui  very relaxed stackable top attached grid" >
+      <div className="html ui top attached  segment">
+        <div className="ui very relaxed stackable divided very relaxed grid" >
           <div className="row">
-            <div className="four wide column" style={{width:"450px"}}>
+            <div className="four wide column" >
               <div className="ui form" >
                 <div className="field" >
                   <label>
@@ -236,11 +236,8 @@ var MenuComponent = React.createClass({
                 </div>
               </div>
             </div>
-            <div className="ui vertical divider">
-              Or
-            </div>
             <div className="twelve wide column" >
-              <div className="ui three wide column stackable grid" >
+              <div className="ui three wide column stackable very relaxed grid" >
                 { this.props.geography_levels &&
                   this.props.geography_levels.map(function(item) {
                     const name = getCategoryName(item.geography_label)
@@ -263,23 +260,6 @@ var MenuComponent = React.createClass({
                 }
               </div>
             </div>
-          </div>
-          <div className="row">
-
-            <div className="sixteen wide column" >
-              <div className="ui form" >
-                <div className="field" >
-                  <label>
-                    {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
-                  </label>
-                  <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>
-                    <i className={!this.props.charts.chart_visibility ? "bar black chart icon" : "bar grey chart icon" }></i>
-                    {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
-                  </button>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
