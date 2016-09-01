@@ -219,70 +219,61 @@ var MenuComponent = React.createClass({
   //{this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
   render: function() {
     return (
-      <div className="html ui top attached segment">
-        <div className="ui  very relaxed stackable top attached grid" >
-          <div className="row">
-            <div className="four wide column" style={{width:"450px"}}>
-              <div className="ui form" >
-                <div className="field" >
-                  <label>
-                    <i className="search link icon" ></i>
-                    Search for a Location
-                  </label>
-                  <div className="ui left icon input"  >
-                    <input className="mapSearch" type="text" placeholder="Search for a Location..." onChange={this.handleSearch.bind(null,this)}/>
-                    <i className="search link icon" ></i>
-                  </div>
-                </div>
-              </div>
+      <div className="ui tablet stackable six top attached  steps" >
+        <div className="step" >
+          <div className="content">
+            <div className="title">
+              <i className="search link icon" ></i>
+              Search for a Location
             </div>
-            <div className="ui vertical divider">
-              Or
-            </div>
-            <div className="twelve wide column" >
-              <div className="ui three wide column stackable grid" >
-                { this.props.geography_levels &&
-                  this.props.geography_levels.map(function(item) {
-                    const name = getCategoryName(item.geography_label)
-
-                    //get filtered menu list
-                    let menuList = item.filtered_menu_list;
-
-                    //if filtered list is not set get the default menu list
-                    if (menuList.length === 0){
-                      menuList = this.getDefaultMenu(name);
-                    }
-
-                    return (
-                      <MenuItemComponent key={name} name={name} lists={menuList}  getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}>
-                      </MenuItemComponent>
-
-
-                    )
-                  }.bind(this))
-                }
+             <div className="description" >
+               <div className="ui input" >
+                 <input className="mapSearch" type="text" placeholder="Search for a Location..." onChange={this.handleSearch.bind(null,this)} />
               </div>
             </div>
           </div>
-          <div className="row">
+        </div>
+        <div className="step">
+          <div className="content">
+            <div className="title">
+              Or
+          </div>
+        </div>
 
-            <div className="sixteen wide column" >
-              <div className="ui form" >
-                <div className="field" >
-                  <label>
-                    {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
-                  </label>
-                  <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>
-                    <i className={!this.props.charts.chart_visibility ? "bar black chart icon" : "bar grey chart icon" }></i>
-                    {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
-                  </button>
-                </div>
-              </div>
+        </div>
+          { this.props.geography_levels &&
+            this.props.geography_levels.map(function(item) {
+              const name = getCategoryName(item.geography_label)
+
+              //get filtered menu list
+              let menuList = item.filtered_menu_list;
+
+              //if filtered list is not set get the default menu list
+              if (menuList.length === 0){
+                menuList = this.getDefaultMenu(name);
+              }
+
+              return (
+                <MenuItemComponent key={name} name={name} lists={menuList}  getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}/>
+              )
+            }.bind(this))
+          }
+        <div className="step" >
+          <div className="content">
+            <div className="title">
             </div>
+            <div className="description" >
 
+              <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>
+                <i className={!this.props.charts.chart_visibility ? "bar black chart icon" : "bar grey chart icon" }></i>
+                {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
+              </button>
+
+            </div>
           </div>
         </div>
       </div>
+
 
     );
   }
