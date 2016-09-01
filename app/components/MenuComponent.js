@@ -219,20 +219,27 @@ var MenuComponent = React.createClass({
   //{this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
   render: function() {
     return (
-      <div className="ui tablet stackable steps"  stye={{height:"100px"}}>
-        <div className="step">
-          <i className="search link icon" ></i>
+      <div className="ui tablet stackable six top attached  steps" >
+        <div className="step" >
           <div className="content">
-            <div className="title">Search for a Location</div>
+            <div className="title">
+              <i className="search link icon" ></i>
+              Search for a Location
+            </div>
              <div className="description" >
-               <div className="ui fluid input">
+               <div className="ui input" >
                  <input className="mapSearch" type="text" placeholder="Search for a Location..." onChange={this.handleSearch.bind(null,this)} />
               </div>
             </div>
           </div>
         </div>
         <div className="step">
-          OR
+          <div className="content">
+            <div className="title">
+              Or
+          </div>
+        </div>
+
         </div>
           { this.props.geography_levels &&
             this.props.geography_levels.map(function(item) {
@@ -251,18 +258,20 @@ var MenuComponent = React.createClass({
               )
             }.bind(this))
           }
-        <div className="header item" >
-          <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>
-            <i className={!this.props.charts.chart_visibility ? "bar black chart icon" : "bar grey chart icon" }></i>
-            {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
-          </button>
-        </div>
-        {/*
-        <div className="header item" >
-          <button className="ui button" onClick={this.handleMapFillClick.bind(null,this)}>Map Back to Start</button>
-        </div>
-        */}
+        <div className="step" >
+          <div className="content">
+            <div className="title">
+            </div>
+            <div className="description" >
 
+              <button className="ui button" onClick={this.handleChartButtonClick.bind(null,this)}>
+                <i className={!this.props.charts.chart_visibility ? "bar black chart icon" : "bar grey chart icon" }></i>
+                {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
+              </button>
+
+            </div>
+          </div>
+        </div>
       </div>
 
 

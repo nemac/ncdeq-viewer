@@ -10,7 +10,7 @@ import {
 
 import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
 
-import {zoomToGeoJson, getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd} from '../utils/helpers';
+import {zoomToGeoJson, getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd, get_HUC} from '../utils/helpers';
 
 var PropTypes = React.PropTypes;
 
@@ -226,10 +226,12 @@ var MapContainer = React.createClass({
           // there are times when the value dose not exists in the selector so we need overcome this
           let HTMLvalue = $('#search-select-'+level.replace(' ','_')).dropdown('get value');
 
+          const HUC_desgination = get_HUC(level);
+
           //if the value in the selector does not match what the user selected. that means there was no
           //  value in the selector (pick list).
           if (HTMLvalue[0] != selectedValue){
-            $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level);
+            $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level + '(' + HUC_desgination+ ')');
             $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
           }
       }

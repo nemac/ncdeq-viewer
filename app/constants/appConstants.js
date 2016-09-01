@@ -1,5 +1,5 @@
 export const HEADER_HEIGHT = 100;
-export const BREAD_CRUMBS_HEIGHT = 50;
+export const BREAD_CRUMBS_HEIGHT = 100;
 export const ROW_PADDING = 1;
 export const HEADER_PADDING = 15;
 export const DEF_PAD = 5;

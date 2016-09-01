@@ -41,7 +41,13 @@ function calculate_NewHeights(state){
                       (rowPadding*4)
                     )- (headerPadding*4);
 
-  const chart_px_width = (window.innerWidth * (CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (CHART_BORDER)
+
+  let chart_px_width = (window.innerWidth * (CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (CHART_BORDER)
+  console.log(window.innerWidth)
+  if (window.innerWidth < 765){
+    chart_px_width = (window.innerWidth  - (CHART_BORDER));
+  }
+
   const map_px_width = (window.innerWidth * (MAP_CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (rowPadding*3)
 
   if (vis){

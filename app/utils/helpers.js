@@ -144,3 +144,22 @@ export function get_matchEnd(geogLevel){
       return '12';
     }
 };
+
+
+//only needs this untill I change the data feed have named generically?
+// or maybe control via yaml file....
+export function get_HUC(geogLevel){
+  switch (geogLevel) {
+    case 'River Basins':
+      return 'HUC 6';
+      break;
+    case 'Cataloging Units':
+      return 'HUC 8';
+      break;
+    case 'HUC12':
+      return 'HUC 12';
+      break;
+    default:
+      return 'HUC 12';
+    }
+};
