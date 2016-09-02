@@ -2,6 +2,8 @@ var React = require('react');
 var ReactLeaflet = require('react-leaflet')
 import ESRIFeatureLayer from '../components/ESRIFeatureLayer';
 import ESRITileMapLayer from '../components/ESRITiledMapLayer'
+import Control from '../components/control';
+
 //app constants
 import {
   MAP_HEIGHT,
@@ -10,11 +12,12 @@ import {
 
 import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
 
-import {zoomToGeoJson, getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd} from '../utils/helpers';
+import {zoomToGeoJson, getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd, get_HUC} from '../utils/helpers';
 
 var PropTypes = React.PropTypes;
 
 var TempLayer;
+
 
 var MapContainer = React.createClass({
   handleResize: function(){
@@ -22,6 +25,17 @@ var MapContainer = React.createClass({
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
       setTimeout(function(){ leafletMap.invalidateSize()}, 400);
+    };
+  },
+  handleChartButtonClick: function(comp,e){
+
+    //toggle chart visibility with button click
+    this.props.update_ChartVisiblity();
+    this.props.update_MapHeight();
+    //leaflet map dosenot update size this forces the issue
+    if(this.props.leafletMap){
+      const leafletMap = this.props.leafletMap.leafletMap;
+      setTimeout(function(){ leafletMap.invalidateSize()}, 100);
     };
   },
   add_GeoJSON: function(features){
@@ -226,10 +240,12 @@ var MapContainer = React.createClass({
           // there are times when the value dose not exists in the selector so we need overcome this
           let HTMLvalue = $('#search-select-'+level.replace(' ','_')).dropdown('get value');
 
+          const HUC_desgination = get_HUC(level);
+
           //if the value in the selector does not match what the user selected. that means there was no
           //  value in the selector (pick list).
           if (HTMLvalue[0] != selectedValue){
-            $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level);
+            $('#search-select-'+level.replace(' ','_')).dropdown('set text','Choose a ' + level + '(' + HUC_desgination+ ')');
             $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);
           }
       }
@@ -286,12 +302,14 @@ var MapContainer = React.createClass({
       }
     },
   render: function() {
+    //
+
     const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;
     const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
+    const chartVisibility = this.props.chart ? this.props.chart.chart_visibility : null;
 
     return (
-      <div className="sixteen wide column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
-
+      <div className="sixteen wide stackable column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
           onLeafletZoomEnd={this.HandleMapEnd.bind(null,this)}
@@ -303,11 +321,22 @@ var MapContainer = React.createClass({
           maxBounds={this.props.map_settings.maxBounds}
           maxZoom={this.props.map_settings.maxZoom}
           minZoom={this.props.map_settings.minZoom} >
+
+
+          <Control position="topright" className="mapbutton" >
+              <button className="ui black button" onClick={this.handleChartButtonClick.bind(null,this)}>
+                <i className={!this.props.charts.chart_visibility ? "bar chart icon" : "bar chart icon" }></i>
+                {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
+              </button>
+        </Control>
+
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
           url={this.state.tileUrl}
           onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
+
+
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc12/MapServer"
        setMapLayers={this.props.set_MapLayers}
@@ -328,6 +357,8 @@ var MapContainer = React.createClass({
        name="River Basins"
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
+
+
     </ReactLeaflet.Map>
   }
 

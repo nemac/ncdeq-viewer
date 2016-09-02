@@ -73,22 +73,20 @@ var MainComponent = React.createClass({
                       "  To get started click a River Basin on the map, " +
                       "or search for a location to zoom to."
       return (
-        <div className="ui one column relaxed padded grid">
+        <div className="ui stackable one column relaxed padded grid">
 
           <HeaderComponent content={HeaderContent}/>
 
 
-          <RowWrapper rowPadding={"1"} height={breadCrumbsHeight}>
             <MenuContainer />
-          </RowWrapper>
 
-          <MapRowWrapper rowPadding={rowPadding} >
+
             {/* only render the charts section when the user has made the charts visibility true */}
             { this.props.charts.chart_visibility &&
               <ChartRowContainer />
             }
             <MapRowComponent columnWidth={columnWidth}/>
-          </MapRowWrapper>
+
           <ModalAbout />
         </div>
       );

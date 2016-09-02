@@ -1,6 +1,9 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 
+//  general functions and  helpers.  reuse functions
+import { get_HUC } from '../utils/helpers';
+
 var MenuItemComponent = React.createClass({
   propTypes: {
     handleMenuClick: PropTypes.func.isRequired,
@@ -9,6 +12,9 @@ var MenuItemComponent = React.createClass({
   },
   componentDidMount: function() {
       $('.ui.dropdown').dropdown();
+  },
+  divider: function(){
+    return (<div className="ui vertical divider">then</div>);
   },
   render: function() {
 
@@ -21,13 +27,26 @@ var MenuItemComponent = React.createClass({
       }.bind(this))
     }
 
+    const HUC_desgination = get_HUC(this.props.name);
+    let select_width = "350px"
+
     return (
-        <a className={this.props.getActive(this.props.name)}  onClick={this.props.handleMenuClick.bind(null, this.props.name)} >
-          <select className="ui search selection dropdown" id={'search-select-'+this.props.name.replace(' ','_')} onChange={this.props.menuChange} >
-            <option value="">Choose a {this.props.name}</option>
-            {namesList}
-          </select>
-        </a>
+        <div className="stackable column" style={{width:select_width}}>
+          <div className="ui form">
+            <div className="field">
+              <label>
+                Choose a {this.props.name}  ({HUC_desgination})
+              </label>
+              <div className="ui input" onClick={this.props.handleMenuClick.bind(null, this.props.name)} >
+                <select className="ui fluid search selection dropdown" id={'search-select-'+this.props.name.replace(' ','_')} onChange={this.props.menuChange}   >
+                  <option value="">Choose a {this.props.name}  ({HUC_desgination})</option>
+                  {namesList}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
     )
   }
 
