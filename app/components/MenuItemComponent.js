@@ -28,9 +28,10 @@ var MenuItemComponent = React.createClass({
     }
 
     const HUC_desgination = get_HUC(this.props.name);
+    let select_width = "350px"
 
     return (
-        <div className="stackable column" style={{width:"350px"}}>
+        <div className="stackable column" style={{width:select_width}}>
           <div className="ui form">
             <div className="field">
               <label>

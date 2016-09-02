@@ -3,7 +3,6 @@ var ReactLeaflet = require('react-leaflet')
 import ESRIFeatureLayer from '../components/ESRIFeatureLayer';
 import ESRITileMapLayer from '../components/ESRITiledMapLayer'
 import Control from '../components/control';
-import ChartButton from '../components/ChartButton'
 
 //app constants
 import {
@@ -29,10 +28,6 @@ var MapContainer = React.createClass({
     };
   },
   handleChartButtonClick: function(comp,e){
-    // console.log(comp)
-    // console.log(e)
-    // console.log(this)
-    //L.DomEvent.disableClickPropagation(this);
 
     //toggle chart visibility with button click
     this.props.update_ChartVisiblity();
@@ -334,8 +329,6 @@ var MapContainer = React.createClass({
                 {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
               </button>
         </Control>
-
-
 
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
