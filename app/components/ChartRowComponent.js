@@ -210,8 +210,8 @@ var ChartRow = React.createClass({
        let children = [];
 
        levelones.map(item => {
-         var value = Number(item.properties.chart_value);
-         chart_object[item.properties.chart_description] =  value;
+         var value = Number(item.properties.chart_value).toFixed(2);
+         chart_object[item.properties.chart_level_label] =  value;
          chart_object["chart_id"] =  item.properties.chart_id;
 
          //pass chart id get all matchids of current chart of there is data that exists then add to children
@@ -222,7 +222,7 @@ var ChartRow = React.createClass({
         //  var next_chart_object = new Object;
         //  next_chart_object[item.properties.chart_description] = next_level;
         //  children.push(next_chart_object)
-         chart_object[item.properties.chart_description.replace(' ','_') + "_child_chart_data"] = next_level;
+         chart_object[item.properties.chart_level_label.replace(' ','_') + "_child_chart_data"] = next_level;
 
        })
        chart_data_array.push(chart_object);
@@ -267,9 +267,14 @@ var ChartRow = React.createClass({
     let chart_cataloging_unit = 'Please Click on the Map, Search, or Choose something to get started.'
     let huc_message = "No HUC's Selected yet."
     if(chart_filter){
-      chart_cataloging_unit = 'Charts Showing Baseline and Uplift for the Cataloging Unit ' +chart_filter.substring(0,8)
+      chart_cataloging_unit = 'Baseline and Uplift for the Cataloging Unit ' +chart_filter.substring(0,8)
       huc_message = "The HUC " +  chart_filter + " is currently highlighted."
     }
+    // <br />
+    // <div className="meta">
+    //   <span className="stay">{huc_message}</span>
+    // </div>
+
     return (
 
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden"}}>
@@ -281,15 +286,12 @@ var ChartRow = React.createClass({
           <div className="meduim basic ui button icon right floated" onClick={this.chartToggle} >
             <i className="remove icon"></i>
           </div>
-          <br />
-          <div className="meta">
-            <span className="stay">{huc_message}</span>
-          </div>
         </div>
         </div>
+
         <ChartRowWrapper key="baseline"
           chart_width={chart_width_px}
-          title="baseline"
+          title="BASELINE"
           title_description=""
           note="The taller the bar chart the more impaired."
           chart_type="baseline"
@@ -299,7 +301,7 @@ var ChartRow = React.createClass({
           change_geographyLevelActive={this.props.change_geographyLevelActive}/>
         <ChartRowWrapper key="uplift"
           chart_width={chart_width_px}
-          title="uplift"
+          title="UPLIFT"
           title_description=""
           note="The taller the bar chart the more potential for improvement."
           chart_type="uplift"
