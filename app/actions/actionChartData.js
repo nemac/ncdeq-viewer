@@ -113,7 +113,6 @@ export function get_ChartData(id,level){
 
         //get visibility state of charts
         visibility = ( state.chartData.chart_visibility === undefined? CHART_VISIBILITY : state.chartData.chart_visibility);
-        console.log(visibility)
 
         //instatiate variables
         let chart_data = {};

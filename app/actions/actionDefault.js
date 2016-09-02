@@ -43,7 +43,7 @@ function calculate_NewHeights(state){
 
 
   let chart_px_width = (window.innerWidth * (CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (CHART_BORDER)
-  console.log(window.innerWidth)
+
   if (window.innerWidth < 765){
     chart_px_width = (window.innerWidth  - (CHART_BORDER));
   }

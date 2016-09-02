@@ -2,9 +2,8 @@ var React = require('react');
 var ReactLeaflet = require('react-leaflet')
 import ESRIFeatureLayer from '../components/ESRIFeatureLayer';
 import ESRITileMapLayer from '../components/ESRITiledMapLayer'
-import Control from 'react-leaflet-control';
-
-
+import Control from '../components/control';
+import ChartButton from '../components/ChartButton'
 
 //app constants
 import {
@@ -20,6 +19,7 @@ var PropTypes = React.PropTypes;
 
 var TempLayer;
 
+
 var MapContainer = React.createClass({
   handleResize: function(){
     //leaflet map dosenot update size this forces the issue
@@ -28,7 +28,11 @@ var MapContainer = React.createClass({
       setTimeout(function(){ leafletMap.invalidateSize()}, 400);
     };
   },
-  handleChartButtonClick: function(e){
+  handleChartButtonClick: function(comp,e){
+    // console.log(comp)
+    // console.log(e)
+    // console.log(this)
+    //L.DomEvent.disableClickPropagation(this);
 
     //toggle chart visibility with button click
     this.props.update_ChartVisiblity();
@@ -303,8 +307,11 @@ var MapContainer = React.createClass({
       }
     },
   render: function() {
+    //
+
     const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;
     const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
+    const chartVisibility = this.props.chart ? this.props.chart.chart_visibility : null;
 
     return (
       <div className="sixteen wide stackable column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
@@ -319,11 +326,24 @@ var MapContainer = React.createClass({
           maxBounds={this.props.map_settings.maxBounds}
           maxZoom={this.props.map_settings.maxZoom}
           minZoom={this.props.map_settings.minZoom} >
+
+
+          <Control position="topright" className="mapbutton" >
+              <button className="ui black button" onClick={this.handleChartButtonClick.bind(null,this)}>
+                <i className={!this.props.charts.chart_visibility ? "bar chart icon" : "bar chart icon" }></i>
+                {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
+              </button>
+        </Control>
+
+
+
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
           url={this.state.tileUrl}
           onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
+
+
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc12/MapServer"
        setMapLayers={this.props.set_MapLayers}
@@ -345,12 +365,7 @@ var MapContainer = React.createClass({
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
 
-     <Control position="topright" >
-         <button className="ui black button" onClick={this.handleChartButtonClick.bind(null,this)}>
-           <i className={!this.props.charts.chart_visibility ? "bar chart icon" : "bar chart icon" }></i>
-           {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
-         </button>
-       </Control>
+
     </ReactLeaflet.Map>
   }
 
