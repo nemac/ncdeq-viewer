@@ -55,22 +55,22 @@ var ChartBars = React.createClass({
     let key_colors = [];
 
     switch (key) {
-      case 'Total Water Quality Baseline':
+      case 'Water Quality':
         key_colors = ['#22c355' , '#67e48f']
         break;
-      case 'Total Hydrology Baseline':
+      case 'Hydrology':
         key_colors = ['#2b83ba' , '#6eb3dd']
         break;
-      case 'Total Habitat Baseline':
+      case 'Habitat':
         key_colors = ['#fd9935' , '#fecc9a' ]
         break;
-      case 'Total Water Quality Uplift':
+      case 'Water Quality':
         key_colors = ['#22c355' , '#67e48f']
         break;
-      case 'Total Hydrology Uplift':
+      case 'Hydrology':
         key_colors = ['#2b83ba' , '#6eb3dd']
         break;
-      case 'Total Habitat Uplift':
+      case 'Habitat':
         key_colors = ['#fd9935' , '#fecc9a' ]
         break;
       default:
@@ -93,10 +93,10 @@ var ChartBars = React.createClass({
     let data_keys = [];
     switch (chart_type) {
       case 'baseline':
-        data_keys = ['Total Water Quality Baseline','Total Hydrology Baseline','Total Habitat Baseline'];
+        data_keys = ['Water Quality','Hydrology','Habitat'];
         break;
       case 'uplift':
-        data_keys = ['Total Water Quality Uplift','Total Hydrology Uplift','Total Habitat Uplift'];
+        data_keys = ['Water Quality','Hydrology','Habitat'];
         break;
       default:
 
@@ -111,7 +111,7 @@ var ChartBars = React.createClass({
             <Cell cursor="pointer"
                   fill={entry.name === this.props.chart_filter ? colors[0] : colors[1]}
                   stroke={entry.name === this.props.chart_filter ? colors[0] : colors[1]}
-                  strokeWidth={entry.name === this.props.chart_filter ? 5 : 0}
+                  strokeWidth={entry.name === this.props.chart_filter ? 1 : 0}
                   key={`cell-${index}`}
                   id={entry.name}
                   onClick={this.handleClick.bind(null,this,entry)}/>

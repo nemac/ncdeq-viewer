@@ -25,7 +25,7 @@ var ChartRowWrapper = React.createClass({
           </div>
         </div>
         <div className="item" style={{display: "block"}}>
-          <ChartBars key="baseline" chart_width={this.props.chart_width}
+          <ChartBars key={this.props.title} chart_width={this.props.chart_width}
                                     chart_type={this.props.chart_type}
                                     chart_data={this.props.chart_data}
                                     chart_filter={this.props.chart_filter}
