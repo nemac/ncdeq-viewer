@@ -210,7 +210,12 @@ var ChartRow = React.createClass({
        let children = [];
 
        levelones.map(item => {
-         var value = Number(item.properties.chart_value).toFixed(2);
+         //  var value = Number(item.properties.chart_value).toFixed(2);
+         var value = item.properties.chart_value
+         if( value ){
+           value = item.properties.chart_value.substring(0,5)
+         }
+         var value = Number( value );
          chart_object[item.properties.chart_level_label] =  value;
          chart_object["chart_id"] =  item.properties.chart_id;
 
