@@ -9,7 +9,7 @@ import { CheckReponse } from './responses';
 import { getNextLevel } from '../utils/helpers';
 
 //import ACTION constants
-import { AGO_URL, DATA_FEATUREID, ENCODED_COMMAS } from '../constants/actionConstants';
+import { AGO_URL, DATA_FEATUREID, ENCODED_COMMAS, SERVICE_NAME } from '../constants/actionConstants';
 import { START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION, CHART_VISIBILITY} from '../constants/appConstants';
 
 //set consts for this module
@@ -58,7 +58,7 @@ function AGO_AllChartData_byID(hucid,current_geography_level){
    }
 
    //build the query to arcgis online api for getting the raw chart data
-   const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
+   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
                    '?where=ID+like+%27' + id + '%25%27+and+geography_level%3D'+ next_level + //'+and+chart_type%3D%27' + CHART_TYPE + '%27' +
                    '&objectIds=' +
                    '&time=' +
@@ -81,7 +81,7 @@ function AGO_AllChartData_byID(hucid,current_geography_level){
 //get chart data for a single huc id
 //   requires the id to search
 function AGO_ChartData_byID(id){
-   const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
+   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
                      '?where=id%3D%27' + id + '%27' + //' +and+chart_type%3D%27' + CHART_TYPE + '%27' +
                      '&objectIds=' +
                      '&time=' +

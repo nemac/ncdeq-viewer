@@ -1,6 +1,6 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, DATA_FEATUREID } from '../constants/actionConstants';
+import { AGO_URL, DATA_FEATUREID , SERVICE_NAME} from '../constants/actionConstants';
 
 //  general functions and  helpers.  reuse functions
 import {  getAGOGeographyLabel, getCurrentLevel } from '../utils/helpers';
@@ -14,8 +14,9 @@ const CHART_DATA_ORDER_BY_FIELDS = 'geography_level';
 //AGO query to get list of geography levels available
 function AGO_GeographyLevels(){
 
-  const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
-                    '?where=id<>%27%27&objectIds=' +
+  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+                    '?where=id<>%27%27+and+geography_level+%21%3D+99' +
+                    '&objectIds=' +
                     '&time=&resultType=none' +
                     '&outFields=' + CHART_DATA_OUT_FIELDS +
                     '&returnIdsOnly=false' +
@@ -28,7 +29,7 @@ function AGO_GeographyLevels(){
                     '&resultRecordCount='
                     +'&f=pgeojson' +
                     '&token='
-
+  console.log(query_URL)
   return axios.get(query_URL);
 
 };
