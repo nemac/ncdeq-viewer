@@ -102,6 +102,31 @@ function AGO_ChartData_byID(id){
   return axios.get(query_URL);
 
 }
+
+//get chart data for a single huc id
+//   requires the id to search
+function AGO_ChartData_byID(id){
+   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+                     '?where=id%3D%27' + id + '%27' + //' +and+chart_type%3D%27' + CHART_TYPE + '%27' +
+                     '&objectIds=' +
+                     '&time=' +
+                     '&resultType=none' +
+                     '&outFields=' + CHART_DATA_OUT_FIELDS +
+                     '&returnIdsOnly=false' +
+                     '&returnCountOnly=false' +
+                     '&returnDistinctValues=true' +
+                     '&orderByFields=' +  CHART_DATA_ORDER_BY_FIELDS +
+                     '&groupByFieldsForStatistics=' +
+                     '&outStatistics=' +
+                     '&resultOffset=' +
+                     '&resultRecordCount=' +
+                     '&f=pgeojson' +
+                     '&token=';
+
+  //send the ajax request via axios
+  return axios.get(query_URL);
+
+}
 //
 export function get_ChartData(id,level){
     return (dispatch,getState) => {
@@ -139,10 +164,10 @@ export function get_ChartData(id,level){
             return key.properties.chart_type === 'UPLIFT';
           })
 
-          //this is for legacy method where we did this in action creator. do this in the component in the new version
-          chart_id_base = chart_data.features.filter( key =>{
-            return key.properties.ID === id && key.properties.chart_type === 'BASELINE';
-          })
+          // //this is for legacy method where we did this in action creator. do this in the component in the new version
+          // chart_id_base = chart_data.features.filter( key =>{
+          //   return key.properties.ID === id && key.properties.chart_type === 'BASELINE';
+          // })
 
           // chart_id_upflift = chart_data.features.filter( key =>{
           //   return key.properties.ID === id && key.properties.chart_type === 'UPLIFT';
@@ -187,12 +212,11 @@ export function update_ChartVisiblity (visibility){
 
       if(state.chartData.chart_data){
         //ensure that the chart data exists create blank if not.
-         chartData_Level = ( state.chartData.chart_data.level_json ? state.chartData.chart_data.level_json : {});
+        chartData_Level = ( state.chartData.chart_data.level_json ? state.chartData.chart_data.level_json : {});
         chartData_ID = ( state.chartData.chart_data.id_json ? state.chartData.chart_data.id_json : {});
 
-
       //change visibility
-       isVisible = (state.chartData.chart_visibility ? false : true);
+      isVisible = (state.chartData.chart_visibility ? false : true);
 
       types = ( state.chartData.chart_data.chart_types ? state.chartData.chart_data.chart_types : []);
 
