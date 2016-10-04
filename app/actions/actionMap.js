@@ -52,7 +52,7 @@ function AGO_get_LayerInfo_ByValue(value, layer_id){
                     '&sqlFormat=none' +
                     '&f=pgeojson' +
                     '&token='
-  console.log(query_URL)
+
   return axios.get(query_URL);
 };
 
