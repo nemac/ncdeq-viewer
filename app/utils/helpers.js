@@ -14,7 +14,7 @@ export function getNextLevel(geogLevel){
       return 3;
       break;
     default:
-      return 99;
+      return 9999;
     }
 };
 
@@ -32,7 +32,7 @@ export function getCurrentLevel(geogLevel){
       return 3;
       break;
     default:
-      return 99;
+      return 9999;
     }
 };
 
@@ -114,16 +114,16 @@ export function getCategoryName(geogLevel){
 export function getAGOFeatureId(geogLevel){
   switch (geogLevel) {
     case 'River Basins':
-      return '5';
+      return '6';
       break;
     case 'Cataloging Units':
-      return '4';
+      return '5';
       break;
     case 'HUC12':
-      return '3';
+      return '4';
       break;
     default:
-      return '3';
+      return '4';
     }
 };
 

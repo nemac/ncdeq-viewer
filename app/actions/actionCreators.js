@@ -9,6 +9,7 @@ import * as GeographyLevels from './actionGeographyLevels';
 import * as MapConfig from './actionMap';
 import * as ActionDefault from './actionDefault';
 import * as ActionLeaflet from './actionLeaflet'
+import * as ActionTRA from './actionTRA'
 
 //create a const for each action so it can be imported and connected components
 //menu actions

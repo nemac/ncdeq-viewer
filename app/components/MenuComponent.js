@@ -163,6 +163,7 @@ var MenuComponent = React.createClass({
 
       //get the attributes of the huc12 layer on a user click
       this.props.get_LayerInfo_ByValue(e.target.value, feature_id);
+      console.log(e.target.value)
 
       //update the menu for curret active layer
       //  this runs to ensure the list is updated for the active geograhpy Level

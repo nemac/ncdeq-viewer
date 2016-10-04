@@ -1,6 +1,6 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, HUC12_MAP_FEATUREID } from '../constants/actionConstants';
+import { AGO_URL, HUC12_MAP_FEATUREID, SERVICE_NAME } from '../constants/actionConstants';
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
@@ -23,7 +23,7 @@ import {
 ///get feature attributes for a layer at lat & long
 function AGO_get_LayerInfo_ByValue(value, layer_id){
 
-  const query_URL = '/RDRBP/FeatureServer/' + layer_id + '/query' +
+  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + layer_id + '/query' +
                     '?where=VALUE+%3D+%27' + value + '%27' +
                     '&objectIds=' +
                     '&time=' +
@@ -59,7 +59,7 @@ function AGO_get_LayerInfo_ByValue(value, layer_id){
 ///get feature attributes for a layer at lat & long
 function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
 
-  const query_URL = '/RDRBP/FeatureServer/' + layer_id + '/query' +
+  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + layer_id + '/query' +
                     '?where=' +
                     '&objectIds=' +
                     '&time=' +

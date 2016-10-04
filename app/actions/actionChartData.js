@@ -6,10 +6,10 @@ var turf_FC = require('turf-featurecollection');
 import { CheckReponse } from './responses';
 
 //  general functions and  helpers.  reuse functions
-import { getNextLevel } from '../utils/helpers';
+import { getNextLevel, getAGOGeographyLabel, getPrevLevelName, get_matchEnd } from '../utils/helpers';
 
 //import ACTION constants
-import { AGO_URL, DATA_FEATUREID, ENCODED_COMMAS } from '../constants/actionConstants';
+import { AGO_URL, DATA_FEATUREID, TRA_FEATUREID, ENCODED_COMMAS, SERVICE_NAME } from '../constants/actionConstants';
 import { START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION, CHART_VISIBILITY} from '../constants/appConstants';
 
 //set consts for this module
@@ -58,7 +58,7 @@ function AGO_AllChartData_byID(hucid,current_geography_level){
    }
 
    //build the query to arcgis online api for getting the raw chart data
-   const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
+   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
                    '?where=ID+like+%27' + id + '%25%27+and+geography_level%3D'+ next_level + //'+and+chart_type%3D%27' + CHART_TYPE + '%27' +
                    '&objectIds=' +
                    '&time=' +
@@ -77,11 +77,10 @@ function AGO_AllChartData_byID(hucid,current_geography_level){
   return axios.get(query_URL);
 
 }
-
 //get chart data for a single huc id
 //   requires the id to search
 function AGO_ChartData_byID(id){
-   const query_URL = '/RDRBP/FeatureServer/' + DATA_FEATUREID + '/query' +
+   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
                      '?where=id%3D%27' + id + '%27' + //' +and+chart_type%3D%27' + CHART_TYPE + '%27' +
                      '&objectIds=' +
                      '&time=' +
@@ -102,12 +101,89 @@ function AGO_ChartData_byID(id){
   return axios.get(query_URL);
 
 }
+
+
+//get chart data from data api
+function ago_get_tra_by_ids( id_list){
+
+  const id_in_list = "(" + id_list + ')'
+
+  //build the query to arcgis online api for getting the raw chart data
+  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+                    '?where=ID+in+' + id_in_list +
+                    '&objectIds=' +
+                    '&time='  +
+                    '&resultType=none' +
+                    '&outFields=*' +
+                    '&returnIdsOnly=false' +
+                    '&returnCountOnly=false' +
+                    '&returnDistinctValues=true' +
+                    '&orderByFields=' +
+                    '&groupByFieldsForStatistics=' +
+                    '&outStatistics=' +
+                    '&resultOffset=' +
+                    '&resultRecordCount=' +
+                    '&sqlFormat=none' +
+                    '&f=pgeojson' +
+                    '&token='
+
+ //send the ajax request via axios
+ return axios.get(query_URL);
+
+
+}
+//get chart data for all
+function ago_get_traxwalk_by_id(hucid, current_geography_level){
+
+  //set default id
+  var id = hucid;
+
+  //get the lower level in the huc heirachy
+  // var next_level = getNextLevel(current_geography_level);
+  const level = 'HUC_8'
+
+  //if current huc hierachy is set to huc12 we do not have a lower level in the heirachy
+  //  but we want to show all the hucs in the current huc12's Cataloging unit
+  //  so we need to get the first 8 characters, which is the Cataloging Unit
+  if(current_geography_level === 'HUC12'){
+    id = hucid.substring(START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION);
+  }
+
+
+   //build the query to arcgis online api for getting the raw chart data
+   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
+                   '?where=id%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
+                   '&objectIds=' +
+                   '&time=' +
+                   '&resultType=' +
+                   'none&outFields=*' +
+                   '&returnIdsOnly=false' +
+                   '&returnCountOnly=false' +
+                   '&returnDistinctValues=true' +
+                   '&orderByFields=' +
+                   '&groupByFieldsForStatistics=' +
+                   '&outStatistics=' +
+                   '&resultOffset=' +
+                   '&resultRecordCount=' +
+                   '&sqlFormat=none' +
+                   '&f=pgeojson' +
+                   '&token='
+
+  //send the ajax request via axios
+  return axios.get(query_URL);
+
+}
+
 //
 export function get_ChartData(id,level){
     return (dispatch,getState) => {
-      AGO_AllChartData_byID(id,level)
-      .then(function test(response){
+      axios.all([AGO_AllChartData_byID(id, level), ago_get_traxwalk_by_id(id, level)])
+      .then(axios.spread(function (chartdata_response, tra_response) {
+      // .then(function test(response){
         const state = getState()
+
+        //get tra id from xwalk
+        //get tra chart from table
 
         let visibility = CHART_VISIBILITY;
 
@@ -116,61 +192,115 @@ export function get_ChartData(id,level){
 
         //instatiate variables
         let chart_data = {};
+        let tra_chart_data = {};
+        let tra_data = {};
         let chart_all_base = [];
+        let chart_all_tra = [];
         let chart_id_base = [];
         let chart_all_upflift = [];
         let chart_id_upflift = [];
 
-        //check response and get response data
-        chart_data = CheckReponse(response,'AGO_API_ERROR');
+        //check response and get response data - chartdata_response
+        chart_data = CheckReponse(chartdata_response,'AGO_API_ERROR');
+
+        tra_data = CheckReponse(tra_response,'AGO_API_ERROR');
+
+        let tra_id_list = ""
+
+        //if the tra_data  is returned
+        //  we need to get the chart data...
+        if(tra_data.features){
+          tra_data.features.map( tra => {
+              const tra_id = tra.properties.TRA_Name;
+              tra_id_list = tra_id_list + ',' + "'" + tra_id + "'"
+              //
+              // // console.log(tra.properties.TRA_Name);
+              // return AGO_ChartData_byID(tra_id)
+              //   .then( tra_chart_data_response => {
+              //
+              //     //check response and get response data - chartdata_response
+              //     tra_chart_data = CheckReponse(tra_chart_data_response,'AGO_API_ERROR');
+              //     chart_all_tra = tra_chart_data.features.filter(key =>{
+              //       return key.properties.chart_type === 'UPLIFT';
+              //     })
+              //
+              //
+              //
+              //   })
+              //   .catch(error => { console.log('request failed', error); });
+              //
+            })
+            tra_id_list = tra_id_list.substring(1,tra_id_list.length)
+          }
+
+          ago_get_tra_by_ids(tra_id_list)
+           .then( tra_chart_data_response => {
+             tra_chart_data = CheckReponse(tra_chart_data_response,'AGO_API_ERROR');
+
+             chart_all_tra = tra_chart_data.features.filter(key =>{
+               return key.properties.chart_type === 'UPLIFT';
+             })
 
 
-        //if the chart_data_features is returned.
-        //  filter the data for the different parts
-        if(chart_data.features){
 
-          //get all the chart features objects for baseline
-          chart_all_base = chart_data.features.filter( key =>{
-            return key.properties.chart_type === 'BASELINE';
-          })
+                          //if the chart_data_features is returned.
+                          //  filter the data for the different parts
+                          if(chart_data.features){
 
-          //get all the chart features objects for uplift
-          chart_all_upflift = chart_data.features.filter( key =>{
-            return key.properties.chart_type === 'UPLIFT';
-          })
+                            //get all the chart features objects for baseline
+                            chart_all_base = chart_data.features.filter( key =>{
+                              return key.properties.chart_type === 'BASELINE';
+                            })
 
-          //this is for legacy method where we did this in action creator. do this in the component in the new version
-          chart_id_base = chart_data.features.filter( key =>{
-            return key.properties.ID === id && key.properties.chart_type === 'BASELINE';
-          })
+                            //get all the chart features objects for uplift
+                            chart_all_upflift = chart_data.features.filter( key =>{
+                              return key.properties.chart_type === 'UPLIFT';
+                            })
 
-          // chart_id_upflift = chart_data.features.filter( key =>{
-          //   return key.properties.ID === id && key.properties.chart_type === 'UPLIFT';
-          // })
-        }
+                            // //this is for legacy method where we did this in action creator. do this in the component in the new version
+                            // chart_id_base = chart_data.features.filter( key =>{
+                            //   return key.properties.ID === id && key.properties.chart_type === 'BASELINE';
+                            // })
 
-        //user TURF.JS to create geoJSON feature collections
-        var chartData_ID_fc = turf_FC(chart_id_base);
-        var chartData_Level_fc = turf_FC(chart_all_base);
+                            // chart_id_upflift = chart_data.features.filter( key =>{
+                            //   return key.properties.ID === id && key.properties.chart_type === 'UPLIFT';
+                            // })
+                          }
 
-        //create a array objects for the chart types: baseline and uplift
-        //  this chart limit is passed so we can limit the charts for a spefic huc N level
-        const types = [
-                {chart_type: 'baseline',
-                  chart_features: chart_all_base,
-                  chart_limit: id,
-                 },
-                {chart_type: 'uplift',
-                 chart_features: chart_all_upflift,
-                 chart_limit: id,
-                },
-              ];
+                          //user TURF.JS to create geoJSON feature collections
+                          var chartData_ID_fc = turf_FC(chart_id_base);
+                          var chartData_Level_fc = turf_FC(chart_all_base);
 
-        //send the chart data on
-        dispatch(
-          ChartData('GET_CHART_DATA', chartData_ID_fc, chartData_Level_fc, visibility, types)
-        )
-      }//)
+                          //create a array objects for the chart types: baseline and uplift
+                          //  this chart limit is passed so we can limit the charts for a spefic huc N level
+                          const types = [
+                                  {chart_type: 'baseline',
+                                    chart_features: chart_all_base,
+                                    chart_limit: id,
+                                   },
+                                  {chart_type: 'uplift',
+                                   chart_features: chart_all_upflift,
+                                   chart_limit: id,
+                                  },
+                                  {chart_type: 'tra',
+                                    chart_features: chart_all_tra,
+                                    chart_limit: id
+                                  },
+                                ];
+
+
+                          //send the chart data on
+                          dispatch(
+                            ChartData('GET_CHART_DATA', chartData_ID_fc, chartData_Level_fc, visibility, types)
+                          )
+
+                          
+           }).catch(error => { console.log('request failed', error); });
+
+
+
+
+      })
     )
     .catch(error => { console.log('request failed', error); });
   }
@@ -187,12 +317,11 @@ export function update_ChartVisiblity (visibility){
 
       if(state.chartData.chart_data){
         //ensure that the chart data exists create blank if not.
-         chartData_Level = ( state.chartData.chart_data.level_json ? state.chartData.chart_data.level_json : {});
+        chartData_Level = ( state.chartData.chart_data.level_json ? state.chartData.chart_data.level_json : {});
         chartData_ID = ( state.chartData.chart_data.id_json ? state.chartData.chart_data.id_json : {});
 
-
       //change visibility
-       isVisible = (state.chartData.chart_visibility ? false : true);
+      isVisible = (state.chartData.chart_visibility ? false : true);
 
       types = ( state.chartData.chart_data.chart_types ? state.chartData.chart_data.chart_types : []);
 
