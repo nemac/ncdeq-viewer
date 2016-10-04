@@ -87,7 +87,7 @@ var ChartRow = React.createClass({
     //make sure the data has been set
     if(chart_data){
 
-      //awesome that this the chart features have been extracted already if there is no chart_features object
+      //assume that this the chart features have been extracted already if there is no chart_features object
       if(chart_data.chart_features){
         chart_data_limited = chart_data.chart_features.filter( key => {
           return key.properties.ID === filter_value
@@ -193,13 +193,21 @@ var ChartRow = React.createClass({
       // sort by value
       let sorted_hucs = this.getChart_Sorted(levelone);
 
+
+
       sorted_hucs.map(huc => {
 
+        const underscore = "_"
+
+        let underscore_position = huc.indexOf(underscore);
+
         //find the underscore sperates the huc id from the id of chart_matchid  only need the huc_id
-       const underscore = huc.indexOf('_');
+        if( (huc.split(underscore).length -1 ) > 1){
+          underscore_position = huc.indexOf(underscore,underscore_position + 1);
+        }
 
        //get the huc id from the array
-       var name = huc.substring(0,underscore);
+       var name = huc.substring(0,underscore_position);
 
        //create an object to hold the chart data
        var chart_object = new Object;
@@ -233,6 +241,7 @@ var ChartRow = React.createClass({
        chart_data_array.push(chart_object);
      })
     }
+
     return chart_data_array
   },
   render: function() {
@@ -251,7 +260,10 @@ var ChartRow = React.createClass({
 
     //get data for chart type of baseline
     let uplift_data = this.getCharType_Data('uplift');
-    //console.log(uplift_data[0])
+
+    //get data for chart type of TRA
+    let tra_data = this.getCharType_Data('tra');
+
     //get the user selected huc so we can filter
     let chart_filter = this.getChart_Filter(baseline_data[0]);
 
@@ -261,14 +273,21 @@ var ChartRow = React.createClass({
     //get the uplift chart filtered by the user selected huc
     let uplift_data_limited = this.getChart_FilteredByHUC(uplift_data[0], chart_filter);
 
+    //get the tra chart filtered by the user selected huc
+    let tra_data_limited = this.getChart_FilteredByHUC(tra_data[0], chart_filter);
+
 
     let chart_baseline_bar = [];
     let chart_upflift_bar = [];
+    let chart_tar_bar = [];
+
     let all_hucs_bar = [];
 
     chart_baseline_bar = this.getChart_data(baseline_data[0]);
     chart_upflift_bar = this.getChart_data(uplift_data[0]);
+    chart_tar_bar = this.getChart_data(tra_data[0]);
 
+    // console.log(chart_tar_bar)
     let chart_cataloging_unit = 'Please Click on the Map, Search, or Choose something to get started.'
     let huc_message = "No HUC's Selected yet."
     if(chart_filter){
@@ -294,6 +313,16 @@ var ChartRow = React.createClass({
         </div>
         </div>
 
+        <ChartRowWrapper key="tra"
+          chart_width={chart_width_px}
+          title="Targeted Resource Areas (TRA)"
+          title_description=""
+          note="TRA's in this Cataloging Unit"
+          chart_type="tra"
+          chart_data={chart_tar_bar}
+          chart_filter={chart_filter}
+          get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
+          change_geographyLevelActive={this.props.change_geographyLevelActive}/>
         <ChartRowWrapper key="baseline"
           chart_width={chart_width_px}
           title="BASELINE"

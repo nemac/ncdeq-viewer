@@ -98,6 +98,9 @@ var ChartBars = React.createClass({
       case 'uplift':
         data_keys = ['Water Quality','Hydrology','Habitat'];
         break;
+      case 'tra':
+        data_keys = ['Water Quality','Hydrology','Habitat'];
+        break;
       default:
 
     }
@@ -218,6 +221,8 @@ var ChartBars = React.createClass({
       title = "No Charts Available Yet Please Click on the map, choose a HUC, or Search for a location"
     }
     $('#description').html(title);
+
+    
     return (
 
       <div >
