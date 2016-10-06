@@ -42,7 +42,7 @@ axios.defaults.baseURL = AGO_URL;
 //            need this so we can limit the
 //  the huc heirachy is huc 6 (river basins), huc 8 (Cataloging units), huc 12 (huc 12) for now will be adding
 //      TRA's and catchments
-function AGO_AllChartData_byID(hucid,current_geography_level){
+function AGO_AllChartData_byID(hucid, current_geography_level){
 
    //set default id
    var id = hucid;
@@ -211,91 +211,76 @@ export function get_ChartData(id,level){
         //  we need to get the chart data...
         if(tra_data.features){
           tra_data.features.map( tra => {
+
+              //get tra xwalk this will retrieve the tra id's from the HUC id's
+              //  the tra xwalk has already determined the spatial relationships between hucs and
+              //  tra's so we do not have to
               const tra_id = tra.properties.TRA_Name;
               tra_id_list = tra_id_list + ',' + "'" + tra_id + "'"
-              //
-              // // console.log(tra.properties.TRA_Name);
-              // return AGO_ChartData_byID(tra_id)
-              //   .then( tra_chart_data_response => {
-              //
-              //     //check response and get response data - chartdata_response
-              //     tra_chart_data = CheckReponse(tra_chart_data_response,'AGO_API_ERROR');
-              //     chart_all_tra = tra_chart_data.features.filter(key =>{
-              //       return key.properties.chart_type === 'UPLIFT';
-              //     })
-              //
-              //
-              //
-              //   })
-              //   .catch(error => { console.log('request failed', error); });
-              //
             })
             tra_id_list = tra_id_list.substring(1,tra_id_list.length)
           }
 
+          //from the tra ids retrieve the tra data fro charting
           ago_get_tra_by_ids(tra_id_list)
            .then( tra_chart_data_response => {
              tra_chart_data = CheckReponse(tra_chart_data_response,'AGO_API_ERROR');
 
-             chart_all_tra = tra_chart_data.features.filter(key =>{
-               return key.properties.chart_type === 'UPLIFT';
-             })
+             if(tra_chart_data.features){
+
+               //so far the TRA data is all uplift but this may not matter really only doing this so
+               // the format of the data matches baseline and uplfift for the 1st pass of charting
+               chart_all_tra = tra_chart_data.features.filter(key =>{
+                 return key.properties.chart_type === 'UPLIFT';
+               })
+
+             }
+
+            //if the chart_data_features is returned.
+            //  filter the data for the different parts
+            if(chart_data.features){
+
+              //get all the chart features objects for baseline
+              chart_all_base = chart_data.features.filter( key =>{
+                return key.properties.chart_type === 'BASELINE';
+              })
+
+              //get all the chart features objects for uplift
+              chart_all_upflift = chart_data.features.filter( key =>{
+                return key.properties.chart_type === 'UPLIFT';
+              })
+
+            }
+
+          //use TURF.JS to create geoJSON feature collections
+          var chartData_ID_fc = turf_FC(chart_id_base);
+          var chartData_Level_fc = turf_FC(chart_all_base);
+
+          //create a array objects for the chart types: baseline and uplift
+          //  this chart limit is passed so we can limit the charts for a spefic huc N level
+          const types = [
+                  {chart_type: 'baseline',
+                    chart_features: chart_all_base,
+                    chart_limit: id,
+                   },
+                  {chart_type: 'uplift',
+                   chart_features: chart_all_upflift,
+                   chart_limit: id,
+                  },
+                  {chart_type: 'tra',
+                    chart_features: chart_all_tra,
+                    chart_limit: id
+                  },
+                ];
 
 
-
-                          //if the chart_data_features is returned.
-                          //  filter the data for the different parts
-                          if(chart_data.features){
-
-                            //get all the chart features objects for baseline
-                            chart_all_base = chart_data.features.filter( key =>{
-                              return key.properties.chart_type === 'BASELINE';
-                            })
-
-                            //get all the chart features objects for uplift
-                            chart_all_upflift = chart_data.features.filter( key =>{
-                              return key.properties.chart_type === 'UPLIFT';
-                            })
-
-                            // //this is for legacy method where we did this in action creator. do this in the component in the new version
-                            // chart_id_base = chart_data.features.filter( key =>{
-                            //   return key.properties.ID === id && key.properties.chart_type === 'BASELINE';
-                            // })
-
-                            // chart_id_upflift = chart_data.features.filter( key =>{
-                            //   return key.properties.ID === id && key.properties.chart_type === 'UPLIFT';
-                            // })
-                          }
-
-                          //user TURF.JS to create geoJSON feature collections
-                          var chartData_ID_fc = turf_FC(chart_id_base);
-                          var chartData_Level_fc = turf_FC(chart_all_base);
-
-                          //create a array objects for the chart types: baseline and uplift
-                          //  this chart limit is passed so we can limit the charts for a spefic huc N level
-                          const types = [
-                                  {chart_type: 'baseline',
-                                    chart_features: chart_all_base,
-                                    chart_limit: id,
-                                   },
-                                  {chart_type: 'uplift',
-                                   chart_features: chart_all_upflift,
-                                   chart_limit: id,
-                                  },
-                                  {chart_type: 'tra',
-                                    chart_features: chart_all_tra,
-                                    chart_limit: id
-                                  },
-                                ];
+          //send the chart data on
+          dispatch(
+            ChartData('GET_CHART_DATA', visibility, types)
+          )
 
 
-                          //send the chart data on
-                          dispatch(
-                            ChartData('GET_CHART_DATA', chartData_ID_fc, chartData_Level_fc, visibility, types)
-                          )
-
-                          
-           }).catch(error => { console.log('request failed', error); });
+        }).catch(error => { console.log('request failed', error); });
 
 
 
@@ -316,9 +301,6 @@ export function update_ChartVisiblity (visibility){
       let isVisible = true;
 
       if(state.chartData.chart_data){
-        //ensure that the chart data exists create blank if not.
-        chartData_Level = ( state.chartData.chart_data.level_json ? state.chartData.chart_data.level_json : {});
-        chartData_ID = ( state.chartData.chart_data.id_json ? state.chartData.chart_data.id_json : {});
 
       //change visibility
       isVisible = (state.chartData.chart_visibility ? false : true);
@@ -329,7 +311,7 @@ export function update_ChartVisiblity (visibility){
 
 
       //send visibility setting on
-      dispatch(ChartData('SET_CHART_VISIBILITY', chartData_ID, chartData_Level, isVisible, types ))
+      dispatch(ChartData('SET_CHART_VISIBILITY', isVisible, types ))
 
 
     }
@@ -337,7 +319,7 @@ export function update_ChartVisiblity (visibility){
 
 
 //function to handle sending to reducer and store
-function ChartData(type,id_json, level_json, visibility, types) {
+function ChartData(type, visibility, types) {
   // return {
   //   type: type,
   //   chart_data: {id_json,level_json},
@@ -347,8 +329,6 @@ function ChartData(type,id_json, level_json, visibility, types) {
   return {
    type: type,
    chart_data: {
-     id_json,
-     level_json,
      chart_types: types,
    },
    chart_visibility: visibility,

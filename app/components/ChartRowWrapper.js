@@ -12,6 +12,8 @@ var ChartRowWrapper = React.createClass({
     };
   },
   render: function() {
+    // console.log(this.props.chart_data)
+
     return (
       <div className="item" style={{display: "block"}}>
         <div className="item" style={{display: "block", minHeight: "30px"}}>
@@ -32,6 +34,11 @@ var ChartRowWrapper = React.createClass({
                                     get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
                                     change_geographyLevelActive={this.props.change_geographyLevelActive}/>
         </div>
+        <div className="meta">
+          <span className="description">{this.props.title_description}</span>
+          <span className="note">{this.props.note}</span>
+        </div>
+
       </div>
     );
   }

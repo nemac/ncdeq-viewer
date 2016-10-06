@@ -11,6 +11,9 @@ import {
 } from '../constants/appConstants'
 
 
+import { getCategoryName } from '../utils/helpers';
+
+
 var Divider = require('./Divider');
 
 var ChartRow = React.createClass({
@@ -106,7 +109,7 @@ var ChartRow = React.createClass({
 
     let use_top = true;
     //make sure something was passed so arg is optional if
-    //  nothing passed awesome its false or not a top level chart.
+    //  nothing passed assume its false or not a top level chart.
     //  a top level chart is only used to do the sort... and has children that comprise it's total.
     if(!is_top){
       use_top = false;
@@ -194,7 +197,6 @@ var ChartRow = React.createClass({
       let sorted_hucs = this.getChart_Sorted(levelone);
 
 
-
       sorted_hucs.map(huc => {
 
         const underscore = "_"
@@ -244,10 +246,32 @@ var ChartRow = React.createClass({
 
     return chart_data_array
   },
+  getLevel: function(){
+    if (this.props.geography_levels){
+
+      //filter the levels to get the active tab
+      const ActiveTabObject = this.props.geography_levels.filter( key =>{
+        return key.active === true;
+      })
+
+      //set default active tab - as Highest level
+      let activeTab = 'River Basins'
+      if (ActiveTabObject.length > 0){
+        //get the active tab and convert the name to the name used in the app.
+        //  this will eventually be driven by config or data....???
+        activeTab = getCategoryName(ActiveTabObject[0].geography_label);
+      }
+
+      return activeTab
+    } else {
+      return null;
+    }
+  },
   render: function() {
     //get chart width inpixl from redux should handle resize in actiion creators
     let chart_width_px = CHART_WIDTH_PX;
     let chart_grid_height =  MAP_HEIGHT;
+
     if(this.props.default_settings){
       chart_width_px = this.props.default_settings.chartWidth;
       chart_grid_height = this.props.default_settings.mapHeight;
@@ -287,30 +311,66 @@ var ChartRow = React.createClass({
     chart_upflift_bar = this.getChart_data(uplift_data[0]);
     chart_tar_bar = this.getChart_data(tra_data[0]);
 
-    // console.log(chart_tar_bar)
+    var testone = ""
+    var tra_message = ""
+
+    if(this.props.tra_data.data){
+      testone = JSON.stringify(this.props.tra_data.data) + this.props.tra_data.data.length;
+      if (this.props.tra_data.data.length > 0){
+        tra_message = "Yes, it crosses or is within a TRA"
+      } else {
+        tra_message = "No, Does NOT cross nor is it within a TRA"
+
+      }
+
+    }
+    // let testone =  this.getChart_FilteredByChartLevel( tra_data[0], 1, true );
+    // const test_one_value = []
+    //
+    // testone.map( val => {
+    //   const value = val.properties.chart_value
+    //   const name = val.properties.geography_label + ' (' + val.properties.ID + ')'
+    //   const id = val.properties.ID
+    //   const obj = {name, value, id}
+    //   test_one_value.push(obj)
+    // })
+
+    // console.log(test_one_value)
+
     let chart_cataloging_unit = 'Please Click on the Map, Search, or Choose something to get started.'
     let huc_message = "No HUC's Selected yet."
+
     if(chart_filter){
-      chart_cataloging_unit = 'Baseline and Uplift for the Cataloging Unit ' +chart_filter.substring(0,8)
-      huc_message = "The HUC " +  chart_filter + " is currently highlighted."
+      chart_cataloging_unit = 'Baseline and Uplift for the Cataloging Unit ' + chart_filter.substring(0,8)
+      huc_message = "The " + this.getLevel() + " " +  chart_filter + " is currently highlighted."
     }
-    // <br />
-    // <div className="meta">
-    //   <span className="stay">{huc_message}</span>
-    // </div>
+
+
 
     return (
 
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden"}}>
         <div className="ui item" >
           <div className="content">
-          <div className="ui header left floated">
-            {chart_cataloging_unit}
-          </div>
-          <div className="meduim basic ui button icon right floated" onClick={this.chartToggle} >
-            <i className="remove icon"></i>
+            <div className="ui header left floated">
+              {chart_cataloging_unit}
+            </div>
+            <div className="meduim basic ui button icon right floated" onClick={this.chartToggle} >
+              <i className="remove icon"></i>
+            </div>
           </div>
         </div>
+
+        <div className="ui item" >
+          <div className="content">
+            <div className="ui header">
+              {huc_message}
+            </div>
+            <div className="meta">
+              <p>{tra_message}</p>
+              <p>{testone}</p>
+            </div>
+          </div>
         </div>
 
         <ChartRowWrapper key="tra"

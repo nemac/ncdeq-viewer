@@ -1,6 +1,8 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, DATA_FEATUREID , SERVICE_NAME} from '../constants/actionConstants';
+import { AGO_URL, DATA_FEATUREID , SERVICE_NAME, TRA_FEATUREID} from '../constants/actionConstants';
+
+import { START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION } from '../constants/appConstants';
 
 //  general functions and  helpers.  reuse functions
 import {  getAGOGeographyLabel, getCurrentLevel } from '../utils/helpers';
@@ -8,139 +10,172 @@ import {  getAGOGeographyLabel, getCurrentLevel } from '../utils/helpers';
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
 
-//get cu huc 8/12 geom
-  // get tra's that intersects
-  // get tras data from normazlied and return as chart data
-export function get_TRA_data(){
-
-  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' ;
-
-  const data = {
-    resultType: 'none',
-    outFields: '*',
-    returnIdsOnly: false,
-    returnCountOnly: false,
-    returnDistinctValues: true,
-    returnGeometry: true,
-    geometryType: 'esriGeometryPolygon',
-    spatialRel: 'esriSpatialRelIntersects',
-
-    f: "json"
-  }
-
-
-  return axios.post(query_URL);
-
-}
-
 //get chart data for all
-function ago_get_tra_id(hucid,current_geography_level){
+function ago_get_traxwalk_by_id(hucid, current_geography_level){
 
-   //set default id
-   var id = hucid;
+  //set default id
+  var id = hucid;
 
-  //  //get the lower level in the huc heirachy
-  //  var next_level = getNextLevel(current_geography_level);
-  const level = current_geography_level.toUpperCase();
+  //get the lower level in the huc heirachy
+  // var next_level = getNextLevel(current_geography_level);
+  const level = getAGOGeographyLabel(current_geography_level).toUpperCase()
+  // const level = 'HUC_12'
+
+  //if current huc hierachy is set to huc12 we do not have a lower level in the heirachy
+  //  but we want to show all the hucs in the current huc12's Cataloging unit
+  //  so we need to get the first 8 characters, which is the Cataloging Unit
+  // if(current_geography_level === 'HUC12'){
+  //   id = hucid.substring(START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION);
+  // }
 
 
    //build the query to arcgis online api for getting the raw chart data
-   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
-                   '?where=ID+like+%27' + id + '%25%27+and+TYPE%3D'+ next_level + //'+and+chart_type%3D%27' + CHART_TYPE + '%27' +
+   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
+                   '?where=id%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
                    '&objectIds=' +
                    '&time=' +
-                   '&resultType=none' +
-                   '&outFields=*' +
+                   '&resultType=' +
+                   'none&outFields=*' +
                    '&returnIdsOnly=false' +
                    '&returnCountOnly=false' +
                    '&returnDistinctValues=true' +
+                   '&orderByFields=' +
                    '&groupByFieldsForStatistics=' +
                    '&outStatistics=' +
                    '&resultOffset=' +
                    '&resultRecordCount=' +
-                   '&f=pgeojson&token=';
+                   '&sqlFormat=none' +
+                   '&f=pgeojson' +
+                   '&token='
 
   //send the ajax request via axios
   return axios.get(query_URL);
 
 }
 
+//get chart data from data api
+function ago_get_tra_by_ids( id_list){
 
-export function get_ChartData(id,level){
-    return (dispatch,getState) => {
-      AGO_AllChartData_byID(id,level)
-      .then(function test(response){
-        const state = getState()
+  const id_in_list = "(" + id_list + ')'
 
-        let visibility = CHART_VISIBILITY;
+  //build the query to arcgis online api for getting the raw chart data
+  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+                    '?where=ID+in+' + id_in_list +
+                    '&objectIds=' +
+                    '&time='  +
+                    '&resultType=none' +
+                    '&outFields=*' +
+                    '&returnIdsOnly=false' +
+                    '&returnCountOnly=false' +
+                    '&returnDistinctValues=true' +
+                    '&orderByFields=' +
+                    '&groupByFieldsForStatistics=' +
+                    '&outStatistics=' +
+                    '&resultOffset=' +
+                    '&resultRecordCount=' +
+                    '&sqlFormat=none' +
+                    '&f=pgeojson' +
+                    '&token='
 
-        //get visibility state of charts
-        visibility = ( state.chartData.chart_visibility === undefined? CHART_VISIBILITY : state.chartData.chart_visibility);
+ //send the ajax request via axios
+ return axios.get(query_URL);
 
-        //instatiate variables
-        let chart_data = {};
-        let chart_all_base = [];
-        let chart_id_base = [];
-        let chart_all_upflift = [];
-        let chart_id_upflift = [];
+}
 
-        //check response and get response data
-        chart_data = CheckReponse(response,'AGO_API_ERROR');
+export function get_TRAData(hucid, current_geography_level){
+  return (dispatch, getState) => {
+    ago_get_traxwalk_by_id(hucid, current_geography_level)
+      .then( tra_xwalk_response => {
+
+        let tra_datas = {};
+        let chart_all_tra = [];
+        let group = {};
+
+        tra_datas = CheckReponse(tra_xwalk_response,'AGO_API_ERROR');
+
+        if(tra_datas.features){
+          // console.log(tra_datas)
+
+          let group = []
+
+           tra_datas.features.map( feature => {
+
+            const id = feature.properties.ID
+            const tra_name = feature.properties.TRA_Name
+            group.push({
+              id,
+              tra_name
+            })
+
+            //  if (group.indexOf(feature.properties.ID) < 0){
+            //    group.push({id:feature.properties.ID})
+            //    group[feature.properties.ID] = []
+            //    group[feature.properties.ID].push({TRA_Name: feature.properties.TRA_Name})
+            //  } else {
+            //    group[feature.properties.ID].push({TRA_Name: feature.properties.TRA_Name})
+            //  }
 
 
-        //if the chart_data_features is returned.
-        //  filter the data for the different parts
-        if(chart_data.features){
 
-          //get all the chart features objects for baseline
-          chart_all_base = chart_data.features.filter( key =>{
-            return key.properties.chart_type === 'BASELINE';
-          })
+            //  if( group[feature.properties.ID]){
+            //    group[feature.properties.ID].push({TRA_Name: feature.properties.TRA_Name})
+            //  }
+            //  group[feature.properties.ID].push({TRA_Name: x.properties.TRA_Name})
 
-          //get all the chart features objects for uplift
-          chart_all_upflift = chart_data.features.filter( key =>{
-            return key.properties.chart_type === 'UPLIFT';
-          })
+            //  if( group[feature.properties.ID] === group[feature.properties.ID] ){
+            //    group[feature.properties.ID].push({TRA_Name: x.properties.TRA_Name})
+            //  } else {
+            //   //  group.push(feature.properties.ID).push({TRA_Name: x.properties.TRA_Name})
+            //  }
+            //     // group[feature.properties.ID].push({TRA_Name: x.properties.TRA_Name})
+           })
+          // group = tra_datas.features.reduce(function(acc, x) {
+          //
+          //   // first check if the given group is in the object
+          //   acc[x.properties.ID] = acc[x.properties.ID] ?  acc[x.properties.ID ].push({TRA_Name: x.properties.TRA_Name}) :  [{TRA_Name: x.properties.TRA_Name}] ;
+          //
+          //   return acc;
+          //
+          //  }, {});
 
-          // //this is for legacy method where we did this in action creator. do this in the component in the new version
-          // chart_id_base = chart_data.features.filter( key =>{
-          //   return key.properties.ID === id && key.properties.chart_type === 'BASELINE';
-          // })
+          //  console.log(group)
 
-          // chart_id_upflift = chart_data.features.filter( key =>{
-          //   return key.properties.ID === id && key.properties.chart_type === 'UPLIFT';
-          // })
+           //{"name": "test"}
+           dispatch(tra_data('GET_TRA_DATA', group));
         }
 
-        //user TURF.JS to create geoJSON feature collections
-        var chartData_ID_fc = turf_FC(chart_id_base);
-        var chartData_Level_fc = turf_FC(chart_all_base);
 
-        //create a array objects for the chart types: baseline and uplift
-        //  this chart limit is passed so we can limit the charts for a spefic huc N level
-        const types = [
-                {chart_type: 'baseline',
-                  chart_features: chart_all_base,
-                  chart_limit: id,
-                 },
-                {chart_type: 'uplift',
-                 chart_features: chart_all_upflift,
-                 chart_limit: id,
-                },
-              ];
 
-        //send the chart data on
-        dispatch(
-          tra_data('TRA_CHART_DATA', chartData_ID_fc, chartData_Level_fc, visibility, types)
-        )
-      }//)
-    )
-    .catch(error => { console.log('request failed', error); });
+        // let tra_id_list = ""
+
+
+        // //if the tra_data  is returned
+        // //  we need to get the chart data...
+        // if(tra_datas.features){
+        //   tra_datas.features.map( tra => {
+        //
+        //       //get tra xwalk this will retrieve the tra id's from the HUC id's
+        //       //  the tra xwalk has already determined the spatial relationships between hucs and
+        //       //  tra's so we do not have to
+        //       const tra_id = tra.properties.TRA_Name;
+        //       tra_id_list = tra_id_list + ',' + "'" + tra_id + "'"
+        //     })
+        //     tra_id_list = tra_id_list.substring(1,tra_id_list.length)
+        //   }
+
+
+
+
+
+
+
+      }).catch(error => { console.log('request failed', error); });
   }
 }
 
+
 //function to handle sending to reducer and store
-function tra_data(type, id_json, level_json, visibility, types) {
+function tra_data(type, data) {
   // return {
   //   type: type,
   //   chart_data: {id_json,level_json},
@@ -149,7 +184,7 @@ function tra_data(type, id_json, level_json, visibility, types) {
   return {
    type: type,
    tra_data: {
-     chart_types: types,
+     data
    },
    receivedAt: Date.now()
  }
