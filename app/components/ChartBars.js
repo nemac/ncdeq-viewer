@@ -222,7 +222,7 @@ var ChartBars = React.createClass({
     }
     $('#description').html(title);
 
-    
+
     return (
 
       <div >

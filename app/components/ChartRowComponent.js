@@ -196,7 +196,9 @@ var ChartRow = React.createClass({
       // sort by value
       let sorted_hucs = this.getChart_Sorted(levelone);
 
-
+      var blank_chart_object = new Object;
+      var blank_chart_object_two = new Object;
+      //loop through the sorted huvs and prepare the data for the chart.
       sorted_hucs.map(huc => {
 
         const underscore = "_"
@@ -213,35 +215,58 @@ var ChartRow = React.createClass({
 
        //create an object to hold the chart data
        var chart_object = new Object;
-       chart_object["name"] =  name;
 
-       //get the chat for each indivual huc
+       chart_object["name"] =  name;
+       blank_chart_object["name"] = " "
+       blank_chart_object_two["name"] = "   "
+
+       //get the chart for each indivual huc
        const levelones = this.getChart_FilteredByHUC(levelone, name);
        let children = [];
 
        levelones.map(item => {
-         //  var value = Number(item.properties.chart_value).toFixed(2);
+
+         //Get the value for chart bar--cell
          var value = item.properties.chart_value
+
+         //numbers need to be truncated.  rounding results in values such as
+         // .999999 to round to 1.0 which is not correct
          if( value ){
            value = item.properties.chart_value.substring(0,5)
          }
+
+         //convert back to a number type
          var value = Number( value );
          chart_object[item.properties.chart_level_label] =  value;
+         blank_chart_object[item.properties.chart_level_label] = null
+         blank_chart_object_two[item.properties.chart_level_label] = null
+
          chart_object["chart_id"] =  item.properties.chart_id;
+         blank_chart_object["chart_id"] = item.properties.chart_id
+         blank_chart_object_two["chart_id"] = item.properties.chart_id
 
-         //pass chart id get all matchids of current chart of there is data that exists then add to children
-         // this will create for drilldown bar charts
-         let next_limit = this.getChart_FilteredByHUC(chart_data, name);
-         let next_level =  this.getChart_FilteredByChartLevel( next_limit, item.properties.chart_id, false );
-
-        //  var next_chart_object = new Object;
-        //  next_chart_object[item.properties.chart_description] = next_level;
-        //  children.push(next_chart_object)
-         chart_object[item.properties.chart_level_label.replace(' ','_') + "_child_chart_data"] = next_level;
+        //  //pass chart id get all matchids of current chart of there is data that exists then add to children
+        //  // this will create for drilldown bar charts
+        //  let next_limit = this.getChart_FilteredByHUC(chart_data, name);
+        //  let next_level =  this.getChart_FilteredByChartLevel( next_limit, item.properties.chart_id, false );
+        //
+        // //  var next_chart_object = new Object;
+        // //  next_chart_object[item.properties.chart_description] = next_level;
+        // //  children.push(next_chart_object)
+        //  chart_object[item.properties.chart_level_label.replace(' ','_') + "_child_chart_data"] = next_level;
 
        })
        chart_data_array.push(chart_object);
      })
+    }
+
+    //until I can upgrade recharts to .11 I need to overcome a bug with one bar and tool tip not working.
+    if(chart_data_array.length === 1){
+
+        //add a blank bar to each side of a one bar chart so the tooltips will apears
+        chart_data_array.unshift(blank_chart_object)
+        chart_data_array.push(blank_chart_object_two)
+
     }
 
     return chart_data_array
@@ -304,47 +329,71 @@ var ChartRow = React.createClass({
     let chart_baseline_bar = [];
     let chart_upflift_bar = [];
     let chart_tar_bar = [];
-
     let all_hucs_bar = [];
 
     chart_baseline_bar = this.getChart_data(baseline_data[0]);
     chart_upflift_bar = this.getChart_data(uplift_data[0]);
     chart_tar_bar = this.getChart_data(tra_data[0]);
 
-    var testone = ""
     var tra_message = ""
+    var tra_text_message = ""
+    var tra_code = ""
+    var success_class = ""
+    var icon = ""
+    var sub_header = ""
 
-    if(this.props.tra_data.data){
-      testone = JSON.stringify(this.props.tra_data.data) + this.props.tra_data.data.length;
-      if (this.props.tra_data.data.length > 0){
-        tra_message = "Yes, it crosses or is within a TRA"
-      } else {
-        tra_message = "No, Does NOT cross nor is it within a TRA"
+    //make sure the TRA data object is defined
+    if(this.props.tra_data){
+      if(this.props.tra_data.data){
+
+        //if there is  data in the object the select huc does cross a tra
+        if (this.props.tra_data.data.length > 0){
+          tra_text_message = "Yes, the "  + this.getLevel() +  ": " + chart_filter + " crosses or is within a TRA."
+          success_class = "ui icon success message"
+          icon = (<i className="check circle icon"></i>)
+
+          const comma = ", "
+          //render the menu selections for the list
+            var tra_list = this.props.tra_data.data.map( tra => {
+                return   (<span key={tra.tra_name}> {tra.tra_name}{comma}</span>)
+            })
+            //list of TRA's
+            sub_header = (<p>This includes the TRA(s): {tra_list}</p>)
+
+
+
+        //if there is  no data in the object the select huc does not cross a tra
+        } else {
+          success_class = "ui icon negative message"
+          icon = (<i className="remove circle icon"></i>)
+          tra_text_message = "No, the "  + this.getLevel() +  ": " + chart_filter + " does NOT cross nor is it within a TRA"
+        }
+
+        //TRA in message
+        tra_message = (
+            <div className={success_class} >
+              {icon}
+              <div className="content">
+                <div className="header">
+                  {tra_text_message}
+                </div>
+                {sub_header}
+              </div>
+            </div>
+        )
+
 
       }
-
     }
-    // let testone =  this.getChart_FilteredByChartLevel( tra_data[0], 1, true );
-    // const test_one_value = []
     //
-    // testone.map( val => {
-    //   const value = val.properties.chart_value
-    //   const name = val.properties.geography_label + ' (' + val.properties.ID + ')'
-    //   const id = val.properties.ID
-    //   const obj = {name, value, id}
-    //   test_one_value.push(obj)
-    // })
-
-    // console.log(test_one_value)
-
     let chart_cataloging_unit = 'Please Click on the Map, Search, or Choose something to get started.'
     let huc_message = "No HUC's Selected yet."
 
     if(chart_filter){
-      chart_cataloging_unit = 'Baseline and Uplift for the Cataloging Unit ' + chart_filter.substring(0,8)
+      chart_cataloging_unit = "Charts and Data for the Cataloging Unit " + chart_filter.substring(0,8);
+      //'Baseline and Uplift for the Cataloging Unit ' + chart_filter.substring(0,8)
       huc_message = "The " + this.getLevel() + " " +  chart_filter + " is currently highlighted."
     }
-
 
 
     return (
@@ -363,15 +412,9 @@ var ChartRow = React.createClass({
 
         <div className="ui item" >
           <div className="content">
-            <div className="ui header">
-              {huc_message}
-            </div>
-            <div className="meta">
-              <p>{tra_message}</p>
-              <p>{testone}</p>
-            </div>
-          </div>
-        </div>
+        {tra_message}
+      </div>
+    </div>
 
         <ChartRowWrapper key="tra"
           chart_width={chart_width_px}

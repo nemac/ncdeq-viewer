@@ -85,91 +85,38 @@ function ago_get_tra_by_ids( id_list){
 export function get_TRAData(hucid, current_geography_level){
   return (dispatch, getState) => {
     ago_get_traxwalk_by_id(hucid, current_geography_level)
-      .then( tra_xwalk_response => {
+    .then( tra_xwalk_response => {
 
-        let tra_datas = {};
-        let chart_all_tra = [];
-        let group = {};
+      let tra_datas = {};
+      let chart_all_tra = [];
+      let group = {};
 
-        tra_datas = CheckReponse(tra_xwalk_response,'AGO_API_ERROR');
+      tra_datas = CheckReponse(tra_xwalk_response,'AGO_API_ERROR');
 
-        if(tra_datas.features){
-          // console.log(tra_datas)
+      if(tra_datas.features){
+        // console.log(tra_datas)
 
-          let group = []
+        let group = []
+        let tra_id_list = ""
 
-           tra_datas.features.map( feature => {
+        //walk the tra features and get the tra data.
+        tra_datas.features.map( feature => {
 
-            const id = feature.properties.ID
-            const tra_name = feature.properties.TRA_Name
-            group.push({
-              id,
-              tra_name
-            })
+          const id = feature.properties.ID
+          const tra_name = feature.properties.TRA_Name
 
-            //  if (group.indexOf(feature.properties.ID) < 0){
-            //    group.push({id:feature.properties.ID})
-            //    group[feature.properties.ID] = []
-            //    group[feature.properties.ID].push({TRA_Name: feature.properties.TRA_Name})
-            //  } else {
-            //    group[feature.properties.ID].push({TRA_Name: feature.properties.TRA_Name})
-            //  }
+          //get tra id's
+          group.push({
+            id,
+            tra_name
+          })
 
-
-
-            //  if( group[feature.properties.ID]){
-            //    group[feature.properties.ID].push({TRA_Name: feature.properties.TRA_Name})
-            //  }
-            //  group[feature.properties.ID].push({TRA_Name: x.properties.TRA_Name})
-
-            //  if( group[feature.properties.ID] === group[feature.properties.ID] ){
-            //    group[feature.properties.ID].push({TRA_Name: x.properties.TRA_Name})
-            //  } else {
-            //   //  group.push(feature.properties.ID).push({TRA_Name: x.properties.TRA_Name})
-            //  }
-            //     // group[feature.properties.ID].push({TRA_Name: x.properties.TRA_Name})
-           })
-          // group = tra_datas.features.reduce(function(acc, x) {
-          //
-          //   // first check if the given group is in the object
-          //   acc[x.properties.ID] = acc[x.properties.ID] ?  acc[x.properties.ID ].push({TRA_Name: x.properties.TRA_Name}) :  [{TRA_Name: x.properties.TRA_Name}] ;
-          //
-          //   return acc;
-          //
-          //  }, {});
-
-          //  console.log(group)
-
-           //{"name": "test"}
-           dispatch(tra_data('GET_TRA_DATA', group));
-        }
+        })
+        dispatch(tra_data('GET_TRA_DATA', group));
+      }
 
 
-
-        // let tra_id_list = ""
-
-
-        // //if the tra_data  is returned
-        // //  we need to get the chart data...
-        // if(tra_datas.features){
-        //   tra_datas.features.map( tra => {
-        //
-        //       //get tra xwalk this will retrieve the tra id's from the HUC id's
-        //       //  the tra xwalk has already determined the spatial relationships between hucs and
-        //       //  tra's so we do not have to
-        //       const tra_id = tra.properties.TRA_Name;
-        //       tra_id_list = tra_id_list + ',' + "'" + tra_id + "'"
-        //     })
-        //     tra_id_list = tra_id_list.substring(1,tra_id_list.length)
-        //   }
-
-
-
-
-
-
-
-      }).catch(error => { console.log('request failed', error); });
+    }).catch(error => { console.log('request failed', error); });
   }
 }
 
