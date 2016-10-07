@@ -11,7 +11,7 @@ import {
 } from '../constants/appConstants'
 
 
-import { getCategoryName } from '../utils/helpers';
+import { getCategoryName, getFriendlyName } from '../utils/helpers';
 
 
 var Divider = require('./Divider');
@@ -245,16 +245,6 @@ var ChartRow = React.createClass({
          blank_chart_object["chart_id"] = item.properties.chart_id
          blank_chart_object_two["chart_id"] = item.properties.chart_id
 
-        //  //pass chart id get all matchids of current chart of there is data that exists then add to children
-        //  // this will create for drilldown bar charts
-        //  let next_limit = this.getChart_FilteredByHUC(chart_data, name);
-        //  let next_level =  this.getChart_FilteredByChartLevel( next_limit, item.properties.chart_id, false );
-        //
-        // //  var next_chart_object = new Object;
-        // //  next_chart_object[item.properties.chart_description] = next_level;
-        // //  children.push(next_chart_object)
-        //  chart_object[item.properties.chart_level_label.replace(' ','_') + "_child_chart_data"] = next_level;
-
        })
        chart_data_array.push(chart_object);
      })
@@ -348,7 +338,7 @@ var ChartRow = React.createClass({
 
         //if there is  data in the object the select huc does cross a tra
         if (this.props.tra_data.data.length > 0){
-          tra_text_message = "Yes, the "  + this.getLevel() +  ": " + chart_filter + " crosses or is within a TRA."
+          tra_text_message = "The "  +  getFriendlyName(this.getLevel()) +  " " + chart_filter + " is in a TRA."
           success_class = "ui icon success message"
           icon = (<i className="check circle icon"></i>)
 
@@ -366,7 +356,7 @@ var ChartRow = React.createClass({
         } else {
           success_class = "ui icon negative message"
           icon = (<i className="remove circle icon"></i>)
-          tra_text_message = "No, the "  + this.getLevel() +  ": " + chart_filter + " does NOT cross nor is it within a TRA"
+          tra_text_message = "The "  + getFriendlyName(this.getLevel()) +  " " + chart_filter + " is NOT in a TRA"
         }
 
         //TRA in message
@@ -410,12 +400,14 @@ var ChartRow = React.createClass({
           </div>
         </div>
 
+      { chart_filter &&
         <div className="ui item" >
           <div className="content">
-        {tra_message}
-      </div>
-    </div>
-
+            {tra_message}
+          </div>
+        </div>
+      }
+      { chart_filter &&
         <ChartRowWrapper key="tra"
           chart_width={chart_width_px}
           title="Targeted Resource Areas (TRA)"
@@ -426,6 +418,8 @@ var ChartRow = React.createClass({
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
           change_geographyLevelActive={this.props.change_geographyLevelActive}/>
+        }
+        { chart_filter &&
         <ChartRowWrapper key="baseline"
           chart_width={chart_width_px}
           title="BASELINE"
@@ -436,6 +430,8 @@ var ChartRow = React.createClass({
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
           change_geographyLevelActive={this.props.change_geographyLevelActive}/>
+        }
+        { chart_filter &&
         <ChartRowWrapper key="uplift"
           chart_width={chart_width_px}
           title="UPLIFT"
@@ -446,7 +442,10 @@ var ChartRow = React.createClass({
           chart_filter={chart_filter}
            get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
            change_geographyLevelActive={this.props.change_geographyLevelActive}/>
+         }
+
       </div>
+
     );
   }
 

@@ -72,6 +72,25 @@ export function getNextLevelName(level){
   }
 };
 
+export function getFriendlyName(level){
+  //next level is hardcoded need to make this data driven
+  //move this to a helper?
+  switch (level) {
+    case 'River Basins':
+      return 'River Basin';
+      break;
+    case 'Cataloging Units':
+      return 'Cataloging Unit';
+      break;
+    case 'HUC12':
+      return 'HUC 12';
+      break;
+    default:
+      return '';
+  }
+};
+
+
 export function getPrevLevelName(level){
   //next level is hardcoded need to make this data driven
   //move this to a helper?
