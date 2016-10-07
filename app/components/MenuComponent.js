@@ -157,13 +157,14 @@ var MenuComponent = React.createClass({
     if (Number(valueLength) === Number(expectedLength)){
       //update the chartdata redux store
       this.props.get_ChartData(e.target.value,currentLevel)
+      this.props.get_TRAData(e.target.value,currentLevel)
 
       //get the ago layer id of the currentLevel
       const feature_id = getAGOFeatureId(currentLevel)
 
       //get the attributes of the huc12 layer on a user click
       this.props.get_LayerInfo_ByValue(e.target.value, feature_id);
-      console.log(e.target.value)
+      // console.log(e.target.value)
 
       //update the menu for curret active layer
       //  this runs to ensure the list is updated for the active geograhpy Level

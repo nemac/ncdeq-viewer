@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 //import actions
-import { get_MenuList, get_ChartData, change_geographyLevelActive, change_geographyLevelFilter, handleSearchChange, update_ChartVisiblity, update_MapHeight, set_mapToPoint, get_LayerInfo_ByValue } from '../actions/actionCreators'
+import { get_MenuList, get_ChartData, get_TRAData, change_geographyLevelActive, change_geographyLevelFilter, handleSearchChange, update_ChartVisiblity, update_MapHeight, set_mapToPoint, get_LayerInfo_ByValue } from '../actions/actionCreators'
 
 //import components
 import MenuComponent from '../components/MenuComponent'
@@ -22,7 +22,8 @@ const mapStateToProps = (state,props) => {
     geography_levels,
     map_settings,
     leafletMap,
-    layerInfo
+    layerInfo,
+    tra_data: state.traData.tra_data,
   }
 }
 
@@ -34,6 +35,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     change_geographyLevelActive: bindActionCreators(change_geographyLevelActive,dispatch),
     change_geographyLevelFilter: bindActionCreators(change_geographyLevelFilter,dispatch),
     get_ChartData: bindActionCreators(get_ChartData,dispatch),
+    get_TRAData: bindActionCreators(get_TRAData,dispatch),
     handleSearchChange: bindActionCreators(handleSearchChange, dispatch),
     set_mapToPoint: bindActionCreators(set_mapToPoint, dispatch),
     get_LayerInfo_ByValue: bindActionCreators(get_LayerInfo_ByValue, dispatch),
