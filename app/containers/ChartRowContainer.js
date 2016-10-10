@@ -11,6 +11,7 @@ const mapStateToProps = (state,props) => {
     geography_levels: state.geography_levels.geography_levels,
     tra_data: state.traData.tra_data,
     traInfo: state.mapConfig.trainfo,
+    huc8Info: state.mapConfig.huc8Info,
   }
 }
 
