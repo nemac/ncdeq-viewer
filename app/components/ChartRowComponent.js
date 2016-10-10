@@ -375,13 +375,13 @@ var ChartRow = React.createClass({
 
       }
     }
-    //
+    //default text for chart is to give user a push to do an action...
     let chart_cataloging_unit = 'Please Click on the Map, Search, or Choose something to get started.'
     let huc_message = "No HUC's Selected yet."
 
+    //if there is filter text for charts and data should be about the data
     if(chart_filter){
       chart_cataloging_unit = "Charts and Data for the Cataloging Unit " + chart_filter.substring(0,8);
-      //'Baseline and Uplift for the Cataloging Unit ' + chart_filter.substring(0,8)
       huc_message = "The " + this.getLevel() + " " +  chart_filter + " is currently highlighted."
     }
 
@@ -400,6 +400,9 @@ var ChartRow = React.createClass({
           </div>
         </div>
 
+      {/*  only show tra message when their is filter.  the filter indicates the user took an action
+        that results in data and charts that can be displayed
+        */}
       { chart_filter &&
         <div className="ui item" >
           <div className="content">

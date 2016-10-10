@@ -17,7 +17,7 @@ var MapLayerToggle = React.createClass({
     //check if the layer is vissible
     const isLayerVis = leafletMap.hasLayer(leafletLayer);
 
-    //if vissible remove (turn off) layer otherwise add (turn on)
+    //if visible remove (turn off) layer otherwise add (turn on)
     isLayerVis ? leafletMap.removeLayer(leafletLayer) : leafletMap.addLayer(leafletLayer);
 
 
