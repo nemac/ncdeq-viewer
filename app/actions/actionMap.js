@@ -1,6 +1,6 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, HUC12_MAP_FEATUREID, SERVICE_NAME } from '../constants/actionConstants';
+import { AGO_URL, HUC12_MAP_FEATUREID, SERVICE_NAME, TRA_MAP_FEATUREID, CATALOGING_MAP_FEATUREID } from '../constants/actionConstants';
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
@@ -114,9 +114,11 @@ export function get_LayerInfo_ByValue(value, layer_id){
         const maxBounds = state.mapConfig.mapconfig.maxBounds;
         const layers = state.mapConfig.mapconfig.layers;
         const layerInfo = theLayerInfo;
+        //add by value for tra
+        const traInfo = state.mapConfig.trainfo;
 
         //create map config object
-        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo};
 
         dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
     })
@@ -129,8 +131,12 @@ export function get_LayerInfo_ByValue(value, layer_id){
 export function get_LayerInfo_ByPoint(lat, lng, layer_id){
   return (dispatch, getState) => {
 
-    AGO_get_LayerInfo_ByPoint(lat, lng, layer_id)
-      .then(function test(response){
+    axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, layer_id), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_MAP_FEATUREID)])
+    .then(axios.spread(function (response, tra_response) {
+
+      // .then(function test(response){
+
+      const theTraInfo = CheckReponse(tra_response,'AGO_API_ERROR');
 
         //check repsonses for errors
         const theLayerInfo = CheckReponse(response,'AGO_API_ERROR');
@@ -145,13 +151,14 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
         const maxBounds = state.mapConfig.mapconfig.maxBounds;
         const layers = state.mapConfig.mapconfig.layers;
         const layerInfo = theLayerInfo;
+        const traInfo = theTraInfo;
 
         //create map config object
-        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo};
 
         dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
-    })
+    }))
 
 
 
@@ -178,9 +185,10 @@ export function set_MapLayers(mapLayers){
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = CurrentLayers
     const layerInfo = state.mapConfig.layerinfo
+    const traInfo = state.mapConfig.trainfo;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo};
 
     dispatch(mapSate('MAP_SET_LAYERS',mapConfig));
 
@@ -200,9 +208,10 @@ export function set_mapToPoint(lat,lng,z,e){
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = state.mapConfig.mapconfig.layers;
     const layerInfo = state.mapConfig.layerinfo
+    const traInfo = state.mapConfig.trainfo;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo};
 
     dispatch(mapSate('MAP_TO_POINT',mapConfig));
 
@@ -227,9 +236,10 @@ export function HandleMapEnd(mapComp,e){
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = state.mapConfig.mapconfig.layers;
     const layerInfo = state.mapConfig.layerinfo;
+    const traInfo = state.mapConfig.trainfo;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo};
 
     //send map config data on to store
     dispatch(mapSate('MAP_END',mapConfig));
@@ -255,9 +265,10 @@ export function get_defaultMapData(zoom){
     const maxBounds = bounds;
     const layers = [];
     const layerInfo = {};
+    const traInfo = {};
 
     //create new map config
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo};
 
     //send map config data on to store
     dispatch(mapSate('MAP_DATA',mapConfig));
@@ -316,12 +327,14 @@ export function handleSearchChange(comp,e){
         var lng = place.geometry.location.lng();
 
         //retreive the layerinfo object (huc12) at the google api places lat long
-        AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID)
-          .then(function test(response){
+        axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_MAP_FEATUREID)])
+        .then(axios.spread(function (response, tra_response) {
+
+            const theTraInfo = CheckReponse(tra_response,'AGO_API_ERROR');
+            console.log(theTraInfo);
 
             //check repsonses for errors
             const theLayerInfo = CheckReponse(response,'AGO_API_ERROR');
-
 
             //get redux state
             const state = getState()
@@ -338,12 +351,13 @@ export function handleSearchChange(comp,e){
           const maxBounds = state.mapConfig.mapconfig.maxBounds;
           const layers = state.mapConfig.mapconfig.layers;
           const layerInfo = theLayerInfo;
+          const traInfo = theTraInfo;
 
           //create map config object
-          const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo};
+          const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo};
 
           dispatch(mapSate('MAP_SEARCH',mapConfig));
-        })
+        }))
 
       });
     }

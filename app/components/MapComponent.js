@@ -59,7 +59,7 @@ var MapContainer = React.createClass({
     TempLayer.addData(features);
 
     //pan and zoom to bounds of layers bounds
-    leafletMap.fitBounds(TempLayer.getBounds());
+    //leafletMap.fitBounds(TempLayer.getBounds());
 
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     this.add_GeoJSON_ClickEvent(TempLayer);

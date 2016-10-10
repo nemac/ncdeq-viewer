@@ -18,6 +18,8 @@ const mapStateToProps = (state,props) => {
   let leafletMap = state.leafletMap;
   let geography_levels = state.geography_levels.geography_levels;
   let layerInfo = state.mapConfig.layerinfo;
+  let traInfo = state.mapConfig.trainfo;
+
   return {
     charts,
     geography_levels,
@@ -25,6 +27,7 @@ const mapStateToProps = (state,props) => {
     default_settings,
     leafletMap,
     layerInfo,
+    traInfo,
   }
 }
 
