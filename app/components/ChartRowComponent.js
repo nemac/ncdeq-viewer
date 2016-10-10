@@ -350,14 +350,14 @@ var ChartRow = React.createClass({
       console.log(tra_string)
 
       if(trasTEMP.length > 0){
-        tra_text_message_point = "The point you searched or clicked is in a TRA."
+        tra_text_message_point = "The location you searched or the point you clicked is in a TRA."
         success_class_point = "ui icon success message"
         icon_point = (<i className="check circle icon"></i>)
         sub_header_point = (<p>This includes the TRA(s): {tra_string}</p>)
       } else {
         success_class_point = "ui icon negative message"
         icon_point = (<i className="remove circle icon"></i>)
-        tra_text_message_point = "The point you searched or clicked is NOT in a TRA"
+        tra_text_message_point = "The location you searched or the point you clicked is NOT in a TRA"
       }
 
 
@@ -457,7 +457,7 @@ var ChartRow = React.createClass({
             </div>
           </div>
         }
-        
+
       { chart_filter &&
         <div className="ui item" >
           <div className="content">
