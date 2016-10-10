@@ -292,6 +292,7 @@ var ChartRow = React.createClass({
       chart_grid_height = this.props.default_settings.mapHeight;
     }
 
+
     let vis = this.props.charts.chart_visibility ?  'show' : 'none';
 
     //get data for chart type of baseline
@@ -324,13 +325,45 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0]);
     chart_upflift_bar = this.getChart_data(uplift_data[0]);
     chart_tar_bar = this.getChart_data(tra_data[0]);
+    const tra_point_info = this.props.traInfo
 
     var tra_message = ""
+    var tra_message_point = ""
     var tra_text_message = ""
+    var tra_text_message_point = ""
     var tra_code = ""
+    var tra_code_point = ""
     var success_class = ""
+    var success_class_point = ""
     var icon = ""
+    var icon_point = ""
     var sub_header = ""
+    var sub_header_point = ""
+
+    var trasTEMP = ""
+    if (tra_point_info.features){
+      trasTEMP = tra_point_info.features.map (feature => {
+        return feature.properties.id
+      })
+
+      const tra_string =trasTEMP.toString();
+      console.log(tra_string)
+
+      if(trasTEMP.length > 0){
+        tra_text_message_point = "The point you searched or clicked is in a TRA."
+        success_class_point = "ui icon success message"
+        icon_point = (<i className="check circle icon"></i>)
+        sub_header_point = (<p>This includes the TRA(s): {tra_string}</p>)
+      } else {
+        success_class_point = "ui icon negative message"
+        icon_point = (<i className="remove circle icon"></i>)
+        tra_text_message_point = "The point you searched or clicked is NOT in a TRA"
+      }
+
+
+    }
+
+
 
     //make sure the TRA data object is defined
     if(this.props.tra_data){
@@ -359,10 +392,12 @@ var ChartRow = React.createClass({
           tra_text_message = "The "  + getFriendlyName(this.getLevel()) +  " " + chart_filter + " is NOT in a TRA"
         }
 
+
+
         //TRA in message
         tra_message = (
             <div className={success_class} >
-              {icon}
+              {icon_point}
               <div className="content">
                 <div className="header">
                   {tra_text_message}
@@ -372,6 +407,18 @@ var ChartRow = React.createClass({
             </div>
         )
 
+        //TRA  message for clicks and searches
+        tra_message_point = (
+            <div className={success_class_point} >
+              {icon_point}
+              <div className="content">
+                <div className="header">
+                  {tra_text_message_point}
+                </div>
+                {sub_header_point}
+              </div>
+            </div>
+        )
 
       }
     }
@@ -403,6 +450,14 @@ var ChartRow = React.createClass({
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
+        { chart_filter &&
+          <div className="ui item" >
+            <div className="content">
+              {tra_message_point}
+            </div>
+          </div>
+        }
+        
       { chart_filter &&
         <div className="ui item" >
           <div className="content">
@@ -410,6 +465,8 @@ var ChartRow = React.createClass({
           </div>
         </div>
       }
+
+
       { chart_filter &&
         <ChartRowWrapper key="tra"
           chart_width={chart_width_px}

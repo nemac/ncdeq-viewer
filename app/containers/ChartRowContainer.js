@@ -10,6 +10,7 @@ const mapStateToProps = (state,props) => {
     default_settings: state.default_settings.default_settings,
     geography_levels: state.geography_levels.geography_levels,
     tra_data: state.traData.tra_data,
+    traInfo: state.mapConfig.trainfo,
   }
 }
 
