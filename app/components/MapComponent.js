@@ -12,12 +12,12 @@ import {
 
 import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
 
-import {zoomToGeoJson, getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd, get_HUC} from '../utils/helpers';
+import { getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd, get_HUC} from '../utils/helpers';
 
 var PropTypes = React.PropTypes;
 
 var TempLayer;
-
+var TempZoomLayer;
 
 var MapContainer = React.createClass({
   handleResize: function(){
@@ -68,6 +68,49 @@ var MapContainer = React.createClass({
     return TempLayer
 
   },
+  zoom_GeoJson: function(features){
+    //get the leaflet Map object
+    const leafletMap = this.props.leafletMap.leafletMap;
+
+    //check if the layer has been added yes it is global varriable :)
+    const isLayerVis = leafletMap.hasLayer(TempZoomLayer);
+
+    //if a geojson layer has been added remove it.
+    //  eventually we want to only remove when user elects too.
+    if (isLayerVis){
+      leafletMap.removeLayer(TempZoomLayer)
+    }
+
+    //add a blank layer to leaflet
+    TempZoomLayer = L.geoJson().addTo(leafletMap);
+
+    //add the GeoJSON data to the layer
+    TempZoomLayer.addData(features);
+
+    //zoom highlights need to move this to varriable
+    TempZoomLayer.setStyle({
+      fillColor :'yellow',
+      stroke: true,
+      weight: 8,
+      opacity: 0.4,
+      color: 'yellow',
+      fillOpacity: 0.0
+    })
+
+    //pan and zoom to bounds of layers bounds
+    leafletMap.fitBounds(TempZoomLayer.getBounds());
+
+    // leafletMap.removeLayer(TempZoomLayer)
+
+    //when geojson is added on top of map.  it also needs a map click handler enabled.
+    this.add_GeoJSON_ClickEvent(TempZoomLayer);
+
+    leafletMap.invalidateSize();
+
+    //return the layer
+    return TempZoomLayer
+
+  },
   add_GeoJSON_ClickEvent(layer){
     //add a click event to the new layer so the new layer does not steal the state...
     //  w/out this when a user clicked on geojson like a huc 6 or huc 8 (riverbasin or Cataloging unit)
@@ -85,6 +128,60 @@ var MapContainer = React.createClass({
 
     //check if there was a prevProps
     if (prevProps){
+
+
+      if(this.props.huc8Info){
+
+        let LastHUC8Features;
+
+        let CurrentHuc8Features = this.props.huc8Info.features;
+
+        //check if there was a layerinfo object in the prevous state redux store
+        if(prevProps.huc8Info){
+          LastHUC8Features = prevProps.huc8Info.features;
+        }
+
+        //in initial state there will not be an objet we still need to zoom and get the data...
+        if(CurrentHuc8Features && !LastHUC8Features){
+
+          //make sure there is a feature in the array.  when searching outside of NorthCarolina
+          //   this may return a blank features object.
+          if(CurrentHuc8Features[0]){
+
+            //add geojson
+            this.zoom_GeoJson(CurrentHuc8Features)
+
+          }
+        }
+
+        //when there are both a last feaures and current feautes JSON object
+        if(LastHUC8Features && CurrentHuc8Features){
+
+          //make sure there is a feature in the array.  when searching outside of NorthCarolina
+          //   this may return a blank features object.
+          if(CurrentHuc8Features[0]){
+
+              if(LastHUC8Features.length === 0){
+                //add geojson
+                this.zoom_GeoJson(CurrentHuc8Features)
+
+              } else {
+
+              //when the last features JSON and Current Features JSON do not match
+              //  it is a new feature.  so we should select and zoom
+              if(CurrentHuc8Features[0].properties.ID != LastHUC8Features[0].properties.ID){
+
+                //add geojson
+                this.zoom_GeoJson(CurrentHuc8Features)
+
+
+              }
+           }
+          }
+        }
+
+      }
+
       //check if there is a layerinfo object in the redux store
       if(this.props.layerInfo){
 
@@ -100,12 +197,14 @@ var MapContainer = React.createClass({
 
         //get the string of the current features so we can compare the JSON data
         let CurrentFeaturesStr = JSON.stringify(CurrentFeatures)
+
         let LastLayerStr = ''
 
         //if the last features existed make it string for comparison otherwise leave it as a blank substring
         if(LastFeatures){
           LastLayerStr = JSON.stringify(LastFeatures)
         }
+
 
         //in initial state there will not be an objet we still need to zoom and get the data...
         if(CurrentFeatures && !LastFeatures){

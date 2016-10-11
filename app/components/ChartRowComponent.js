@@ -347,7 +347,7 @@ var ChartRow = React.createClass({
       })
 
       const tra_string =trasTEMP.toString();
-      console.log(tra_string)
+
 
       if(trasTEMP.length > 0){
         tra_text_message_point = "The location you searched or the point you clicked is in a TRA."
@@ -371,7 +371,7 @@ var ChartRow = React.createClass({
 
         //if there is  data in the object the select huc does cross a tra
         if (this.props.tra_data.data.length > 0){
-          tra_text_message = "The "  +  getFriendlyName(this.getLevel()) +  " " + chart_filter + " is in a TRA."
+          tra_text_message = "The "  +  getFriendlyName(this.getLevel()) +  " - (" + chart_filter + ") is in a TRA."
           success_class = "ui icon success message"
           icon = (<i className="check circle icon"></i>)
 
@@ -393,11 +393,10 @@ var ChartRow = React.createClass({
         }
 
 
-
         //TRA in message
         tra_message = (
             <div className={success_class} >
-              {icon_point}
+              {icon}
               <div className="content">
                 <div className="header">
                   {tra_text_message}
