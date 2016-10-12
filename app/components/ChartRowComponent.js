@@ -287,6 +287,13 @@ var ChartRow = React.createClass({
     let chart_width_px = CHART_WIDTH_PX;
     let chart_grid_height =  MAP_HEIGHT;
 
+    let searchMethod = ""
+    let show_point = false;
+    if(this.props.searchMethod){
+        searchMethod = this.props.searchMethod;
+        show_point =  (searchMethod === "location searched" || searchMethod === "clicked");
+    }
+
     if(this.props.default_settings){
       chart_width_px = this.props.default_settings.chartWidth;
       chart_grid_height = this.props.default_settings.mapHeight;
@@ -348,21 +355,17 @@ var ChartRow = React.createClass({
 
       const tra_string =trasTEMP.toString();
 
-
       if(trasTEMP.length > 0){
-        tra_text_message_point = "The location you searched or the point you clicked is in a TRA."
+        tra_text_message_point = "The location you " + searchMethod + " is in a TRA. "
         success_class_point = "ui icon success message"
         icon_point = (<i className="check circle icon"></i>)
         sub_header_point = (<p>This includes the TRA(s): {tra_string}</p>)
       } else {
         success_class_point = "ui icon negative message"
         icon_point = (<i className="remove circle icon"></i>)
-        tra_text_message_point = "The location you searched or the point you clicked is NOT in a TRA"
+        tra_text_message_point = "The location you  " + searchMethod + " is NOT in a TRA"
       }
-
-
     }
-
 
 
     //make sure the TRA data object is defined
@@ -449,7 +452,7 @@ var ChartRow = React.createClass({
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
-        { chart_filter &&
+        { show_point &&
           <div className="ui item" >
             <div className="content">
               {tra_message_point}
@@ -476,7 +479,8 @@ var ChartRow = React.createClass({
           chart_data={chart_tar_bar}
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
-          change_geographyLevelActive={this.props.change_geographyLevelActive}/>
+          change_geographyLevelActive={this.props.change_geographyLevelActive}
+          set_search_method={this.props.set_search_method }/>
         }
         { chart_filter &&
         <ChartRowWrapper key="baseline"
@@ -488,7 +492,8 @@ var ChartRow = React.createClass({
           chart_data={chart_baseline_bar}
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
-          change_geographyLevelActive={this.props.change_geographyLevelActive}/>
+          change_geographyLevelActive={this.props.change_geographyLevelActive}
+          set_search_method={this.props.set_search_method }/>
         }
         { chart_filter &&
         <ChartRowWrapper key="uplift"
@@ -500,7 +505,8 @@ var ChartRow = React.createClass({
           chart_data={chart_upflift_bar}
           chart_filter={chart_filter}
            get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
-           change_geographyLevelActive={this.props.change_geographyLevelActive}/>
+           change_geographyLevelActive={this.props.change_geographyLevelActive}
+           set_search_method={this.props.set_search_method }/>
          }
 
       </div>

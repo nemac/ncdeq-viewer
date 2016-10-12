@@ -96,6 +96,33 @@ function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
   return axios.get(query_URL);
 };
 
+export function set_search_method(method){
+  return (dispatch, getState) => {
+
+    const state = getState()
+
+    const latitude = state.mapConfig.mapconfig.latitude;
+    const longitude = state.mapConfig.mapconfig.longitude;
+    const zoom =  state.mapConfig.mapconfig.zoom;
+    const minZoom = state.mapConfig.mapconfig.minZoom;
+    const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+    const maxBounds = state.mapConfig.mapconfig.maxBounds;
+    const layers = state.mapConfig.mapconfig.layers;
+    const layerInfo = state.mapConfig.layerinfo
+    const traInfo = state.mapConfig.trainfo;
+    const huc8Info = state.mapConfig.mapconfig.huc8Info;
+    const searchMethod = method;
+
+    //create map config object
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info, searchMethod};
+
+    dispatch(mapSate('SET_SEARCH_METHOD',mapConfig));
+  }
+
+
+
+}
+
 export function get_LayerInfo_ByValue(value, layer_id){
   return (dispatch, getState) => {
 
@@ -124,9 +151,10 @@ export function get_LayerInfo_ByValue(value, layer_id){
         const traInfo = state.mapConfig.trainfo;
 
         const huc8Info = theCatalogingUnitInfo;
+        const searchMethod = state.mapConfig.mapconfig.searchMethod;
 
         //create map config object
-        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info, searchMethod};
 
         dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
     }))
@@ -146,28 +174,29 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
 
       const theTraInfo = CheckReponse(tra_response,'AGO_API_ERROR');
 
-        //check repsonses for errors
-        const theLayerInfo = CheckReponse(huc_response,'AGO_API_ERROR');
+      //check repsonses for errors
+      const theLayerInfo = CheckReponse(huc_response,'AGO_API_ERROR');
 
-        const theCatalogingUnitInfo = CheckReponse(cu_response,'AGO_API_ERROR');
-        //get redux state
-        const state = getState()
+      const theCatalogingUnitInfo = CheckReponse(cu_response,'AGO_API_ERROR');
+      //get redux state
+      const state = getState()
 
-        const latitude = state.mapConfig.mapconfig.latitude;
-        const longitude = state.mapConfig.mapconfig.longitude;
-        const zoom =  state.mapConfig.mapconfig.zoom;
-        const minZoom = state.mapConfig.mapconfig.minZoom;
-        const maxZoom =  state.mapConfig.mapconfig.maxZoom;
-        const maxBounds = state.mapConfig.mapconfig.maxBounds;
-        const layers = state.mapConfig.mapconfig.layers;
-        const layerInfo = theLayerInfo;
-        const traInfo = theTraInfo;
-        const huc8Info = theCatalogingUnitInfo;
+      const latitude = state.mapConfig.mapconfig.latitude;
+      const longitude = state.mapConfig.mapconfig.longitude;
+      const zoom =  state.mapConfig.mapconfig.zoom;
+      const minZoom = state.mapConfig.mapconfig.minZoom;
+      const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+      const maxBounds = state.mapConfig.mapconfig.maxBounds;
+      const layers = state.mapConfig.mapconfig.layers;
+      const layerInfo = theLayerInfo;
+      const traInfo = theTraInfo;
+      const huc8Info = theCatalogingUnitInfo;
+      const searchMethod = state.mapConfig.mapconfig.searchMethod;
 
-        //create map config object
-        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+      //create map config object
+      const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info, searchMethod};
 
-        dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
+      dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
     }))
 
@@ -198,9 +227,10 @@ export function set_MapLayers(mapLayers){
     const layerInfo = state.mapConfig.layerinfo
     const traInfo = state.mapConfig.trainfo;
     const huc8Info = state.mapConfig.mapconfig.huc8Info;
+    const searchMethod = state.mapConfig.mapconfig.searchMethod;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info, searchMethod};
 
     dispatch(mapSate('MAP_SET_LAYERS',mapConfig));
 
@@ -222,9 +252,10 @@ export function set_mapToPoint(lat,lng,z,e){
     const layerInfo = state.mapConfig.layerinfo
     const traInfo = state.mapConfig.trainfo;
     const huc8Info = state.mapConfig.mapconfig.huc8Info;
+    const searchMethod = state.mapConfig.mapconfig.searchMethod;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info, searchMethod};
 
     dispatch(mapSate('MAP_TO_POINT',mapConfig));
 
@@ -251,9 +282,9 @@ export function HandleMapEnd(mapComp,e){
     const layerInfo = state.mapConfig.layerinfo;
     const traInfo = state.mapConfig.trainfo;
     const huc8Info = state.mapConfig.mapconfig.huc8Info;
-
+    const searchMethod = state.mapConfig.mapconfig.searchMethod;
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info, searchMethod};
 
     //send map config data on to store
     dispatch(mapSate('MAP_END',mapConfig));
@@ -281,9 +312,10 @@ export function get_defaultMapData(zoom){
     const layerInfo = {};
     const traInfo = {};
     const huc8Info = {};
+    const searchMethod = "none"
 
     //create new map config
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info, searchMethod};
 
     //send map config data on to store
     dispatch(mapSate('MAP_DATA',mapConfig));
@@ -342,14 +374,16 @@ export function handleSearchChange(comp,e){
         var lng = place.geometry.location.lng();
 
         //retreive the layerinfo object (huc12) at the google api places lat long
-        axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_MAP_FEATUREID)])
-        .then(axios.spread(function (huc_response, tra_response) {
+        axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, CATALOGING_MAP_FEATUREID)])
+        .then(axios.spread(function (huc_response, tra_response, cu_response) {
 
             const theTraInfo = CheckReponse(tra_response,'AGO_API_ERROR');
             console.log(theTraInfo);
 
             //check repsonses for errors
             const theLayerInfo = CheckReponse(huc_response,'AGO_API_ERROR');
+
+            const theCatalogingUnitInfo = CheckReponse(cu_response,'AGO_API_ERROR');
 
             //get redux state
             const state = getState()
@@ -367,10 +401,11 @@ export function handleSearchChange(comp,e){
           const layers = state.mapConfig.mapconfig.layers;
           const layerInfo = theLayerInfo;
           const traInfo = theTraInfo;
-          const huc8Info = state.mapConfig.mapconfig.huc8Info;
+          const huc8Info = theCatalogingUnitInfo;
+          const searchMethod = state.mapConfig.mapconfig.searchMethod;
 
           //create map config object
-          const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+          const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info, searchMethod};
 
           dispatch(mapSate('MAP_SEARCH',mapConfig));
         }))

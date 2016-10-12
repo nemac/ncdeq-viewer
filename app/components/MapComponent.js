@@ -123,6 +123,7 @@ var MapContainer = React.createClass({
         mapClickHandler.bind(null,this)
       }.bind(this));
     }
+
   },
   componentDidUpdate: function(prevProps, prevState) {
 
@@ -372,6 +373,8 @@ var MapContainer = React.createClass({
     }
   },
   handleMapClick: function(e,self){
+
+    this.props.set_search_method('clicked')
 
 
     //set current geography level in redux state store

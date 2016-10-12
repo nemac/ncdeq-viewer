@@ -33,6 +33,7 @@ export const set_mapToPoint = MapConfig.set_mapToPoint;
 export const handleSearchChange = MapConfig.handleSearchChange;
 export const get_LayerInfo_ByPoint = MapConfig.get_LayerInfo_ByPoint;
 export const get_LayerInfo_ByValue = MapConfig.get_LayerInfo_ByValue;
+export const set_search_method = MapConfig.set_search_method;
 
 //default app actions
 export const set_defaults = ActionDefault.set_defaults;

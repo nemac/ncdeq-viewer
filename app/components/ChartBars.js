@@ -17,6 +17,8 @@ var ChartBars = React.createClass({
   handleClick(constructor, entry, data, index, test) {
     const name = entry.name
 
+    this.props.set_search_method('chart clicked')
+
     //set current geography level in redux state store
     this.props.change_geographyLevelActive("HUC12");
 

@@ -32,7 +32,8 @@ var ChartRowWrapper = React.createClass({
                                     chart_data={this.props.chart_data}
                                     chart_filter={this.props.chart_filter}
                                     get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
-                                    change_geographyLevelActive={this.props.change_geographyLevelActive}/>
+                                    change_geographyLevelActive={this.props.change_geographyLevelActive}
+                                    set_search_method={this.props.set_search_method }/>
         </div>
         <div className="meta">
           <span className="description">{this.props.title_description}</span>
