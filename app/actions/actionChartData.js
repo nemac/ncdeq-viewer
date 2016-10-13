@@ -203,6 +203,13 @@ export function get_ChartData(id,level){
         //check response and get response data - chartdata_response
         chart_data = CheckReponse(chartdata_response,'AGO_API_ERROR');
 
+        let huc_list = ""
+
+        // console.log(id)
+        // chart_data.features.map( cht  => {
+        //   console.log(cht)
+        // })
+
         tra_data = CheckReponse(tra_response,'AGO_API_ERROR');
 
         let tra_id_list = ""
@@ -224,6 +231,8 @@ export function get_ChartData(id,level){
           //from the tra ids retrieve the tra data fro charting
           ago_get_tra_by_ids(tra_id_list)
            .then( tra_chart_data_response => {
+
+             //add geometry here
              tra_chart_data = CheckReponse(tra_chart_data_response,'AGO_API_ERROR');
 
              if(tra_chart_data.features){
@@ -260,16 +269,16 @@ export function get_ChartData(id,level){
           //  this chart limit is passed so we can limit the charts for a spefic huc N level
           const types = [
                   {chart_type: 'baseline',
-                    chart_features: chart_all_base,
-                    chart_limit: id,
-                   },
+                   chart_features: chart_all_base,
+                   chart_limit: id,
+                  },
                   {chart_type: 'uplift',
                    chart_features: chart_all_upflift,
                    chart_limit: id,
                   },
                   {chart_type: 'tra',
-                    chart_features: chart_all_tra,
-                    chart_limit: id
+                   chart_features: chart_all_tra,
+                   chart_limit: id
                   },
                 ];
 
@@ -279,11 +288,7 @@ export function get_ChartData(id,level){
             ChartData('GET_CHART_DATA', visibility, types)
           )
 
-
         }).catch(error => { console.log('request failed', error); });
-
-
-
 
       })
     )

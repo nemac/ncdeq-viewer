@@ -332,7 +332,9 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0]);
     chart_upflift_bar = this.getChart_data(uplift_data[0]);
     chart_tar_bar = this.getChart_data(tra_data[0]);
-    const tra_point_info = this.props.traInfo
+
+    //probably need to rename this to describe it better I already got confused
+    const tra_point_info = this.props.traPointInfo
 
     var tra_message = ""
     var tra_message_point = ""
@@ -348,12 +350,14 @@ var ChartRow = React.createClass({
     var sub_header_point = ""
 
     var trasTEMP = ""
+
+    //create tra point message.  user clicked on the map or searched for a location
     if (tra_point_info.features){
       trasTEMP = tra_point_info.features.map (feature => {
         return feature.properties.id
       })
 
-      const tra_string =trasTEMP.toString();
+      const tra_string = trasTEMP.toString();
 
       if(trasTEMP.length > 0){
         tra_text_message_point = "The location you " + searchMethod + " is in a TRA. "
@@ -369,6 +373,7 @@ var ChartRow = React.createClass({
 
 
     //make sure the TRA data object is defined
+    //  this is the TRA's in the current geogLevel unless current geogLevel is huc12 then it is huc8 Cataloging Unit
     if(this.props.tra_data){
       if(this.props.tra_data.data){
 
@@ -383,6 +388,7 @@ var ChartRow = React.createClass({
             var tra_list = this.props.tra_data.data.map( tra => {
                 return   (<span key={tra.tra_name}> {tra.tra_name}{comma}</span>)
             })
+
             //list of TRA's
             sub_header = (<p>This includes the TRA(s): {tra_list}</p>)
 
@@ -480,7 +486,9 @@ var ChartRow = React.createClass({
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
           change_geographyLevelActive={this.props.change_geographyLevelActive}
-          set_search_method={this.props.set_search_method }/>
+          set_search_method={this.props.set_search_method }
+          tra_data={this.props.tra_data}
+          get_tra_info={this.props.get_tra_info}/>
         }
         { chart_filter &&
         <ChartRowWrapper key="baseline"
@@ -493,7 +501,9 @@ var ChartRow = React.createClass({
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
           change_geographyLevelActive={this.props.change_geographyLevelActive}
-          set_search_method={this.props.set_search_method }/>
+          set_search_method={this.props.set_search_method }
+          tra_data={this.props.tra_data}
+          get_tra_info={this.props.get_tra_info}/>
         }
         { chart_filter &&
         <ChartRowWrapper key="uplift"
@@ -506,7 +516,9 @@ var ChartRow = React.createClass({
           chart_filter={chart_filter}
            get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
            change_geographyLevelActive={this.props.change_geographyLevelActive}
-           set_search_method={this.props.set_search_method }/>
+           set_search_method={this.props.set_search_method }
+           tra_data={this.props.tra_data}
+           get_tra_info={this.props.get_tra_info}/>
          }
 
       </div>

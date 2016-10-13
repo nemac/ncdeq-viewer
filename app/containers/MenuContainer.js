@@ -15,9 +15,10 @@ const mapStateToProps = (state,props) => {
   let map_settings = state.mapConfig.mapconfig;
   let leafletMap = state.leafletMap;
   let layerInfo = state.mapConfig.layerinfo;
-  let traInfo = state.mapConfig.trainfo;
+  let traPointInfo = state.mapConfig.traPointInfo;
   let huc8Info = state.mapConfig.huc8Info;
   let searchMethod = state.mapConfig.searchMethod;
+  let traInfo = state.mapConfig.traInfo;
 
   return {
     DefaultMenuLists,
@@ -26,6 +27,7 @@ const mapStateToProps = (state,props) => {
     map_settings,
     leafletMap,
     layerInfo,
+    traPointInfo,
     traInfo,
     tra_data: state.traData.tra_data,
     huc8Info,

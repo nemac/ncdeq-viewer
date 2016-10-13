@@ -2,7 +2,7 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 
 import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
+import { HUC12_MAP_FEATUREID, CATALOGING_MAP_FEATUREID } from '../constants/actionConstants';
 
 
 var ChartBars = React.createClass({
@@ -17,15 +17,32 @@ var ChartBars = React.createClass({
   handleClick(constructor, entry, data, index, test) {
     const name = entry.name
 
+
     this.props.set_search_method('chart clicked')
 
     //set current geography level in redux state store
-    this.props.change_geographyLevelActive("HUC12");
+    this.props.change_geographyLevelActive(name);
 
-    this.props.get_LayerInfo_ByValue(name, HUC12_MAP_FEATUREID)
-    // const id = $("#data").html(name);
+    //only do this if the id is tra.  tra id's start with TP
+    if(name.substring(0,2) === "TP"){
 
-        //super hacky way to get values into webpage.
+      this.props.get_tra_info(name)
+      // //if tra_data objecct exists filter the object by the tra name...
+      // //  this will get the geometry data for the tra so we can show it on the map.
+      // //  and highlight it on the chart...
+      // if(this.props.tra_data.data){
+      //     const id = this.props.tra_data.data.filter( tra => {
+      //         return tra.tra_name === name
+      //     })
+      //     console.log(id[0])
+      // }
+
+    //not tra so should be a huc. assume huc12...
+    } else {
+      this.props.get_LayerInfo_ByValue(name, HUC12_MAP_FEATUREID)
+    }
+
+    //super hacky way to get values into webpage.
     // need to pass chart data for other levels so we can "drilldown"
     const props = constructor.props.chart_data
     let props_filtered = props.filter(item => {

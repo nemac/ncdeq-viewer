@@ -18,6 +18,7 @@ var PropTypes = React.PropTypes;
 
 var TempLayer;
 var TempZoomLayer;
+var TempTraLayer;
 
 var MapContainer = React.createClass({
   handleResize: function(){
@@ -66,6 +67,45 @@ var MapContainer = React.createClass({
 
     //return the layer
     return TempLayer
+
+  },
+  tra_GeoJson: function(features){
+    //get the leaflet Map object
+    const leafletMap = this.props.leafletMap.leafletMap;
+
+    //check if the layer has been added yes it is global varriable :)
+    const isLayerVis = leafletMap.hasLayer(TempTraLayer);
+
+    //if a geojson layer has been added remove it.
+    //  eventually we want to only remove when user elects too.
+    if (isLayerVis){
+      leafletMap.removeLayer(TempTraLayer)
+    }
+
+    //add a blank layer to leaflet
+    TempTraLayer = L.geoJson().addTo(leafletMap);
+
+    //add the GeoJSON data to the layer
+    TempTraLayer.addData(features);
+
+    //zoom highlights need to move this to varriable
+    TempTraLayer.setStyle({
+      fillColor :'red',
+      stroke: true,
+      weight: 8,
+      opacity: 0.4,
+      color: 'red',
+      fillOpacity: 0.0
+    })
+
+
+    //when geojson is added on top of map.  it also needs a map click handler enabled.
+    this.add_GeoJSON_ClickEvent(TempTraLayer);
+
+    leafletMap.invalidateSize();
+
+    //return the layer
+    return TempTraLayer
 
   },
   zoom_GeoJson: function(features){
@@ -128,7 +168,62 @@ var MapContainer = React.createClass({
   componentDidUpdate: function(prevProps, prevState) {
 
     //check if there was a prevProps
+    // need to functionise this.
     if (prevProps){
+
+            //checks for adding tra data on chart click
+            if(this.props.traInfo){
+              let LastTRAFeatures;
+
+              let CurrentTRAFeatures = this.props.traInfo.features;
+
+              //check if there was a layerinfo object in the prevous state redux store
+              if(prevProps.traInfo){
+                LastTRAFeatures = prevProps.traInfo.features;
+              }
+
+              //in initial state there will not be an objet we still need to zoom and get the data...
+              if(CurrentTRAFeatures && !LastTRAFeatures){
+
+                //make sure there is a feature in the array.  when searching outside of NorthCarolina
+                //   this may return a blank features object.
+                if(CurrentTRAFeatures[0]){
+
+                  //add geojson
+                  this.tra_GeoJson(CurrentTRAFeatures)
+
+                }
+              }
+
+              //when there are both a last feaures and current feautes JSON object
+              if(LastTRAFeatures && CurrentTRAFeatures){
+
+
+                //make sure there is a feature in the array.  when searching outside of NorthCarolina
+                //   this may return a blank features object.
+                if(CurrentTRAFeatures[0]){
+
+                    if(LastTRAFeatures.length === 0){
+
+                      //add geojson
+                      this.tra_GeoJson(CurrentTRAFeatures)
+
+                    } else {
+
+                    //when the last features JSON and Current Features JSON do not match
+                    //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
+                    if(CurrentTRAFeatures[0].properties.id != LastTRAFeatures[0].properties.id){
+
+                      //add geojson
+                      this.tra_GeoJson(CurrentTRAFeatures)
+
+
+                    }
+                 }
+                }
+              }
+
+            }
 
 
       if(this.props.huc8Info){
