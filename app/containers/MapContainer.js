@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 //import actions
-import { get_defaultMapData, HandleMapEnd, set_mapToPoint, update_ChartVisiblity, update_MapHeight, get_ChartData, change_geographyLevelActive,  change_geographyLevelFilter, set_MapLayers, set_LeafletMap, get_LayerInfo_ByPoint} from '../actions/actionCreators'
+import { set_search_method, get_defaultMapData, HandleMapEnd, set_mapToPoint, update_ChartVisiblity, update_MapHeight, get_ChartData, change_geographyLevelActive,  change_geographyLevelFilter, set_MapLayers, set_LeafletMap, get_LayerInfo_ByPoint} from '../actions/actionCreators'
 
 //import components
 import MapComponent from '../components/MapComponent'
@@ -18,8 +18,10 @@ const mapStateToProps = (state,props) => {
   let leafletMap = state.leafletMap;
   let geography_levels = state.geography_levels.geography_levels;
   let layerInfo = state.mapConfig.layerinfo;
-  let traInfo = state.mapConfig.trainfo;
+  let traPointInfo = state.mapConfig.traPointInfo;
   let huc8Info = state.mapConfig.huc8Info;
+  let searchMethod = state.mapConfig.searchMethod;
+  let traInfo = state.mapConfig.traInfo;
 
   return {
     charts,
@@ -29,7 +31,9 @@ const mapStateToProps = (state,props) => {
     leafletMap,
     layerInfo,
     traInfo,
+    traPointInfo,
     huc8Info,
+    searchMethod,
   }
 }
 
@@ -46,6 +50,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     set_MapLayers: bindActionCreators(set_MapLayers,dispatch),
     set_LeafletMap: bindActionCreators(set_LeafletMap,dispatch),
     get_LayerInfo_ByPoint: bindActionCreators(get_LayerInfo_ByPoint,dispatch),
+    set_search_method: bindActionCreators(set_search_method,dispatch),
   }
 }
 

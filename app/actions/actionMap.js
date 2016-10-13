@@ -23,8 +23,15 @@ import {
 ///get feature attributes for a layer at lat & long
 function AGO_get_LayerInfo_ByValue(value, layer_id){
 
+
+  var value_field_name = 'VALUE';
+  //until I can change the TRA data to match the schemas of the huc files I need to change the field name from vaue to id.
+  if(layer_id === TRA_MAP_FEATUREID){
+    value_field_name = 'id'
+  }
+
   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + layer_id + '/query' +
-                    '?where=VALUE+%3D+%27' + value + '%27' +
+                    '?where=' + value_field_name + '+%3D+%27' + value + '%27' +
                     '&objectIds=' +
                     '&time=' +
                     '&resultType=standard' +
@@ -96,6 +103,34 @@ function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
   return axios.get(query_URL);
 };
 
+export function set_search_method(method){
+  return (dispatch, getState) => {
+
+    const state = getState()
+
+    const latitude = state.mapConfig.mapconfig.latitude;
+    const longitude = state.mapConfig.mapconfig.longitude;
+    const zoom =  state.mapConfig.mapconfig.zoom;
+    const minZoom = state.mapConfig.mapconfig.minZoom;
+    const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+    const maxBounds = state.mapConfig.mapconfig.maxBounds;
+    const layers = state.mapConfig.mapconfig.layers;
+    const layerInfo = state.mapConfig.layerinfo
+    const traPointInfo = state.mapConfig.traPointInfo;
+    const huc8Info = state.mapConfig.mapconfig.huc8Info;
+    const searchMethod = method;
+    const traInfo =  state.mapConfig.mapconfig.traInfo;
+
+    //create map config object
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, traInfo, huc8Info, searchMethod};
+
+    dispatch(mapSate('SET_SEARCH_METHOD',mapConfig));
+  }
+
+
+
+}
+
 export function get_LayerInfo_ByValue(value, layer_id){
   return (dispatch, getState) => {
 
@@ -121,12 +156,14 @@ export function get_LayerInfo_ByValue(value, layer_id){
         const layers = state.mapConfig.mapconfig.layers;
         const layerInfo = theLayerInfo;
         //add by value for tra
-        const traInfo = state.mapConfig.trainfo;
+        const traPointInfo = state.mapConfig.traPointInfo;
 
         const huc8Info = theCatalogingUnitInfo;
+        const searchMethod = state.mapConfig.mapconfig.searchMethod;
+        const traInfo =  state.mapConfig.mapconfig.traInfo;
 
         //create map config object
-        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, traInfo, huc8Info, searchMethod};
 
         dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
     }))
@@ -144,30 +181,32 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
 
       // .then(function test(response){
 
-      const theTraInfo = CheckReponse(tra_response,'AGO_API_ERROR');
+      const thetraPointInfo = CheckReponse(tra_response,'AGO_API_ERROR');
 
-        //check repsonses for errors
-        const theLayerInfo = CheckReponse(huc_response,'AGO_API_ERROR');
+      //check repsonses for errors
+      const theLayerInfo = CheckReponse(huc_response,'AGO_API_ERROR');
 
-        const theCatalogingUnitInfo = CheckReponse(cu_response,'AGO_API_ERROR');
-        //get redux state
-        const state = getState()
+      const theCatalogingUnitInfo = CheckReponse(cu_response,'AGO_API_ERROR');
+      //get redux state
+      const state = getState()
 
-        const latitude = state.mapConfig.mapconfig.latitude;
-        const longitude = state.mapConfig.mapconfig.longitude;
-        const zoom =  state.mapConfig.mapconfig.zoom;
-        const minZoom = state.mapConfig.mapconfig.minZoom;
-        const maxZoom =  state.mapConfig.mapconfig.maxZoom;
-        const maxBounds = state.mapConfig.mapconfig.maxBounds;
-        const layers = state.mapConfig.mapconfig.layers;
-        const layerInfo = theLayerInfo;
-        const traInfo = theTraInfo;
-        const huc8Info = theCatalogingUnitInfo;
+      const latitude = state.mapConfig.mapconfig.latitude;
+      const longitude = state.mapConfig.mapconfig.longitude;
+      const zoom =  state.mapConfig.mapconfig.zoom;
+      const minZoom = state.mapConfig.mapconfig.minZoom;
+      const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+      const maxBounds = state.mapConfig.mapconfig.maxBounds;
+      const layers = state.mapConfig.mapconfig.layers;
+      const layerInfo = theLayerInfo;
+      const traPointInfo = thetraPointInfo;
+      const huc8Info = theCatalogingUnitInfo;
+      const searchMethod = state.mapConfig.mapconfig.searchMethod;
+      const traInfo =  state.mapConfig.mapconfig.traInfo;
 
-        //create map config object
-        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+      //create map config object
+      const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, traInfo, huc8Info, searchMethod};
 
-        dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
+      dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
     }))
 
@@ -196,11 +235,13 @@ export function set_MapLayers(mapLayers){
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = CurrentLayers
     const layerInfo = state.mapConfig.layerinfo
-    const traInfo = state.mapConfig.trainfo;
+    const traPointInfo = state.mapConfig.traPointInfo;
     const huc8Info = state.mapConfig.mapconfig.huc8Info;
+    const searchMethod = state.mapConfig.mapconfig.searchMethod;
+    const traInfo =  state.mapConfig.mapconfig.traInfo;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, traInfo, huc8Info, searchMethod};
 
     dispatch(mapSate('MAP_SET_LAYERS',mapConfig));
 
@@ -220,11 +261,13 @@ export function set_mapToPoint(lat,lng,z,e){
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = state.mapConfig.mapconfig.layers;
     const layerInfo = state.mapConfig.layerinfo
-    const traInfo = state.mapConfig.trainfo;
+    const traPointInfo = state.mapConfig.traPointInfo;
     const huc8Info = state.mapConfig.mapconfig.huc8Info;
+    const searchMethod = state.mapConfig.mapconfig.searchMethod;
+    const traInfo =  state.mapConfig.mapconfig.traInfo;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, traInfo, huc8Info, searchMethod};
 
     dispatch(mapSate('MAP_TO_POINT',mapConfig));
 
@@ -249,11 +292,13 @@ export function HandleMapEnd(mapComp,e){
     const maxBounds = state.mapConfig.mapconfig.maxBounds;
     const layers = state.mapConfig.mapconfig.layers;
     const layerInfo = state.mapConfig.layerinfo;
-    const traInfo = state.mapConfig.trainfo;
+    const traPointInfo = state.mapConfig.traPointInfo;
     const huc8Info = state.mapConfig.mapconfig.huc8Info;
+    const searchMethod = state.mapConfig.mapconfig.searchMethod;
+    const traInfo =  state.mapConfig.mapconfig.traInfo;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, traInfo, huc8Info, searchMethod};
 
     //send map config data on to store
     dispatch(mapSate('MAP_END',mapConfig));
@@ -279,11 +324,13 @@ export function get_defaultMapData(zoom){
     const maxBounds = bounds;
     const layers = [];
     const layerInfo = {};
-    const traInfo = {};
+    const traPointInfo = {};
     const huc8Info = {};
+    const searchMethod = "none"
+    const traInfo =  {};
 
     //create new map config
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, traInfo, huc8Info, searchMethod};
 
     //send map config data on to store
     dispatch(mapSate('MAP_DATA',mapConfig));
@@ -342,14 +389,15 @@ export function handleSearchChange(comp,e){
         var lng = place.geometry.location.lng();
 
         //retreive the layerinfo object (huc12) at the google api places lat long
-        axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_MAP_FEATUREID)])
-        .then(axios.spread(function (huc_response, tra_response) {
+        axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, CATALOGING_MAP_FEATUREID)])
+        .then(axios.spread(function (huc_response, tra_response, cu_response) {
 
-            const theTraInfo = CheckReponse(tra_response,'AGO_API_ERROR');
-            console.log(theTraInfo);
+            const thetraPointInfo = CheckReponse(tra_response,'AGO_API_ERROR');
 
             //check repsonses for errors
             const theLayerInfo = CheckReponse(huc_response,'AGO_API_ERROR');
+
+            const theCatalogingUnitInfo = CheckReponse(cu_response,'AGO_API_ERROR');
 
             //get redux state
             const state = getState()
@@ -366,11 +414,13 @@ export function handleSearchChange(comp,e){
           const maxBounds = state.mapConfig.mapconfig.maxBounds;
           const layers = state.mapConfig.mapconfig.layers;
           const layerInfo = theLayerInfo;
-          const traInfo = theTraInfo;
-          const huc8Info = state.mapConfig.mapconfig.huc8Info;
+          const traPointInfo = thetraPointInfo;
+          const huc8Info = theCatalogingUnitInfo;
+          const searchMethod = state.mapConfig.mapconfig.searchMethod;
+          const traInfo =  state.mapConfig.mapconfig.traInfo;
 
           //create map config object
-          const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traInfo, huc8Info};
+          const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, traInfo, huc8Info, searchMethod};
 
           dispatch(mapSate('MAP_SEARCH',mapConfig));
         }))
@@ -378,6 +428,40 @@ export function handleSearchChange(comp,e){
       });
     }
   };
+
+//this is for chart clicks and highlighting on map
+export function get_tra_info(id){
+  return (dispatch, getState) => {
+    //get redux state
+    const state = getState()
+
+    AGO_get_LayerInfo_ByValue(id, TRA_MAP_FEATUREID)
+      .then( tra_response => {
+
+        const theTraInfo = CheckReponse(tra_response,'AGO_API_ERROR');
+        const latitude = state.mapConfig.mapconfig.latitude;
+        const longitude = state.mapConfig.mapconfig.longitude;
+        const zoom =   state.mapConfig.mapconfig.zoom;
+        const minZoom = state.mapConfig.mapconfig.minZoom;
+        const maxZoom =  state.mapConfig.mapconfig.maxZoom;
+        const maxBounds = state.mapConfig.mapconfig.maxBounds;
+        const layers = state.mapConfig.mapconfig.layers;
+        const layerInfo = state.mapConfig.mapconfig.layerInfo;
+        const traInfo = theTraInfo;
+        const traPointInfo = state.mapConfig.mapconfig.traPointInfo;
+        const huc8Info =  state.mapConfig.mapconf
+        const searchMethod = state.mapConfig.mapconfig.searchMethod;
+
+        //create map config object
+        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, traInfo, huc8Info, searchMethod};
+
+        dispatch(mapSate('TRA_GEOMETRY',mapConfig));
+
+      })
+
+  }
+
+}
 
 export function addLayer(){
 

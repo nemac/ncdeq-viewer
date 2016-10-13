@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 //import actions
-import { get_MenuList, get_ChartData, get_TRAData, change_geographyLevelActive, change_geographyLevelFilter, handleSearchChange, update_ChartVisiblity, update_MapHeight, set_mapToPoint, get_LayerInfo_ByValue } from '../actions/actionCreators'
+import { set_search_method, get_MenuList, get_ChartData, get_TRAData, change_geographyLevelActive, change_geographyLevelFilter, handleSearchChange, update_ChartVisiblity, update_MapHeight, set_mapToPoint, get_LayerInfo_ByValue } from '../actions/actionCreators'
 
 //import components
 import MenuComponent from '../components/MenuComponent'
@@ -15,8 +15,10 @@ const mapStateToProps = (state,props) => {
   let map_settings = state.mapConfig.mapconfig;
   let leafletMap = state.leafletMap;
   let layerInfo = state.mapConfig.layerinfo;
-  let traInfo = state.mapConfig.trainfo;
+  let traPointInfo = state.mapConfig.traPointInfo;
   let huc8Info = state.mapConfig.huc8Info;
+  let searchMethod = state.mapConfig.searchMethod;
+  let traInfo = state.mapConfig.traInfo;
 
   return {
     DefaultMenuLists,
@@ -25,9 +27,11 @@ const mapStateToProps = (state,props) => {
     map_settings,
     leafletMap,
     layerInfo,
+    traPointInfo,
     traInfo,
     tra_data: state.traData.tra_data,
     huc8Info,
+    searchMethod,
   }
 }
 
@@ -43,6 +47,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleSearchChange: bindActionCreators(handleSearchChange, dispatch),
     set_mapToPoint: bindActionCreators(set_mapToPoint, dispatch),
     get_LayerInfo_ByValue: bindActionCreators(get_LayerInfo_ByValue, dispatch),
+    set_search_method: bindActionCreators(set_search_method,dispatch),
   }
 }
 

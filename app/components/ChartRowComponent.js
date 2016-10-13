@@ -287,6 +287,13 @@ var ChartRow = React.createClass({
     let chart_width_px = CHART_WIDTH_PX;
     let chart_grid_height =  MAP_HEIGHT;
 
+    let searchMethod = ""
+    let show_point = false;
+    if(this.props.searchMethod){
+        searchMethod = this.props.searchMethod;
+        show_point =  (searchMethod === "location searched" || searchMethod === "clicked");
+    }
+
     if(this.props.default_settings){
       chart_width_px = this.props.default_settings.chartWidth;
       chart_grid_height = this.props.default_settings.mapHeight;
@@ -325,7 +332,9 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0]);
     chart_upflift_bar = this.getChart_data(uplift_data[0]);
     chart_tar_bar = this.getChart_data(tra_data[0]);
-    const tra_point_info = this.props.traInfo
+
+    //probably need to rename this to describe it better I already got confused
+    const tra_point_info = this.props.traPointInfo
 
     var tra_message = ""
     var tra_message_point = ""
@@ -341,31 +350,30 @@ var ChartRow = React.createClass({
     var sub_header_point = ""
 
     var trasTEMP = ""
+
+    //create tra point message.  user clicked on the map or searched for a location
     if (tra_point_info.features){
       trasTEMP = tra_point_info.features.map (feature => {
         return feature.properties.id
       })
 
-      const tra_string =trasTEMP.toString();
-
+      const tra_string = trasTEMP.toString().split(",").join(", ");
 
       if(trasTEMP.length > 0){
-        tra_text_message_point = "The location you searched or the point you clicked is in a TRA."
+        tra_text_message_point = "The location you " + searchMethod + " is in a TRA. "
         success_class_point = "ui icon success message"
         icon_point = (<i className="check circle icon"></i>)
         sub_header_point = (<p>This includes the TRA(s): {tra_string}</p>)
       } else {
         success_class_point = "ui icon negative message"
         icon_point = (<i className="remove circle icon"></i>)
-        tra_text_message_point = "The location you searched or the point you clicked is NOT in a TRA"
+        tra_text_message_point = "The location you  " + searchMethod + " is NOT in a TRA"
       }
-
-
     }
 
 
-
     //make sure the TRA data object is defined
+    //  this is the TRA's in the current geogLevel unless current geogLevel is huc12 then it is huc8 Cataloging Unit
     if(this.props.tra_data){
       if(this.props.tra_data.data){
 
@@ -375,13 +383,14 @@ var ChartRow = React.createClass({
           success_class = "ui icon success message"
           icon = (<i className="check circle icon"></i>)
 
-          const comma = ", "
-          //render the menu selections for the list
-            var tra_list = this.props.tra_data.data.map( tra => {
-                return   (<span key={tra.tra_name}> {tra.tra_name}{comma}</span>)
-            })
+          trasTEMP = this.props.tra_data.data.map (feature => {
+            return feature.tra_name
+          })
+
+          const tra_string = trasTEMP.toString().split(",").join(", ");
+
             //list of TRA's
-            sub_header = (<p>This includes the TRA(s): {tra_list}</p>)
+            sub_header = (<p>This includes the TRA(s): {tra_string}</p>)
 
 
 
@@ -449,7 +458,7 @@ var ChartRow = React.createClass({
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
-        { chart_filter &&
+        { show_point &&
           <div className="ui item" >
             <div className="content">
               {tra_message_point}
@@ -476,7 +485,10 @@ var ChartRow = React.createClass({
           chart_data={chart_tar_bar}
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
-          change_geographyLevelActive={this.props.change_geographyLevelActive}/>
+          change_geographyLevelActive={this.props.change_geographyLevelActive}
+          set_search_method={this.props.set_search_method }
+          tra_data={this.props.tra_data}
+          get_tra_info={this.props.get_tra_info}/>
         }
         { chart_filter &&
         <ChartRowWrapper key="baseline"
@@ -488,7 +500,10 @@ var ChartRow = React.createClass({
           chart_data={chart_baseline_bar}
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
-          change_geographyLevelActive={this.props.change_geographyLevelActive}/>
+          change_geographyLevelActive={this.props.change_geographyLevelActive}
+          set_search_method={this.props.set_search_method }
+          tra_data={this.props.tra_data}
+          get_tra_info={this.props.get_tra_info}/>
         }
         { chart_filter &&
         <ChartRowWrapper key="uplift"
@@ -500,7 +515,10 @@ var ChartRow = React.createClass({
           chart_data={chart_upflift_bar}
           chart_filter={chart_filter}
            get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
-           change_geographyLevelActive={this.props.change_geographyLevelActive}/>
+           change_geographyLevelActive={this.props.change_geographyLevelActive}
+           set_search_method={this.props.set_search_method }
+           tra_data={this.props.tra_data}
+           get_tra_info={this.props.get_tra_info}/>
          }
 
       </div>

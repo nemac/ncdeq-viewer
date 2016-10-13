@@ -81,6 +81,9 @@ var MenuComponent = React.createClass({
     //update data for change
     //  the chart data update is handled in menu change
     this.props.handleSearchChange(comp,e)
+
+    this.props.set_search_method('location searched')
+
   },
   updateFilters: function(value){
 
@@ -178,6 +181,7 @@ var MenuComponent = React.createClass({
 
     //set current geography level in redux state store
     this.props.change_geographyLevelActive(val);
+    this.props.set_search_method('menu')
 
   },
   getActive: function(val){
