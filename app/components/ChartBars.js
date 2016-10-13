@@ -17,6 +17,7 @@ var ChartBars = React.createClass({
   handleClick(constructor, entry, data, index, test) {
     const name = entry.name
 
+    const chart_type = this.props.chart_type
 
     this.props.set_search_method('chart clicked')
 
@@ -24,18 +25,11 @@ var ChartBars = React.createClass({
     this.props.change_geographyLevelActive(name);
 
     //only do this if the id is tra.  tra id's start with TP
-    if(name.substring(0,2) === "TP"){
-
+    if(chart_type.toUpperCase() === "TRA"){
+      this.setState({
+        tra_filter: name
+      })
       this.props.get_tra_info(name)
-      // //if tra_data objecct exists filter the object by the tra name...
-      // //  this will get the geometry data for the tra so we can show it on the map.
-      // //  and highlight it on the chart...
-      // if(this.props.tra_data.data){
-      //     const id = this.props.tra_data.data.filter( tra => {
-      //         return tra.tra_name === name
-      //     })
-      //     console.log(id[0])
-      // }
 
     //not tra so should be a huc. assume huc12...
     } else {
@@ -126,14 +120,35 @@ var ChartBars = React.createClass({
     return data_keys;
   },
   get_cell: function(key){
+
     const colors = this.get_keyColors(key)
+
+    let chart_filter = this.props.chart_filter;
+    const chart_type = this.props.chart_type
+
+    //if the chart type is tra make the filter the id of the traInfo object.
+    //  there should be onluy one object in the traInfo object and it should be the tra
+    //  the user clicked in. so it should look selected.
+    if(this.state){
+      console.log('in props traInfo')
+      if (chart_type.toUpperCase() === 'TRA'){
+        console.log('in chart type TRA')
+
+        if(this.state){
+          chart_filter = this.state.tra_filter
+        }
+      }
+    }
+
+
+
     if(this.props.chart_data){
       return (
           this.props.chart_data.map((entry, index) => (
             <Cell cursor="pointer"
-                  fill={entry.name === this.props.chart_filter ? colors[0] : colors[1]}
-                  stroke={entry.name === this.props.chart_filter ? colors[0] : colors[1]}
-                  strokeWidth={entry.name === this.props.chart_filter ? 1 : 0}
+                  fill={entry.name === chart_filter ? colors[0] : colors[1]}
+                  stroke={entry.name === chart_filter ? colors[0] : colors[1]}
+                  strokeWidth={entry.name === chart_filter ? 1 : 0}
                   key={`cell-${index}`}
                   id={entry.name}
                   onClick={this.handleClick.bind(null,this,entry)}/>

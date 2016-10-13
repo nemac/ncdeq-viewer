@@ -383,14 +383,20 @@ var ChartRow = React.createClass({
           success_class = "ui icon success message"
           icon = (<i className="check circle icon"></i>)
 
-          const comma = ", "
-          //render the menu selections for the list
-            var tra_list = this.props.tra_data.data.map( tra => {
-                return   (<span key={tra.tra_name}> {tra.tra_name}{comma}</span>)
-            })
+          // const comma = ", "
+          // //render the menu selections for the list
+          //   var tra_list = this.props.tra_data.data.map( tra => {
+          //       return   (<span key={tra.tra_name}> {tra.tra_name}{comma}</span>)
+          //   })
+
+          trasTEMP = this.props.tra_data.data.map (feature => {
+            return feature.tra_name
+          })
+
+          const tra_string = trasTEMP.toString();
 
             //list of TRA's
-            sub_header = (<p>This includes the TRA(s): {tra_list}</p>)
+            sub_header = (<p>This includes the TRA(s): {tra_string}</p>)
 
 
 
