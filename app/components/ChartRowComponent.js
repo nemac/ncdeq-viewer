@@ -147,7 +147,7 @@ var ChartRow = React.createClass({
   },
   getChat_GroupSum: function(chart_data){
     //returns an array of hucs and their summed value for any level
-    // aget unique set of of hucs and sum their values.
+    // get unique set of of hucs and sum their values.
     // this will ensure the sum of the values for the chart level are aggregated
     const groupsum = chart_data.reduce(function(acc, x) {
       // first check if the given group is in the object
@@ -184,6 +184,7 @@ var ChartRow = React.createClass({
     return sorted_hucs;
 
   },
+
   getChart_data: function(chart_data){
     // builds chart data into proper format for rechart library (bar charts)
     let chart_data_array = [];
@@ -192,6 +193,21 @@ var ChartRow = React.createClass({
 
       //get fist level chart
       let levelone =  this.getChart_FilteredByChartLevel( chart_data, 1, false );
+
+
+
+      // let leveltwo =  this.getChart_FilteredByChartLevel( chart_data, 2, false );
+      // let levelthree =  this.getChart_FilteredByChartLevel( chart_data, 3, false );
+      // let levelfour =  this.getChart_FilteredByChartLevel( chart_data, 4, false );
+      // let levelfive =  this.getChart_FilteredByChartLevel( chart_data, 5, false );
+
+
+      // const testdata = chart_data.chart_features.filter( chart_objects => {
+      //   return chart_objects.properties.chartLabel === 'Habitat'
+      // })
+      // let two_huc = this.getChart_FilteredByHUC(leveltwo, "030201010501")
+      // console.log(levelthree)
+      // console.log(levelthree)
 
       // sort by value
       let sorted_hucs = this.getChart_Sorted(levelone);
@@ -281,6 +297,22 @@ var ChartRow = React.createClass({
     } else {
       return null;
     }
+  },
+  getChart_FilteredByType: function(chart_type, filter_value){
+
+    let chart_data = this.getCharType_Data(chart_type);
+
+    //get the current chart id
+    let chart_data_limited
+    chart_data_limited =  chart_data[0].chart_features.filter ( chart_objects => {
+      return chart_objects.properties.chart_level_label === 'Water Quality';
+    })
+
+    console.log(chart_data_limited)
+
+    //find all that match
+
+    return
   },
   render: function() {
     //get chart width inpixl from redux should handle resize in actiion creators
@@ -488,7 +520,11 @@ var ChartRow = React.createClass({
           change_geographyLevelActive={this.props.change_geographyLevelActive}
           set_search_method={this.props.set_search_method }
           tra_data={this.props.tra_data}
-          get_tra_info={this.props.get_tra_info}/>
+          get_tra_info={this.props.get_tra_info}
+          charts={this.props.charts}
+          update_ChartLevels={this.props.update_ChartLevels}
+          update_ChartMatchId={this.props.update_ChartMatchId}
+          getChart_FilteredByType={this.getChart_FilteredByType}/>
         }
         { chart_filter &&
         <ChartRowWrapper key="baseline"
@@ -503,7 +539,11 @@ var ChartRow = React.createClass({
           change_geographyLevelActive={this.props.change_geographyLevelActive}
           set_search_method={this.props.set_search_method }
           tra_data={this.props.tra_data}
-          get_tra_info={this.props.get_tra_info}/>
+          get_tra_info={this.props.get_tra_info}
+          charts={this.props.charts}
+          update_ChartLevels={this.props.update_ChartLevels}
+          update_ChartMatchId={this.props.update_ChartMatchId}
+          getChart_FilteredByType={this.getChart_FilteredByType}/>
         }
         { chart_filter &&
         <ChartRowWrapper key="uplift"
@@ -518,7 +558,11 @@ var ChartRow = React.createClass({
            change_geographyLevelActive={this.props.change_geographyLevelActive}
            set_search_method={this.props.set_search_method }
            tra_data={this.props.tra_data}
-           get_tra_info={this.props.get_tra_info}/>
+           get_tra_info={this.props.get_tra_info}
+           charts={this.props.charts}
+           update_ChartLevels={this.props.update_ChartLevels}
+           update_ChartMatchId={this.props.update_ChartMatchId}
+           getChart_FilteredByType={this.getChart_FilteredByType}/>
          }
 
       </div>

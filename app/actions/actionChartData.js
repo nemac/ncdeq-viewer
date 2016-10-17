@@ -150,6 +150,7 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
   }
 
 
+
    //build the query to arcgis online api for getting the raw chart data
    const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
                    '?where=id%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
@@ -172,6 +173,122 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
   //send the ajax request via axios
   return axios.get(query_URL);
 
+}
+
+function ago_getChartLevels(){
+
+     const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+                          '?where=OBJECTID+>+0+and+chart_matchid+<>+chart_id' +
+                          '&objectIds=' +
+                          '&time=' +
+                          '&resultType=none' +
+                          '&outFields=chart_level%2C+chart_matchid%2C+chart_level_label%2C+chart_type' +
+                          '&returnIdsOnly=false' +
+                          '&returnCountOnly=false' +
+                          '&returnDistinctValues=true' +
+                          '&orderByFields=chart_level%2C+chart_matchid%2C+chart_type%2C+chart_level_label' +
+                          '&groupByFieldsForStatistics=' +
+                          '&outStatistics=' +
+                          '&resultOffset=' +
+                          '&resultRecordCount=' +
+                          '&sqlFormat=none' +
+                          '&f=pgeojson' +
+                          '&token='
+
+     //send the ajax request via axios
+     return axios.get(query_URL);
+}
+export function update_ChartMatchId(new_matchid){
+  return (dispatch,getState) => {
+
+      const state = getState()
+
+      let current_chart_level = 2;
+      let current_chart_matchid = 1;
+
+      let chart_level_data = []
+
+      if(state.chartData){
+        chart_level_data = ( state.chartData.chart_levels.levels ? state.chartData.chart_levels.levels : []);
+      }
+
+
+      if(state.chartData.current_matchid){
+
+        //change matchid
+        current_chart_matchid = (state.chartData.current_matchid ? new_matchid : 1);
+
+      }
+
+
+      if(state.chartData.current_level){
+
+        current_chart_level = (state.chartData.current_level ? state.chartData.current_level : 2);
+
+      }
+
+
+      //send the chart data on
+      dispatch(
+        ChartLevels('GET_CHART_MATCHID', chart_level_data, current_chart_level, current_chart_matchid)
+      )
+
+
+  }
+}
+export function update_ChartLevels(new_level){
+  return (dispatch,getState) => {
+
+      const state = getState()
+
+      let current_chart_level = 2;
+      let current_chart_matchid = 1;
+
+      let chart_level_data = []
+
+      if(state.chartData){
+        chart_level_data = ( state.chartData.chart_levels.levels ? state.chartData.chart_levels.levels : []);
+      }
+
+
+      if(state.chartData.current_level){
+
+        //change level
+        current_chart_level = (state.chartData.current_level ? new_level : 2);
+
+      }
+
+      if(state.chartData.current_matchid){
+        current_chart_matchid = (state.chartData.current_matchid ? state.chartData.current_matchid : 1);
+      }
+
+      //send the chart data on
+      dispatch(
+        ChartLevels('UPDATE_CHART_LEVELS', chart_level_data, current_chart_level, current_chart_matchid)
+      )
+
+
+  }
+}
+
+export function get_ChartLevels(id,level){
+  return (dispatch,getState) => {
+
+    ago_getChartLevels()
+     .then( chart_level_response => {
+
+       const current_chart_level = 2;
+       const current_chart_matchid = 1;
+
+       //add geometry here
+       const chart_level_data = CheckReponse(chart_level_response,'AGO_API_ERROR');
+
+      //send the chart data on
+      dispatch(
+        ChartLevels('GET_CHART_LEVELS', chart_level_data, current_chart_level, current_chart_matchid)
+      )
+    })
+  }
 }
 
 //
@@ -320,6 +437,25 @@ export function update_ChartVisiblity (visibility){
 
 
     }
+}
+
+//function to handle sending to reducer and store
+function ChartLevels(type, levels, current_chart_level, current_chart_matchid) {
+  // return {
+  //   type: type,
+  //   chart_levels: {levels},
+  //   chart_visibility: visibility,
+  //   receivedAt: Date.now()
+  // }
+  return {
+   type: type,
+   chart_levels: {
+     levels
+   },
+   current_chart_level: current_chart_level,
+   current_chart_matchid: current_chart_matchid,
+   receivedAt: Date.now()
+ }
 }
 
 

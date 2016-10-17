@@ -16,7 +16,7 @@ var ChartBars = React.createClass({
   },
   handleClick(constructor, entry, data, index, test) {
     const name = entry.name
-
+    // console.log(entry)
     const chart_type = this.props.chart_type
 
     this.props.set_search_method('chart clicked')
@@ -36,31 +36,34 @@ var ChartBars = React.createClass({
       this.props.get_LayerInfo_ByValue(name, HUC12_MAP_FEATUREID)
     }
 
-    //super hacky way to get values into webpage.
-    // need to pass chart data for other levels so we can "drilldown"
-    const props = constructor.props.chart_data
-    let props_filtered = props.filter(item => {
-      return item.name === name
-    })
-    let values = ''
-    props_filtered.map( chartclickvalues => {
-      for (var prop in chartclickvalues) {
-        if (chartclickvalues.hasOwnProperty(prop)) {
-          if(typeof chartclickvalues[prop] === 'object'){
-            // values = values + prop + ": " + JSON.stringify(chartclickvalues[prop]) + "<BR />"
-          }else{
-            if(prop != 'chart_id'){
-              if(prop === 'name'){
-                values = values + "HUC: " + chartclickvalues[prop] + "<BR />"
-              }else{
-                values = values + prop + ": " + chartclickvalues[prop] + "<BR />"
-              }
-            }
-          }
-        }
-      }
+    this.props.getChart_FilteredByType(chart_type, name)
+    // //super hacky way to get values into webpage.
+    // // need to pass chart data for other levels so we can "drilldown"
+    // const props = constructor.props.chart_data
+    // let props_filtered = props.filter(item => {
+    //   return item.name === name
+    // })
+    //
+    // let values = ''
+    // props_filtered.map( chartclickvalues => {
+    //   for (var prop in chartclickvalues) {
+    //     if (chartclickvalues.hasOwnProperty(prop)) {
+    //       if(typeof chartclickvalues[prop] === 'object'){
+    //         // values = values + prop + ": " + JSON.stringify(chartclickvalues[prop]) + "<BR />"
+    //       }else{
+    //         if(prop != 'chart_id'){
+    //           if(prop === 'name'){
+    //             values = values + "HUC: " + chartclickvalues[prop] + "<BR />"
+    //           }else{
+    //             values = values + prop + ": " + chartclickvalues[prop] + "<BR />"
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
 
-    })
+    // })
+    // console.log(values)
     // $("#cdata").html(values);
     //$("#data").html(name);
   },
@@ -130,17 +133,12 @@ var ChartBars = React.createClass({
     //  there should be onluy one object in the traInfo object and it should be the tra
     //  the user clicked in. so it should look selected.
     if(this.state){
-      console.log('in props traInfo')
       if (chart_type.toUpperCase() === 'TRA'){
-        console.log('in chart type TRA')
-
         if(this.state){
           chart_filter = this.state.tra_filter
         }
       }
     }
-
-
 
     if(this.props.chart_data){
       return (
@@ -262,6 +260,7 @@ var ChartBars = React.createClass({
       <div >
         <div id="hdata" />
         <div id="cdata" />
+        
         <div id="bar-chart" style={{float:"left"}} >
           <BarChart key={this.props.chart_type}
                     width={this.props.chart_width}
