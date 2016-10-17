@@ -25,6 +25,7 @@ var ChartRowWrapper = React.createClass({
     return
   },
   render: function() {
+    console.log(this.props.chart_type)
     const charts_levels = this.props.charts.chart_levels.levels.features
 
     //limits for level
@@ -34,12 +35,21 @@ var ChartRowWrapper = React.createClass({
 
     //limits for chart match id
     //  not sure why && is not limiting...
-    let current_chart_match = charts_levels.filter( chart_level_features => {
+    let current_chart_match = current_chart_level.filter( chart_level_features => {
       return chart_level_features.properties.chart_matchid === this.props.charts.current_matchid
     })
 
+    //limits for chart match id
+    //  not sure why && is not limiting...
+    let current_chart_type = current_chart_match.filter( chart_level_features => {
+      return chart_level_features.properties.chart_type === this.props.chart_type.toUpperCase()
+    })
 
-    console.log(current_chart_match)
+    let levels = current_chart_type.map( chart_level => {
+      return chart_level.properties.chart_level_label
+    })
+
+    console.log(levels.toString())
 
     return (
       <div className="item" style={{display: "block"}}>
