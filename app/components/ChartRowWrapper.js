@@ -25,7 +25,7 @@ var ChartRowWrapper = React.createClass({
     return
   },
   render: function() {
-    console.log(this.props.chart_type)
+    console.log(this.props.chart_type.toUpperCase())
     const charts_levels = this.props.charts.chart_levels.levels.features
 
     //limits for level
@@ -42,6 +42,7 @@ var ChartRowWrapper = React.createClass({
     //limits for chart match id
     //  not sure why && is not limiting...
     let current_chart_type = current_chart_match.filter( chart_level_features => {
+      // console.log('in filter - ' + chart_level_features.properties.chart_type)
       return chart_level_features.properties.chart_type === this.props.chart_type.toUpperCase()
     })
 

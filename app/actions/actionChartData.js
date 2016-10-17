@@ -357,7 +357,7 @@ export function get_ChartData(id,level){
                //so far the TRA data is all uplift but this may not matter really only doing this so
                // the format of the data matches baseline and uplfift for the 1st pass of charting
                chart_all_tra = tra_chart_data.features.filter(key =>{
-                 return key.properties.chart_type === 'UPLIFT';
+                 return key.properties.chart_type === 'TRA';
                })
 
              }
