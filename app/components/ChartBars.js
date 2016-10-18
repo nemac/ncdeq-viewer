@@ -36,59 +36,80 @@ var ChartBars = React.createClass({
       this.props.get_LayerInfo_ByValue(name, HUC12_MAP_FEATUREID)
     }
 
-    // this.props.getChart_FilteredByType(chart_type, name)
-    // //super hacky way to get values into webpage.
-    // // need to pass chart data for other levels so we can "drilldown"
-    // const props = constructor.props.chart_data
-    // let props_filtered = props.filter(item => {
-    //   return item.name === name
-    // })
-    //
-    // let values = ''
-    // props_filtered.map( chartclickvalues => {
-    //   for (var prop in chartclickvalues) {
-    //     if (chartclickvalues.hasOwnProperty(prop)) {
-    //       if(typeof chartclickvalues[prop] === 'object'){
-    //         // values = values + prop + ": " + JSON.stringify(chartclickvalues[prop]) + "<BR />"
-    //       }else{
-    //         if(prop != 'chart_id'){
-    //           if(prop === 'name'){
-    //             values = values + "HUC: " + chartclickvalues[prop] + "<BR />"
-    //           }else{
-    //             values = values + prop + ": " + chartclickvalues[prop] + "<BR />"
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-
-    // })
-    // console.log(values)
-    // $("#cdata").html(values);
-    //$("#data").html(name);
   },
   get_keyColors: function(key){
     let key_colors = [];
-
+    //this is hard coded may need to move this to a config file
     switch (key) {
       case 'Water Quality':
         key_colors = ['#22c355' , '#67e48f']
         break;
+
+        case 'Phosphorus':
+          key_colors = ['#22c355' , '#67e48f']
+          break;
+
+          case 'Phosphorus Agriculture':
+            key_colors = ['#22c355' , '#67e48f']
+            break;
+          case 'Phosphorus Atmosphere':
+            key_colors = ['#2b83ba' , '#6eb3dd']
+            break;
+          case 'Phosphorus Urban':
+            key_colors = ['#fd9935' , '#fecc9a']
+            break;
+
+        case 'Nitrogen':
+          key_colors = ['#2b83ba' , '#6eb3dd']
+          break;
+
+          case 'Nitrogen Agriculture':
+            key_colors = ['#22c355' , '#67e48f']
+            break;
+          case 'Nitrogen Atmosphere':
+            key_colors = ['#2b83ba' , '#6eb3dd']
+            break;
+          case 'Nitrogen Urban':
+            key_colors = ['#fd9935' , '#fecc9a']
+            break;
+
+
       case 'Hydrology':
         key_colors = ['#2b83ba' , '#6eb3dd']
         break;
+
+        case '100 year peak':
+          key_colors = ['#22c355' , '#67e48f']
+          break;
+        case '2 year peak':
+          key_colors = ['#2b83ba' , '#6eb3dd']
+          break;
+        case '50 year peak':
+          key_colors = ['#fd9935' , '#fecc9a']
+          break;
+
       case 'Habitat':
         key_colors = ['#fd9935' , '#fecc9a' ]
         break;
-      case 'Water Quality':
-        key_colors = ['#22c355' , '#67e48f']
-        break;
-      case 'Hydrology':
-        key_colors = ['#2b83ba' , '#6eb3dd']
-        break;
-      case 'Habitat':
-        key_colors = ['#fd9935' , '#fecc9a' ]
-        break;
+
+
+        case 'Habitat Likelhood':
+          key_colors = ['#22c355' , '#67e48f']
+          break;
+
+        case 'Aquatic Connectivity':
+          key_colors = ['#22c355' , '#67e48f']
+          break;
+        case 'Uplift Restoration':
+          key_colors = ['#2b83ba' , '#6eb3dd']
+          break;
+        case 'Wetlands and BMPs':
+          key_colors = ['#fd9935' , '#fecc9a']
+          break;
+        case 'Avoided Conversion':
+          key_colors = ['#fd9935' , '#fecc9a' ]
+          break;
+
       default:
         key_colors = ['#1a9641' , '#3cdd6f']
         break;
@@ -190,7 +211,6 @@ var ChartBars = React.createClass({
        this.props.chart_data.map( data  => {
         if(data.name === this.props.chart_filter){
           this.setState({ data });
-          //return (this.test(data))
         }
       })
     }
@@ -218,8 +238,7 @@ var ChartBars = React.createClass({
         if (active) {
           const { payload, label } = this.props;
 
-          //const tip = self.set_toolTip(payload, label);
-          //console.log(tip)
+
           payload.map( bar_segment => {
             html_hov = html_hov + "<span >" + bar_segment.name + ': ' + bar_segment.value + "</span >" ;
           })

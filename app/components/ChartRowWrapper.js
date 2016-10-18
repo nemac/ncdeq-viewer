@@ -68,7 +68,11 @@ var ChartRowWrapper = React.createClass({
     //get the chart levels
     const chart_levels = this.get_chart_levels()
 
-
+    const keyback = "back";
+    const backtext = "Back to Prev";
+    const last_chart_level = 2;
+    const last_matchid = 1;
+    const last_chart_type  = this.props.chart_type;
 
     return (
       <div className="item" style={{display: "block"}}>
@@ -84,13 +88,25 @@ var ChartRowWrapper = React.createClass({
         </div>
         <div className="item" style={{display: "block"}}>
 
+
+
+          <button className="ui black button"
+                  key={keyback}
+                  onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
+            {backtext}
+          </button>
+
           { chart_levels &&
 
             chart_levels.map(function(item) {
               const label = item.properties.chart_level_label;
               const next_chart_level = item.properties.chart_level+1;
+
               const next_matchid = item.properties.chart_id;
               const chart_type  = item.properties.chart_type;
+
+
+
 
               return (  <button className="ui black button" key={label}
                                   onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)} >
