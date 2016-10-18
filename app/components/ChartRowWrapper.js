@@ -110,7 +110,8 @@ var ChartRowWrapper = React.createClass({
                                     tra_data={this.props.tra_data}
                                     get_tra_info={this.props.get_tra_info}
                                     charts={this.props.charts}
-                                    getChart_FilteredByType={this.props.getChart_FilteredByType}/>
+                                    ChartLevels={chart_levels}
+                                    />
         </div>
         <div className="meta">
           <span className="description">{this.props.title_description}</span>

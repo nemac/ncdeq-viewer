@@ -185,29 +185,27 @@ var ChartRow = React.createClass({
 
   },
 
-  getChart_data: function(chart_data){
+  getChart_data: function(chart_data, chart_type){
     // builds chart data into proper format for rechart library (bar charts)
     let chart_data_array = [];
 
     if(chart_data){
 
-      //get fist level chart
-      let levelone =  this.getChart_FilteredByChartLevel( chart_data, 1, false );
 
+      //get constants from redux
+      const charts_levels = this.props.charts.chart_levels.levels.features;
+      const charts_limits = this.props.charts.chart_levels.chart_limits;
 
+      //get a filtered array of the chart type limits
+      const chart_type_limt = charts_limits.filter( item => {
+        return item.chart_type.toUpperCase() === chart_type.toUpperCase();
+      })
 
-      // let leveltwo =  this.getChart_FilteredByChartLevel( chart_data, 2, false );
-      // let levelthree =  this.getChart_FilteredByChartLevel( chart_data, 3, false );
-      // let levelfour =  this.getChart_FilteredByChartLevel( chart_data, 4, false );
-      // let levelfive =  this.getChart_FilteredByChartLevel( chart_data, 5, false );
+      //get the chart types limits to apply to the data
+      const current_chart_matchid = chart_type_limt[0].current_chart_matchid
 
-
-      // const testdata = chart_data.chart_features.filter( chart_objects => {
-      //   return chart_objects.properties.chartLabel === 'Habitat'
-      // })
-      // let two_huc = this.getChart_FilteredByHUC(leveltwo, "030201010501")
-      // console.log(levelthree)
-      // console.log(levelthree)
+      //get the chart for the current chart heierchal level
+      let levelone =  this.getChart_FilteredByChartLevel( chart_data, current_chart_matchid, false );
 
       // sort by value
       let sorted_hucs = this.getChart_Sorted(levelone);
@@ -298,22 +296,6 @@ var ChartRow = React.createClass({
       return null;
     }
   },
-  getChart_FilteredByType: function(chart_type, filter_value){
-
-    let chart_data = this.getCharType_Data(chart_type);
-
-    //get the current chart id
-    let chart_data_limited
-    chart_data_limited =  chart_data[0].chart_features.filter ( chart_objects => {
-      return chart_objects.properties.chart_level_label === 'Water Quality';
-    })
-
-    console.log(chart_data_limited)
-
-    //find all that match
-
-    return
-  },
   render: function() {
     //get chart width inpixl from redux should handle resize in actiion creators
     let chart_width_px = CHART_WIDTH_PX;
@@ -361,9 +343,9 @@ var ChartRow = React.createClass({
     let chart_tar_bar = [];
     let all_hucs_bar = [];
 
-    chart_baseline_bar = this.getChart_data(baseline_data[0]);
-    chart_upflift_bar = this.getChart_data(uplift_data[0]);
-    chart_tar_bar = this.getChart_data(tra_data[0]);
+    chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
+    chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
+    chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
 
     //probably need to rename this to describe it better I already got confused
     const tra_point_info = this.props.traPointInfo
@@ -524,7 +506,7 @@ var ChartRow = React.createClass({
           charts={this.props.charts}
           update_ChartLevels={this.props.update_ChartLevels}
           update_ChartMatchId={this.props.update_ChartMatchId}
-          getChart_FilteredByType={this.getChart_FilteredByType}/>
+          />
         }
         { chart_filter &&
         <ChartRowWrapper key="baseline"
@@ -543,7 +525,7 @@ var ChartRow = React.createClass({
           charts={this.props.charts}
           update_ChartLevels={this.props.update_ChartLevels}
           update_ChartMatchId={this.props.update_ChartMatchId}
-          getChart_FilteredByType={this.getChart_FilteredByType}/>
+          />
         }
         { chart_filter &&
         <ChartRowWrapper key="uplift"
@@ -562,7 +544,7 @@ var ChartRow = React.createClass({
            charts={this.props.charts}
            update_ChartLevels={this.props.update_ChartLevels}
            update_ChartMatchId={this.props.update_ChartMatchId}
-           getChart_FilteredByType={this.getChart_FilteredByType}/>
+           />
          }
 
       </div>

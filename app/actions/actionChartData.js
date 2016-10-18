@@ -226,22 +226,26 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
       const state = getState()
 
 
+      //set inital default settings just incase there is no data.
       let current_chart_level = 2;
       let current_chart_matchid = 1;
       let chart_level_data = [];
       let new_chart_type_limits = [];
 
-      console.log(new_level)
-      console.log(new_matchid)
-
+      //make sure there is data in the state
       if(state.chartData){
 
+        //get the chart level data if not set yet make it a blank array
         chart_level_data = ( state.chartData.chart_levels.levels ? state.chartData.chart_levels.levels : []);
 
+        //get the limits for all chart types
         const chart_type_limits = state.chartData.chart_levels.chart_limits;
 
+        //walk the chart limits
         chart_type_limits.map( item => {
 
+          //if the chart types match the chart type we are trying to limit step in
+          //  and create a new limit
           if(item.chart_type.toUpperCase() === chart_type.toUpperCase()){
 
             const current_chart_level = new_level
@@ -251,10 +255,14 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
             //create new object for the chart types limits
             const new_item = {chart_type, current_chart_level, current_chart_matchid}
 
+            ///we only want to change the limit if there is chart data in the next level down.
+            //  this checks to make sure we have data
             const isvalid = check_limits_valid(chart_level_data, new_item)
 
+            //there is data in the next chart level down
             if(isvalid){
               new_chart_type_limits.push(new_item)
+            //there is NOT data in the next chart level down
             } else {
               new_chart_type_limits.push(item)
             }

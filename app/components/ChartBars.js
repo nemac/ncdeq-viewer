@@ -36,7 +36,7 @@ var ChartBars = React.createClass({
       this.props.get_LayerInfo_ByValue(name, HUC12_MAP_FEATUREID)
     }
 
-    this.props.getChart_FilteredByType(chart_type, name)
+    // this.props.getChart_FilteredByType(chart_type, name)
     // //super hacky way to get values into webpage.
     // // need to pass chart data for other levels so we can "drilldown"
     // const props = constructor.props.chart_data
@@ -106,20 +106,14 @@ var ChartBars = React.createClass({
   },
   //keys for main chart
   get_datakeys: function(chart_type){
-    let data_keys = [];
-    switch (chart_type) {
-      case 'baseline':
-        data_keys = ['Water Quality','Hydrology','Habitat'];
-        break;
-      case 'uplift':
-        data_keys = ['Water Quality','Hydrology','Habitat'];
-        break;
-      case 'tra':
-        data_keys = ['Water Quality','Hydrology','Habitat'];
-        break;
-      default:
 
-    }
+    let data_keys = [];
+
+    //return keys for store.  data driven
+    data_keys = this.props.ChartLevels.map( item => {
+      return item.properties.chart_level_label;
+    })
+
     return data_keys;
   },
   get_cell: function(key){
@@ -260,7 +254,7 @@ var ChartBars = React.createClass({
       <div >
         <div id="hdata" />
         <div id="cdata" />
-        
+
         <div id="bar-chart" style={{float:"left"}} >
           <BarChart key={this.props.chart_type}
                     width={this.props.chart_width}
