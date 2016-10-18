@@ -11,46 +11,44 @@ var ChartRowWrapper = React.createClass({
       title:'Title'
     };
   },
-  handle_chart_match_click: function(comp, new_matchid, e){
+
+  handle_chart_level_click: function(comp, next_level, next_matchid, e){
+
     //update the chart level
-    this.props.update_ChartMatchId(new_matchid)
+    this.props.update_ChartLevels(next_level, next_matchid)
+    // this.props.update_ChartMatchId(next_matchid)
+
+    console.log(next_level)
+    console.log(next_matchid)
+
 
     return
   },
-  handle_chart_level_click: function(comp, new_level, e){
+  // get the chart level for the current chart type, levels and matchid
+  //    this will build a list of clickable buttons for drilldowns on charts.
+  //    and make the charts data drivien. currently they are the chart categorys or keys are
+  //    hard coded
+  get_chart_levels: function(){
 
-    //update the chart level
-    this.props.update_ChartLevels(new_level)
+    //get constants from redux
+    const charts_levels = this.props.charts.chart_levels.levels.features;
+    const chart_type =  this.props.chart_type;
+    const current_chart_level = this.props.charts.current_level;
+    const current_chart_matchid = this.props.charts.current_matchid
 
-    return
+    //return the filterd data should be an array of chart types that includes
+    //  chart_level, chart_level_label, chart_matchid, and chart_type from the ArcGIS online api
+    return charts_levels.filter( charts_levels_features => {
+     return charts_levels_features.properties.chart_type.toUpperCase() === chart_type.toUpperCase() &&
+              charts_levels_features.properties.chart_level === current_chart_level &&
+              charts_levels_features.properties.chart_matchid === current_chart_matchid
+   })
   },
+
   render: function() {
-    console.log(this.props.chart_type.toUpperCase())
-    const charts_levels = this.props.charts.chart_levels.levels.features
 
-    //limits for level
-    let current_chart_level = charts_levels.filter( chart_level_features => {
-      return chart_level_features.properties.chart_level === this.props.charts.current_level
-    })
-
-    //limits for chart match id
-    //  not sure why && is not limiting...
-    let current_chart_match = current_chart_level.filter( chart_level_features => {
-      return chart_level_features.properties.chart_matchid === this.props.charts.current_matchid
-    })
-
-    //limits for chart match id
-    //  not sure why && is not limiting...
-    let current_chart_type = current_chart_match.filter( chart_level_features => {
-      // console.log('in filter - ' + chart_level_features.properties.chart_type)
-      return chart_level_features.properties.chart_type === this.props.chart_type.toUpperCase()
-    })
-
-    let levels = current_chart_type.map( chart_level => {
-      return chart_level.properties.chart_level_label
-    })
-
-    console.log(levels.toString())
+    //get the chart levels
+    const chart_levels = this.get_chart_levels()
 
     return (
       <div className="item" style={{display: "block"}}>
@@ -66,14 +64,20 @@ var ChartRowWrapper = React.createClass({
         </div>
         <div className="item" style={{display: "block"}}>
 
-          <button className="ui black button" onClick={this.handle_chart_level_click.bind(null,this,3)}>
-            Update chart levels
-          </button>
+          { chart_levels &&
+            chart_levels.map(function(item) {
+              const label = item.properties.chart_level_label;
+              const next_chart_level = item.properties.chart_level+1;
+              const next_matchid = item.properties.chart_id;
+              console.log(item)
+              return (  <button className="ui black button" key={label}
+                                  onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid)} >
+                         {label}
+                        </button>)
 
-          <button className="ui black button" onClick={this.handle_chart_match_click.bind(null,this,3)}>
-            Update chart machid
-          </button>
 
+          }.bind(this))
+        }
           <ChartBars key={this.props.title} chart_width={this.props.chart_width}
                                     chart_type={this.props.chart_type}
                                     chart_data={this.props.chart_data}

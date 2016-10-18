@@ -6,10 +6,10 @@ export function chartData(state = [], action) {
       return { ...state, chart_data:  action.chart_data, chart_visibility: action.chart_visibility}
     case 'GET_CHART_LEVELS':
       return {...state, chart_levels: action.chart_levels, current_level: action.current_chart_level, current_matchid: action.current_chart_matchid}
-    case 'UPDATE_CHART_LEVELS':
+    case 'UPDATE_CHART_LEVEL':
       return {...state, chart_levels: action.chart_levels, current_level: action.current_chart_level, current_matchid: action.current_chart_matchid}
-    case 'GET_CHART_MATCHID':
-      return {...state, chart_levels: action.chart_levels, current_level: action.current_chart_level, current_matchid: action.current_chart_matchid}
+    // case 'UPDATE_CHART_MATCHID':
+    //   return {...state, chart_levels: action.chart_levels, current_level: action.current_chart_level, current_matchid: action.current_chart_matchid}
     default:
       return state
   }

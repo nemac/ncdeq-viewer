@@ -182,7 +182,7 @@ function ago_getChartLevels(){
                           '&objectIds=' +
                           '&time=' +
                           '&resultType=none' +
-                          '&outFields=chart_level%2C+chart_matchid%2C+chart_level_label%2C+chart_type' +
+                          '&outFields=chart_level%2C+chart_matchid%2C+chart_level_label%2C+chart_type%2C+chart_id' +
                           '&returnIdsOnly=false' +
                           '&returnCountOnly=false' +
                           '&returnDistinctValues=true' +
@@ -230,41 +230,39 @@ export function update_ChartMatchId(new_matchid){
 
       //send the chart data on
       dispatch(
-        ChartLevels('GET_CHART_MATCHID', chart_level_data, current_chart_level, current_chart_matchid)
+        ChartLevels('UPDATE_CHART_MATCHID', chart_level_data, current_chart_level, current_chart_matchid)
       )
 
 
   }
 }
-export function update_ChartLevels(new_level){
+export function update_ChartLevels(new_level, new_matchid){
   return (dispatch,getState) => {
 
       const state = getState()
 
+
       let current_chart_level = 2;
       let current_chart_matchid = 1;
-
-      let chart_level_data = []
+      let chart_level_data = [];
 
       if(state.chartData){
+        current_chart_level = (state.chartData.current_level ? state.chartData.current_level : 2)
+        current_chart_matchid = (state.chartData.current_matchid ? state.chartData.current_matchid : 1);
         chart_level_data = ( state.chartData.chart_levels.levels ? state.chartData.chart_levels.levels : []);
       }
 
+      //change level
+      const new_chart_level = (new_level ? new_level : current_chart_level);
 
-      if(state.chartData.current_level){
+      //change matchid
+      const new_chart_matchid = (new_matchid ? new_matchid : current_chart_matchid);
 
-        //change level
-        current_chart_level = (state.chartData.current_level ? new_level : 2);
 
-      }
-
-      if(state.chartData.current_matchid){
-        current_chart_matchid = (state.chartData.current_matchid ? state.chartData.current_matchid : 1);
-      }
 
       //send the chart data on
       dispatch(
-        ChartLevels('UPDATE_CHART_LEVELS', chart_level_data, current_chart_level, current_chart_matchid)
+        ChartLevels('UPDATE_CHART_LEVEL', chart_level_data, new_chart_level, new_chart_matchid)
       )
 
 
