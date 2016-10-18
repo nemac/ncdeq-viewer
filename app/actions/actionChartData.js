@@ -198,6 +198,32 @@ function ago_getChartLevels(){
      //send the ajax request via axios
      return axios.get(query_URL);
 }
+
+
+function ago_getPreviousChart(chart_level, chart_id){
+
+     const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+                          '?where=chart_level+%3D+' + chart_level + '+and+chart_id+%3D+' + chart_id  + //' chart_type+%3D+%27' + chart_type + '%27'
+                          '&objectIds=' +
+                          '&time=' +
+                          '&resultType=none' +
+                          '&outFields=chart_level%2C+chart_matchid%2C+chart_level_label%2C+chart_type%2C+chart_id' +
+                          '&returnIdsOnly=false' +
+                          '&returnCountOnly=false' +
+                          '&returnDistinctValues=true' +
+                          '&orderByFields=chart_level%2C+chart_matchid%2C+chart_type%2C+chart_level_label' +
+                          '&groupByFieldsForStatistics=' +
+                          '&outStatistics=' +
+                          '&resultOffset=' +
+                          '&resultRecordCount=' +
+                          '&sqlFormat=none' +
+                          '&f=pgeojson' +
+                          '&token='
+
+     //send the ajax request via axios
+     return axios.get(query_URL);
+}
+
 function check_limits_valid(data, item){
 
   const charts_levels = data.features;
@@ -241,37 +267,62 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
         //get the limits for all chart types
         const chart_type_limits = state.chartData.chart_levels.chart_limits;
 
-        //walk the chart limits
-        chart_type_limits.map( item => {
+        ago_getPreviousChart(new_level-1, new_matchid)
+          .then( previous_chart_response => {
+            const previous_data = CheckReponse(previous_chart_response,'AGO_API_ERROR');
 
-          //if the chart types match the chart type we are trying to limit step in
-          //  and create a new limit
-          if(item.chart_type.toUpperCase() === chart_type.toUpperCase()){
+            //walk the chart limits
+            chart_type_limits.map( item => {
 
-            const current_chart_level = new_level
-            const current_chart_matchid = new_matchid
-            const chart_type = item.chart_type
+              //if the chart types match the chart type we are trying to limit step in
+              //  and create a new limit
+              if(item.chart_type.toUpperCase() === chart_type.toUpperCase()){
 
-            //create new object for the chart types limits
-            const new_item = {chart_type, current_chart_level, current_chart_matchid}
 
-            ///we only want to change the limit if there is chart data in the next level down.
-            //  this checks to make sure we have data
-            const isvalid = check_limits_valid(chart_level_data, new_item)
+                //set new levels and matchids
+                current_chart_level = new_level
+                current_chart_matchid = new_matchid
+                const chart_type = item.chart_type
 
-            //there is data in the next chart level down
-            if(isvalid){
-              new_chart_type_limits.push(new_item)
-            //there is NOT data in the next chart level down
-            } else {
-              new_chart_type_limits.push(item)
-            }
+                //limit previous_data by the chart type
+                const previous_data_type = previous_data.features.filter( previous_item => {
+                  return previous_item.properties.chart_type.toUpperCase() === chart_type.toUpperCase()
+                })
 
-         //just add old values if not the chart type we are updating limits for.
-          } else {
-            new_chart_type_limits.push(item)
-          }
-        })
+                //get previous chart heirachy from ago api
+                let last_chart_level = (previous_data_type[0].properties.chart_level ? previous_data_type[0].properties.chart_level : 2);
+                let last_chart_matchid = (previous_data_type[0].properties.chart_matchid ? previous_data_type[0].properties.chart_matchid : 1);
+
+                //create new object for the chart types limits
+                const new_item = {chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid}
+
+                ///we only want to change the limit if there is chart data in the next level down.
+                //  this checks to make sure we have data
+                const isvalid = check_limits_valid(chart_level_data, new_item)
+
+                //there is data in the next chart level down
+                if(isvalid){
+                  new_chart_type_limits.push(new_item)
+                //there is NOT data in the next chart level down
+                } else {
+                  new_chart_type_limits.push(item)
+                }
+
+             //just add old values if not the chart type we are updating limits for.
+              } else {
+                new_chart_type_limits.push(item)
+              }
+            })
+
+            //send the chart data on
+            dispatch(
+              ChartLevels('UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
+            )
+
+
+          })
+
+
 
 
       }
@@ -313,10 +364,11 @@ export function get_ChartLevels(id,level){
        //default levels
        const current_chart_level = 2;
        const current_chart_matchid = 1;
-
+       const last_chart_level = 2;
+       const last_chart_matchid = 1;
        //set initial chart levels for each chart type
       chart_types.map( chart_type => {
-        chart_type_levels.push({chart_type, current_chart_level, current_chart_matchid })
+        chart_type_levels.push({chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid})
       })
 
 

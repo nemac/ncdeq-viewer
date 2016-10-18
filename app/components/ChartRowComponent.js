@@ -201,77 +201,80 @@ var ChartRow = React.createClass({
         return item.chart_type.toUpperCase() === chart_type.toUpperCase();
       })
 
-      //get the chart types limits to apply to the data
-      const current_chart_matchid = chart_type_limt[0].current_chart_matchid
 
-      //get the chart for the current chart heierchal level
-      let levelone =  this.getChart_FilteredByChartLevel( chart_data, current_chart_matchid, false );
+          //get the chart types limits to apply to the data
+          const current_chart_matchid = (chart_type_limt[0] ? chart_type_limt[0].current_chart_matchid : 2)
 
-      // sort by value
-      let sorted_hucs = this.getChart_Sorted(levelone);
+          //get the chart for the current chart heierchal level
+          let levelone =  this.getChart_FilteredByChartLevel( chart_data, current_chart_matchid, false );
 
-      var blank_chart_object = new Object;
-      var blank_chart_object_two = new Object;
-      //loop through the sorted huvs and prepare the data for the chart.
-      sorted_hucs.map(huc => {
+          // sort by value
+          let sorted_hucs = this.getChart_Sorted(levelone);
 
-        const underscore = "_"
+          var blank_chart_object = new Object;
+          var blank_chart_object_two = new Object;
+          //loop through the sorted huvs and prepare the data for the chart.
+          sorted_hucs.map(huc => {
 
-        let underscore_position = huc.indexOf(underscore);
+            const underscore = "_"
 
-        //find the underscore sperates the huc id from the id of chart_matchid  only need the huc_id
-        if( (huc.split(underscore).length -1 ) > 1){
-          underscore_position = huc.indexOf(underscore,underscore_position + 1);
+            let underscore_position = huc.indexOf(underscore);
+
+            //find the underscore sperates the huc id from the id of chart_matchid  only need the huc_id
+            if( (huc.split(underscore).length -1 ) > 1){
+              underscore_position = huc.indexOf(underscore,underscore_position + 1);
+            }
+
+           //get the huc id from the array
+           var name = huc.substring(0,underscore_position);
+
+           //create an object to hold the chart data
+           var chart_object = new Object;
+
+           chart_object["name"] =  name;
+           blank_chart_object["name"] = " "
+           blank_chart_object_two["name"] = "   "
+
+           //get the chart for each indivual huc
+           const levelones = this.getChart_FilteredByHUC(levelone, name);
+           let children = [];
+
+           levelones.map(item => {
+
+             //Get the value for chart bar--cell
+             var value = item.properties.chart_value
+
+             //numbers need to be truncated.  rounding results in values such as
+             // .999999 to round to 1.0 which is not correct
+             if( value ){
+               value = item.properties.chart_value.substring(0,5)
+             }
+
+             //convert back to a number type
+             var value = Number( value );
+             chart_object[item.properties.chart_level_label] =  value;
+             blank_chart_object[item.properties.chart_level_label] = null
+             blank_chart_object_two[item.properties.chart_level_label] = null
+
+             chart_object["chart_id"] =  item.properties.chart_id;
+             blank_chart_object["chart_id"] = item.properties.chart_id
+             blank_chart_object_two["chart_id"] = item.properties.chart_id
+
+           })
+           chart_data_array.push(chart_object);
+         })
+
+        //until I can upgrade recharts to .11 I need to overcome a bug with one bar and tool tip not working.
+        if(chart_data_array.length === 1){
+
+            //add a blank bar to each side of a one bar chart so the tooltips will apears
+            chart_data_array.unshift(blank_chart_object)
+            chart_data_array.push(blank_chart_object_two)
+
         }
 
-       //get the huc id from the array
-       var name = huc.substring(0,underscore_position);
+      }
 
-       //create an object to hold the chart data
-       var chart_object = new Object;
-
-       chart_object["name"] =  name;
-       blank_chart_object["name"] = " "
-       blank_chart_object_two["name"] = "   "
-
-       //get the chart for each indivual huc
-       const levelones = this.getChart_FilteredByHUC(levelone, name);
-       let children = [];
-
-       levelones.map(item => {
-
-         //Get the value for chart bar--cell
-         var value = item.properties.chart_value
-
-         //numbers need to be truncated.  rounding results in values such as
-         // .999999 to round to 1.0 which is not correct
-         if( value ){
-           value = item.properties.chart_value.substring(0,5)
-         }
-
-         //convert back to a number type
-         var value = Number( value );
-         chart_object[item.properties.chart_level_label] =  value;
-         blank_chart_object[item.properties.chart_level_label] = null
-         blank_chart_object_two[item.properties.chart_level_label] = null
-
-         chart_object["chart_id"] =  item.properties.chart_id;
-         blank_chart_object["chart_id"] = item.properties.chart_id
-         blank_chart_object_two["chart_id"] = item.properties.chart_id
-
-       })
-       chart_data_array.push(chart_object);
-     })
-    }
-
-    //until I can upgrade recharts to .11 I need to overcome a bug with one bar and tool tip not working.
-    if(chart_data_array.length === 1){
-
-        //add a blank bar to each side of a one bar chart so the tooltips will apears
-        chart_data_array.unshift(blank_chart_object)
-        chart_data_array.push(blank_chart_object_two)
-
-    }
 
     return chart_data_array
   },

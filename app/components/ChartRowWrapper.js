@@ -38,8 +38,8 @@ var ChartRowWrapper = React.createClass({
     })
 
     //get the chart types limits to apply to the data
-    const current_chart_level = chart_type_limt[0].current_chart_level
-    const current_chart_matchid = chart_type_limt[0].current_chart_matchid
+    const current_chart_level = (chart_type_limt[0] ? chart_type_limt[0].current_chart_level : 2)
+    const current_chart_matchid = (chart_type_limt[0] ?  chart_type_limt[0].current_chart_matchid : 1)
 
     //return the filterd data should be an array of chart types that includes
     //  chart_level, chart_level_label, chart_matchid, and chart_type from the ArcGIS online api
@@ -62,16 +62,34 @@ var ChartRowWrapper = React.createClass({
    return chart_levels
 
   },
+  get_chart_Previous: function(){
 
+    //get constants from redux
+    const charts_levels = this.props.charts.chart_levels.levels.features;
+    const charts_limits = this.props.charts.chart_levels.chart_limits;
+    const chart_type =  this.props.chart_type;
+
+    //get a filtered array of the chart type limits
+    const chart_type_limt = charts_limits.filter( item => {
+      return item.chart_type.toUpperCase() === chart_type.toUpperCase();
+    })
+
+    //get the chart types limits to apply to the data
+    const last_chart_level = (chart_type_limt[0] ? chart_type_limt[0].last_chart_level : 2)
+    const last_chart_matchid = (chart_type_limt[0] ?  chart_type_limt[0].last_chart_matchid : 1)
+
+    return {last_chart_level, last_chart_matchid }
+  },
   render: function() {
 
     //get the chart levels
     const chart_levels = this.get_chart_levels()
+    const last_chart = this.get_chart_Previous()
 
     const keyback = "back";
-    const backtext = "Back to Prev";
-    const last_chart_level = 2;
-    const last_matchid = 1;
+    const backtext = "Back to Previous";
+    const last_chart_level = last_chart.last_chart_level;
+    const last_matchid = last_chart.last_chart_matchid;
     const last_chart_type  = this.props.chart_type;
 
     return (
@@ -90,7 +108,7 @@ var ChartRowWrapper = React.createClass({
 
 
 
-          <button className="ui black button"
+          <button className="ui grey button"
                   key={keyback}
                   onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
             {backtext}
