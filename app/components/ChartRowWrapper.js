@@ -11,16 +11,13 @@ var ChartRowWrapper = React.createClass({
       title:'Title'
     };
   },
+  componentDidUpdate: function(prevProps, prevState) {
 
-  handle_chart_level_click: function(comp, next_level, next_matchid, e){
+  },
+  handle_chart_level_click: function(comp, next_level, next_matchid, chart_type, e){
 
     //update the chart level
-    this.props.update_ChartLevels(next_level, next_matchid)
-    // this.props.update_ChartMatchId(next_matchid)
-
-    console.log(next_level)
-    console.log(next_matchid)
-
+    this.props.update_ChartLevels(next_level, next_matchid, chart_type)
 
     return
   },
@@ -32,23 +29,46 @@ var ChartRowWrapper = React.createClass({
 
     //get constants from redux
     const charts_levels = this.props.charts.chart_levels.levels.features;
+    const charts_limits = this.props.charts.chart_levels.chart_limits;
     const chart_type =  this.props.chart_type;
-    const current_chart_level = this.props.charts.current_level;
-    const current_chart_matchid = this.props.charts.current_matchid
+
+    //get a filtered array of the chart type limits
+    const chart_type_limt = charts_limits.filter( item => {
+      return item.chart_type.toUpperCase() === chart_type.toUpperCase();
+    })
+
+    //get the chart types limits to apply to the data
+    const current_chart_level = chart_type_limt[0].current_chart_level
+    const current_chart_matchid = chart_type_limt[0].current_chart_matchid
 
     //return the filterd data should be an array of chart types that includes
     //  chart_level, chart_level_label, chart_matchid, and chart_type from the ArcGIS online api
-    return charts_levels.filter( charts_levels_features => {
+    const chart_levels = charts_levels.filter( charts_levels_features => {
      return charts_levels_features.properties.chart_type.toUpperCase() === chart_type.toUpperCase() &&
               charts_levels_features.properties.chart_level === current_chart_level &&
               charts_levels_features.properties.chart_matchid === current_chart_matchid
    })
+
+   if(chart_levels.length === 0){
+     //return the filterd data should be an array of chart types that includes
+     //  chart_level, chart_level_label, chart_matchid, and chart_type from the ArcGIS online api
+     const chart_levels = charts_levels.filter( charts_levels_features => {
+      return charts_levels_features.properties.chart_type.toUpperCase() === chart_type.toUpperCase() &&
+               charts_levels_features.properties.chart_level === current_chart_level &&
+               charts_levels_features.properties.chart_matchid === current_chart_matchid
+    })
+   }
+
+   return chart_levels
+
   },
 
   render: function() {
 
     //get the chart levels
     const chart_levels = this.get_chart_levels()
+
+
 
     return (
       <div className="item" style={{display: "block"}}>
@@ -65,13 +85,15 @@ var ChartRowWrapper = React.createClass({
         <div className="item" style={{display: "block"}}>
 
           { chart_levels &&
+
             chart_levels.map(function(item) {
               const label = item.properties.chart_level_label;
               const next_chart_level = item.properties.chart_level+1;
               const next_matchid = item.properties.chart_id;
-              console.log(item)
+              const chart_type  = item.properties.chart_type;
+
               return (  <button className="ui black button" key={label}
-                                  onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid)} >
+                                  onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)} >
                          {label}
                         </button>)
 

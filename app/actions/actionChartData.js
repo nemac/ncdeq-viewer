@@ -198,45 +198,29 @@ function ago_getChartLevels(){
      //send the ajax request via axios
      return axios.get(query_URL);
 }
-export function update_ChartMatchId(new_matchid){
-  return (dispatch,getState) => {
+function check_limits_valid(data, item){
 
-      const state = getState()
+  const charts_levels = data.features;
+  const chart_type = item.chart_type
+  const current_chart_level = item.current_chart_level
+  const current_chart_matchid = item.current_chart_matchid
 
-      let current_chart_level = 2;
-      let current_chart_matchid = 1;
-
-      let chart_level_data = []
-
-      if(state.chartData){
-        chart_level_data = ( state.chartData.chart_levels.levels ? state.chartData.chart_levels.levels : []);
-      }
-
-
-      if(state.chartData.current_matchid){
-
-        //change matchid
-        current_chart_matchid = (state.chartData.current_matchid ? new_matchid : 1);
-
-      }
+  const checklevels = charts_levels.filter( charts_levels_features => {
+   return charts_levels_features.properties.chart_type.toUpperCase() === chart_type.toUpperCase() &&
+            charts_levels_features.properties.chart_level === current_chart_level &&
+            charts_levels_features.properties.chart_matchid === current_chart_matchid
+          })
 
 
-      if(state.chartData.current_level){
-
-        current_chart_level = (state.chartData.current_level ? state.chartData.current_level : 2);
-
-      }
-
-
-      //send the chart data on
-      dispatch(
-        ChartLevels('UPDATE_CHART_MATCHID', chart_level_data, current_chart_level, current_chart_matchid)
-      )
-
-
+  //if limited data is a length of 0 then there is no data in for a lower heirachy so we want to return false
+  //  and use the original limit
+  if(checklevels.length === 0){
+    return false
   }
+
+  return true
 }
-export function update_ChartLevels(new_level, new_matchid){
+export function update_ChartLevels(new_level, new_matchid, chart_type){
   return (dispatch,getState) => {
 
       const state = getState()
@@ -245,24 +229,49 @@ export function update_ChartLevels(new_level, new_matchid){
       let current_chart_level = 2;
       let current_chart_matchid = 1;
       let chart_level_data = [];
+      let new_chart_type_limits = [];
+
+      console.log(new_level)
+      console.log(new_matchid)
 
       if(state.chartData){
-        current_chart_level = (state.chartData.current_level ? state.chartData.current_level : 2)
-        current_chart_matchid = (state.chartData.current_matchid ? state.chartData.current_matchid : 1);
+
         chart_level_data = ( state.chartData.chart_levels.levels ? state.chartData.chart_levels.levels : []);
+
+        const chart_type_limits = state.chartData.chart_levels.chart_limits;
+
+        chart_type_limits.map( item => {
+
+          if(item.chart_type.toUpperCase() === chart_type.toUpperCase()){
+
+            const current_chart_level = new_level
+            const current_chart_matchid = new_matchid
+            const chart_type = item.chart_type
+
+            //create new object for the chart types limits
+            const new_item = {chart_type, current_chart_level, current_chart_matchid}
+
+            const isvalid = check_limits_valid(chart_level_data, new_item)
+
+            if(isvalid){
+              new_chart_type_limits.push(new_item)
+            } else {
+              new_chart_type_limits.push(item)
+            }
+
+         //just add old values if not the chart type we are updating limits for.
+          } else {
+            new_chart_type_limits.push(item)
+          }
+        })
+
+
       }
-
-      //change level
-      const new_chart_level = (new_level ? new_level : current_chart_level);
-
-      //change matchid
-      const new_chart_matchid = (new_matchid ? new_matchid : current_chart_matchid);
-
 
 
       //send the chart data on
       dispatch(
-        ChartLevels('UPDATE_CHART_LEVEL', chart_level_data, new_chart_level, new_chart_matchid)
+        ChartLevels('UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
       )
 
 
@@ -275,15 +284,37 @@ export function get_ChartLevels(id,level){
     ago_getChartLevels()
      .then( chart_level_response => {
 
+       let chart_type_levels = []
+
+       //get response for chart levels
+       const chart_level_data = CheckReponse(chart_level_response,'AGO_API_ERROR');
+
+       //get all the chart level featurs
+       const charts_levels = chart_level_data.features;
+
+       //get thge chart types.  there will be duplicates since there are multiple chart heierchal levels
+       const chart_types_all = charts_levels.map( charts_levels_features => {
+          return charts_levels_features.properties.chart_type
+       })
+
+       //make the array a unique list of chart types
+       const chart_types = chart_types_all.filter(function(item, pos) {
+           return chart_types_all.indexOf(item) == pos;
+       })
+
+       //default levels
        const current_chart_level = 2;
        const current_chart_matchid = 1;
 
-       //add geometry here
-       const chart_level_data = CheckReponse(chart_level_response,'AGO_API_ERROR');
+       //set initial chart levels for each chart type
+      chart_types.map( chart_type => {
+        chart_type_levels.push({chart_type, current_chart_level, current_chart_matchid })
+      })
+
 
       //send the chart data on
       dispatch(
-        ChartLevels('GET_CHART_LEVELS', chart_level_data, current_chart_level, current_chart_matchid)
+        ChartLevels('GET_CHART_LEVELS', chart_level_data, chart_type_levels)
       )
     })
   }
@@ -438,7 +469,7 @@ export function update_ChartVisiblity (visibility){
 }
 
 //function to handle sending to reducer and store
-function ChartLevels(type, levels, current_chart_level, current_chart_matchid) {
+function ChartLevels(type, levels, chart_limits) {
   // return {
   //   type: type,
   //   chart_levels: {levels},
@@ -448,10 +479,9 @@ function ChartLevels(type, levels, current_chart_level, current_chart_matchid) {
   return {
    type: type,
    chart_levels: {
-     levels
+     levels,
+     chart_limits
    },
-   current_chart_level: current_chart_level,
-   current_chart_matchid: current_chart_matchid,
    receivedAt: Date.now()
  }
 }
