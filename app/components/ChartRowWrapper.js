@@ -77,8 +77,9 @@ var ChartRowWrapper = React.createClass({
     //get the chart types limits to apply to the data
     const last_chart_level = (chart_type_limt[0] ? chart_type_limt[0].last_chart_level : 2)
     const last_chart_matchid = (chart_type_limt[0] ?  chart_type_limt[0].last_chart_matchid : 1)
+    const last_chart_label = (chart_type_limt[0] ?  chart_type_limt[0].last_chart_label : "Totals")
 
-    return {last_chart_level, last_chart_matchid }
+    return {last_chart_level, last_chart_matchid, last_chart_label }
   },
   render: function() {
 
@@ -87,7 +88,7 @@ var ChartRowWrapper = React.createClass({
     const last_chart = this.get_chart_Previous()
 
     const keyback = "back";
-    const backtext = "Back to Previous";
+    const backtext = "Back to " + last_chart.last_chart_label;
     const last_chart_level = last_chart.last_chart_level;
     const last_matchid = last_chart.last_chart_matchid;
     const last_chart_type  = this.props.chart_type;
