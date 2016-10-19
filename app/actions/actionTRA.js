@@ -173,14 +173,6 @@ export function get_TRAData(hucid, current_geography_level){
             })
             .catch(error => { console.log('request failed', error); });
 
-            // //add data to object to pass to store
-            // group.push({
-            //   id,
-            //   tra_name,
-            //   tra_geom: tra_geom_obj,
-            // })
-
-
         })
       }
 

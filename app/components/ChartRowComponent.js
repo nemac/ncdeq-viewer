@@ -111,33 +111,20 @@ var ChartRow = React.createClass({
     //update map height comes after chart vis sp map will resize to full hieght.
     this.props.update_MapHeight();
 
+    //make the leaflet map object is set
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
       setTimeout(function(){ leafletMap.invalidateSize()}, 100);
     };
 
   },
-  getChildChart: function(chartid,huc){
-
-    const chart_types = this.props.charts.chart_data.chart_types
-
-    let baseline_data = chart_types.filter( key => {
-      return key.chart_type === 'baseline'
-    })
-
-    let baseline_data_limited = baseline_data[0].chart_features.filter( key => {
-      return key.properties.ID === huc && key.properties.chart_matchid === chartid
-    })
-
-
-  },
-  getCharType_Data: function(type){
+  getChartType_Data: function(type){
 
     //get all chart data for chart type of  {baseline,uplift, maybe TRA}
     //  this is the most current or actual data from model outputs
 
     //get the chart types object this holds the chartdata for each chartype {baseline,uplift, maybe TRA}
-    const chart_types = this.props.charts.chart_data.chart_types
+    const chart_types = this.props.charts.chart_data ? this.props.charts.chart_data.chart_types : []
 
     //get the baseline data
     let chart_type_data = chart_types.filter( key => {
@@ -400,17 +387,25 @@ var ChartRow = React.createClass({
       chart_grid_height = this.props.default_settings.mapHeight;
     }
 
+    let is_chart_vis = true
+
+    if(this.props.charts.chart_visibility === undefined){
+      is_chart_vis = true
+    } else {
+      is_chart_vis = this.props.charts.chart_visibility
+    }
+
     //check current vissibility of the chart areas
-    let vis = this.props.charts.chart_visibility ?  'show' : 'none';
+    let vis = is_chart_vis ?  'show' : 'none';
 
     //get data for chart type of baseline
-    let baseline_data = this.getCharType_Data('baseline');
+    let baseline_data = this.getChartType_Data('baseline');
 
     //get data for chart type of baseline
-    let uplift_data = this.getCharType_Data('uplift');
+    let uplift_data = this.getChartType_Data('uplift');
 
     //get data for chart type of TRA
-    let tra_data = this.getCharType_Data('tra');
+    let tra_data = this.getChartType_Data('tra');
 
     //get the user selected huc so we can filter
     let chart_filter = this.getChart_Filter(baseline_data[0]);
@@ -453,28 +448,31 @@ var ChartRow = React.createClass({
     var trasTEMP = ""
 
     //create tra point message.  user clicked on the map or searched for a location
-    if (tra_point_info.features){
-      trasTEMP = tra_point_info.features.map (feature => {
-        return feature.properties.id
-      })
+    if(tra_point_info){
+      if (tra_point_info.features){
+        trasTEMP = tra_point_info.features.map (feature => {
+          return feature.properties.id
+        })
 
-      const tra_string = trasTEMP.toString().split(",").join(", ");
+        const tra_string = trasTEMP.toString().split(",").join(", ");
 
-      //if the user clicked or searched the map.
-      //  and that location or cliced point was inside a tra format the message
-      if(trasTEMP.length > 0){
-        tra_text_message_point = "The location you " + searchMethod + " is in a TRA. "
-        success_class_point = "ui icon success message"
-        icon_point = (<i className="check circle icon"></i>)
-        sub_header_point = (<p>This includes the TRA(s): {tra_string}</p>)
         //if the user clicked or searched the map.
-        //  and that location or cliced point was NOT inside a tra format the message
-      } else {
-        success_class_point = "ui icon negative message"
-        icon_point = (<i className="remove circle icon"></i>)
-        tra_text_message_point = "The location you  " + searchMethod + " is NOT in a TRA"
+        //  and that location or cliced point was inside a tra format the message
+        if(trasTEMP.length > 0){
+          tra_text_message_point = "The location you " + searchMethod + " is in a TRA. "
+          success_class_point = "ui icon success message"
+          icon_point = (<i className="check circle icon"></i>)
+          sub_header_point = (<p>This includes the TRA(s): {tra_string}</p>)
+          //if the user clicked or searched the map.
+          //  and that location or cliced point was NOT inside a tra format the message
+        } else {
+          success_class_point = "ui icon negative message"
+          icon_point = (<i className="remove circle icon"></i>)
+          tra_text_message_point = "The location you  " + searchMethod + " is NOT in a TRA"
+        }
       }
     }
+
 
 
     //make sure the TRA data object is defined
