@@ -61,13 +61,26 @@ var MainComponent = React.createClass({
 
       //get sizes from props and check if the prop has been set.
       //  putting to const's so we can account for undefined props on first render...
+      let is_chart_vis = true
+
+      if(this.props.charts.chart_visibility === undefined){
+        is_chart_vis = true
+      } else {
+        is_chart_vis = this.props.charts.chart_visibility
+      }
+      // let is_chart_vis = this.props.charts.chart_visibility ? true : false
+      // is_chart_vis = this.props ? true : this.props.charts.chart_visibility
       const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : ROW_PADDING;
       const mapHeight = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
       const breadCrumbsHeight = this.props.default_settings ? this.props.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
       const headerHeight = this.props.default_settings ? this.props.default_settings.headerHeight : HEADER_HEIGHT;
       const defpad = this.props.default_settings ? this.props.default_settings.defpad : DEF_PAD;
       const chartHeight = this.props.default_settings ? this.props.default_settings.chartHeight : CHART_HEIGHT;
-      const columnWidth = this.props.charts.chart_visibility ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
+      const columnWidth = is_chart_vis ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
+      console.log('----')
+      console.log(this.props.charts.chart_visibility)
+      console.log(is_chart_vis)
+      console.log(columnWidth)
 
       const HeaderContent = "The purpose of this tool is to display the Division of Mitigation Services Targeted Resource Areas (TRAs) and " +
                       "identify watersheds where ecological and hydrological function can be improved.  " +
@@ -85,7 +98,7 @@ var MainComponent = React.createClass({
 
 
             {/* only render the charts section when the user has made the charts visibility true */}
-            { this.props.charts.chart_visibility &&
+            { is_chart_vis &&
               <ChartRowContainer />
             }
             <MapRowComponent columnWidth={columnWidth}/>

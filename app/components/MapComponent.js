@@ -26,6 +26,7 @@ var MapContainer = React.createClass({
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
       setTimeout(function(){ leafletMap.invalidateSize()}, 400);
+      leafletMap.invalidateSize()
     };
   },
   handleChartButtonClick: function(comp,e){
@@ -33,6 +34,7 @@ var MapContainer = React.createClass({
     //toggle chart visibility with button click
     this.props.update_ChartVisiblity();
     this.props.update_MapHeight();
+
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
@@ -478,19 +480,12 @@ var MapContainer = React.createClass({
     //get the leaftet map object
     var L = this.refs.map.leafletElement
 
-    //check if charts are visible.
-    //const isVisible = this.props.charts.chart_visibility;
-
     //update map height
     this.props.update_MapHeight();
 
     //get the attributes of the huc12 layer on a user click
     this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
 
-    //update chart visibility on map click on if the visibility is false
-    // if(!isVisible){
-    //   this.props.update_ChartVisiblity();
-    // }
   },
   getInitialState: function() {
       return {

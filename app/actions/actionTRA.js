@@ -125,7 +125,9 @@ export function get_TRAData(hucid, current_geography_level){
       let tra_datas = {};
       let tra_geom = {};
       let chart_all_tra = [];
-      let group = {};
+      let group = [];
+      let tra_geom_obj = {};
+
 
       tra_datas = CheckReponse(tra_xwalk_response,'AGO_API_ERROR');
 
@@ -141,7 +143,7 @@ export function get_TRAData(hucid, current_geography_level){
 
           const id = feature.properties.ID
           const tra_name = feature.properties.TRA_Name
-          var tra_geom_obj = {};
+          tra_geom_obj = {};
 
           ///get the geometry for the tra
           ago_get_tra_geom_byid(tra_name)
@@ -169,7 +171,7 @@ export function get_TRAData(hucid, current_geography_level){
               }
 
             })
-
+            .catch(error => { console.log('request failed', error); });
 
         })
       }
@@ -177,6 +179,12 @@ export function get_TRAData(hucid, current_geography_level){
 
     })
     .catch(error => { console.log('request failed', error); });
+
+    let group = [];
+
+    //send empty group for nothing found
+    dispatch(tra_data('GET_TRA_DATA', group));
+
   }
 }
 
