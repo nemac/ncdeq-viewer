@@ -534,7 +534,41 @@ var ChartRow = React.createClass({
         )
 
       }
+    } else {
+
+      success_class = "ui icon negative message"
+      icon = (<i className="remove circle icon"></i>)
+      tra_text_message = "The "  + getFriendlyName(this.getLevel()) +  " " + chart_filter + " is NOT in a TRA"
+
+      //TRA in message
+      tra_message = (
+          <div className={success_class} >
+            {icon}
+            <div className="content">
+              <div className="header">
+                {tra_text_message}
+              </div>
+              {sub_header}
+            </div>
+          </div>
+      )
+
+      //TRA  message for clicks and searches
+      tra_message_point = (
+          <div className={success_class_point} >
+            {icon_point}
+            <div className="content">
+              <div className="header">
+                {tra_text_message_point}
+              </div>
+              {sub_header_point}
+            </div>
+          </div>
+      )      
+
     }
+
+
     //default text for chart is to give user a push to do an action...
     let chart_cataloging_unit = 'Please Click on the Map, Search, or Choose something to get started.'
     let huc_message = "No HUC's Selected yet."
