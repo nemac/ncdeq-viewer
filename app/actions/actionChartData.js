@@ -253,8 +253,8 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
 
 
       //set inital default settings just incase there is no data.
-      let current_chart_level = 2;
-      let current_chart_matchid = 1;
+      let current_chart_level = null;
+      let current_chart_matchid = null;
       let chart_level_data = [];
       let new_chart_type_limits = [];
 
@@ -290,9 +290,9 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
                 })
 
                 //get previous chart heirachy from ago api
-                let last_chart_level = (previous_data_type[0].properties.chart_level ? previous_data_type[0].properties.chart_level : 2);
-                let last_chart_matchid = (previous_data_type[0].properties.chart_matchid ? previous_data_type[0].properties.chart_matchid : 1);
-                let last_chart_label = (previous_data_type[0].properties.chart_level_label ? previous_data_type[0].properties.chart_level_label : 'Totals');
+                let last_chart_level = (previous_data_type[0].properties.chart_level ? previous_data_type[0].properties.chart_level : null);
+                let last_chart_matchid = (previous_data_type[0].properties.chart_matchid ? previous_data_type[0].properties.chart_matchid : null);
+                let last_chart_label = (previous_data_type[0].properties.chart_level_label ? previous_data_type[0].properties.chart_level_label : '  ');
                 //create new object for the chart types limits
                 const new_item = {chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid, last_chart_label}
 
@@ -366,7 +366,7 @@ export function get_ChartLevels(id,level){
        const current_chart_matchid = 1;
        const last_chart_level = 2;
        const last_chart_matchid = 1;
-       const last_chart_label = "Totals"
+       const last_chart_label = "  "
 
        //set initial chart levels for each chart type
       chart_types.map( chart_type => {

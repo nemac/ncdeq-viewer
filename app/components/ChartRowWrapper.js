@@ -11,9 +11,6 @@ var ChartRowWrapper = React.createClass({
       title:'Title'
     };
   },
-  componentDidUpdate: function(prevProps, prevState) {
-
-  },
   handle_chart_level_click: function(comp, next_level, next_matchid, chart_type, e){
 
     //update the chart level
@@ -64,6 +61,7 @@ var ChartRowWrapper = React.createClass({
   },
   get_chart_Previous: function(){
 
+
     //get constants from redux
     const charts_levels = this.props.charts.chart_levels.levels.features;
     const charts_limits = this.props.charts.chart_levels.chart_limits;
@@ -74,12 +72,17 @@ var ChartRowWrapper = React.createClass({
       return item.chart_type.toUpperCase() === chart_type.toUpperCase();
     })
 
+    if(!chart_type_limt[0]){
+      return
+    }
     //get the chart types limits to apply to the data
-    const last_chart_level = (chart_type_limt[0] ? chart_type_limt[0].last_chart_level : 2)
-    const last_chart_matchid = (chart_type_limt[0] ?  chart_type_limt[0].last_chart_matchid : 1)
-    const last_chart_label = (chart_type_limt[0] ?  chart_type_limt[0].last_chart_label : "Totals")
+    const last_chart_level = (chart_type_limt[0] ? chart_type_limt[0].last_chart_level : null)
+    const last_chart_matchid = (chart_type_limt[0] ?  chart_type_limt[0].last_chart_matchid : null)
+    const last_chart_label = (chart_type_limt[0] ?  chart_type_limt[0].last_chart_label : "  ")
+    const current_chart_level = (chart_type_limt[0] ? chart_type_limt[0].current_chart_level : null)
+    const current_chart_matchid = (chart_type_limt[0] ?  chart_type_limt[0].current_chart_matchid : null)
 
-    return {last_chart_level, last_chart_matchid, last_chart_label }
+    return {last_chart_level, last_chart_matchid, last_chart_label, current_chart_level, current_chart_matchid }
   },
   render: function() {
 
@@ -87,11 +90,22 @@ var ChartRowWrapper = React.createClass({
     const chart_levels = this.get_chart_levels()
     const last_chart = this.get_chart_Previous()
 
+    //do not render of nothing in last chart
+    //  not sure why yet but something is coming back null and causing flicker in display
+    // this will cause an error but for now it is stoping the flicker
+    if(!last_chart){
+      return
+    }
+
+    //check if at the charts top heirachy
+    const at_top = (last_chart.current_chart_level === 2 && last_chart.current_chart_matchid === 1)
+
     const keyback = "back";
-    const backtext = "Back to " + last_chart.last_chart_label;
+    const backtext = ( at_top ? ' Top Category ' : "Back to " + last_chart.last_chart_label);
     const last_chart_level = last_chart.last_chart_level;
     const last_matchid = last_chart.last_chart_matchid;
     const last_chart_type  = this.props.chart_type;
+    const key_back_class = ( at_top ? 'ui black basic button' : 'ui grey button' );
 
     return (
       <div className="item" style={{display: "block"}}>
@@ -109,7 +123,7 @@ var ChartRowWrapper = React.createClass({
 
 
 
-          <button className="ui grey button"
+          <button className={key_back_class}
                   key={keyback}
                   onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
             {backtext}

@@ -306,17 +306,22 @@ var ChartRow = React.createClass({
 
     let searchMethod = ""
     let show_point = false;
+
+    //check the serach method so we no if we need to show or display
+    //  the point in a tra message
     if(this.props.searchMethod){
         searchMethod = this.props.searchMethod;
         show_point =  (searchMethod === "location searched" || searchMethod === "clicked");
     }
 
+    //get the chart width and chart height settings from the redux store
+    //  so we can pass it as a prop to the chart components
     if(this.props.default_settings){
       chart_width_px = this.props.default_settings.chartWidth;
       chart_grid_height = this.props.default_settings.mapHeight;
     }
 
-
+    //check current vissibility of the chart areas
     let vis = this.props.charts.chart_visibility ?  'show' : 'none';
 
     //get data for chart type of baseline
@@ -376,11 +381,15 @@ var ChartRow = React.createClass({
 
       const tra_string = trasTEMP.toString().split(",").join(", ");
 
+      //if the user clicked or searched the map.
+      //  and that location or cliced point was inside a tra format the message
       if(trasTEMP.length > 0){
         tra_text_message_point = "The location you " + searchMethod + " is in a TRA. "
         success_class_point = "ui icon success message"
         icon_point = (<i className="check circle icon"></i>)
         sub_header_point = (<p>This includes the TRA(s): {tra_string}</p>)
+        //if the user clicked or searched the map.
+        //  and that location or cliced point was NOT inside a tra format the message
       } else {
         success_class_point = "ui icon negative message"
         icon_point = (<i className="remove circle icon"></i>)
