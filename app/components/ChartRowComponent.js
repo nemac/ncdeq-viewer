@@ -533,8 +533,41 @@ var ChartRow = React.createClass({
             </div>
         )
 
+      } else {
+        //nothing in tra data could mean that nothing was returned...
+
+        success_class = "ui icon negative message"
+        icon = (<i className="remove circle icon"></i>)
+        tra_text_message = "The "  + getFriendlyName(this.getLevel()) +  " " + chart_filter + " is NOT in a TRA"
+
+        //TRA in message
+        tra_message = (
+            <div className={success_class} >
+              {icon}
+              <div className="content">
+                <div className="header">
+                  {tra_text_message}
+                </div>
+                {sub_header}
+              </div>
+            </div>
+          )
+            //TRA  message for clicks and searches
+            tra_message_point = (
+                <div className={success_class_point} >
+                  {icon_point}
+                  <div className="content">
+                    <div className="header">
+                      {tra_text_message_point}
+                    </div>
+                    {sub_header_point}
+                  </div>
+                </div>
+            )
+
       }
     } else {
+      //nothing in tra data could mean that nothing was returned...
 
       success_class = "ui icon negative message"
       icon = (<i className="remove circle icon"></i>)
@@ -551,20 +584,19 @@ var ChartRow = React.createClass({
               {sub_header}
             </div>
           </div>
-      )
-
-      //TRA  message for clicks and searches
-      tra_message_point = (
-          <div className={success_class_point} >
-            {icon_point}
-            <div className="content">
-              <div className="header">
-                {tra_text_message_point}
+        )
+          //TRA  message for clicks and searches
+          tra_message_point = (
+              <div className={success_class_point} >
+                {icon_point}
+                <div className="content">
+                  <div className="header">
+                    {tra_text_message_point}
+                  </div>
+                  {sub_header_point}
+                </div>
               </div>
-              {sub_header_point}
-            </div>
-          </div>
-      )      
+          )
 
     }
 
