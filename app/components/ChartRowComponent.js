@@ -26,6 +26,85 @@ var ChartRow = React.createClass({
     return dataFiltered
 
   },
+  get_keyColors: function(key){
+    let key_colors = [];
+    //this is hard coded may need to move this to a config file
+    switch (key) {
+      case 'Water Quality':
+        key_colors = ['#22c355' , '#67e48f']
+        break;
+
+        case 'Phosphorus':
+          key_colors = ['#22c355' , '#67e48f']
+          break;
+
+          case 'Phosphorus Agriculture':
+            key_colors = ['#22c355' , '#67e48f']
+            break;
+          case 'Phosphorus Atmosphere':
+            key_colors = ['#2b83ba' , '#6eb3dd']
+            break;
+          case 'Phosphorus Urban':
+            key_colors = ['#fd9935' , '#fecc9a']
+            break;
+
+        case 'Nitrogen':
+          key_colors = ['#2b83ba' , '#6eb3dd']
+          break;
+
+          case 'Nitrogen Agriculture':
+            key_colors = ['#22c355' , '#67e48f']
+            break;
+          case 'Nitrogen Atmosphere':
+            key_colors = ['#2b83ba' , '#6eb3dd']
+            break;
+          case 'Nitrogen Urban':
+            key_colors = ['#fd9935' , '#fecc9a']
+            break;
+
+
+      case 'Hydrology':
+        key_colors = ['#2b83ba' , '#6eb3dd']
+        break;
+
+        case '100 year peak':
+          key_colors = ['#22c355' , '#67e48f']
+          break;
+        case '2 year peak':
+          key_colors = ['#2b83ba' , '#6eb3dd']
+          break;
+        case '50 year peak':
+          key_colors = ['#fd9935' , '#fecc9a']
+          break;
+
+      case 'Habitat':
+        key_colors = ['#fd9935' , '#fecc9a' ]
+        break;
+
+
+        case 'Habitat Likelhood':
+          key_colors = ['#22c355' , '#67e48f']
+          break;
+
+        case 'Aquatic Connectivity':
+          key_colors = ['#22c355' , '#67e48f']
+          break;
+        case 'Uplift Restoration':
+          key_colors = ['#2b83ba' , '#6eb3dd']
+          break;
+        case 'Wetlands and BMPs':
+          key_colors = ['#fd9935' , '#fecc9a']
+          break;
+        case 'Avoided Conversion':
+          key_colors = ['#fd9935' , '#fecc9a' ]
+          break;
+
+      default:
+        key_colors = ['#1a9641' , '#3cdd6f']
+        break;
+    }
+    return key_colors;
+  },
   chartToggle: function(e){
 
     this.props.update_ChartVisiblity();
@@ -518,6 +597,7 @@ var ChartRow = React.createClass({
           charts={this.props.charts}
           update_ChartLevels={this.props.update_ChartLevels}
           update_ChartMatchId={this.props.update_ChartMatchId}
+          get_keyColors={this.get_keyColors}
           />
         }
         { chart_filter &&
@@ -537,6 +617,7 @@ var ChartRow = React.createClass({
           charts={this.props.charts}
           update_ChartLevels={this.props.update_ChartLevels}
           update_ChartMatchId={this.props.update_ChartMatchId}
+          get_keyColors={this.get_keyColors}
           />
         }
         { chart_filter &&
@@ -556,6 +637,7 @@ var ChartRow = React.createClass({
            charts={this.props.charts}
            update_ChartLevels={this.props.update_ChartLevels}
            update_ChartMatchId={this.props.update_ChartMatchId}
+           get_keyColors={this.get_keyColors}
            />
          }
 

@@ -101,11 +101,12 @@ var ChartRowWrapper = React.createClass({
     const at_top = (last_chart.current_chart_level === 2 && last_chart.current_chart_matchid === 1)
 
     const keyback = "back";
-    const backtext = ( at_top ? ' Top Category ' : "Back to " + last_chart.last_chart_label);
+    // const backtext = ( at_top ? ' Top Category ' : "Back to " + last_chart.last_chart_label);
+    const backtext = ( at_top ? ' Top Category ' : " Back ");
     const last_chart_level = last_chart.last_chart_level;
     const last_matchid = last_chart.last_chart_matchid;
     const last_chart_type  = this.props.chart_type;
-    const key_back_class = ( at_top ? 'ui black basic button' : 'ui grey button' );
+    const key_back_class = ( at_top ? 'ui tiny black basic button' : 'ui tiny grey button' );
 
     return (
       <div className="item" style={{display: "block"}}>
@@ -126,7 +127,13 @@ var ChartRowWrapper = React.createClass({
           <button className={key_back_class}
                   key={keyback}
                   onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
+            {!at_top &&
+                <i className ="left chevron icon"></i>
+            }
             {backtext}
+            {at_top &&
+                <i className ="right chevron icon"></i>
+            }
           </button>
 
           { chart_levels &&
@@ -138,10 +145,11 @@ var ChartRowWrapper = React.createClass({
               const next_matchid = item.properties.chart_id;
               const chart_type  = item.properties.chart_type;
 
+              const colors = this.props.get_keyColors(label)
+              const button_color = {"backgroundColor":  colors[1]}
 
 
-
-              return (  <button className="ui black button" key={label}
+              return (  <button className="ui tiny black button" key={label} style={button_color}
                                   onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)} >
                          {label}
                         </button>)
@@ -160,6 +168,7 @@ var ChartRowWrapper = React.createClass({
                                     get_tra_info={this.props.get_tra_info}
                                     charts={this.props.charts}
                                     ChartLevels={chart_levels}
+                                    get_keyColors={this.props.get_keyColors}
                                     />
         </div>
         <div className="meta">

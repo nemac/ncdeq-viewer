@@ -37,90 +37,12 @@ var ChartBars = React.createClass({
     }
 
   },
-  get_keyColors: function(key){
-    let key_colors = [];
-    //this is hard coded may need to move this to a config file
-    switch (key) {
-      case 'Water Quality':
-        key_colors = ['#22c355' , '#67e48f']
-        break;
 
-        case 'Phosphorus':
-          key_colors = ['#22c355' , '#67e48f']
-          break;
-
-          case 'Phosphorus Agriculture':
-            key_colors = ['#22c355' , '#67e48f']
-            break;
-          case 'Phosphorus Atmosphere':
-            key_colors = ['#2b83ba' , '#6eb3dd']
-            break;
-          case 'Phosphorus Urban':
-            key_colors = ['#fd9935' , '#fecc9a']
-            break;
-
-        case 'Nitrogen':
-          key_colors = ['#2b83ba' , '#6eb3dd']
-          break;
-
-          case 'Nitrogen Agriculture':
-            key_colors = ['#22c355' , '#67e48f']
-            break;
-          case 'Nitrogen Atmosphere':
-            key_colors = ['#2b83ba' , '#6eb3dd']
-            break;
-          case 'Nitrogen Urban':
-            key_colors = ['#fd9935' , '#fecc9a']
-            break;
-
-
-      case 'Hydrology':
-        key_colors = ['#2b83ba' , '#6eb3dd']
-        break;
-
-        case '100 year peak':
-          key_colors = ['#22c355' , '#67e48f']
-          break;
-        case '2 year peak':
-          key_colors = ['#2b83ba' , '#6eb3dd']
-          break;
-        case '50 year peak':
-          key_colors = ['#fd9935' , '#fecc9a']
-          break;
-
-      case 'Habitat':
-        key_colors = ['#fd9935' , '#fecc9a' ]
-        break;
-
-
-        case 'Habitat Likelhood':
-          key_colors = ['#22c355' , '#67e48f']
-          break;
-
-        case 'Aquatic Connectivity':
-          key_colors = ['#22c355' , '#67e48f']
-          break;
-        case 'Uplift Restoration':
-          key_colors = ['#2b83ba' , '#6eb3dd']
-          break;
-        case 'Wetlands and BMPs':
-          key_colors = ['#fd9935' , '#fecc9a']
-          break;
-        case 'Avoided Conversion':
-          key_colors = ['#fd9935' , '#fecc9a' ]
-          break;
-
-      default:
-        key_colors = ['#1a9641' , '#3cdd6f']
-        break;
-    }
-    return key_colors;
-  },
   get_legend_payload: function(chart_type){
     let custom_payload = [];
     const chart_keys = this.get_datakeys(chart_type);
     chart_keys.map( key => {
-      const color_keys = this.get_keyColors(key);
+      const color_keys = this.props.get_keyColors(key);
       custom_payload.push({ value: key, type:'rect', id:key, color: color_keys[1] })
     })
     return custom_payload
@@ -139,7 +61,7 @@ var ChartBars = React.createClass({
   },
   get_cell: function(key){
 
-    const colors = this.get_keyColors(key)
+    const colors = this.props.get_keyColors(key)
 
     let chart_filter = this.props.chart_filter;
     const chart_type = this.props.chart_type
@@ -283,7 +205,6 @@ var ChartBars = React.createClass({
             <XAxis dataKey="name" hide={true}/>
             <YAxis hide={true}/>
             <Tooltip />
-            <Legend   payload={this.get_legend_payload(this.props.chart_type)}  />
             {this.get_bars()}
            </BarChart>
         </div>
@@ -291,7 +212,7 @@ var ChartBars = React.createClass({
     );
   }
 });
-
+//<Legend   payload={this.get_legend_payload(this.props.chart_type)}  />
 //            <Tooltip content={<CustomTooltip/>}/>
 
 module.exports = ChartBars;
