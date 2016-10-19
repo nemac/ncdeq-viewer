@@ -9,6 +9,7 @@ function mapStateToProps(state) {
   let DefaultMenuLists = state.menuLists.lists;
   let geography_levels = state.geography_levels.geography_levels;
   let charts = state.chartData;
+  let chart_levels = state.chart_levels;
   let map_settings = state.mapConfig.mapconfig;
   let default_settings = state.default_settings.default_settings;
   let leafletMap = state.leafletMap;
@@ -16,6 +17,7 @@ function mapStateToProps(state) {
   return {
     DefaultMenuLists,
     geography_levels,
+    chart_levels,
     charts,
     map_settings,
     default_settings,

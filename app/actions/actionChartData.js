@@ -150,6 +150,7 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
   }
 
 
+
    //build the query to arcgis online api for getting the raw chart data
    const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
                    '?where=id%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
@@ -172,6 +173,213 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
   //send the ajax request via axios
   return axios.get(query_URL);
 
+}
+
+function ago_getChartLevels(){
+
+     const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+                          '?where=OBJECTID+>+0+and+chart_matchid+<>+chart_id' +
+                          '&objectIds=' +
+                          '&time=' +
+                          '&resultType=none' +
+                          '&outFields=chart_level%2C+chart_matchid%2C+chart_level_label%2C+chart_type%2C+chart_id' +
+                          '&returnIdsOnly=false' +
+                          '&returnCountOnly=false' +
+                          '&returnDistinctValues=true' +
+                          '&orderByFields=chart_level%2C+chart_matchid%2C+chart_type%2C+chart_level_label' +
+                          '&groupByFieldsForStatistics=' +
+                          '&outStatistics=' +
+                          '&resultOffset=' +
+                          '&resultRecordCount=' +
+                          '&sqlFormat=none' +
+                          '&f=pgeojson' +
+                          '&token='
+
+     //send the ajax request via axios
+     return axios.get(query_URL);
+}
+
+
+function ago_getPreviousChart(chart_level, chart_id){
+
+     const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+                          '?where=chart_level+%3D+' + chart_level + '+and+chart_id+%3D+' + chart_id  + //' chart_type+%3D+%27' + chart_type + '%27'
+                          '&objectIds=' +
+                          '&time=' +
+                          '&resultType=none' +
+                          '&outFields=chart_level%2C+chart_matchid%2C+chart_level_label%2C+chart_type%2C+chart_id' +
+                          '&returnIdsOnly=false' +
+                          '&returnCountOnly=false' +
+                          '&returnDistinctValues=true' +
+                          '&orderByFields=chart_level%2C+chart_matchid%2C+chart_type%2C+chart_level_label' +
+                          '&groupByFieldsForStatistics=' +
+                          '&outStatistics=' +
+                          '&resultOffset=' +
+                          '&resultRecordCount=' +
+                          '&sqlFormat=none' +
+                          '&f=pgeojson' +
+                          '&token='
+
+     //send the ajax request via axios
+     return axios.get(query_URL);
+}
+
+function check_limits_valid(data, item){
+
+  const charts_levels = data.features;
+  const chart_type = item.chart_type
+  const current_chart_level = item.current_chart_level
+  const current_chart_matchid = item.current_chart_matchid
+
+  const checklevels = charts_levels.filter( charts_levels_features => {
+   return charts_levels_features.properties.chart_type.toUpperCase() === chart_type.toUpperCase() &&
+            charts_levels_features.properties.chart_level === current_chart_level &&
+            charts_levels_features.properties.chart_matchid === current_chart_matchid
+          })
+
+
+  //if limited data is a length of 0 then there is no data in for a lower heirachy so we want to return false
+  //  and use the original limit
+  if(checklevels.length === 0){
+    return false
+  }
+
+  return true
+}
+export function update_ChartLevels(new_level, new_matchid, chart_type){
+  return (dispatch,getState) => {
+
+      const state = getState()
+
+
+      //set inital default settings just incase there is no data.
+      let current_chart_level = null;
+      let current_chart_matchid = null;
+      let chart_level_data = [];
+      let new_chart_type_limits = [];
+
+      //make sure there is data in the state
+      if(state.chartData){
+
+        //get the chart level data if not set yet make it a blank array
+        chart_level_data = ( state.chartData.chart_levels.levels ? state.chartData.chart_levels.levels : []);
+
+        //get the limits for all chart types
+        const chart_type_limits = state.chartData.chart_levels.chart_limits;
+
+        ago_getPreviousChart(new_level-1, new_matchid)
+          .then( previous_chart_response => {
+            const previous_data = CheckReponse(previous_chart_response,'AGO_API_ERROR');
+
+            //walk the chart limits
+            chart_type_limits.map( item => {
+
+              //if the chart types match the chart type we are trying to limit step in
+              //  and create a new limit
+              if(item.chart_type.toUpperCase() === chart_type.toUpperCase()){
+
+
+                //set new levels and matchids
+                current_chart_level = new_level
+                current_chart_matchid = new_matchid
+                const chart_type = item.chart_type
+
+                //limit previous_data by the chart type
+                const previous_data_type = previous_data.features.filter( previous_item => {
+                  return previous_item.properties.chart_type.toUpperCase() === chart_type.toUpperCase()
+                })
+
+                //get previous chart heirachy from ago api
+                let last_chart_level = (previous_data_type[0].properties.chart_level ? previous_data_type[0].properties.chart_level : null);
+                let last_chart_matchid = (previous_data_type[0].properties.chart_matchid ? previous_data_type[0].properties.chart_matchid : null);
+                let last_chart_label = (previous_data_type[0].properties.chart_level_label ? previous_data_type[0].properties.chart_level_label : '  ');
+                //create new object for the chart types limits
+                const new_item = {chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid, last_chart_label}
+
+                ///we only want to change the limit if there is chart data in the next level down.
+                //  this checks to make sure we have data
+                const isvalid = check_limits_valid(chart_level_data, new_item)
+
+                //there is data in the next chart level down
+                if(isvalid){
+                  new_chart_type_limits.push(new_item)
+                //there is NOT data in the next chart level down
+                } else {
+                  new_chart_type_limits.push(item)
+                }
+
+             //just add old values if not the chart type we are updating limits for.
+              } else {
+                new_chart_type_limits.push(item)
+              }
+            })
+
+            //send the chart data on
+            dispatch(
+              ChartLevels('UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
+            )
+
+
+          })
+
+
+
+
+      }
+
+
+      //send the chart data on
+      dispatch(
+        ChartLevels('UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
+      )
+
+
+  }
+}
+
+export function get_ChartLevels(id,level){
+  return (dispatch,getState) => {
+
+    ago_getChartLevels()
+     .then( chart_level_response => {
+
+       let chart_type_levels = []
+
+       //get response for chart levels
+       const chart_level_data = CheckReponse(chart_level_response,'AGO_API_ERROR');
+
+       //get all the chart level featurs
+       const charts_levels = chart_level_data.features;
+
+       //get thge chart types.  there will be duplicates since there are multiple chart heierchal levels
+       const chart_types_all = charts_levels.map( charts_levels_features => {
+          return charts_levels_features.properties.chart_type
+       })
+
+       //make the array a unique list of chart types
+       const chart_types = chart_types_all.filter(function(item, pos) {
+           return chart_types_all.indexOf(item) == pos;
+       })
+
+       //default levels
+       const current_chart_level = 2;
+       const current_chart_matchid = 1;
+       const last_chart_level = 2;
+       const last_chart_matchid = 1;
+       const last_chart_label = "  "
+
+       //set initial chart levels for each chart type
+      chart_types.map( chart_type => {
+        chart_type_levels.push({chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid, last_chart_label})
+      })
+
+
+      //send the chart data on
+      dispatch(
+        ChartLevels('GET_CHART_LEVELS', chart_level_data, chart_type_levels)
+      )
+    })
+  }
 }
 
 //
@@ -240,7 +448,7 @@ export function get_ChartData(id,level){
                //so far the TRA data is all uplift but this may not matter really only doing this so
                // the format of the data matches baseline and uplfift for the 1st pass of charting
                chart_all_tra = tra_chart_data.features.filter(key =>{
-                 return key.properties.chart_type === 'UPLIFT';
+                 return key.properties.chart_type === 'TRA';
                })
 
              }
@@ -320,6 +528,24 @@ export function update_ChartVisiblity (visibility){
 
 
     }
+}
+
+//function to handle sending to reducer and store
+function ChartLevels(type, levels, chart_limits) {
+  // return {
+  //   type: type,
+  //   chart_levels: {levels},
+  //   chart_visibility: visibility,
+  //   receivedAt: Date.now()
+  // }
+  return {
+   type: type,
+   chart_levels: {
+     levels,
+     chart_limits
+   },
+   receivedAt: Date.now()
+ }
 }
 
 

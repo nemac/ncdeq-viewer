@@ -16,7 +16,7 @@ var ChartBars = React.createClass({
   },
   handleClick(constructor, entry, data, index, test) {
     const name = entry.name
-
+    // console.log(entry)
     const chart_type = this.props.chart_type
 
     this.props.set_search_method('chart clicked')
@@ -36,92 +36,32 @@ var ChartBars = React.createClass({
       this.props.get_LayerInfo_ByValue(name, HUC12_MAP_FEATUREID)
     }
 
-    //super hacky way to get values into webpage.
-    // need to pass chart data for other levels so we can "drilldown"
-    const props = constructor.props.chart_data
-    let props_filtered = props.filter(item => {
-      return item.name === name
-    })
-    let values = ''
-    props_filtered.map( chartclickvalues => {
-      for (var prop in chartclickvalues) {
-        if (chartclickvalues.hasOwnProperty(prop)) {
-          if(typeof chartclickvalues[prop] === 'object'){
-            // values = values + prop + ": " + JSON.stringify(chartclickvalues[prop]) + "<BR />"
-          }else{
-            if(prop != 'chart_id'){
-              if(prop === 'name'){
-                values = values + "HUC: " + chartclickvalues[prop] + "<BR />"
-              }else{
-                values = values + prop + ": " + chartclickvalues[prop] + "<BR />"
-              }
-            }
-          }
-        }
-      }
-
-    })
-    // $("#cdata").html(values);
-    //$("#data").html(name);
   },
-  get_keyColors: function(key){
-    let key_colors = [];
 
-    switch (key) {
-      case 'Water Quality':
-        key_colors = ['#22c355' , '#67e48f']
-        break;
-      case 'Hydrology':
-        key_colors = ['#2b83ba' , '#6eb3dd']
-        break;
-      case 'Habitat':
-        key_colors = ['#fd9935' , '#fecc9a' ]
-        break;
-      case 'Water Quality':
-        key_colors = ['#22c355' , '#67e48f']
-        break;
-      case 'Hydrology':
-        key_colors = ['#2b83ba' , '#6eb3dd']
-        break;
-      case 'Habitat':
-        key_colors = ['#fd9935' , '#fecc9a' ]
-        break;
-      default:
-        key_colors = ['#1a9641' , '#3cdd6f']
-        break;
-    }
-    return key_colors;
-  },
   get_legend_payload: function(chart_type){
     let custom_payload = [];
     const chart_keys = this.get_datakeys(chart_type);
     chart_keys.map( key => {
-      const color_keys = this.get_keyColors(key);
+      const color_keys = this.props.get_keyColors(key);
       custom_payload.push({ value: key, type:'rect', id:key, color: color_keys[1] })
     })
     return custom_payload
   },
   //keys for main chart
   get_datakeys: function(chart_type){
-    let data_keys = [];
-    switch (chart_type) {
-      case 'baseline':
-        data_keys = ['Water Quality','Hydrology','Habitat'];
-        break;
-      case 'uplift':
-        data_keys = ['Water Quality','Hydrology','Habitat'];
-        break;
-      case 'tra':
-        data_keys = ['Water Quality','Hydrology','Habitat'];
-        break;
-      default:
 
-    }
+    let data_keys = [];
+
+    //return keys for store.  data driven
+    data_keys = this.props.ChartLevels.map( item => {
+      return item.properties.chart_level_label;
+    })
+
     return data_keys;
   },
   get_cell: function(key){
 
-    const colors = this.get_keyColors(key)
+    const colors = this.props.get_keyColors(key)
 
     let chart_filter = this.props.chart_filter;
     const chart_type = this.props.chart_type
@@ -130,17 +70,12 @@ var ChartBars = React.createClass({
     //  there should be onluy one object in the traInfo object and it should be the tra
     //  the user clicked in. so it should look selected.
     if(this.state){
-      console.log('in props traInfo')
       if (chart_type.toUpperCase() === 'TRA'){
-        console.log('in chart type TRA')
-
         if(this.state){
           chart_filter = this.state.tra_filter
         }
       }
     }
-
-
 
     if(this.props.chart_data){
       return (
@@ -198,7 +133,6 @@ var ChartBars = React.createClass({
        this.props.chart_data.map( data  => {
         if(data.name === this.props.chart_filter){
           this.setState({ data });
-          //return (this.test(data))
         }
       })
     }
@@ -226,8 +160,7 @@ var ChartBars = React.createClass({
         if (active) {
           const { payload, label } = this.props;
 
-          //const tip = self.set_toolTip(payload, label);
-          //console.log(tip)
+
           payload.map( bar_segment => {
             html_hov = html_hov + "<span >" + bar_segment.name + ': ' + bar_segment.value + "</span >" ;
           })
@@ -262,6 +195,7 @@ var ChartBars = React.createClass({
       <div >
         <div id="hdata" />
         <div id="cdata" />
+
         <div id="bar-chart" style={{float:"left"}} >
           <BarChart key={this.props.chart_type}
                     width={this.props.chart_width}
@@ -271,7 +205,6 @@ var ChartBars = React.createClass({
             <XAxis dataKey="name" hide={true}/>
             <YAxis hide={true}/>
             <Tooltip />
-            <Legend   payload={this.get_legend_payload(this.props.chart_type)}  />
             {this.get_bars()}
            </BarChart>
         </div>
@@ -279,7 +212,7 @@ var ChartBars = React.createClass({
     );
   }
 });
-
+//<Legend   payload={this.get_legend_payload(this.props.chart_type)}  />
 //            <Tooltip content={<CustomTooltip/>}/>
 
 module.exports = ChartBars;

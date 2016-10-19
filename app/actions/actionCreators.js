@@ -24,6 +24,8 @@ export const change_geographyLevelFilter = GeographyLevels.change_geographyLevel
 export const update_ChartVisiblity = ChartData.update_ChartVisiblity;
 export const get_ChartData = ChartData.get_ChartData;
 export const get_TRAData = ActionTRA.get_TRAData;
+export const get_ChartLevels = ChartData.get_ChartLevels;
+export const update_ChartLevels = ChartData.update_ChartLevels;
 
 //map data and state actions
 export const get_defaultMapData = MapConfig.get_defaultMapData;

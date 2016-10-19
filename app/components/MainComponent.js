@@ -34,6 +34,9 @@ var MainComponent = React.createClass({
       //get and populate the geography_levels state...
       this.props.get_GeographyLevels();
 
+      //get chart levels
+      this.props.get_ChartLevels();
+
       //get and populate the chart data
       this.props.get_ChartData();
 
