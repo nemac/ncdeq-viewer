@@ -251,7 +251,6 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
 
       const state = getState()
 
-
       //set inital default settings just incase there is no data.
       let current_chart_level = null;
       let current_chart_matchid = null;
@@ -261,13 +260,15 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
       //make sure there is data in the state
       if(state.chartData){
 
+
         //get the chart level data if not set yet make it a blank array
         chart_level_data = ( state.chartData.chart_levels.levels ? state.chartData.chart_levels.levels : []);
 
         //get the limits for all chart types
         const chart_type_limits = state.chartData.chart_levels.chart_limits;
+        let new_level_chk = new_level-1
 
-        ago_getPreviousChart(new_level-1, new_matchid)
+        ago_getPreviousChart(new_level_chk, new_matchid)
           .then( previous_chart_response => {
             const previous_data = CheckReponse(previous_chart_response,'AGO_API_ERROR');
 
@@ -290,9 +291,18 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
                 })
 
                 //get previous chart heirachy from ago api
-                let last_chart_level = (previous_data_type[0].properties.chart_level ? previous_data_type[0].properties.chart_level : null);
-                let last_chart_matchid = (previous_data_type[0].properties.chart_matchid ? previous_data_type[0].properties.chart_matchid : null);
+                let last_chart_level_raw = (previous_data_type[0].properties.chart_level ? previous_data_type[0].properties.chart_level : 2);
+                let last_chart_matchid = (previous_data_type[0].properties.chart_matchid ? previous_data_type[0].properties.chart_matchid : 1);
                 let last_chart_label = (previous_data_type[0].properties.chart_level_label ? previous_data_type[0].properties.chart_level_label : '  ');
+
+                //make sure that the last chart_level is not 1.
+                //  one is the top most level but we are never showing that..
+                //  instead we are starting with the breakdown of the top most level.
+                //  the top most level is the total and we already show it in level two
+                //  this also fixes some issues with errors on charts
+                let last_chart_level = last_chart_level_raw === 1 ? 2 : last_chart_level_raw;
+
+
                 //create new object for the chart types limits
                 const new_item = {chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid, last_chart_label}
 
@@ -318,20 +328,20 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
             dispatch(
               ChartLevels('UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
             )
-
-
+            return
           })
+          .catch(error => { console.log('request failed', error); });
 
+      } else {
 
+        //send the chart data on
+        dispatch(
+          ChartLevels('in action UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
+        )
 
 
       }
 
-
-      //send the chart data on
-      dispatch(
-        ChartLevels('UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
-      )
 
 
   }
@@ -379,6 +389,8 @@ export function get_ChartLevels(id,level){
         ChartLevels('GET_CHART_LEVELS', chart_level_data, chart_type_levels)
       )
     })
+    .catch(error => { console.log('request failed', error); });
+
   }
 }
 
@@ -387,7 +399,7 @@ export function get_ChartData(id,level){
     return (dispatch,getState) => {
       axios.all([AGO_AllChartData_byID(id, level), ago_get_traxwalk_by_id(id, level)])
       .then(axios.spread(function (chartdata_response, tra_response) {
-      // .then(function test(response){
+
         const state = getState()
 
         //get tra id from xwalk
@@ -412,11 +424,6 @@ export function get_ChartData(id,level){
         chart_data = CheckReponse(chartdata_response,'AGO_API_ERROR');
 
         let huc_list = ""
-
-        // console.log(id)
-        // chart_data.features.map( cht  => {
-        //   console.log(cht)
-        // })
 
         tra_data = CheckReponse(tra_response,'AGO_API_ERROR');
 
@@ -496,9 +503,11 @@ export function get_ChartData(id,level){
             ChartData('GET_CHART_DATA', visibility, types)
           )
 
-        }).catch(error => { console.log('request failed', error); });
+        })
+        .catch(error => { console.log('request failed', error); });
 
       })
+
     )
     .catch(error => { console.log('request failed', error); });
   }

@@ -167,6 +167,8 @@ export function get_LayerInfo_ByValue(value, layer_id){
 
         dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
     }))
+    .catch(error => { console.log('request failed', error); });
+
 
 
 
@@ -209,6 +211,8 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
       dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
     }))
+    .catch(error => { console.log('request failed', error); });
+
 
 
 

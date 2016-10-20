@@ -77,10 +77,6 @@ var MainComponent = React.createClass({
       const defpad = this.props.default_settings ? this.props.default_settings.defpad : DEF_PAD;
       const chartHeight = this.props.default_settings ? this.props.default_settings.chartHeight : CHART_HEIGHT;
       const columnWidth = is_chart_vis ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
-      console.log('----')
-      console.log(this.props.charts.chart_visibility)
-      console.log(is_chart_vis)
-      console.log(columnWidth)
 
       const HeaderContent = "The purpose of this tool is to display the Division of Mitigation Services Targeted Resource Areas (TRAs) and " +
                       "identify watersheds where ecological and hydrological function can be improved.  " +

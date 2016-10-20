@@ -12,7 +12,6 @@ var ChartRowWrapper = React.createClass({
     };
   },
   handle_chart_level_click: function(comp, next_level, next_matchid, chart_type, e){
-
     //update the chart level
     this.props.update_ChartLevels(next_level, next_matchid, chart_type)
 
@@ -72,12 +71,9 @@ var ChartRowWrapper = React.createClass({
       return item.chart_type.toUpperCase() === chart_type.toUpperCase();
     })
 
-    if(!chart_type_limt[0]){
-      return
-    }
     //get the chart types limits to apply to the data
-    const last_chart_level = (chart_type_limt[0] ? chart_type_limt[0].last_chart_level : null)
-    const last_chart_matchid = (chart_type_limt[0] ?  chart_type_limt[0].last_chart_matchid : null)
+    const last_chart_level = (chart_type_limt[0] ? chart_type_limt[0].last_chart_level : 2)
+    const last_chart_matchid = (chart_type_limt[0] ?  chart_type_limt[0].last_chart_matchid : 1)
     const last_chart_label = (chart_type_limt[0] ?  chart_type_limt[0].last_chart_label : "  ")
     const current_chart_level = (chart_type_limt[0] ? chart_type_limt[0].current_chart_level : null)
     const current_chart_matchid = (chart_type_limt[0] ?  chart_type_limt[0].current_chart_matchid : null)
@@ -90,16 +86,10 @@ var ChartRowWrapper = React.createClass({
     const chart_levels = this.get_chart_levels()
     const last_chart = this.get_chart_Previous()
 
-    //do not render of nothing in last chart
-    //  not sure why yet but something is coming back null and causing flicker in display
-    // this will cause an error but for now it is stoping the flicker
-    if(!last_chart){
-      return
-    }
-
     //check if at the charts top heirachy
     const at_top = (last_chart.current_chart_level === 2 && last_chart.current_chart_matchid === 1)
 
+    //set up all messaging for drilldowns
     const keyback = "back";
     // const backtext = ( at_top ? ' Top Category ' : "Back to " + last_chart.last_chart_label);
     const backtext = ( at_top ? ' Top Category ' : " Back ");
@@ -108,6 +98,8 @@ var ChartRowWrapper = React.createClass({
     const last_chart_type  = this.props.chart_type;
     const key_back_class = ( at_top ? 'ui tiny black basic button' : 'ui tiny grey button' );
 
+    //return the chart and drilldowns
+    const drilldown_note = 'Click a category'
     return (
       <div className="item" style={{display: "block"}}>
         <div className="item" style={{display: "block", minHeight: "30px"}}>
@@ -123,6 +115,9 @@ var ChartRowWrapper = React.createClass({
         <div className="item" style={{display: "block"}}>
 
 
+          <div className="meta">
+            <span className="note">{drilldown_note}</span>
+          </div>
 
           <button className={key_back_class}
                   key={keyback}
@@ -171,11 +166,12 @@ var ChartRowWrapper = React.createClass({
                                     get_keyColors={this.props.get_keyColors}
                                     />
         </div>
+        {/*
         <div className="meta">
           <span className="description">{this.props.title_description}</span>
           <span className="note">{this.props.note}</span>
         </div>
-
+       */}
       </div>
     );
   }
