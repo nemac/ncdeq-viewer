@@ -99,7 +99,7 @@ var ChartRow = React.createClass({
           key_colors = ['#aa64b4' , '#d0a9d6' ]
           break;
 
-          
+
           //needs more Categories
           // are 5 shades apart on http://www.w3schools.com/colors/colors_picker.asp
 
@@ -464,7 +464,7 @@ var ChartRow = React.createClass({
         //if the user clicked or searched the map.
         //  and that location or cliced point was inside a tra format the message
         if(trasTEMP.length > 0){
-          tra_text_message_point = "The location you " + searchMethod + " is in a TRA. "
+          tra_text_message_point = "The point " + searchMethod + " is in a TRA. "
           success_class_point = "ui icon success message"
           icon_point = (<i className="check circle icon"></i>)
           sub_header_point = (<p>This includes the TRA(s): {tra_string}</p>)
@@ -473,7 +473,7 @@ var ChartRow = React.createClass({
         } else {
           success_class_point = "ui icon negative message"
           icon_point = (<i className="remove circle icon"></i>)
-          tra_text_message_point = "The location you  " + searchMethod + " is NOT in a TRA"
+          tra_text_message_point = "The point " + searchMethod + " is NOT in a TRA"
         }
       }
     }
@@ -623,9 +623,11 @@ var ChartRow = React.createClass({
             <div className="ui header left floated">
               {chart_cataloging_unit}
             </div>
+{/*
             <div className="meduim basic ui button icon right floated" onClick={this.chartToggle} >
               <i className="remove icon"></i>
             </div>
+*/}            
           </div>
         </div>
 
