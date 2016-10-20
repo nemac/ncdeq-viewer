@@ -302,6 +302,8 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
                 //  this also fixes some issues with errors on charts
                 let last_chart_level = last_chart_level_raw === 1 ? 2 : last_chart_level_raw;
 
+                //tell if found is a next level.
+                const is_next_level = true
 
                 //create new object for the chart types limits
                 const new_item = {chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid, last_chart_label}
@@ -312,10 +314,11 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
 
                 //there is data in the next chart level down
                 if(isvalid){
-                  new_chart_type_limits.push(new_item)
+                  new_chart_type_limits.push({...new_item, is_next_level })
                 //there is NOT data in the next chart level down
                 } else {
-                  new_chart_type_limits.push(item)
+                  const is_next_level = false
+                  new_chart_type_limits.push({...item, is_next_level})
                 }
 
              //just add old values if not the chart type we are updating limits for.
@@ -377,10 +380,10 @@ export function get_ChartLevels(id,level){
        const last_chart_level = 2;
        const last_chart_matchid = 1;
        const last_chart_label = "  "
-
+       const is_next_level = true
        //set initial chart levels for each chart type
       chart_types.map( chart_type => {
-        chart_type_levels.push({chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid, last_chart_label})
+        chart_type_levels.push({chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid, last_chart_label, is_next_level})
       })
 
 

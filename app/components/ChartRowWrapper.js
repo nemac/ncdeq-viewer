@@ -80,26 +80,48 @@ var ChartRowWrapper = React.createClass({
 
     return {last_chart_level, last_chart_matchid, last_chart_label, current_chart_level, current_chart_matchid }
   },
+  check_next_level_valid: function(){
+
+    //get constants from redux
+    const charts_limits = this.props.charts.chart_levels.chart_limits;
+    const chart_type =  this.props.chart_type;
+
+    //get a filtered array of the chart type limits
+    const chart_type_limt = charts_limits.filter( item => {
+      return item.chart_type.toUpperCase() === chart_type.toUpperCase();
+    })
+
+    const is_valid = (chart_type_limt[0] ? chart_type_limt[0].is_next_level : true)
+
+    return is_valid
+
+  },
   render: function() {
 
     //get the chart levels
     const chart_levels = this.get_chart_levels()
     const last_chart = this.get_chart_Previous()
+    const is_next_valid = this.check_next_level_valid()
 
     //check if at the charts top heirachy
     const at_top = (last_chart.current_chart_level === 2 && last_chart.current_chart_matchid === 1)
 
     //set up all messaging for drilldowns
     const keyback = "back";
-    // const backtext = ( at_top ? ' Top Category ' : "Back to " + last_chart.last_chart_label);
     const backtext = ( at_top ? ' Top Category ' : " Back ");
     const last_chart_level = last_chart.last_chart_level;
     const last_matchid = last_chart.last_chart_matchid;
     const last_chart_type  = this.props.chart_type;
     const key_back_class = ( at_top ? 'ui tiny black basic button' : 'ui tiny grey button' );
 
-    //return the chart and drilldowns
-    const drilldown_note = 'Click a category'
+    //return the chart and drill downs
+    const drilldown_note = 'Click a category to drill down into '
+
+    //no next level text
+    const no_next_level = "There is nothing else to drill into"
+    //get the previous labels
+    const previous_label = last_chart.last_chart_label.trim() === "" ?  "Total" : last_chart.last_chart_label;
+
     return (
       <div className="item" style={{display: "block"}}>
         <div className="item" style={{display: "block", minHeight: "30px"}}>
@@ -116,7 +138,16 @@ var ChartRowWrapper = React.createClass({
 
 
           <div className="meta">
-            <span className="note">{drilldown_note}</span>
+            <span className="note">{drilldown_note}
+              <button className="ui disabled button" style={{"backgroundColor":  "grey", "color": "white"}}>
+                {previous_label}
+              </button>
+              {!is_next_valid &&
+              <button className="ui red basic button" >
+                {no_next_level}
+              </button>
+              }
+            </span>
           </div>
 
           <button className={key_back_class}
@@ -166,12 +197,6 @@ var ChartRowWrapper = React.createClass({
                                     get_keyColors={this.props.get_keyColors}
                                     />
         </div>
-        {/*
-        <div className="meta">
-          <span className="description">{this.props.title_description}</span>
-          <span className="note">{this.props.note}</span>
-        </div>
-       */}
       </div>
     );
   }
