@@ -9,7 +9,7 @@ const mapStateToProps = (state,props) => {
     charts: state.chartData,
     default_settings: state.default_settings.default_settings,
     geography_levels: state.geography_levels.geography_levels,
-    chart_levels: state.chart_levels,
+    chart_levels: state.chartData.chart_levels,
     tra_data: state.traData.tra_data,
     traPointInfo: state.mapConfig.traPointInfo,
     traInfo: state.mapConfig.traInfo,
