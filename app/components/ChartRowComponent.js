@@ -98,6 +98,8 @@ var ChartRow = React.createClass({
         case 'Avoided Conversion':
           key_colors = ['#aa64b4' , '#d0a9d6' ]
           break;
+
+          
           //needs more Categories
           // are 5 shades apart on http://www.w3schools.com/colors/colors_picker.asp
 

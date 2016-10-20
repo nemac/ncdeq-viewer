@@ -299,6 +299,7 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
                 //  one is the top most level but we are never showing that..
                 //  instead we are starting with the breakdown of the top most level.
                 //  the top most level is the total and we already show it in level two
+                //  this also fixes some issues with errors on charts
                 let last_chart_level = last_chart_level_raw === 1 ? 2 : last_chart_level_raw;
 
 
