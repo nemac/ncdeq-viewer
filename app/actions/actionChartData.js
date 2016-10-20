@@ -251,11 +251,6 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
 
       const state = getState()
 
-      console.log('in action')
-      console.log(new_level, new_matchid, chart_type)
-      console.log(state.chartData)
-
-
       //set inital default settings just incase there is no data.
       let current_chart_level = null;
       let current_chart_matchid = null;
@@ -272,19 +267,6 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
         //get the limits for all chart types
         const chart_type_limits = state.chartData.chart_levels.chart_limits;
         let new_level_chk = new_level-1
-
-        // console.log('in action before new_level check')
-        // console.log(new_level_chk, new_level-1)
-        //
-        //
-        //
-        // if(new_level_chk ===  1){
-        //   new_level_chk = 2
-        // }
-        //
-        // console.log('in action before new_level check')
-        // console.log(new_level_chk, new_level-1)
-
 
         ago_getPreviousChart(new_level_chk, new_matchid)
           .then( previous_chart_response => {
@@ -308,23 +290,20 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
                   return previous_item.properties.chart_type.toUpperCase() === chart_type.toUpperCase()
                 })
 
-                console.log('in action after previous_data_type limit')
-                console.log(previous_data_type[0])
                 //get previous chart heirachy from ago api
                 let last_chart_level_raw = (previous_data_type[0].properties.chart_level ? previous_data_type[0].properties.chart_level : 2);
                 let last_chart_matchid = (previous_data_type[0].properties.chart_matchid ? previous_data_type[0].properties.chart_matchid : 1);
                 let last_chart_label = (previous_data_type[0].properties.chart_level_label ? previous_data_type[0].properties.chart_level_label : '  ');
 
+                //make sure that the last chart_level is not 1.
+                //  one is the top most level but we are never showing that..
+                //  instead we are starting with the breakdown of the top most level.
+                //  the top most level is the total and we already show it in level two
                 let last_chart_level = last_chart_level_raw === 1 ? 2 : last_chart_level_raw;
-                console.log('in action after chart_level check')
-                console.log(last_chart_level)
+
 
                 //create new object for the chart types limits
                 const new_item = {chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid, last_chart_label}
-
-                console.log('in action after setting new_item')
-                console.log(new_item)
-
 
                 ///we only want to change the limit if there is chart data in the next level down.
                 //  this checks to make sure we have data
@@ -344,9 +323,6 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
               }
             })
 
-            console.log('in action before dispatch completed')
-            console.log(new_chart_type_limits)
-
             //send the chart data on
             dispatch(
               ChartLevels('UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
@@ -357,9 +333,6 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
 
       } else {
 
-        console.log('before dispatch no chart data')
-        console.log(new_chart_type_limits)
-        console.log(state.chartData)
         //send the chart data on
         dispatch(
           ChartLevels('in action UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
