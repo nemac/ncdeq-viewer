@@ -14,9 +14,13 @@ var ChartBars = React.createClass({
       title:'Title'
     };
   },
+  handleClickBar(constructor, entry, data, index, test){
+      console.log(entry)
+  },
   handleClick(constructor, entry, data, index, test) {
+
     const name = entry.name
-    // console.log(entry)
+
     const chart_type = this.props.chart_type
 
     this.props.set_search_method('chart clicked')
@@ -100,7 +104,7 @@ var ChartBars = React.createClass({
     if(chart_keys){
       return (
         chart_keys.map(key => (
-          <Bar key={keycnt++} dataKey={key} stackId="a" fill="#beaed4" >
+          <Bar key={keycnt++} dataKey={key} stackId="a" fill="#beaed4"  >
             {this.get_cell(key)}
           </Bar>
         ))
@@ -189,13 +193,9 @@ var ChartBars = React.createClass({
     }
     $('#description').html(title);
 
-
     return (
 
       <div >
-        <div id="hdata" />
-        <div id="cdata" />
-
         <div id="bar-chart" style={{float:"left"}} >
           <BarChart key={this.props.chart_type}
                     width={this.props.chart_width}

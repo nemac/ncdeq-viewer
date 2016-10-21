@@ -603,7 +603,6 @@ var ChartRow = React.createClass({
 
     }
 
-
     //default text for chart is to give user a push to do an action...
     let chart_cataloging_unit = 'Please Click on the Map, Search, or Choose something to get started.'
     let huc_message = "No HUC's Selected yet."
@@ -614,34 +613,35 @@ var ChartRow = React.createClass({
       huc_message = "The " + this.getLevel() + " " +  chart_filter + " is currently highlighted."
     }
 
+    //messages for working
+    const working_message = this.props.fetching_chart || this.props.fetching_tra || this.props.fetching_map ? "loading..." : ""
+    const working_class = this.props.fetching_chart|| this.props.fetching_tra  || this.props.fetching_map ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
+    const working_key = this.props.title  + '-working'
 
     return (
-
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
+        <div className={working_class}>
+            <div className="ui loader"></div>
+        </div>
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden"}}>
         <div className="ui item" >
+
           <div className="content">
             <div className="ui header left floated">
               {chart_cataloging_unit}
             </div>
-{/*
-            <div className="meduim basic ui button icon right floated" onClick={this.chartToggle} >
-              <i className="remove icon"></i>
-            </div>
-*/}            
           </div>
         </div>
-
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
-        { show_point &&
+      { show_point &&
           <div className="ui item" >
             <div className="content">
               {tra_message_point}
             </div>
           </div>
-        }
-
+      }
       { chart_filter &&
         <div className="ui item" >
           <div className="content">
@@ -713,8 +713,9 @@ var ChartRow = React.createClass({
          }
 
       </div>
-
+    </div>
     );
+
   }
 
 });

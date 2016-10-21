@@ -8,3 +8,13 @@ export function traData(state = [], action) {
       return state
   }
 }
+
+
+export function fetching_tra(state = [], action){
+  switch (action.type) {
+    case 'FETCHING_TRA':
+      return {...state, fetching_tra: action.fetching}
+    default:
+      return state
+  }
+}

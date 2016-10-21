@@ -249,6 +249,9 @@ function check_limits_valid(data, item){
 export function update_ChartLevels(new_level, new_matchid, chart_type){
   return (dispatch,getState) => {
 
+      //start fetching state (set to true)
+      dispatch(fetching_start())
+
       const state = getState()
 
       //set inital default settings just incase there is no data.
@@ -331,6 +334,10 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
             dispatch(
               ChartLevels('UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
             )
+
+            //end fetching set fetching state to false
+            dispatch(fetching_end())
+
             return
           })
           .catch(error => { console.log('request failed', error); });
@@ -342,6 +349,8 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
           ChartLevels('in action UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
         )
 
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
 
       }
 
@@ -352,6 +361,9 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
 
 export function get_ChartLevels(id,level){
   return (dispatch,getState) => {
+
+    //start fetching state (set to true)
+    dispatch(fetching_start())
 
     ago_getChartLevels()
      .then( chart_level_response => {
@@ -391,6 +403,10 @@ export function get_ChartLevels(id,level){
       dispatch(
         ChartLevels('GET_CHART_LEVELS', chart_level_data, chart_type_levels)
       )
+
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
+
     })
     .catch(error => { console.log('request failed', error); });
 
@@ -400,6 +416,10 @@ export function get_ChartLevels(id,level){
 //
 export function get_ChartData(id,level){
     return (dispatch,getState) => {
+
+      //start fetching state (set to true)
+      dispatch(fetching_start())
+
       axios.all([AGO_AllChartData_byID(id, level), ago_get_traxwalk_by_id(id, level)])
       .then(axios.spread(function (chartdata_response, tra_response) {
 
@@ -506,6 +526,9 @@ export function get_ChartData(id,level){
             ChartData('GET_CHART_DATA', visibility, types)
           )
 
+          //end fetching set fetching state to false
+          dispatch(fetching_end())
+
         })
         .catch(error => { console.log('request failed', error); });
 
@@ -518,6 +541,10 @@ export function get_ChartData(id,level){
 
 export function update_ChartVisiblity (visibility){
     return (dispatch, getState) => {
+
+      //start fetching state (set to true)
+      dispatch(fetching_start())
+
       const state = getState()
 
       let chartData_Level = [];
@@ -537,6 +564,9 @@ export function update_ChartVisiblity (visibility){
 
       //send visibility setting on
       dispatch(ChartData('SET_CHART_VISIBILITY', isVisible, types ))
+
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
 
 
     }
@@ -577,4 +607,11 @@ function ChartData(type, visibility, types) {
    chart_visibility: visibility,
    receivedAt: Date.now()
  }
+}
+
+function fetching_start(){
+  return {type: "FETCHING_CHART", fetching: true}
+}
+function fetching_end(){
+  return {type: "FETCHING_CHART", fetching: false}
 }

@@ -117,6 +117,12 @@ function ago_get_tra_geom_byid( id ){
 export function get_TRAData(hucid, current_geography_level){
   return (dispatch, getState) => {
 
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
+    //get redux state
+    const state = getState()
+
     ago_get_traxwalk_by_id(hucid, current_geography_level)
     .then( tra_xwalk_response => {
 
@@ -185,9 +191,10 @@ export function get_TRAData(hucid, current_geography_level){
     //send empty group for nothing found
     dispatch(tra_data('GET_TRA_DATA', group));
 
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
   }
 }
-
 
 //function to handle sending to reducer and store
 function tra_data(type, data,) {
@@ -203,4 +210,11 @@ function tra_data(type, data,) {
    },
    receivedAt: Date.now()
  }
+}
+
+function fetching_start(){
+  return {type: "FETCHING_TRA", fetching: true}
+}
+function fetching_end(){
+  return {type: "FETCHING_TRA", fetching: false}
 }

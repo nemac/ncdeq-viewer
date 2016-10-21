@@ -15,6 +15,10 @@ const mapStateToProps = (state,props) => {
     traInfo: state.mapConfig.traInfo,
     huc8Info: state.mapConfig.huc8Info,
     searchMethod: state.mapConfig.searchMethod,
+    fetching_chart: state.fetching_chart.fetching_chart,
+    fetching_map: state.fetching_map.fetching_map,
+    fetching_tra: state.fetching_tra.fetching_tra,
+
   }
 }
 

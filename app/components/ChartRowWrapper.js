@@ -122,8 +122,10 @@ var ChartRowWrapper = React.createClass({
     //get the previous labels
     const previous_label = last_chart.last_chart_label.trim() === "" ?  "Total" : last_chart.last_chart_label;
 
+
     return (
       <div className="item" style={{display: "block"}}>
+
         <div className="item" style={{display: "block", minHeight: "30px"}}>
           <i className="left floated dropdown icon"></i>
           <h4 className="ui left floated header">
@@ -135,7 +137,6 @@ var ChartRowWrapper = React.createClass({
           </div>
         </div>
         <div className="item" style={{display: "block"}}>
-
 
           <div className="meta">
             <span className="note">{drilldown_note}
@@ -162,6 +163,8 @@ var ChartRowWrapper = React.createClass({
             }
           </button>
 
+
+
           { chart_levels &&
 
             chart_levels.map(function(item) {
@@ -183,6 +186,7 @@ var ChartRowWrapper = React.createClass({
 
           }.bind(this))
         }
+
           <ChartBars key={this.props.title} chart_width={this.props.chart_width}
                                     chart_type={this.props.chart_type}
                                     chart_data={this.props.chart_data}
