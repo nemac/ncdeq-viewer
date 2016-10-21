@@ -122,20 +122,30 @@ var ChartRowWrapper = React.createClass({
     //get the previous labels
     const previous_label = last_chart.last_chart_label.trim() === "" ?  "Total" : last_chart.last_chart_label;
 
+    //set messaging for working
+    const working_message = this.props.fetching_chart || this.props.fetching_tra || this.props.fetching_map  ? "loading..." : ""
+    const working_class = this.props.fetching_chart || this.props.fetching_tra || this.props.fetching_map  ? "ui active centered inline loader" : "ui disabled centered inline loader"
+    const working_key = this.props.title + '-working'
+
     return (
       <div className="item" style={{display: "block"}}>
+
         <div className="item" style={{display: "block", minHeight: "30px"}}>
           <i className="left floated dropdown icon"></i>
           <h4 className="ui left floated header">
             {this.props.title}
           </h4>
+          <div className="ui header right floated">
+            <div key={working_key} className={working_class}>
+              <div className="ui text loader">{working_message}</div>
+            </div>
+          </div>
           <div className="meta">
             <span className="description">{this.props.title_description}</span>
             <span className="note">{this.props.note}</span>
           </div>
         </div>
         <div className="item" style={{display: "block"}}>
-
 
           <div className="meta">
             <span className="note">{drilldown_note}
@@ -162,6 +172,8 @@ var ChartRowWrapper = React.createClass({
             }
           </button>
 
+
+
           { chart_levels &&
 
             chart_levels.map(function(item) {
@@ -183,6 +195,7 @@ var ChartRowWrapper = React.createClass({
 
           }.bind(this))
         }
+
           <ChartBars key={this.props.title} chart_width={this.props.chart_width}
                                     chart_type={this.props.chart_type}
                                     chart_data={this.props.chart_data}
@@ -195,6 +208,8 @@ var ChartRowWrapper = React.createClass({
                                     charts={this.props.charts}
                                     ChartLevels={chart_levels}
                                     get_keyColors={this.props.get_keyColors}
+                                    fetching_chart={this.props.fetching_chart}
+                                    fetching_tra={this.props.fetching_tra}
                                     />
         </div>
       </div>

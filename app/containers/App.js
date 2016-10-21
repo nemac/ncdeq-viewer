@@ -13,6 +13,9 @@ function mapStateToProps(state) {
   let map_settings = state.mapConfig.mapconfig;
   let default_settings = state.default_settings.default_settings;
   let leafletMap = state.leafletMap;
+  let fetching_chart = state.fetching_chart.fetching_chart;
+  let fetching_map = state.fetching_map.fetching_map;
+  let fetching_tra = state.fetching_tra.fetching_tra;
 
   return {
     DefaultMenuLists,
@@ -21,7 +24,10 @@ function mapStateToProps(state) {
     charts,
     map_settings,
     default_settings,
-    leafletMap
+    leafletMap,
+    fetching_chart,
+    fetching_map,
+    fetching_tra
   }
 }
 

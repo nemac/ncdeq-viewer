@@ -12,3 +12,12 @@ export function chartData(state = [], action) {
       return state
   }
 }
+
+export function fetching_chart(state = [], action){
+  switch (action.type) {
+    case 'FETCHING_CHART':
+      return {...state, fetching_chart: action.fetching}
+    default:
+      return state
+  }
+}

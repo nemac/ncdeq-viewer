@@ -29,3 +29,13 @@ export function mapConfig(state = [], action) {
   }
   return state;
 }
+
+
+export function fetching_map(state = [], action){
+  switch (action.type) {
+    case 'FETCHING_MAP':
+      return {...state, fetching_map: action.fetching}
+    default:
+      return state
+  }
+}

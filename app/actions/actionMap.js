@@ -106,6 +106,9 @@ function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
 export function set_search_method(method){
   return (dispatch, getState) => {
 
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
     const state = getState()
 
     const latitude = state.mapConfig.mapconfig.latitude;
@@ -125,6 +128,9 @@ export function set_search_method(method){
     const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, traInfo, huc8Info, searchMethod};
 
     dispatch(mapSate('SET_SEARCH_METHOD',mapConfig));
+
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
   }
 
 
@@ -134,11 +140,12 @@ export function set_search_method(method){
 export function get_LayerInfo_ByValue(value, layer_id){
   return (dispatch, getState) => {
 
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
     axios.all([AGO_get_LayerInfo_ByValue(value, layer_id), AGO_get_LayerInfo_ByValue(value.substring(0,8), CATALOGING_MAP_FEATUREID)])
     .then(axios.spread(function (huc_response, cu_response) {
 
-    // AGO_get_LayerInfo_ByValue(value, layer_id)
-    //   .then(function test(response){
         //check repsonses for errors
         const theCatalogingUnitInfo = CheckReponse(cu_response,'AGO_API_ERROR');
 
@@ -166,22 +173,24 @@ export function get_LayerInfo_ByValue(value, layer_id){
         const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, traInfo, huc8Info, searchMethod};
 
         dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
+
+
     }))
     .catch(error => { console.log('request failed', error); });
 
-
-
-
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
   }
 }
 
 export function get_LayerInfo_ByPoint(lat, lng, layer_id){
   return (dispatch, getState) => {
 
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
     axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, layer_id), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, CATALOGING_MAP_FEATUREID)])
     .then(axios.spread(function (huc_response, tra_response, cu_response) {
-
-      // .then(function test(response){
 
       const thetraPointInfo = CheckReponse(tra_response,'AGO_API_ERROR');
 
@@ -210,10 +219,12 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
 
       dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
+
     }))
     .catch(error => { console.log('request failed', error); });
 
-
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
 
 
   }
@@ -221,6 +232,9 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
 
 export function set_MapLayers(mapLayers){
   return (dispatch, getState) => {
+
+    //start fetching state (set to true)
+    dispatch(fetching_start())
 
     //get redux state
     const state = getState()
@@ -249,10 +263,16 @@ export function set_MapLayers(mapLayers){
 
     dispatch(mapSate('MAP_SET_LAYERS',mapConfig));
 
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
+
   }
 }
 export function set_mapToPoint(lat,lng,z,e){
   return (dispatch, getState) => {
+
+    //start fetching state (set to true)
+    dispatch(fetching_start())
 
     //get redux state
     const state = getState()
@@ -275,11 +295,17 @@ export function set_mapToPoint(lat,lng,z,e){
 
     dispatch(mapSate('MAP_TO_POINT',mapConfig));
 
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
+
   }
 }
 
 export function HandleMapEnd(mapComp,e){
   return (dispatch, getState) => {
+
+    //start fetching state (set to true)
+    dispatch(fetching_start())
 
     //get redux state
     const state = getState()
@@ -306,10 +332,17 @@ export function HandleMapEnd(mapComp,e){
 
     //send map config data on to store
     dispatch(mapSate('MAP_END',mapConfig));
+
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
+
   }
 }
 export function get_defaultMapData(zoom){
   return (dispatch, getState) => {
+
+    //start fetching state (set to true)
+    dispatch(fetching_start())
 
     //get redux state
     const state = getState()
@@ -338,6 +371,10 @@ export function get_defaultMapData(zoom){
 
     //send map config data on to store
     dispatch(mapSate('MAP_DATA',mapConfig));
+
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
+
   }
 };
 
@@ -346,6 +383,10 @@ export function get_defaultMapData(zoom){
 //           e which is the this or the dom element to add the seach and search Autocomplete too
 export function handleSearchChange(comp,e){
   return (dispatch, getState) => {
+
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
     //get redux state
     const state = getState()
 
@@ -430,12 +471,20 @@ export function handleSearchChange(comp,e){
         }))
 
       });
+
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
+
     }
   };
 
 //this is for chart clicks and highlighting on map
 export function get_tra_info(id){
   return (dispatch, getState) => {
+
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
     //get redux state
     const state = getState()
 
@@ -463,12 +512,18 @@ export function get_tra_info(id){
 
       })
 
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
+
   }
 
 }
 
-export function addLayer(){
-
+function fetching_start(){
+  return {type: "FETCHING_MAP", fetching: true}
+}
+function fetching_end(){
+  return {type: "FETCHING_MAP", fetching: false}
 }
 
 //new map state object to pass to reducer

@@ -614,20 +614,31 @@ var ChartRow = React.createClass({
       huc_message = "The " + this.getLevel() + " " +  chart_filter + " is currently highlighted."
     }
 
+    const working_message = this.props.fetching_chart || this.props.fetching_tra || this.props.fetching_map ? "loading..." : ""
+    const working_class = this.props.fetching_chart|| this.props.fetching_tra  || this.props.fetching_map ? "ui active centered inline loader" : "ui disabled centered inline loader"
+    const working_key = this.props.title  + '-working'
 
     return (
 
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden"}}>
         <div className="ui item" >
+
           <div className="content">
             <div className="ui header left floated">
               {chart_cataloging_unit}
             </div>
+
+            <div className="ui header right floated">
+              <div key={working_key} className={working_class}>
+                <div className="ui text loader">{working_message}</div>
+              </div>
+            </div>
+
 {/*
             <div className="meduim basic ui button icon right floated" onClick={this.chartToggle} >
               <i className="remove icon"></i>
             </div>
-*/}            
+*/}
           </div>
         </div>
 
@@ -651,6 +662,7 @@ var ChartRow = React.createClass({
       }
 
 
+
       { chart_filter &&
         <ChartRowWrapper key="tra"
           chart_width={chart_width_px}
@@ -669,6 +681,8 @@ var ChartRow = React.createClass({
           update_ChartLevels={this.props.update_ChartLevels}
           update_ChartMatchId={this.props.update_ChartMatchId}
           get_keyColors={this.get_keyColors}
+          fetching_chart={this.props.fetching_chart}
+          fetching_tra={this.props.fetching_tra}
           />
         }
         { chart_filter &&
@@ -689,6 +703,8 @@ var ChartRow = React.createClass({
           update_ChartLevels={this.props.update_ChartLevels}
           update_ChartMatchId={this.props.update_ChartMatchId}
           get_keyColors={this.get_keyColors}
+          fetching_chart={this.props.fetching_chart}
+          fetching_tra={this.props.fetching_tra}
           />
         }
         { chart_filter &&
@@ -709,12 +725,15 @@ var ChartRow = React.createClass({
            update_ChartLevels={this.props.update_ChartLevels}
            update_ChartMatchId={this.props.update_ChartMatchId}
            get_keyColors={this.get_keyColors}
+           fetching_chart={this.props.fetching_chart}
+           fetching_tra={this.props.fetching_tra}
            />
          }
 
       </div>
 
     );
+
   }
 
 });
