@@ -13,7 +13,6 @@ export function traData(state = [], action) {
 export function fetching_tra(state = [], action){
   switch (action.type) {
     case 'FETCHING_TRA':
-      console.log(action.fetching)
       return {...state, fetching_tra: action.fetching}
     default:
       return state
