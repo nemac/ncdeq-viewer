@@ -439,35 +439,54 @@ var ChartRow = React.createClass({
 
     var tra_message = ""
     var tra_message_point = ""
+
     var tra_text_message = ""
     var tra_text_message_point = ""
+
     var tra_code = ""
     var tra_code_point = ""
+
     var success_class = ""
     var success_class_point = ""
+
     var icon = ""
     var icon_point = ""
+
     var sub_header = ""
     var sub_header_point = ""
 
-    var trasTEMP = ""
+    var TRA_OBJ = []
+
+    //set defaults for messages abouyt
+    tra_text_message_point = "Please Click on the Map or Search for a location to discover if it is in a TRA"
+    success_class_point = "ui icon info message"
+    icon_point = (<i className="info circle icon"></i>)
+
+    tra_text_message = "Please Click on the Map,  Search for a location, or Choose something to discover if it is in a TRA"
+    success_class = "ui icon info message"
+    icon = (<i className="info circle icon"></i>)
 
     //create tra point message.  user clicked on the map or searched for a location
     if(tra_point_info){
+      // no features in the tra point object means
       if (tra_point_info.features){
-        trasTEMP = tra_point_info.features.map (feature => {
+
+        //walk over all the tra points and make the ids (names) into an array
+        TRA_OBJ = tra_point_info.features.map (feature => {
           return feature.properties.id
         })
 
-        const tra_string = trasTEMP.toString().split(",").join(", ");
+        //make the tra array into comma delimited string
+        const tra_string = TRA_OBJ.toString().split(",").join(", ");
 
         //if the user clicked or searched the map.
         //  and that location or cliced point was inside a tra format the message
-        if(trasTEMP.length > 0){
+        if(TRA_OBJ.length > 0){
           tra_text_message_point = "The point " + searchMethod + " is in a TRA. "
           success_class_point = "ui icon success message"
           icon_point = (<i className="check circle icon"></i>)
           sub_header_point = (<p>This includes the TRA(s): {tra_string}</p>)
+
           //if the user clicked or searched the map.
           //  and that location or cliced point was NOT inside a tra format the message
         } else {
@@ -485,22 +504,20 @@ var ChartRow = React.createClass({
     if(this.props.tra_data){
       if(this.props.tra_data.data){
 
-        //if there is  data in the object the select huc does cross a tra
+        //if there is data in the object the selected huc does cross a tra
         if (this.props.tra_data.data.length > 0){
           tra_text_message = "The "  +  getFriendlyName(this.getLevel()) +  " - (" + chart_filter + ") is in a TRA."
           success_class = "ui icon success message"
           icon = (<i className="check circle icon"></i>)
 
-          trasTEMP = this.props.tra_data.data.map (feature => {
+          TRA_OBJ = this.props.tra_data.data.map (feature => {
             return feature.tra_name
           })
 
-          const tra_string = trasTEMP.toString().split(",").join(", ");
+          const tra_string = TRA_OBJ.toString().split(",").join(", ");
 
-            //list of TRA's
-            sub_header = (<p>This includes the TRA(s): {tra_string}</p>)
-
-
+          //list of TRA's
+          sub_header = (<p>This includes the TRA(s): {tra_string}</p>)
 
         //if there is  no data in the object the select huc does not cross a tra
         } else {
@@ -510,101 +527,49 @@ var ChartRow = React.createClass({
         }
 
 
-        //TRA in message
-        tra_message = (
-            <div className={success_class} >
-              {icon}
-              <div className="content">
-                <div className="header">
-                  {tra_text_message}
-                </div>
-                {sub_header}
-              </div>
-            </div>
-        )
-
-        //TRA  message for clicks and searches
-        tra_message_point = (
-            <div className={success_class_point} >
-              {icon_point}
-              <div className="content">
-                <div className="header">
-                  {tra_text_message_point}
-                </div>
-                {sub_header_point}
-              </div>
-            </div>
-        )
-
       } else {
         //nothing in tra data could mean that nothing was returned...
-
         success_class = "ui icon negative message"
         icon = (<i className="remove circle icon"></i>)
         tra_text_message = "The "  + getFriendlyName(this.getLevel()) +  " " + chart_filter + " is NOT in a TRA"
-
-        //TRA in message
-        tra_message = (
-            <div className={success_class} >
-              {icon}
-              <div className="content">
-                <div className="header">
-                  {tra_text_message}
-                </div>
-                {sub_header}
-              </div>
-            </div>
-          )
-            //TRA  message for clicks and searches
-            tra_message_point = (
-                <div className={success_class_point} >
-                  {icon_point}
-                  <div className="content">
-                    <div className="header">
-                      {tra_text_message_point}
-                    </div>
-                    {sub_header_point}
-                  </div>
-                </div>
-            )
-
       }
-    } else {
-      //nothing in tra data could mean that nothing was returned...
-
-      success_class = "ui icon negative message"
-      icon = (<i className="remove circle icon"></i>)
-      tra_text_message = "The "  + getFriendlyName(this.getLevel()) +  " " + chart_filter + " is NOT in a TRA"
-
-      //TRA in message
-      tra_message = (
-          <div className={success_class} >
-            {icon}
-            <div className="content">
-              <div className="header">
-                {tra_text_message}
-              </div>
-              {sub_header}
-            </div>
-          </div>
-        )
-          //TRA  message for clicks and searches
-          tra_message_point = (
-              <div className={success_class_point} >
-                {icon_point}
-                <div className="content">
-                  <div className="header">
-                    {tra_text_message_point}
-                  </div>
-                  {sub_header_point}
-                </div>
-              </div>
-          )
-
     }
 
+  //if the method to get a huc was not a map click or search for location we need
+  //  show a message to indicate.  this should stop jumpy and give user
+  //  a indication that something can happen
+  if(!show_point){
+    tra_text_message_point = "Please Click on the Map or Search for a location to discover if it is in a TRA"
+    success_class_point = "ui icon info message"
+    icon_point = (<i className="info circle icon"></i>)
+  }
+
+  //TRA  message for clicks and searches
+  tra_message_point = (
+      <div className={success_class_point} >
+        {icon_point}
+        <div className="content">
+          <div className="header">
+            {tra_text_message_point}
+          </div>
+          {sub_header_point}
+        </div>
+      </div>)
+
+    //TRA in message
+    tra_message = (
+        <div className={success_class} >
+          {icon}
+          <div className="content">
+            <div className="header">
+              {tra_text_message}
+            </div>
+            {sub_header}
+          </div>
+        </div>)
+
     //default text for chart is to give user a push to do an action...
-    let chart_cataloging_unit = 'Please Click on the Map, Search, or Choose something to get started.'
+    let chart_cataloging_unit = 'Please Click on the Map, Search for a location, or Choose something to get started.'
     let huc_message = "No HUC's Selected yet."
 
     //if there is filter text for charts and data should be about the data
@@ -635,7 +600,7 @@ var ChartRow = React.createClass({
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
-      { show_point &&
+      { chart_filter &&
           <div className="ui item" >
             <div className="content">
               {tra_message_point}
