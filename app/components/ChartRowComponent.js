@@ -461,10 +461,12 @@ var ChartRow = React.createClass({
     tra_text_message_point = "Please Click on the Map or Search for a location to discover if it is in a TRA"
     success_class_point = "ui icon info message"
     icon_point = (<i className="info circle icon"></i>)
+    sub_header_point = ""
 
-    tra_text_message = "Please Click on the Map,  Search for a location, or Choose something to discover if it is in a TRA"
+    tra_text_message = "Please Click on the Map, Search for a location, or Choose something to discover if it is in a TRA"
     success_class = "ui icon info message"
     icon = (<i className="info circle icon"></i>)
+    sub_header = ""
 
     //create tra point message.  user clicked on the map or searched for a location
     if(tra_point_info){
@@ -493,6 +495,8 @@ var ChartRow = React.createClass({
           success_class_point = "ui icon negative message"
           icon_point = (<i className="remove circle icon"></i>)
           tra_text_message_point = "The point " + searchMethod + " is NOT in a TRA"
+          sub_header_point = ""
+
         }
       }
     }
@@ -524,14 +528,8 @@ var ChartRow = React.createClass({
           success_class = "ui icon negative message"
           icon = (<i className="remove circle icon"></i>)
           tra_text_message = "The "  + getFriendlyName(this.getLevel()) +  " " + chart_filter + " is NOT in a TRA"
+          sub_header = ""
         }
-
-
-      } else {
-        //nothing in tra data could mean that nothing was returned...
-        success_class = "ui icon negative message"
-        icon = (<i className="remove circle icon"></i>)
-        tra_text_message = "The "  + getFriendlyName(this.getLevel()) +  " " + chart_filter + " is NOT in a TRA"
       }
     }
 
@@ -542,6 +540,7 @@ var ChartRow = React.createClass({
     tra_text_message_point = "Please Click on the Map or Search for a location to discover if it is in a TRA"
     success_class_point = "ui icon info message"
     icon_point = (<i className="info circle icon"></i>)
+    sub_header_point = ""
   }
 
   //TRA  message for clicks and searches
