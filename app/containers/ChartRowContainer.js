@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
-import { get_ChartData, get_TRAData, update_ChartVisiblity, update_MapHeight, get_LayerInfo_ByValue, change_geographyLevelActive, set_search_method, get_tra_info, update_ChartLevels} from '../actions/actionCreators'
+import { get_ChartData, get_TRAData, update_ChartVisiblity, update_MapHeight, get_LayerInfo_ByValue, change_geographyLevelActive, set_search_method, get_tra_info, update_ChartLevels, update_HeaderVis} from '../actions/actionCreators'
 import ChartRowComponent from '../components/ChartRowComponent'
 
 //either rename the properties or rename it also in main
@@ -33,6 +33,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     set_search_method: bindActionCreators(set_search_method,dispatch),
     get_tra_info: bindActionCreators(get_tra_info,dispatch),
     update_ChartLevels: bindActionCreators(update_ChartLevels, dispatch),
+    update_HeaderVis: bindActionCreators(update_HeaderVis, dispatch),
   }
 }
 const ChartRowContainer = connect(

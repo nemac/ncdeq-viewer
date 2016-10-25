@@ -28,7 +28,14 @@ var MenuItemComponent = React.createClass({
     }
 
     const HUC_desgination = get_HUC(this.props.name);
-    let select_width = "350px"
+
+    //hacky jquery way but it works
+    const geography_level_count = this.props.geography_levels ? this.props.geography_levels.length : 3
+    const full_items_width = $('.geography_levels_holder').width()
+    const three_width = (full_items_width/geography_level_count) <= 250 ? 250 : (full_items_width/geography_level_count) ;
+
+    //change widths based on window width
+    let select_width = three_width + "px"
 
     return (
         <div className="stackable column" style={{width:select_width}}>
@@ -37,9 +44,9 @@ var MenuItemComponent = React.createClass({
               <label>
                 Choose a {this.props.name}  ({HUC_desgination})
               </label>
-              <div className="ui input" onClick={this.props.handleMenuClick.bind(null, this.props.name)} >
+              <div className="ui input" onClick={this.props.handleMenuClick.bind(null, this.props.name)} style={{height: "50px"}}>
                 <select className="ui fluid search selection dropdown" id={'search-select-'+this.props.name.replace(' ','_')} onChange={this.props.menuChange}   >
-                  <option value="">Choose a {this.props.name}  ({HUC_desgination})</option>
+                  <option value="" >Choose a {this.props.name}  ({HUC_desgination})</option>
                   {namesList}
                 </select>
               </div>

@@ -5,7 +5,6 @@ var HeaderComponent = require('../components/HeaderComponent');
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
 var MapRowWrapper = require('../components/MapRowWrapper');
-var HeaderRowWrapper = require('../components/HeaderRowWrapper');
 var MapRowComponent = require('../components/MapRowComponent');
 var ModalAbout = require('../components/ModalAbout');
 import ChartRowContainer from '../containers/ChartRowContainer';
@@ -13,6 +12,7 @@ import MenuContainer from '../containers/MenuContainer';
 
 import {HEADER_HEIGHT ,
   BREAD_CRUMBS_HEIGHT,
+  HEADER_DESCRIPTION_VISIBILITY,
   ROW_PADDING,
   DEF_PAD,
   MAP_HEIGHT,
@@ -77,6 +77,7 @@ var MainComponent = React.createClass({
       const defpad = this.props.default_settings ? this.props.default_settings.defpad : DEF_PAD;
       const chartHeight = this.props.default_settings ? this.props.default_settings.chartHeight : CHART_HEIGHT;
       const columnWidth = is_chart_vis ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
+      const header_description_visibility =  this.props.default_settings ? this.props.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
 
       const HeaderContent = "The purpose of this tool is to display the Division of Mitigation Services Targeted Resource Areas (TRAs) and " +
                       "identify watersheds where ecological and hydrological function can be improved.  " +
@@ -87,7 +88,7 @@ var MainComponent = React.createClass({
       return (
         <div className="ui stackable one column relaxed padded grid">
 
-          <HeaderComponent content={HeaderContent}/>
+          <HeaderComponent content={HeaderContent}  header_description_visibility={header_description_visibility} />
 
 
             <MenuContainer />
@@ -97,7 +98,7 @@ var MainComponent = React.createClass({
             { is_chart_vis &&
               <ChartRowContainer />
             }
-            <MapRowComponent columnWidth={columnWidth}/>
+            <MapRowComponent columnWidth={columnWidth} />
 
           <ModalAbout />
         </div>

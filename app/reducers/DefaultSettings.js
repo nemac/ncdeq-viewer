@@ -6,6 +6,8 @@ export function default_settings(state = [], action) {
       return { ...state, default_settings:  action.default_settings}
     case 'SET_DEFAULT_SETTINGS':
       return { ...state, default_settings:  action.default_settings}
+    case 'UPDATE_HEADER_DESCRIPTION_VISIBILITY':
+      return { ...state, default_settings:  action.default_settings}
     default:
       return state
   }

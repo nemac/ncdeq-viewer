@@ -2,7 +2,6 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 import ChartRowWrapper from '../components/ChartRowWrapper';
 var SectionWrapper = require('./SectionWrapper');
-var HeaderTitleComponent = require('../components/HeaderTitleComponent');
 
 import {
   CHART_WIDTH,
@@ -37,7 +36,7 @@ var ChartRow = React.createClass({
         case 'Phosphorus':
           key_colors = ['#22c355' , '#67e48f']
           break;
-                
+
           case 'Phosphorus Agriculture':
             key_colors = ['#22c355' , '#67e48f']
             break;
@@ -115,6 +114,9 @@ var ChartRow = React.createClass({
     this.props.update_ChartVisiblity();
     //update map height comes after chart vis sp map will resize to full hieght.
     this.props.update_MapHeight();
+
+    //update header vis in action
+    this.props.update_HeaderVis()
 
     //make the leaflet map object is set
     if(this.props.leafletMap){
