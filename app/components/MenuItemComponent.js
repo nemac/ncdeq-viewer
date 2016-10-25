@@ -29,13 +29,7 @@ var MenuItemComponent = React.createClass({
 
     const HUC_desgination = get_HUC(this.props.name);
 
-    //hacky jquery way but it works
-    const geography_level_count = this.props.geography_levels ? this.props.geography_levels.length : 3
-    const full_items_width = $('.geography_levels_holder').width()
-    const three_width = (full_items_width/geography_level_count) <= 250 ? 250 : (full_items_width/geography_level_count) ;
 
-    //change widths based on window width
-    let select_width = three_width + "px"
 
     return (
         <div className="stackable column" style={{width:select_width}}>
