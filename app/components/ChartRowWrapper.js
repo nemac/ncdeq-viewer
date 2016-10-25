@@ -122,7 +122,7 @@ var ChartRowWrapper = React.createClass({
     //get the previous labels
     const previous_label = last_chart.last_chart_label.trim() === "" ?  "Total" : last_chart.last_chart_label;
 
-
+    
     return (
       <div className="item" style={{display: "block"}}>
 
