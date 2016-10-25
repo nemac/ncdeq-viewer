@@ -37,7 +37,7 @@ var ChartRow = React.createClass({
         case 'Phosphorus':
           key_colors = ['#22c355' , '#67e48f']
           break;
-
+                
           case 'Phosphorus Agriculture':
             key_colors = ['#22c355' , '#67e48f']
             break;

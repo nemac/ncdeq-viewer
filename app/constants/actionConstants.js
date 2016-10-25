@@ -2,9 +2,9 @@
 
 //ArcGIS online feature layer id's - each layer in a feautre services has an unique id
 // these refer to those.  put into a const so it can be figured for different sites
-export const BASIN_FEATUREID = 0;
-export const CATALOGING_FEATUREID = 1;
-export const HUC12_FEATUREID = 2;
+// export const BASIN_FEATUREID = 0;
+// export const CATALOGING_FEATUREID = 1;
+// export const HUC12_FEATUREID = 2;
 export const TRA_FEATUREID = 9;
 
 export const HUC12_MAP_FEATUREID = 4;
