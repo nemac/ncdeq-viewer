@@ -470,6 +470,8 @@ var MapContainer = React.createClass({
 
     this.props.set_search_method('clicked')
 
+    //update header vis in action
+    this.props.update_HeaderVis()
 
     //set current geography level in redux state store
     this.props.change_geographyLevelActive("HUC12");

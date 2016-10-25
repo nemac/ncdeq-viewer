@@ -1,15 +1,17 @@
-export const HEADER_HEIGHT = 100;
-export const BREAD_CRUMBS_HEIGHT = 100;
+export const HEADER_HEIGHT = 165;
+export const HEADER_HEIGHT_SMALL = 90;
+export const BREAD_CRUMBS_HEIGHT = 110;
 export const ROW_PADDING = 1;
 export const HEADER_PADDING = 15;
 export const DEF_PAD = 5;
 export const MAP_HEIGHT = 300;
 export const CHART_HEIGHT = 100;
 export const CHART_VISIBILITY = true;
+export const HEADER_DESCRIPTION_VISIBILITY = true;
 export const MAX_SEARCH_ZOOM = 12;
 export const START_POSITION = 0;
 export const CATALOGING_UNIT_FROM_HUC12_END_POISTION = 8;
-export const MAP_HEIGHT_OFFSET = 25;
+export const MAP_HEIGHT_OFFSET = 0;
 export const CHART_BORDER = 30;
 export const CHART_WIDTH_PX = 100;
 

@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 //import actions
-import { set_search_method, get_MenuList, get_ChartData, get_TRAData, change_geographyLevelActive, change_geographyLevelFilter, handleSearchChange, update_ChartVisiblity, update_MapHeight, set_mapToPoint, get_LayerInfo_ByValue } from '../actions/actionCreators'
+import { set_search_method, get_MenuList, get_ChartData, get_TRAData, change_geographyLevelActive, change_geographyLevelFilter, handleSearchChange, update_ChartVisiblity, update_MapHeight, set_mapToPoint, get_LayerInfo_ByValue, update_HeaderVis } from '../actions/actionCreators'
 
 //import components
 import MenuComponent from '../components/MenuComponent'
@@ -48,6 +48,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     set_mapToPoint: bindActionCreators(set_mapToPoint, dispatch),
     get_LayerInfo_ByValue: bindActionCreators(get_LayerInfo_ByValue, dispatch),
     set_search_method: bindActionCreators(set_search_method,dispatch),
+    update_HeaderVis: bindActionCreators(update_HeaderVis, dispatch),
   }
 }
 

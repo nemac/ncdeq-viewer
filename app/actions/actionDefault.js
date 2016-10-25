@@ -2,7 +2,9 @@
 ///   this especially important for Leaflet which needs an absilte hieght to fill
 
 //get constants for default sizes and settings
-import {HEADER_HEIGHT ,
+import {HEADER_HEIGHT,
+        HEADER_HEIGHT_SMALL,
+        HEADER_DESCRIPTION_VISIBILITY,
         BREAD_CRUMBS_HEIGHT,
         ROW_PADDING ,
         DEF_PAD ,
@@ -17,11 +19,11 @@ import {HEADER_HEIGHT ,
         HEADER_PADDING} from '../constants/appConstants'
 
 
-function calculate_NewHeights(state){
+function calculate_NewHeights(state, header_overide){
 
   //when state is not defined yet set to default CHART_VISIBILITY
   var vis = state.chartData.chart_visibility ? state.chartData.chart_visibility : CHART_VISIBILITY;
-
+  const height = header_overide ? HEADER_HEIGHT_SMALL : HEADER_HEIGHT
   const headerHeight = state.default_settings.default_settings ? state.default_settings.default_settings.headerHeight : HEADER_HEIGHT ;
   const breadCrumbsHeight = state.default_settings.default_settings ? state.default_settings.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
   const rowPadding = state.default_settings.default_settings ? state.default_settings.default_settings.rowPadding : ROW_PADDING;
@@ -39,7 +41,7 @@ function calculate_NewHeights(state){
   const leftover = window.innerHeight -
                     (headerHeight + breadCrumbsHeight +
                       (rowPadding*4)
-                    )- (headerPadding*4);
+                    )- (headerPadding*2);
 
 
   let chart_px_width = (window.innerWidth * (CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (CHART_BORDER)
@@ -92,6 +94,7 @@ export function update_ChartHeight(){
       const chartHeight = heights.chartHeight;
       const mapWidth = heights.map_px_width;
       const chartWidth = heights.chart_px_width;
+      const header_description_visibility =  state.default_settings.default_settings ? state.default_settings.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
 
       //create map config object
       const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth};
@@ -115,14 +118,44 @@ export function update_MapHeight(){
       const chartHeight = heights.chartHeight;
       const mapWidth = heights.map_px_width;
       const chartWidth = heights.chart_px_width;
+      const header_description_visibility =  state.default_settings.default_settings ? state.default_settings.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
 
       //create map config object
-      const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth};
+      const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth, header_description_visibility};
 
       dispatch(defaultSate('UPDATE_MAP_HEIGHT',default_settings));
 
     }
 }
+
+export function update_HeaderVis(){
+    return (dispatch, getState) => {
+
+
+      const header_description_visibility = false;
+
+      //get redux state
+      const state = getState();
+      const heights = calculate_NewHeights(state, true);
+
+      const headerHeight = HEADER_HEIGHT_SMALL;
+      const breadCrumbsHeight = state.default_settings.default_settings ? state.default_settings.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
+      const rowPadding = state.default_settings.default_settings ? state.default_settings.default_settings.rowPadding : ROW_PADDING;
+      const defpad = state.default_settings.default_settings ? state.default_settings.default_settings.defpad : DEF_PAD;
+      const mapHeight = heights.mapHeight;
+      const chartHeight = heights.chartHeight;
+      const mapWidth = heights.map_px_width;
+      const chartWidth = heights.chart_px_width;
+
+
+      //create map config object
+      const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth, header_description_visibility};
+
+      dispatch(defaultSate('UPDATE_HEADER_DESCRIPTION_VISIBILITY',default_settings));
+
+    }
+}
+
 //default state
 export function set_defaults(e){
   return (dispatch, getState) => {
@@ -138,10 +171,11 @@ export function set_defaults(e){
     const chartHeight = CHART_HEIGHT;
     const mapWidth = MAP_HEIGHT;
     const chartWidth = CHART_HEIGHT;
+    const header_description_visibility =  state.default_settings.default_settings ? state.default_settings.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
 
 
     //create map config object
-    const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth};
+    const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth, header_description_visibility};
 
     dispatch(defaultSate('SET_DEFAULT_SETTINGS',default_settings));
 

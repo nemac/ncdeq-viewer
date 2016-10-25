@@ -18,6 +18,10 @@ var MenuComponent = React.createClass({
     //toggle chart visibility with button click
     this.props.update_ChartVisiblity();
     this.props.update_MapHeight();
+
+    //update header vis in action
+    this.props.update_HeaderVis()
+
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
@@ -84,6 +88,9 @@ var MenuComponent = React.createClass({
 
     this.props.set_search_method('location searched')
 
+    //update header vis in action
+    this.props.update_HeaderVis()
+
   },
   updateFilters: function(value){
 
@@ -149,6 +156,9 @@ var MenuComponent = React.createClass({
     // //get the current level
     var currentLevel = this.getLevel();
 
+    //update header vis in action
+    this.props.update_HeaderVis()
+
     //get the expected length for the level
     const expectedLength = get_matchEnd(currentLevel);
     const valueLength = e.target.value.length;
@@ -182,6 +192,9 @@ var MenuComponent = React.createClass({
     //set current geography level in redux state store
     this.props.change_geographyLevelActive(val);
     this.props.set_search_method('menu')
+
+    //update header vis in action
+    this.props.update_HeaderVis()
 
   },
   getActive: function(val){
@@ -226,7 +239,7 @@ var MenuComponent = React.createClass({
   render: function() {
     return (
       <div className="html ui top attached  segment">
-        <div className="ui very relaxed stackable divided very relaxed grid" >
+        <div className="ui relaxed stackable divided grid" >
           <div className="row">
             <div className="four wide column" >
               <div className="ui form" >
@@ -235,15 +248,15 @@ var MenuComponent = React.createClass({
                     <i className="search link icon" ></i>
                     Search for a Location
                   </label>
-                  <div className="ui left icon input"  >
+                  <div className="ui left icon input"  style={{height: "50px"}}>
                     <input className="mapSearch" type="text" placeholder="Search for a Location..." onChange={this.handleSearch.bind(null,this)}/>
                     <i className="search link icon" ></i>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="twelve wide column" >
-              <div className="ui three wide column stackable very relaxed grid" >
+            <div className="twelve wide column geography_levels_holder" >
+              <div className="ui three wide column stackable grid" >
                 { this.props.geography_levels &&
                   this.props.geography_levels.map(function(item) {
                     const name = getCategoryName(item.geography_label)
