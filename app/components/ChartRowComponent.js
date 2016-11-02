@@ -320,7 +320,8 @@ var ChartRow = React.createClass({
              //numbers need to be truncated.  rounding results in values such as
              // .999999 to round to 1.0 which is not correct
              if( value ){
-               value = item.properties.chart_value.substring(0,5)
+               //value = item.properties.chart_value.substring(0,5)
+               value = item.properties.chart_value
              }
 
              //convert back to a number type
@@ -439,22 +440,16 @@ var ChartRow = React.createClass({
     //probably need to rename this to describe it better I already got confused
     const tra_point_info = this.props.traPointInfo
 
-    var tra_message = ""
     var tra_message_point = ""
 
-    var tra_text_message = ""
     var tra_text_message_point = ""
 
-    var tra_code = ""
     var tra_code_point = ""
 
-    var success_class = ""
     var success_class_point = ""
 
-    var icon = ""
     var icon_point = ""
 
-    var sub_header = ""
     var sub_header_point = ""
 
     var TRA_OBJ = []
@@ -464,11 +459,6 @@ var ChartRow = React.createClass({
     success_class_point = "ui icon info message"
     icon_point = (<i className="info circle icon"></i>)
     sub_header_point = ""
-
-    tra_text_message = "Please Click on the Map, Search for a location, or Choose something to discover if it is in a TRA"
-    success_class = "ui icon info message"
-    icon = (<i className="info circle icon"></i>)
-    sub_header = ""
 
     //create tra point message.  user clicked on the map or searched for a location
     if(tra_point_info){
@@ -505,36 +495,6 @@ var ChartRow = React.createClass({
 
 
 
-    //make sure the TRA data object is defined
-    //  this is the TRA's in the current geogLevel unless current geogLevel is huc12 then it is huc8 Cataloging Unit
-    if(this.props.tra_data){
-      if(this.props.tra_data.data){
-
-        //if there is data in the object the selected huc does cross a tra
-        if (this.props.tra_data.data.length > 0){
-          tra_text_message = "The "  +  getFriendlyName(this.getLevel()) +  " - (" + chart_filter + ") is in a TRA."
-          success_class = "ui icon success message"
-          icon = (<i className="check circle icon"></i>)
-
-          TRA_OBJ = this.props.tra_data.data.map (feature => {
-            return feature.tra_name
-          })
-
-          const tra_string = TRA_OBJ.toString().split(",").join(", ");
-
-          //list of TRA's
-          sub_header = (<p>This includes the TRA(s): {tra_string}</p>)
-
-        //if there is  no data in the object the select huc does not cross a tra
-        } else {
-          success_class = "ui icon negative message"
-          icon = (<i className="remove circle icon"></i>)
-          tra_text_message = "The "  + getFriendlyName(this.getLevel()) +  " " + chart_filter + " is NOT in a TRA"
-          sub_header = ""
-        }
-      }
-    }
-
   //if the method to get a huc was not a map click or search for location we need
   //  show a message to indicate.  this should stop jumpy and give user
   //  a indication that something can happen
@@ -556,18 +516,6 @@ var ChartRow = React.createClass({
           {sub_header_point}
         </div>
       </div>)
-
-    //TRA in message
-    tra_message = (
-        <div className={success_class} >
-          {icon}
-          <div className="content">
-            <div className="header">
-              {tra_text_message}
-            </div>
-            {sub_header}
-          </div>
-        </div>)
 
     //default text for chart is to give user a push to do an action...
     let chart_cataloging_unit = 'Please Click on the Map, Search for a location, or Choose something to get started.'
@@ -608,14 +556,6 @@ var ChartRow = React.createClass({
             </div>
           </div>
       }
-      { chart_filter &&
-        <div className="ui item" >
-          <div className="content">
-            {tra_message}
-          </div>
-        </div>
-      }
-
 
       { chart_filter &&
         <ChartRowWrapper key="tra"

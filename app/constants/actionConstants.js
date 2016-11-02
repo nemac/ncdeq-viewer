@@ -5,15 +5,16 @@
 // export const BASIN_FEATUREID = 0;
 // export const CATALOGING_FEATUREID = 1;
 // export const HUC12_FEATUREID = 2;
-export const TRA_FEATUREID = 9;
+export const TRA_FEATUREID = 10;
 
 export const HUC12_MAP_FEATUREID = 4;
 export const CATALOGING_MAP_FEATUREID = 5;
 export const BASIN_MAP_FEATUREID = 6;
 export const TRA_MAP_FEATUREID = 3;
+export const NLCD_MAP_FEATUREID = 7;
 
-export const DATA_FEATUREID = 7;
-export const HUC_NAMES_FEATUREID = 8;
+export const DATA_FEATUREID = 8;
+export const HUC_NAMES_FEATUREID = 9;
 
 //encoding constants to use in ArcGIS online api calls
 export const ENCODED_COMMAS = '%2C'

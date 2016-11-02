@@ -86,7 +86,7 @@ var MainComponent = React.createClass({
                       "  To get started click a River Basin on the map, " +
                       "or search for a location to zoom to."
       return (
-        <div className="ui stackable one column relaxed padded grid">
+        <div className="ui stackable one column padded grid">
 
           <HeaderComponent content={HeaderContent}  header_description_visibility={header_description_visibility} />
 
