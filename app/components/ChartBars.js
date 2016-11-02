@@ -123,13 +123,6 @@ var ChartBars = React.createClass({
     }
     return null
   },
-  set_toolTip: function(payload, label){
-    return (
-      <div className="custom-tooltip">
-        <p className="label">{`${label} : ${payload[0].value}`}</p>
-      </div>
-    )
-  },
   set_Info: function(){
 
 
@@ -149,14 +142,28 @@ var ChartBars = React.createClass({
     //  Tell user no chart data Available
     let title;
     const self = this;
+
+    const tooltipstyle = {
+      width: '100%',
+      margin: 0,
+      lineHeight: 24,
+      border: '1px solid #f5f5f5',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      padding: 10,
+    };
+
+    const toolTipLabel = {
+      margin: '0',
+      color: '#666',
+      fontWeight: '700',
+    };
+
     const CustomTooltip  = React.createClass({
       propTypes: {
         type: PropTypes.string,
         payload: PropTypes.array,
         label: PropTypes.string,
       },
-
-
 
       render() {
         const { active } = this.props;
@@ -165,14 +172,25 @@ var ChartBars = React.createClass({
           const { payload, label } = this.props;
 
 
-          payload.map( bar_segment => {
-            html_hov = html_hov + "<span >" + bar_segment.name + ': ' + bar_segment.value + "</span >" ;
+        const thedata =  payload.map( bar_segment => {
+
+           const colors = self.props.get_keyColors(bar_segment.name)
+
+            const toolTipValue = {
+              margin: '0',
+              color: colors[1],
+            }
+            const value = bar_segment.value ?  bar_segment.value.toString().substring(0,5) : 'N/A';
+            const name_and_value = bar_segment.name + ": " + value
+            return ( <p key={bar_segment.name} style={toolTipValue}>{name_and_value}</p>)
           })
-          html_hov = "<span>" + label + "</span>" + html_hov;
-          $("#hdata").html(html_hov);
 
           return (
-          	<div/>
+            <div style={tooltipstyle}>
+              <p style={toolTipLabel}>{`${label}`}</p>
+              {thedata}
+          </div>
+
           );
         }
 
@@ -204,7 +222,7 @@ var ChartBars = React.createClass({
                     margin={{top: 20, right: 30, left: 20, bottom: 5}}  >
             <XAxis dataKey="name" hide={true}/>
             <YAxis hide={true}/>
-            <Tooltip />
+            <Tooltip content={<CustomTooltip/>}/>
             {this.get_bars()}
            </BarChart>
         </div>
