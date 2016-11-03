@@ -470,6 +470,17 @@ export function get_ChartData(id,level){
           ago_get_tra_by_ids(tra_id_list)
            .then( tra_chart_data_response => {
 
+             //also need to get the catchment id to catchment level charts and data.
+             // there should always be one in this object.  so it's safe to assume the
+             // the first item in the array[0]
+             if(state.mapConfig.NLCDPointInfo){
+                  if(state.mapConfig.NLCDPointInfo.features){
+                    console.log("you clicked catchment: "+ state.mapConfig.NLCDPointInfo.features[0].properties.id)
+
+                  }
+             }
+            //  AGO_ChartData_byID()
+
              //add geometry here
              tra_chart_data = CheckReponse(tra_chart_data_response,'AGO_API_ERROR');
 
@@ -571,6 +582,7 @@ export function update_ChartVisiblity (visibility){
 
     }
 }
+
 
 //function to handle sending to reducer and store
 function ChartLevels(type, levels, chart_limits) {

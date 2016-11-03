@@ -19,6 +19,7 @@ const mapStateToProps = (state,props) => {
   let geography_levels = state.geography_levels.geography_levels;
   let layerInfo = state.mapConfig.layerinfo;
   let traPointInfo = state.mapConfig.traPointInfo;
+  let NLCDPointInfo = state.mapConfig.NLCDPointInfo;
   let huc8Info = state.mapConfig.huc8Info;
   let searchMethod = state.mapConfig.searchMethod;
   let traInfo = state.mapConfig.traInfo;
@@ -34,6 +35,7 @@ const mapStateToProps = (state,props) => {
     traPointInfo,
     huc8Info,
     searchMethod,
+    NLCDPointInfo,
   }
 }
 

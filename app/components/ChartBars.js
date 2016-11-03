@@ -176,13 +176,19 @@ var ChartBars = React.createClass({
 
            const colors = self.props.get_keyColors(bar_segment.name)
 
-            const toolTipValue = {
+            const toolTipName = {
               margin: '0',
               color: colors[1],
             }
+
+            const toolTipValue = {
+              fontWeight: '800',
+            }
+
             const value = bar_segment.value ?  bar_segment.value.toString().substring(0,5) : 'N/A';
-            const name_and_value = bar_segment.name + ": " + value
-            return ( <p key={bar_segment.name} style={toolTipValue}>{name_and_value}</p>)
+            const name = bar_segment.name + ": "
+
+            return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
           })
 
           return (
