@@ -157,7 +157,18 @@ var ChartBars = React.createClass({
       color: '#666',
       fontWeight: '700',
     };
+    const CustomizedLabelX = React.createClass({
+      render () {
+        const {x, y, stroke, payload, height} = this.props;
 
+       	return (
+          <g>
+            <text x={x} y={y} fill={stroke} fontSize={10} textAnchor="end">{this.props.bottom_label}</text>
+            <text x={x} y={height} fill={stroke} fontSize={10} textAnchor="end">{this.props.top_label}</text>
+          </g>
+        )
+      }
+    });
     const CustomTooltip  = React.createClass({
       propTypes: {
         type: PropTypes.string,
@@ -226,8 +237,8 @@ var ChartBars = React.createClass({
                     height={200}
                     data={this.props.chart_data}
                     margin={{top: 20, right: 30, left: 20, bottom: 5}}  >
-            <XAxis dataKey="name" hide={true}/>
-            <YAxis hide={true}/>
+            <XAxis dataKey="name" hide={false} tick={false} label={<CustomizedLabelX top_label={this.props.top_label} bottom_label={this.props.bottom_label}/>} tickLine={false} axisLine={false} />
+            <YAxis hide={false} tick={false} tickCount={2} tickLine={false} axisLine={false} />
             <Tooltip content={<CustomTooltip/>}/>
             {this.get_bars()}
            </BarChart>

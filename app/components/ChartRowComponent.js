@@ -575,6 +575,8 @@ var ChartRow = React.createClass({
           update_ChartLevels={this.props.update_ChartLevels}
           update_ChartMatchId={this.props.update_ChartMatchId}
           get_keyColors={this.get_keyColors}
+          top_label=""
+          bottom_label=""
           />
         }
         { chart_filter &&
@@ -595,6 +597,8 @@ var ChartRow = React.createClass({
           update_ChartLevels={this.props.update_ChartLevels}
           update_ChartMatchId={this.props.update_ChartMatchId}
           get_keyColors={this.get_keyColors}
+          top_label="Most Impaired"
+          bottom_label="Least Impaired"
           />
         }
         { chart_filter &&
@@ -615,6 +619,8 @@ var ChartRow = React.createClass({
            update_ChartLevels={this.props.update_ChartLevels}
            update_ChartMatchId={this.props.update_ChartMatchId}
            get_keyColors={this.get_keyColors}
+           top_label="Most Potential"
+           bottom_label="Least Potential"
            />
          }
 
