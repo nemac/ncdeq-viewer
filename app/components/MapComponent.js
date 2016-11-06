@@ -154,12 +154,12 @@ var MapContainer = React.createClass({
     //add a click event to the new layer so the new layer does not steal the state...
     //  w/out this when a user clicked on geojson like a huc 6 or huc 8 (riverbasin or Cataloging unit)
     //  nothing would happen.
+    var mapClickHandler = this.handleMapClick
 
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     if(layer){
-      const mapClickHandler = this.handleMapClick
-      layer.on('click', function(e,mapClickHandler) {
-        mapClickHandler.bind(null,this)
+      layer.on('click', function(e, mapClickHandler) {
+        this.handleMapClick.bind(null,this)
       }.bind(this));
     }
 
@@ -467,7 +467,7 @@ var MapContainer = React.createClass({
     }
   },
   handleMapClick: function(e,self){
-
+    console.log('map click')
     this.props.set_search_method('clicked')
 
     //update header vis in action
@@ -527,7 +527,13 @@ var MapContainer = React.createClass({
           onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
 
-
+      <ESRITileMapLayer
+       url="http://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/Catchments/MapServer"
+       setMapLayers={this.props.set_MapLayers}
+       name="Catchments"
+       min_zoom="12"
+       onLeafletClick={this.handleMapClick.bind(null,this)}
+       />
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc12/MapServer"
        setMapLayers={this.props.set_MapLayers}

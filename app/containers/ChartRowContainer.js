@@ -12,6 +12,7 @@ const mapStateToProps = (state,props) => {
     chart_levels: state.chartData.chart_levels,
     tra_data: state.traData.tra_data,
     traPointInfo: state.mapConfig.traPointInfo,
+    NLCDPointInfo: state.mapConfig.NLCDPointInfo,
     traInfo: state.mapConfig.traInfo,
     huc8Info: state.mapConfig.huc8Info,
     searchMethod: state.mapConfig.searchMethod,
