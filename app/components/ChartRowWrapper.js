@@ -108,21 +108,21 @@ var ChartRowWrapper = React.createClass({
 
     //set up all messaging for drilldowns
     const keyback = "back";
-    const backtext = ( at_top ? ' Top Category ' : " Back ");
+    const backtext = ( at_top ? ' Functon ' : " Back ");
     const last_chart_level = last_chart.last_chart_level;
     const last_matchid = last_chart.last_chart_matchid;
     const last_chart_type  = this.props.chart_type;
     const key_back_class = ( at_top ? 'ui tiny black basic button' : 'ui tiny grey button' );
 
     //return the chart and drill downs
-    const drilldown_note = 'Click a category to drill down into '
+    const drilldown_note = 'Click a function to drill down '
 
     //no next level text
     const no_next_level = "There is nothing else to drill into"
     //get the previous labels
     const previous_label = last_chart.last_chart_label.trim() === "" ?  "Total" : last_chart.last_chart_label;
 
-    
+
     return (
       <div className="item" style={{display: "block"}}>
 
@@ -140,9 +140,7 @@ var ChartRowWrapper = React.createClass({
 
           <div className="meta">
             <span className="note">{drilldown_note}
-              <button className="ui disabled button" style={{"backgroundColor":  "grey", "color": "white"}}>
-                {previous_label}
-              </button>
+
               {!is_next_valid &&
               <button className="ui red basic button" >
                 {no_next_level}
