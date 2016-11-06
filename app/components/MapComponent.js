@@ -159,7 +159,7 @@ var MapContainer = React.createClass({
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     if(layer){
       layer.on('click', function(e, mapClickHandler) {
-        this.handleMapClick.bind(null,this)
+        mapClickHandler.bind(null,this)
       }.bind(this));
     }
 
