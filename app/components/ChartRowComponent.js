@@ -620,8 +620,8 @@ var ChartRow = React.createClass({
            update_ChartLevels={this.props.update_ChartLevels}
            update_ChartMatchId={this.props.update_ChartMatchId}
            get_keyColors={this.get_keyColors}
-           top_label="Most Potential"
-           bottom_label="Least Potential"
+           top_label="More Potential"
+           bottom_label="Less Potential"
            level_label={this.getLevel()}
            />
          }
