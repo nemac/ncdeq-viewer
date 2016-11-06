@@ -159,23 +159,34 @@ var ChartBars = React.createClass({
     };
     const CustomizedLabelX = React.createClass({
       render () {
-        const {x, y, stroke, payload, height} = this.props;
-        const x_offset = -10
+        const {x, y, stroke, payload, height, width} = this.props;
+        const newx = (this.props.viewBox.width)/2;
+        const message = this.props.level_label + "'s"
+        const y_offset = 15
        	return (
-          <g>
-            <text x={x} y={y} dx={x_offset} fill={stroke} fontSize={10} textAnchor="end">{this.props.bottom_label}</text>
-            <text x={x} y={height} dx={x_offset} fill={stroke} fontSize={10} textAnchor="end">{this.props.top_label}</text>
-          </g>
+          <text x={width/2} y={y} dy={y_offset} fill={stroke} fontSize={10} textAnchor="middle">{message}</text>
         )
       }
     });
     const CustomizedLabelY = React.createClass({
       render () {
         const {x, y, stroke, payload, width, height} = this.props;
-        const newx = (this.props.viewBox.width)/2;
-        const newy = 50
+
         const message = this.props.level_label + "'s"
-       	return <text x={newx} y={height} dy={newy}  fill={stroke} fontSize={10} textAnchor="middle">{message}</text>
+        const x_offset = 45
+        const y_offset = 20
+        const top_label_array = this.props.top_label.toString().split(" ")
+
+        return (
+          <g>
+            <text x={x} y={y-10} dy={y_offset} dx={x_offset} fill={stroke} fontSize={10} textAnchor="end">
+              <tspan>{this.props.top_label}</tspan>
+              </text>
+            <text x={x} y={height} dy={y_offset} dx={x_offset} fill={stroke} fontSize={10} textAnchor="end">
+              <tspan>{this.props.bottom_label}</tspan>
+            </text>
+          </g>
+        )
       }
     });
     const CustomTooltip  = React.createClass({
@@ -246,8 +257,8 @@ var ChartBars = React.createClass({
                     height={200}
                     data={this.props.chart_data}
                     margin={{top: 20, right: 30, left: 20, bottom: 5}}  >
-            <XAxis dataKey="name" hide={false} tick={false} label={<CustomizedLabelX top_label={this.props.top_label} bottom_label={this.props.bottom_label}/>} tickLine={false} axisLine={false} />
-            <YAxis hide={false} label={<CustomizedLabelY level_label={this.props.level_label}/>} tick={false} tickLine={false} axisLine={false} />
+            <XAxis  dataKey="name" hide={false} tick={false} label={<CustomizedLabelX level_label={this.props.level_label}/>} tickLine={false} axisLine={false} />
+            <YAxis width={50} hide={false} label={<CustomizedLabelY top_label={this.props.top_label} bottom_label={this.props.bottom_label} />} tick={false} tickLine={false} axisLine={false} />
             <Tooltip content={<CustomTooltip level_label={this.props.level_label}/>}/>
             {this.get_bars()}
            </BarChart>
