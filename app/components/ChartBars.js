@@ -160,13 +160,22 @@ var ChartBars = React.createClass({
     const CustomizedLabelX = React.createClass({
       render () {
         const {x, y, stroke, payload, height} = this.props;
-
+        const x_offset = -10
        	return (
           <g>
-            <text x={x} y={y} fill={stroke} fontSize={10} textAnchor="end">{this.props.bottom_label}</text>
-            <text x={x} y={height} fill={stroke} fontSize={10} textAnchor="end">{this.props.top_label}</text>
+            <text x={x} y={y} dx={x_offset} fill={stroke} fontSize={10} textAnchor="end">{this.props.bottom_label}</text>
+            <text x={x} y={height} dx={x_offset} fill={stroke} fontSize={10} textAnchor="end">{this.props.top_label}</text>
           </g>
         )
+      }
+    });
+    const CustomizedLabelY = React.createClass({
+      render () {
+        const {x, y, stroke, payload, width, height} = this.props;
+        const newx = (this.props.viewBox.width)/2;
+        const newy = 50
+        const message = this.props.level_label + "'s"
+       	return <text x={newx} y={height} dy={newy}  fill={stroke} fontSize={10} textAnchor="middle">{message}</text>
       }
     });
     const CustomTooltip  = React.createClass({
@@ -204,7 +213,7 @@ var ChartBars = React.createClass({
 
           return (
             <div style={tooltipstyle}>
-              <p style={toolTipLabel}>{`${label}`}</p>
+              <p style={toolTipLabel}>{this.props.level_label}: {`${label}`}</p>
               {thedata}
           </div>
 
@@ -238,8 +247,8 @@ var ChartBars = React.createClass({
                     data={this.props.chart_data}
                     margin={{top: 20, right: 30, left: 20, bottom: 5}}  >
             <XAxis dataKey="name" hide={false} tick={false} label={<CustomizedLabelX top_label={this.props.top_label} bottom_label={this.props.bottom_label}/>} tickLine={false} axisLine={false} />
-            <YAxis hide={false} tick={false} tickCount={2} tickLine={false} axisLine={false} />
-            <Tooltip content={<CustomTooltip/>}/>
+            <YAxis hide={false} label={<CustomizedLabelY level_label={this.props.level_label}/>} tick={false} tickLine={false} axisLine={false} />
+            <Tooltip content={<CustomTooltip level_label={this.props.level_label}/>}/>
             {this.get_bars()}
            </BarChart>
         </div>

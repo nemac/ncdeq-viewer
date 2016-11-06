@@ -427,7 +427,6 @@ var ChartRow = React.createClass({
     //get the tra chart filtered by the user selected huc
     let tra_data_limited = this.getChart_FilteredByHUC(tra_data[0], chart_filter);
 
-
     let chart_baseline_bar = [];
     let chart_upflift_bar = [];
     let chart_tar_bar = [];
@@ -577,6 +576,7 @@ var ChartRow = React.createClass({
           get_keyColors={this.get_keyColors}
           top_label=""
           bottom_label=""
+          level_label={"TRA"}
           />
         }
         { chart_filter &&
@@ -599,6 +599,7 @@ var ChartRow = React.createClass({
           get_keyColors={this.get_keyColors}
           top_label="Most Impaired"
           bottom_label="Least Impaired"
+          level_label={this.getLevel()}
           />
         }
         { chart_filter &&
@@ -621,6 +622,7 @@ var ChartRow = React.createClass({
            get_keyColors={this.get_keyColors}
            top_label="Most Potential"
            bottom_label="Least Potential"
+           level_label={this.getLevel()}
            />
          }
 

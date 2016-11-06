@@ -199,6 +199,7 @@ var ChartRowWrapper = React.createClass({
                                     get_keyColors={this.props.get_keyColors}
                                     top_label={this.props.top_label}
                                     bottom_label={this.props.bottom_label}
+                                    level_label={this.props.level_label}
                                     />
         </div>
       </div>
