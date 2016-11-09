@@ -473,12 +473,12 @@ export function get_ChartData(id,level){
              //also need to get the catchment id to catchment level charts and data.
              // there should always be one in this object.  so it's safe to assume the
              // the first item in the array[0]
-             if(state.mapConfig.NLCDPointInfo){
-                  if(state.mapConfig.NLCDPointInfo.features){
-                    console.log("you clicked catchment: "+ state.mapConfig.NLCDPointInfo.features[0].properties.id)
-
-                  }
-             }
+            //  if(state.mapConfig.NLCDPointInfo){
+            //       if(state.mapConfig.NLCDPointInfo.features){
+            //         console.log("you clicked catchment: "+ state.mapConfig.NLCDPointInfo.features[0].properties.ID)
+             //
+            //       }
+            //  }
             //  AGO_ChartData_byID()
 
              //add geometry here

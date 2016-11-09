@@ -170,6 +170,34 @@ var MapContainer = React.createClass({
     // need to functionise this.
     if (prevProps){
 
+      if(this.props.NLCDPointInfo){
+        if(this.props.NLCDPointInfo.features){
+
+          //current catchment
+          let current_catchment = this.props.NLCDPointInfo.features[0].properties.ID
+          let last_catchment = 'not sure';
+
+          // prevouis catchment
+          if(prevProps.NLCDPointInfo){
+            if(prevProps.NLCDPointInfo.features){
+              last_catchment = prevProps.NLCDPointInfo.features[0].properties.ID;
+            }
+          }
+
+          let LastTRAFeatures;
+
+          if(current_catchment != last_catchment){
+            console.log("you clicked catchment: " +  current_catchment)
+            console.log("last clicked catchment: " +  last_catchment)
+
+            console.log(this.props.searchMethod)
+          }
+
+
+       }
+      }
+
+
             //checks for adding tra data on chart click
             if(this.props.traInfo){
               let LastTRAFeatures;
@@ -211,7 +239,7 @@ var MapContainer = React.createClass({
 
                     //when the last features JSON and Current Features JSON do not match
                     //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
-                    if(CurrentTRAFeatures[0].properties.id != LastTRAFeatures[0].properties.id){
+                    if(CurrentTRAFeatures[0].properties.ID != LastTRAFeatures[0].properties.ID){
 
                       //add geojson
                       this.tra_GeoJson(CurrentTRAFeatures)
@@ -467,7 +495,7 @@ var MapContainer = React.createClass({
     }
   },
   handleMapClick: function(e,self){
-    console.log('map click')
+
     this.props.set_search_method('clicked')
 
     //update header vis in action
@@ -484,6 +512,10 @@ var MapContainer = React.createClass({
 
     //get the attributes of the huc12 layer on a user click
     this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
+
+    console.log('map click')
+
+
 
   },
   getInitialState: function() {

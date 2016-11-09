@@ -466,7 +466,7 @@ var ChartRow = React.createClass({
 
         //walk over all the tra points and make the ids (names) into an array
         TRA_OBJ = tra_point_info.features.map (feature => {
-          return feature.properties.id
+          return feature.properties.ID
         })
 
         //make the tra array into comma delimited string
