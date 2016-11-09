@@ -16,6 +16,8 @@ function mapStateToProps(state) {
   let fetching_chart = state.fetching_chart.fetching_chart;
   let fetching_map = state.fetching_map.fetching_map;
   let fetching_tra = state.fetching_tra.fetching_tra;
+  let NLCDData = state.NLCDDATA.NLCDData;
+
 
   return {
     DefaultMenuLists,
@@ -27,7 +29,8 @@ function mapStateToProps(state) {
     leafletMap,
     fetching_chart,
     fetching_map,
-    fetching_tra
+    fetching_tra,
+    NLCDData,
   }
 }
 

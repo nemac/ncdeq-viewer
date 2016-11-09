@@ -32,7 +32,7 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
 
    //build the query to arcgis online api for getting the raw chart data
    const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
-                   '?where=id%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
+                   '?where=chart_value+is+not+null+and+ID%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
                    '&objectIds=' +
                    '&time=' +
                    '&resultType=' +

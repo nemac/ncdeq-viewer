@@ -218,13 +218,17 @@ var ChartRow = React.createClass({
     //returned the filtered chart data
     return chart_data_limited
   },
-  getChat_GroupSum: function(chart_data){
+  getChart_GroupSum: function(chart_data){
     //returns an array of hucs and their summed value for any level
     // get unique set of of hucs and sum their values.
     // this will ensure the sum of the values for the chart level are aggregated
     const groupsum = chart_data.reduce(function(acc, x) {
+
+      //capture null values....
+      const chart_value =  Number([x.properties.chart_value] ) ? Number([x.properties.chart_value] ) : Number(0);
+
       // first check if the given group is in the object
-      acc[x.properties.ID + '_' + x.properties.chart_matchid] = acc[x.properties.ID + '_' + x.properties.chart_matchid] ?  acc[x.properties.ID + '_' + x.properties.chart_matchid] + Number([x.properties.chart_value] ): Number([x.properties.chart_value]);
+      acc[x.properties.ID + '_' + x.properties.chart_matchid] = acc[x.properties.ID + '_' + x.properties.chart_matchid] ?  acc[x.properties.ID + '_' + x.properties.chart_matchid] + chart_value : chart_value;
 
       return acc;
 
@@ -238,7 +242,11 @@ var ChartRow = React.createClass({
     // will use this to loop through and create the chart values
 
     //get the hucs grouped and summed (grouped by the huc and the machted chart id which is the next level up chart...)
-    const grouped_sum =  this.getChat_GroupSum(chart_data)
+    const grouped_sum =  this.getChart_GroupSum(chart_data)
+
+    // Object.keys(grouped_sum).map( test => {
+    //   console.log(test + " = " + grouped_sum[test])
+    // })
 
     //now sort the grouped hucs
     const sorted_hucs = Object.keys(grouped_sum).sort(function (a, b) {
@@ -530,7 +538,7 @@ var ChartRow = React.createClass({
     const working_message = this.props.fetching_chart || this.props.fetching_tra || this.props.fetching_map ? "loading..." : ""
     const working_class = this.props.fetching_chart|| this.props.fetching_tra  || this.props.fetching_map ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
     const working_key = this.props.title  + '-working'
-
+    const ncld_chart_data = this.props.NLCDData ? JSON.stringify(this.props.NLCDData) : "click on map to get landuse landover"
     return (
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
         <div className={working_class}>
@@ -625,7 +633,7 @@ var ChartRow = React.createClass({
            level_label={this.getLevel()}
            />
          }
-
+         <div>{ncld_chart_data}</div>
       </div>
     </div>
     );
