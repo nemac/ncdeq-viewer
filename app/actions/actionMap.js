@@ -28,7 +28,7 @@ function AGO_get_LayerInfo_ByValue(value, layer_id){
 
   //until I can change the TRA data to match the schemas of the huc files I need to change the field name from vaue to id.
   if(layer_id === TRA_MAP_FEATUREID){
-    value_field_name = 'id'
+    value_field_name = 'ID'
   }
 
   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + layer_id + '/query' +
