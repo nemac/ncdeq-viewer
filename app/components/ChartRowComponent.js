@@ -1,6 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 import ChartRowWrapper from '../components/ChartRowWrapper';
+import ChartPie from '../components/ChartPie';
 var SectionWrapper = require('./SectionWrapper');
 
 import {
@@ -538,7 +539,23 @@ var ChartRow = React.createClass({
     const working_message = this.props.fetching_chart || this.props.fetching_tra || this.props.fetching_map ? "loading..." : ""
     const working_class = this.props.fetching_chart|| this.props.fetching_tra  || this.props.fetching_map ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
     const working_key = this.props.title  + '-working'
-    const ncld_chart_data = this.props.NLCDData ? JSON.stringify(this.props.NLCDData) : "click on map to get landuse landover"
+
+    //land use land cover data
+    const NLCDData = this.props.NLCDData ? this.props.NLCDData.features : []
+    const NLCD_ID_obj = this.props.NLCDPointInfo ? this.props.NLCDPointInfo : []
+    const NLCD_ID = NLCD_ID_obj.features ? NLCD_ID_obj.features[0].properties.ID : []
+
+    const filtered_nlcd_data = NLCDData.filter( data => {
+      return data.properties.chart_level === 2
+    })
+
+    const ncld_chart_data = filtered_nlcd_data.map( nlcd => {
+      const level = nlcd.properties.chart_level
+      const name = nlcd.properties.chart_level_label;
+      const value = Number(nlcd.properties.chart_value);
+      return {name, value}
+    })
+
     return (
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
         <div className={working_class}>
@@ -633,7 +650,14 @@ var ChartRow = React.createClass({
            level_label={this.getLevel()}
            />
          }
-         <div>{ncld_chart_data}</div>
+         { ncld_chart_data &&
+           <ChartPie
+             chart_width={chart_width_px}
+             title="Landuse-Landcover"
+             title_description=""
+             note={"Landuse-Landcover for catchment: " + NLCD_ID}
+             chart_data={ncld_chart_data} />
+         }
       </div>
     </div>
     );

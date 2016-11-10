@@ -187,10 +187,10 @@ var MapContainer = React.createClass({
           let LastTRAFeatures;
 
           if(current_catchment != last_catchment){
-            console.log("you clicked catchment: " +  current_catchment)
-            console.log("last clicked catchment: " +  last_catchment)
-
-            console.log(this.props.searchMethod)
+            // console.log("you clicked catchment: " +  current_catchment)
+            // console.log("last clicked catchment: " +  last_catchment)
+            this.props.get_nlcd_data(current_catchment)
+            // console.log(this.props.searchMethod)
           }
 
 

@@ -429,11 +429,13 @@ export function get_nlcd_data(id,level){
           NLCDData('GET_NLCD_DATA', nlcd_data)
         )
 
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
+        
       })
       .catch(error => { console.log('request failed', error); });
 
-    //end fetching set fetching state to false
-    dispatch(fetching_end())
+
   }
 }
 //
