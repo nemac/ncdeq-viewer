@@ -650,12 +650,12 @@ var ChartRow = React.createClass({
            level_label={this.getLevel()}
            />
          }
-         { ncld_chart_data &&
+         { ncld_chart_data.length > 0 &&
            <ChartPie
              chart_width={chart_width_px}
-             title="Landuse-Landcover"
+             title="Landuse-Landcover (Catchment)"
              title_description=""
-             note={"Landuse-Landcover for catchment: " + NLCD_ID}
+             note={"For Catchment: " + NLCD_ID}
              chart_data={ncld_chart_data} />
          }
       </div>
