@@ -605,7 +605,7 @@ var MapContainer = React.createClass({
         />
 
       <ESRITileMapLayer
-       url="http://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/Catchments/MapServer"
+       url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/Catchments/MapServer"
        setMapLayers={this.props.set_MapLayers}
        name="Catchments"
        min_zoom="12"
