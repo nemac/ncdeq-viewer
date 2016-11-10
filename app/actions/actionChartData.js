@@ -59,7 +59,7 @@ function AGO_AllChartData_byID(hucid, current_geography_level){
 
    //build the query to arcgis online api for getting the raw chart data
    const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
-                   '?where=ID+like+%27' + id + '%25%27+and+geography_level%3D'+ next_level + //'+and+chart_type%3D%27' + CHART_TYPE + '%27' +
+                   '?where=chart_value+is+not+null+and+ID+like+%27' + id + '%25%27+and+geography_level%3D'+ next_level + //'+and+chart_type%3D%27' + CHART_TYPE + '%27' +
                    '&objectIds=' +
                    '&time=' +
                    '&resultType=none' +
@@ -81,7 +81,7 @@ function AGO_AllChartData_byID(hucid, current_geography_level){
 //   requires the id to search
 function AGO_ChartData_byID(id){
    const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
-                     '?where=id%3D%27' + id + '%27' + //' +and+chart_type%3D%27' + CHART_TYPE + '%27' +
+                     '?where=chart_value+is+not+null+and+ID%3D%27' + id + '%27' + //' +and+chart_type%3D%27' + CHART_TYPE + '%27' +
                      '&objectIds=' +
                      '&time=' +
                      '&resultType=none' +
@@ -153,7 +153,7 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
 
    //build the query to arcgis online api for getting the raw chart data
    const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
-                   '?where=id%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
+                   '?where=ID%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
                    '&objectIds=' +
                    '&time=' +
                    '&resultType=' +
@@ -178,7 +178,7 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
 function ago_getChartLevels(){
 
      const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
-                          '?where=OBJECTID+>+0+and+chart_matchid+<>+chart_id' +
+                          '?where=chart_value+is+not+null+and+OBJECTID+>+0+and+chart_matchid+<>+chart_id' +
                           '&objectIds=' +
                           '&time=' +
                           '&resultType=none' +
@@ -203,7 +203,7 @@ function ago_getChartLevels(){
 function ago_getPreviousChart(chart_level, chart_id){
 
      const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
-                          '?where=chart_level+%3D+' + chart_level + '+and+chart_id+%3D+' + chart_id  + //' chart_type+%3D+%27' + chart_type + '%27'
+                          '?where=chart_value+is+not+null+and+chart_level+%3D+' + chart_level + '+and+chart_id+%3D+' + chart_id  + //' chart_type+%3D+%27' + chart_type + '%27'
                           '&objectIds=' +
                           '&time=' +
                           '&resultType=none' +
@@ -413,6 +413,31 @@ export function get_ChartLevels(id,level){
   }
 }
 
+export function get_nlcd_data(id,level){
+  return (dispatch,getState) => {
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
+    AGO_ChartData_byID(id)
+      .then( nlcd_response => {
+
+        //add geometry here
+        const nlcd_data = CheckReponse(nlcd_response,'AGO_API_ERROR');
+
+        //send the chart data on
+        dispatch(
+          NLCDData('GET_NLCD_DATA', nlcd_data)
+        )
+
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
+        
+      })
+      .catch(error => { console.log('request failed', error); });
+
+
+  }
+}
 //
 export function get_ChartData(id,level){
     return (dispatch,getState) => {
@@ -620,6 +645,11 @@ function ChartData(type, visibility, types) {
    receivedAt: Date.now()
  }
 }
+
+function NLCDData(type, data){
+  return {type: type, NLCDData: data}
+}
+
 
 function fetching_start(){
   return {type: "FETCHING_CHART", fetching: true}

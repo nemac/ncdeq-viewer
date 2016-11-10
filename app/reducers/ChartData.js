@@ -13,6 +13,15 @@ export function chartData(state = [], action) {
   }
 }
 
+export function NLCDDATA(state = [], action){
+  switch (action.type) {
+    case 'GET_NLCD_DATA':
+      return {...state, NLCDData: action.NLCDData}
+    default:
+      return state
+  }
+}
+
 export function fetching_chart(state = [], action){
   switch (action.type) {
     case 'FETCHING_CHART':
