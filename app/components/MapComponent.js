@@ -19,6 +19,7 @@ var PropTypes = React.PropTypes;
 var TempLayer;
 var TempZoomLayer;
 var TempTraLayer;
+var TempCatchmentLayer;
 
 var MapContainer = React.createClass({
   handleResize: function(){
@@ -66,6 +67,45 @@ var MapContainer = React.createClass({
 
     //return the layer
     return TempLayer
+
+  },
+  catchment_GeoJson: function(features){
+    //get the leaflet Map object
+    const leafletMap = this.props.leafletMap.leafletMap;
+
+    //check if the layer has been added yes it is global varriable :)
+    const isLayerVis = leafletMap.hasLayer(TempCatchmentLayer);
+
+    //if a geojson layer has been added remove it.
+    //  eventually we want to only remove when user elects too.
+    if (isLayerVis){
+      leafletMap.removeLayer(TempCatchmentLayer)
+    }
+
+    //add a blank layer to leaflet
+    TempCatchmentLayer = L.geoJson().addTo(leafletMap);
+
+    //add the GeoJSON data to the layer
+    TempCatchmentLayer.addData(features);
+
+    //zoom highlights need to move this to varriable
+    TempCatchmentLayer.setStyle({
+      fillColor :'grey',
+      stroke: true,
+      weight: 12,
+      opacity: 0.4,
+      color: 'grey',
+      fillOpacity: 0.0
+    })
+
+
+    //when geojson is added on top of map.  it also needs a map click handler enabled.
+    this.add_GeoJSON_ClickEvent(TempCatchmentLayer);
+
+    leafletMap.invalidateSize();
+
+    //return the layer
+    return TempCatchmentLayer
 
   },
   tra_GeoJson: function(features){
@@ -176,6 +216,7 @@ var MapContainer = React.createClass({
           //current catchment
           let current_catchment = this.props.NLCDPointInfo.features[0].properties.ID
           let last_catchment = 'not sure';
+          const current_catchment_features = this.props.NLCDPointInfo.features;
 
           // prevouis catchment
           if(prevProps.NLCDPointInfo){
@@ -191,6 +232,10 @@ var MapContainer = React.createClass({
             // console.log("last clicked catchment: " +  last_catchment)
             this.props.get_nlcd_data(current_catchment)
             // console.log(this.props.searchMethod)
+            //add geojson
+            this.catchment_GeoJson(current_catchment_features)
+
+
           }
 
 
