@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 //import actions
-import { set_search_method, get_defaultMapData, HandleMapEnd, set_mapToPoint, update_ChartVisiblity, update_MapHeight, get_ChartData, change_geographyLevelActive,  change_geographyLevelFilter, set_MapLayers, set_LeafletMap, get_LayerInfo_ByPoint, update_HeaderVis, get_nlcd_data} from '../actions/actionCreators'
+import { set_search_method, get_defaultMapData, HandleMapEnd, set_mapToPoint, update_ChartVisiblity, update_MapHeight, get_ChartData, change_geographyLevelActive,  change_geographyLevelFilter, set_MapLayers, set_LeafletMap, get_LayerInfo_ByPoint, update_HeaderVis, get_nlcd_data, get_catchment_data} from '../actions/actionCreators'
 
 //import components
 import MapComponent from '../components/MapComponent'
@@ -55,6 +55,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     set_search_method: bindActionCreators(set_search_method,dispatch),
     update_HeaderVis: bindActionCreators(update_HeaderVis, dispatch),
     get_nlcd_data: bindActionCreators(get_nlcd_data, dispatch),
+    get_catchment_data: bindActionCreators(get_catchment_data, dispatch),
 
   }
 }

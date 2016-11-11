@@ -27,6 +27,7 @@ export const get_TRAData = ActionTRA.get_TRAData;
 export const get_ChartLevels = ChartData.get_ChartLevels;
 export const update_ChartLevels = ChartData.update_ChartLevels;
 export const get_nlcd_data = ChartData.get_nlcd_data;
+export const get_catchment_data = ChartData.get_catchment_data;
 
 //map data and state actions
 export const get_defaultMapData = MapConfig.get_defaultMapData;

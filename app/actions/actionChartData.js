@@ -103,6 +103,30 @@ function AGO_ChartData_byID(id){
 }
 
 
+//get chart data for a single catchemnt id
+//   requires the id to search
+function AGO_ChartData_Catchment_byID(id, geography_level){
+   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+                     '?where=chart_value+is+not+null+and+ID%3D%27' + id + '%27' +  '+and+geography_label%3D%27' + geography_level + '%27' +
+                     '&objectIds=' +
+                     '&time=' +
+                     '&resultType=none' +
+                     '&outFields=' + CHART_DATA_OUT_FIELDS +
+                     '&returnIdsOnly=false' +
+                     '&returnCountOnly=false' +
+                     '&returnDistinctValues=true' +
+                     '&orderByFields=' +  CHART_DATA_ORDER_BY_FIELDS +
+                     '&groupByFieldsForStatistics=' +
+                     '&outStatistics=' +
+                     '&resultOffset=' +
+                     '&resultRecordCount=' +
+                     '&f=pgeojson' +
+                     '&token=';
+
+  //send the ajax request via axios
+  return axios.get(query_URL);
+
+}
 //get chart data from data api
 function ago_get_tra_by_ids( id_list){
 
@@ -413,12 +437,13 @@ export function get_ChartLevels(id,level){
   }
 }
 
+//nlcd data from api
 export function get_nlcd_data(id,level){
   return (dispatch,getState) => {
     //start fetching state (set to true)
     dispatch(fetching_start())
 
-    AGO_ChartData_byID(id)
+    AGO_ChartData_Catchment_byID(id, 'NLCD_Catchments')
       .then( nlcd_response => {
 
         //add geometry here
@@ -438,6 +463,35 @@ export function get_nlcd_data(id,level){
 
   }
 }
+
+
+//catchment data from api
+export function get_catchment_data(id,level){
+  return (dispatch,getState) => {
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
+    AGO_ChartData_Catchment_byID(id, 'catchments_baseline')
+      .then( catchment_response => {
+
+        //add geometry here
+        const catchment_data = CheckReponse(catchment_response,'AGO_API_ERROR');
+
+        //send the chart data on
+        dispatch(
+          CATCHMENTData('GET_CATCHMENT_DATA', catchment_data)
+        )
+
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
+
+      })
+      .catch(error => { console.log('request failed', error); });
+
+
+  }
+}
+
 //
 export function get_ChartData(id,level){
     return (dispatch,getState) => {
@@ -614,6 +668,10 @@ function ChartLevels(type, levels, chart_limits) {
    },
    receivedAt: Date.now()
  }
+}
+
+function CATCHMENTData(type, data){
+  return {type: type, CATCHMENTData: data}
 }
 
 

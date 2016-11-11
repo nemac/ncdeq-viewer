@@ -13,6 +13,15 @@ export function chartData(state = [], action) {
   }
 }
 
+export function CATCHMENTDATA(state = [], action){
+  switch (action.type) {
+    case 'GET_CATCHMENT_DATA':
+      return {...state, CATCHMENTData: action.CATCHMENTData}
+    default:
+      return state
+  }
+}
+
 export function NLCDDATA(state = [], action){
   switch (action.type) {
     case 'GET_NLCD_DATA':
@@ -21,6 +30,7 @@ export function NLCDDATA(state = [], action){
       return state
   }
 }
+
 
 export function fetching_chart(state = [], action){
   switch (action.type) {

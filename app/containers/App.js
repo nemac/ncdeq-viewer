@@ -17,7 +17,7 @@ function mapStateToProps(state) {
   let fetching_map = state.fetching_map.fetching_map;
   let fetching_tra = state.fetching_tra.fetching_tra;
   let NLCDData = state.NLCDDATA.NLCDData;
-
+  let CATCHMENTData = state.CATCHMENTDATA.CATCHMENTData;
 
   return {
     DefaultMenuLists,
@@ -31,6 +31,7 @@ function mapStateToProps(state) {
     fetching_map,
     fetching_tra,
     NLCDData,
+    CATCHMENTData,
   }
 }
 

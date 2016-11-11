@@ -558,10 +558,6 @@ var MapContainer = React.createClass({
     //get the attributes of the huc12 layer on a user click
     this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
 
-    console.log('map click')
-
-
-
   },
   getInitialState: function() {
       return {
