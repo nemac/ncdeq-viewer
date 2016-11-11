@@ -554,20 +554,31 @@ var ChartRow = React.createClass({
     //filter NLCD data to only level 2.
     //  there is only one level to NCLD data we want to show
     //  level 1 is total.  If we include 1 then total will show up in the chart
-    //  need to account for no properties
     const filtered_nlcd_data = NLCDData.filter( data => {
       return data.properties.chart_level === 2
     })
 
     //format data into the recharts pie chart format.
     // [{name:"", value:0}]
-    /// need to account for no properties
-    const ncld_chart_data = filtered_nlcd_data.map( nlcd => {
+    const ncld_chart_data_unsorted = filtered_nlcd_data.map( nlcd => {
       const level = nlcd.properties.chart_level
       const name = nlcd.properties.chart_level_label;
       const value = Number(nlcd.properties.chart_value);
       return {name, value}
     })
+
+    //sort the nlcd data.
+    const ncld_chart_data = ncld_chart_data_unsorted.sort(function (a, b) {
+      if (a.value > b.value) {
+        return -1;
+      }
+      if (a.value < b.value) {
+        return 1;
+      }
+      // a must be equal to b
+        return 0;
+      });
+
 
     return (
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>

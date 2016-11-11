@@ -105,7 +105,7 @@ const ChartPie = React.createClass({
 
     const data = this.props.chart_data
     const note = data.length < 1 ? 'No Catchments found at this location!' : this.props.note ;
-    const sub_header =  data.length < 1 ? 'Click or search the map to try again' : '' ;
+    const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
   	return (
 
       <div className="item" style={{display: "block"}}>

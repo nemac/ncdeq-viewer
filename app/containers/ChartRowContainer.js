@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
-import { get_ChartData, get_TRAData, update_ChartVisiblity, update_MapHeight, get_LayerInfo_ByValue, change_geographyLevelActive, set_search_method, get_tra_info, update_ChartLevels, update_HeaderVis, get_nlcd_data} from '../actions/actionCreators'
+import { get_ChartData, get_TRAData, update_ChartVisiblity, update_MapHeight, get_LayerInfo_ByValue, change_geographyLevelActive, set_search_method, get_tra_info, update_ChartLevels, update_HeaderVis, get_nlcd_data, get_catchment_data} from '../actions/actionCreators'
 import ChartRowComponent from '../components/ChartRowComponent'
 
 //either rename the properties or rename it also in main
@@ -20,6 +20,7 @@ const mapStateToProps = (state,props) => {
     fetching_map: state.fetching_map.fetching_map,
     fetching_tra: state.fetching_tra.fetching_tra,
     NLCDData: state.NLCDDATA.NLCDData,
+    CATCHMENTData: state.CATCHMENTDATA.CATCHMENTData,
   }
 }
 
@@ -36,6 +37,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     update_ChartLevels: bindActionCreators(update_ChartLevels, dispatch),
     update_HeaderVis: bindActionCreators(update_HeaderVis, dispatch),
     get_nlcd_data: bindActionCreators(get_nlcd_data, dispatch),
+    get_nlcd_data: bindActionCreators(get_nlcd_data, dispatch),
+    get_catchment_data: bindActionCreators(get_catchment_data, dispatch),
   }
 }
 const ChartRowContainer = connect(
