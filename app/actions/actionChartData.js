@@ -431,7 +431,7 @@ export function get_nlcd_data(id,level){
 
         //end fetching set fetching state to false
         dispatch(fetching_end())
-        
+
       })
       .catch(error => { console.log('request failed', error); });
 
@@ -494,17 +494,6 @@ export function get_ChartData(id,level){
           //from the tra ids retrieve the tra data fro charting
           ago_get_tra_by_ids(tra_id_list)
            .then( tra_chart_data_response => {
-
-             //also need to get the catchment id to catchment level charts and data.
-             // there should always be one in this object.  so it's safe to assume the
-             // the first item in the array[0]
-            //  if(state.mapConfig.NLCDPointInfo){
-            //       if(state.mapConfig.NLCDPointInfo.features){
-            //         console.log("you clicked catchment: "+ state.mapConfig.NLCDPointInfo.features[0].properties.ID)
-             //
-            //       }
-            //  }
-            //  AGO_ChartData_byID()
 
              //add geometry here
              tra_chart_data = CheckReponse(tra_chart_data_response,'AGO_API_ERROR');
