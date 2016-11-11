@@ -214,24 +214,24 @@ var MapContainer = React.createClass({
         if(this.props.NLCDPointInfo.features){
 
           //current catchment
-          let current_catchment = this.props.NLCDPointInfo.features[0].properties.ID
+          let current_catchment = this.props.NLCDPointInfo.features.length > 0 ? this.props.NLCDPointInfo.features[0].properties.ID : [];
           let last_catchment = 'not sure';
-          const current_catchment_features = this.props.NLCDPointInfo.features;
+          const current_catchment_features = this.props.NLCDPointInfo.features.length > 0 ? this.props.NLCDPointInfo.features : [];
 
           // prevouis catchment
           if(prevProps.NLCDPointInfo){
             if(prevProps.NLCDPointInfo.features){
-              last_catchment = prevProps.NLCDPointInfo.features[0].properties.ID;
+              last_catchment = prevProps.NLCDPointInfo.features.length > 0 ? prevProps.NLCDPointInfo.features[0].properties.ID : [] ;
             }
           }
 
-          let LastTRAFeatures;
+          let LastCatchmentFeatures;
 
+          //get the cathcment geojson if the current and last catchments are different
           if(current_catchment != last_catchment){
-            // console.log("you clicked catchment: " +  current_catchment)
-            // console.log("last clicked catchment: " +  last_catchment)
+
             this.props.get_nlcd_data(current_catchment)
-            // console.log(this.props.searchMethod)
+
             //add geojson
             this.catchment_GeoJson(current_catchment_features)
 

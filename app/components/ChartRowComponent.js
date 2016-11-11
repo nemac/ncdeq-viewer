@@ -543,12 +543,25 @@ var ChartRow = React.createClass({
     //land use land cover data
     const NLCDData = this.props.NLCDData ? this.props.NLCDData.features : []
     const NLCD_ID_obj = this.props.NLCDPointInfo ? this.props.NLCDPointInfo : []
-    const NLCD_ID = NLCD_ID_obj.features ? NLCD_ID_obj.features[0].properties.ID : []
 
+    //make ure there is features in the object: NLCD_ID_obj
+    //  this object holds the catchment id
+    let NLCD_ID = []
+    if(NLCD_ID_obj.features){
+      NLCD_ID = NLCD_ID_obj.features.length > 0 ? NLCD_ID_obj.features[0].properties.ID : []
+    }
+
+    //filter NLCD data to only level 2.
+    //  there is only one level to NCLD data we want to show
+    //  level 1 is total.  If we include 1 then total will show up in the chart
+    //  need to account for no properties
     const filtered_nlcd_data = NLCDData.filter( data => {
       return data.properties.chart_level === 2
     })
 
+    //format data into the recharts pie chart format.
+    // [{name:"", value:0}]
+    /// need to account for no properties
     const ncld_chart_data = filtered_nlcd_data.map( nlcd => {
       const level = nlcd.properties.chart_level
       const name = nlcd.properties.chart_level_label;
@@ -650,7 +663,7 @@ var ChartRow = React.createClass({
            level_label={this.getLevel()}
            />
          }
-         { ncld_chart_data.length > 0 &&
+         { chart_filter &&
            <ChartPie
              chart_width={chart_width_px}
              title="Landuse-Landcover (Catchment)"

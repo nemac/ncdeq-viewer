@@ -104,7 +104,8 @@ const ChartPie = React.createClass({
 	render () {
 
     const data = this.props.chart_data
-
+    const note = data.length < 1 ? 'No Catchments found at this location!' : this.props.note ;
+    const sub_header =  data.length < 1 ? 'Click or search the map to try again' : '' ;
   	return (
 
       <div className="item" style={{display: "block"}}>
@@ -116,11 +117,22 @@ const ChartPie = React.createClass({
           </h4>
           <div className="meta">
             <span className="description">{this.props.title_description}</span>
-            <span className="note">{this.props.note}</span>
+            <span className="note">{note}</span>
           </div>
         </div>
         <div className="item" style={{display: "block"}}>
-
+          { data.length < 1 &&
+            <div className='ui icon negative message' >
+              <i className="remove circle icon"></i>
+              <div className="content">
+                <div className="header">
+                  {note}
+                </div>
+                {sub_header}
+              </div>
+            </div>
+          }
+          { data.length > 0 &&
           <PieChart key="" width={this.props.chart_width} height={200} onMouseEnter={this.onPieEnter}>
             <Legend content={renderLegend} verticalAlign={"top"} align={"right"}/>
 
@@ -136,7 +148,7 @@ const ChartPie = React.createClass({
             </Pie>
             <Tooltip/>
           </PieChart>
-
+        }
 
         </div>
 
