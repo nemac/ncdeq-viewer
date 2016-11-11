@@ -2,6 +2,7 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 import ChartRowWrapper from '../components/ChartRowWrapper';
 import ChartPie from '../components/ChartPie';
+import ChartSimpleBar from '../components/ChartSimpleBar'
 var SectionWrapper = require('./SectionWrapper');
 
 import {
@@ -319,7 +320,6 @@ var ChartRow = React.createClass({
 
            //get the chart for each indivual huc
            const levelones = this.getChart_FilteredByHUC(levelone, name);
-           let children = [];
 
            levelones.map(item => {
 
@@ -580,6 +580,46 @@ var ChartRow = React.createClass({
       });
 
 
+      const CATCHMENTData = this.props.CATCHMENTData ? this.props.CATCHMENTData.features : []
+
+
+      //filter catchment data to only level 2.
+      //  there is only one level to catchment data we want to show
+      //  level 1 is total.  If we include 1 then total will show up in the chart
+      const filtered_catchment_data = CATCHMENTData.filter( data => {
+        return data.properties.chart_level === 2
+      })
+
+      //format data into the recharts pie chart format.
+      // [{name:"", value:0}]
+      const catchment_chart_data_unsorted = filtered_catchment_data.map( catchment => {
+        const level = catchment.properties.chart_level
+        const name = catchment.properties.chart_level_label;
+        const value = Number(catchment.properties.chart_value);
+        return {name, value}
+      })
+
+      //sort the catchment data.
+      const catchment_chart_data = catchment_chart_data_unsorted.sort(function (a, b) {
+        if (a.value > b.value) {
+          return -1;
+        }
+        if (a.value < b.value) {
+          return 1;
+        }
+        // a must be equal to b
+          return 0;
+        });
+
+        var catchment_chart_object = new Object;
+        catchment_chart_object["name"] = NLCD_ID;
+
+        catchment_chart_data.map( catchment => {
+           catchment_chart_object[catchment.name] = catchment.value
+        })
+
+        const catchment_chart_ar = [catchment_chart_object]
+
     return (
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
         <div className={working_class}>
@@ -680,7 +720,21 @@ var ChartRow = React.createClass({
              title="Landuse-Landcover (Catchment)"
              title_description=""
              note={"For Catchment: " + NLCD_ID}
-             chart_data={ncld_chart_data} />
+             chart_data={ncld_chart_data}
+             use_percent={true}
+             />
+         }
+         { chart_filter &&
+
+           <ChartSimpleBar
+             chart_width={chart_width_px}
+             title="Catchment Baseline (Catchment)"
+             title_description=""
+             note={"For Catchment: " + NLCD_ID}
+             chart_data={catchment_chart_ar}
+             use_percent={false}
+             />
+
          }
       </div>
     </div>
@@ -691,3 +745,27 @@ var ChartRow = React.createClass({
 });
 
 module.exports = ChartRow;
+
+
+//
+// <ChartRowWrapper key="CATCHMENTS_BASELINE"
+//   chart_width={chart_width_px}
+//   title="Catchment Baseline (Catchment)"
+//   title_description=""
+//   note={"For Catchment: " + NLCD_ID}
+//   chart_type="CATCHMENTS_BASELINE"
+//   chart_data={catchment_chart_data}
+//   chart_filter={NLCD_ID}
+//   get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
+//   change_geographyLevelActive={this.props.change_geographyLevelActive}
+//   set_search_method={this.props.set_search_method }
+//   tra_data={this.props.tra_data}
+//   get_tra_info={this.props.get_tra_info}
+//   charts={this.props.charts}
+//   update_ChartLevels={this.props.update_ChartLevels}
+//   update_ChartMatchId={this.props.update_ChartMatchId}
+//   get_keyColors={this.get_keyColors}
+//   top_label="Most Impaired"
+//   bottom_label="Least Impaired"
+//   level_label={"catchments_baseline"}
+//   />
