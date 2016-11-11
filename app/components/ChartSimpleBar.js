@@ -5,7 +5,6 @@ var PropTypes = React.PropTypes;
 
 
 
-
 const ChartSimpleBar = React.createClass({
   //keys for landuse landcover
    get_keyColors: function(key){
@@ -54,12 +53,64 @@ const ChartSimpleBar = React.createClass({
     return null;
 
   },
+
 	render () {
+
+
+    //custom legend
+    const customLegend = React.createClass({
+
+      propTypes: {
+        payload: PropTypes.array,
+      },
+      render() {
+        console.log(payload)
+
+        const { payload } = this.props;
+        console.log(payload)
+        let data_array = []
+
+        //make the name an array
+        Object.keys(this.props.datas).forEach(key => {
+          if(key.toUpperCase() != 'NAME'){
+            data_array.push(key)
+          }
+        })
+
+        data_array.map( d => {
+          console.log(d + " :" + datas[d])
+        })
+
+          return (
+
+
+            <div className="ui list">
+              {
+                payload.map((entry, index) => (
+
+                  <div className="item"  key={`item-${index}`}>
+
+                  <svg  width="14" height="14" >
+                    <path stroke-strokeWidth="4" fill={entry.fill} stroke={entry.stroke} d="M0,0h32v32h-32z" >
+                    </path>
+                  </svg>
+                  {`  ${entry.name}  (${entry.value})` }
+                  </div>
+                ))
+              }
+            </div>
+          );
+      }
+    })
 
     const data = this.props.chart_data
     const note = data.length < 1 ? 'No Catchments found at this location!' : this.props.note ;
     const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
     const bars = this.get_bars(data[0])
+    const datas = data[0]
+
+
+
   	return (
 
       <div className="item" style={{display: "block"}}>
@@ -86,14 +137,15 @@ const ChartSimpleBar = React.createClass({
               </div>
             </div>
           }
+
           { data.length > 0 &&
             <BarChart width={this.props.chart_width} height={200} data={data}
                   margin={{top: 5, right: 30, left: 20, bottom: 5}}>
              <XAxis dataKey="name" hide={false} tick={false}  tickLine={false} axisLine={false} />
              <YAxis hide={false} tick={false}  tickLine={false} axisLine={false} />
-              <Tooltip/>
              <Legend />
              {bars}
+             <Tooltip/>
             </BarChart>
           }
         </div>
@@ -105,7 +157,9 @@ const ChartSimpleBar = React.createClass({
     );
   }
 })
+//{bars}
 
-
-
+// <Bar key="Habitat" dataKey="Habitat"  fill={this.get_keyColors("Habitat")}  />
+// <Bar key="Hydrology" dataKey="Hydrology"  fill={this.get_keyColors("Hydrology")}  />
+// <Bar key="Water Quality" dataKey="Water Quality"  fill={this.get_keyColors("Water Quality")}  />
 module.exports = ChartSimpleBar;
