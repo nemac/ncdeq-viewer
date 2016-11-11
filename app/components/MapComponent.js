@@ -210,6 +210,7 @@ var MapContainer = React.createClass({
     // need to functionise this.
     if (prevProps){
 
+
       if(this.props.NLCDPointInfo){
         if(this.props.NLCDPointInfo.features){
 
@@ -230,7 +231,11 @@ var MapContainer = React.createClass({
           //get the cathcment geojson if the current and last catchments are different
           if(current_catchment != last_catchment){
 
+            //get nlcd data
             this.props.get_nlcd_data(current_catchment)
+
+            //get catchment baseline data
+            this.props.get_catchment_data(current_catchment)
 
             //add geojson
             this.catchment_GeoJson(current_catchment_features)
