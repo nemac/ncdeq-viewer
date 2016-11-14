@@ -625,28 +625,18 @@ var MapContainer = React.createClass({
        name="Cataloging Units"
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
-      <ESRITileMapLayer
-       url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc6/MapServer"
-       setMapLayers={this.props.set_MapLayers}
-       tileOpacity="0.5"
-       name="River Basins"
-       max_zoom="9"
-       onLeafletClick={this.handleMapClick.bind(null,this)}
-       />
        <ESRITileMapLayer
         url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc6_outline/MapServer"
         setMapLayers={this.props.set_MapLayers}
         tileOpacity="0.5"
         name="River Basins"
-        min_zoom="9"
         onLeafletClick={this.handleMapClick.bind(null,this)}
         />
         <ESRITileMapLayer
          url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/TRAS/MapServer"
          setMapLayers={this.props.set_MapLayers}
          tileOpacity="0.5"
-         name="River Basins"
-         min_zoom="8"
+         name="Targeted Resource Areas (TRA)"
          onLeafletClick={this.handleMapClick.bind(null,this)}
          />
 

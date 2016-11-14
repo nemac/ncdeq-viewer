@@ -108,7 +108,7 @@ var ChartRowWrapper = React.createClass({
 
     //set up all messaging for drilldowns
     const keyback = "back";
-    const backtext = ( at_top ? ' Functon ' : " Back ");
+    const backtext = ( at_top ? ' Function ' : " Back ");
     const last_chart_level = last_chart.last_chart_level;
     const last_matchid = last_chart.last_chart_matchid;
     const last_chart_type  = this.props.chart_type;
