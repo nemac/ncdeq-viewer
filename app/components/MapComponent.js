@@ -20,6 +20,7 @@ var TempLayer;
 var TempZoomLayer;
 var TempTraLayer;
 var TempCatchmentLayer;
+var TempMapPoint;
 
 var MapContainer = React.createClass({
   handleResize: function(){
@@ -101,6 +102,59 @@ var MapContainer = React.createClass({
 
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     this.add_GeoJSON_ClickEvent(TempCatchmentLayer);
+
+    leafletMap.invalidateSize();
+
+    //return the layer
+    return TempCatchmentLayer
+
+  },
+  map_point_GeoJson: function(features){
+    //get the leaflet Map object
+    const leafletMap = this.props.leafletMap.leafletMap;
+
+    //check if the layer has been added yes it is global varriable :)
+    const isLayerVis = leafletMap.hasLayer(TempMapPoint);
+
+    //if a geojson layer has been added remove it.
+    //  eventually we want to only remove when user elects too.
+    if (isLayerVis){
+      leafletMap.removeLayer(TempMapPoint)
+    }
+
+    //add a blank layer to leaflet
+    TempMapPoint = L.geoJson().addTo(leafletMap);
+
+    //add the GeoJSON data to the layer
+    TempMapPoint.addData(features);
+
+    // // zoom highlights need to move this to varriable
+    // TempMapPoint.setStyle({
+    //   radius: 8,
+    //   fillColor: "#ff7800",
+    //   color: "red",
+    //   weight: 1,
+    //   opacity: 1,
+    //   fillOpacity: 0.8
+    // })
+
+
+    // //when geojson is added on top of map.  it also needs a map click handler enabled.
+    // // this.add_GeoJSON_ClickEvent(TempMapPoint);
+    // var geojsonMarkerOptions = {
+    //     radius: 6,
+    //     fillColor: "#33ACFF",
+    //     color: "#000",
+    //     weight: 1,
+    //     opacity: 1,
+    //     fillOpacity: 0.8
+    // };
+
+    // TempMapPoint = L.geoJson(features, {
+    //     pointToLayer: function (feature, latlng) {
+    //         return L.circleMarker(latlng, geojsonMarkerOptions);
+    //     }
+    // }).addTo(leafletMap);
 
     leafletMap.invalidateSize();
 
@@ -209,6 +263,18 @@ var MapContainer = React.createClass({
     //check if there was a prevProps
     // need to functionise this.
     if (prevProps){
+
+      //map point
+      // add a marker to the map click or map search
+
+      if(this.props.map_settings){
+        if(this.props.map_settings.map_point){
+          if(this.props.map_settings.map_point.features){
+            // console.log(this.props.map_settings.map_point.features)
+            this.map_point_GeoJson(this.props.map_settings.map_point.features)
+          }
+        }
+      }
 
 
       if(this.props.NLCDPointInfo){

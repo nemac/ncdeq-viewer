@@ -1,6 +1,8 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
 import { AGO_URL, HUC12_MAP_FEATUREID, SERVICE_NAME, TRA_MAP_FEATUREID, CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID } from '../constants/actionConstants';
+var turf_point = require('turf-point');
+var turf_FC = require('turf-featurecollection');
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
@@ -125,9 +127,10 @@ export function set_search_method(method){
     const huc8Info = state.mapConfig.mapconfig.huc8Info;
     const searchMethod = method;
     const traInfo =  state.mapConfig.mapconfig.traInfo;
+    const map_point = state.mapConfig.mapconfig.map_point;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod, map_point};
 
     dispatch(mapSate('SET_SEARCH_METHOD',mapConfig));
 
@@ -171,9 +174,10 @@ export function get_LayerInfo_ByValue(value, layer_id){
         const huc8Info = theCatalogingUnitInfo;
         const searchMethod = state.mapConfig.mapconfig.searchMethod;
         const traInfo =  state.mapConfig.mapconfig.traInfo;
+        const map_point = state.mapConfig.mapconfig.map_point;
 
         //create map config object
-        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod};
+        const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod, map_point};
 
         dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
@@ -210,6 +214,10 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
       //get redux state
       const state = getState()
 
+      var turfPoint = turf_point([lng,lat]);
+      var turfPointfc = turf_FC(turfPoint);
+
+
       const latitude = state.mapConfig.mapconfig.latitude;
       const longitude = state.mapConfig.mapconfig.longitude;
       const zoom =  state.mapConfig.mapconfig.zoom;
@@ -223,10 +231,10 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
       const huc8Info = theCatalogingUnitInfo;
       const searchMethod = state.mapConfig.mapconfig.searchMethod;
       const traInfo = state.mapConfig.mapconfig.traInfo;
-
+      const map_point = turfPointfc
 
       //create map config object
-      const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod};
+      const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod, map_point};
 
       dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
@@ -269,9 +277,10 @@ export function set_MapLayers(mapLayers){
     const huc8Info = state.mapConfig.mapconfig.huc8Info;
     const searchMethod = state.mapConfig.mapconfig.searchMethod;
     const traInfo =  state.mapConfig.mapconfig.traInfo;
+    const map_point = state.mapConfig.mapconfig.map_point;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod, map_point};
 
     dispatch(mapSate('MAP_SET_LAYERS',mapConfig));
 
@@ -302,9 +311,10 @@ export function set_mapToPoint(lat,lng,z,e){
     const huc8Info = state.mapConfig.mapconfig.huc8Info;
     const searchMethod = state.mapConfig.mapconfig.searchMethod;
     const traInfo =  state.mapConfig.mapconfig.traInfo;
+    const map_point = state.mapConfig.mapconfig.map_point;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod, map_point};
 
     dispatch(mapSate('MAP_TO_POINT',mapConfig));
 
@@ -340,9 +350,10 @@ export function HandleMapEnd(mapComp,e){
     const huc8Info = state.mapConfig.mapconfig.huc8Info;
     const searchMethod = state.mapConfig.mapconfig.searchMethod;
     const traInfo =  state.mapConfig.mapconfig.traInfo;
+    const map_point = state.mapConfig.mapconfig.map_point;
 
     //create map config object
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod, map_point};
 
     //send map config data on to store
     dispatch(mapSate('MAP_END',mapConfig));
@@ -380,9 +391,10 @@ export function get_defaultMapData(zoom){
     const huc8Info = {};
     const searchMethod = "none"
     const traInfo =  {};
+    const map_point = {};
 
     //create new map config
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod, map_point};
 
     //send map config data on to store
     dispatch(mapSate('MAP_DATA',mapConfig));
@@ -448,6 +460,9 @@ export function handleSearchChange(comp,e){
         var lat = place.geometry.location.lat();
         var lng = place.geometry.location.lng();
 
+        var turfPoint = turf_point([lng,lat]);
+        var turfPointfc = turf_FC(turfPoint);
+
         //retreive the layerinfo object (huc12) at the google api places lat long
         axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, CATALOGING_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, NLCD_MAP_FEATUREID)])
         .then(axios.spread(function (huc_response, tra_response, cu_response, NLCD_response) {
@@ -482,9 +497,10 @@ export function handleSearchChange(comp,e){
           const huc8Info = theCatalogingUnitInfo;
           const searchMethod = state.mapConfig.mapconfig.searchMethod;
           const traInfo =  state.mapConfig.mapconfig.traInfo;
+          const map_point = turfPointfc
 
           //create map config object
-          const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod};
+          const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod, map_point};
 
           dispatch(mapSate('MAP_SEARCH',mapConfig));
         }))
