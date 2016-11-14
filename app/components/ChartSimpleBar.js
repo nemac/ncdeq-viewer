@@ -104,10 +104,12 @@ const ChartSimpleBar = React.createClass({
     })
 
     const data = this.props.chart_data
-    const note = data.length < 1 ? 'No Catchments found at this location!' : this.props.note ;
-    const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
     const bars = this.get_bars(data[0])
     const datas = data[0]
+    const datas_length = Object.keys(datas).length
+
+    const note = datas_length < 2 ? 'No ' + this.props.title + ' found at this location!' : this.props.note ;
+    const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
 
 
 
@@ -126,7 +128,7 @@ const ChartSimpleBar = React.createClass({
           </div>
         </div>
         <div className="item" style={{display: "block"}}>
-          { data.length < 1 &&
+          { datas_length < 2 &&
             <div className='ui icon negative message' >
               <i className="remove circle icon"></i>
               <div className="content">
@@ -138,7 +140,7 @@ const ChartSimpleBar = React.createClass({
             </div>
           }
 
-          { data.length > 0 &&
+          { datas_length > 1 &&
             <BarChart width={this.props.chart_width} height={200} data={data}
                   margin={{top: 5, right: 30, left: 20, bottom: 5}}>
              <XAxis dataKey="name" hide={false} tick={false}  tickLine={false} axisLine={false} />

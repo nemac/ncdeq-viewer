@@ -385,7 +385,10 @@ var ChartRow = React.createClass({
   render: function() {
     //get chart width inpixl from redux should handle resize in actiion creators
     let chart_width_px = CHART_WIDTH_PX;
-    let chart_grid_height =  MAP_HEIGHT;
+
+    //not sure yet ho to handle this but chartHeight needs to be adjusted by to px in the chart component
+    const chartHeight_adjustment = 65
+    let chart_grid_height =  MAP_HEIGHT-chartHeight_adjustment;
 
     let searchMethod = ""
     let show_point = false;
@@ -401,7 +404,7 @@ var ChartRow = React.createClass({
     //  so we can pass it as a prop to the chart components
     if(this.props.default_settings){
       chart_width_px = this.props.default_settings.chartWidth;
-      chart_grid_height = this.props.default_settings.mapHeight;
+      chart_grid_height = this.props.default_settings.mapHeight-chartHeight_adjustment;
     }
 
     let is_chart_vis = true
@@ -625,7 +628,7 @@ var ChartRow = React.createClass({
         <div className={working_class}>
             <div className="ui loader"></div>
         </div>
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden"}}>
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px"}}>
         <div className="ui item" >
 
           <div className="content">
