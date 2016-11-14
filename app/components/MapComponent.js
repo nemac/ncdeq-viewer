@@ -623,6 +623,7 @@ var MapContainer = React.createClass({
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc8/MapServer"
        setMapLayers={this.props.set_MapLayers}
        name="Cataloging Units"
+       min_zoom="8"
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
        <ESRITileMapLayer
