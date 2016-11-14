@@ -573,12 +573,14 @@ var MapContainer = React.createClass({
   render: function() {
     //
 
+    //not sure yet ho to handle this but mapHeight needs to be adjusted by to px in the map component
+    const mapHeight_adjustment = 10;
     const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;
-    const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
+    const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight-mapHeight_adjustment : MAP_HEIGHT-mapHeight_adjustment;
     const chartVisibility = this.props.chart ? this.props.chart.chart_visibility : null;
 
     return (
-      <div className="sixteen wide stackable column" style={{padding: rowPadding + 'px',height: mapHght + 'px'}}>
+      <div className="sixteen wide stackable column" style={{paddingLeft: rowPadding + 'px',paddingRight: rowPadding + 'px',paddingTop: rowPadding + 'px',height: mapHght + 'px'}}>
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
           onLeafletZoomEnd={this.HandleMapEnd.bind(null,this)}

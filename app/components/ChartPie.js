@@ -136,7 +136,7 @@ const ChartPie = React.createClass({
 	render () {
 
     const data = this.props.chart_data
-    const note = data.length < 1 ? 'No Catchments found at this location!' : this.props.note ;
+    const note = data.length < 1 ? 'No ' + this.props.title + ' found at this location!' : this.props.note ;
     const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
 
   	return (
