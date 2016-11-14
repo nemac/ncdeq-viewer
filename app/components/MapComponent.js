@@ -20,6 +20,7 @@ var TempLayer;
 var TempZoomLayer;
 var TempTraLayer;
 var TempCatchmentLayer;
+var TempMapPoint;
 
 var MapContainer = React.createClass({
   handleResize: function(){
@@ -62,6 +63,17 @@ var MapContainer = React.createClass({
     //add the GeoJSON data to the layer
     TempLayer.addData(features);
 
+    //zoom highlights need to move this to varriable
+    TempLayer.setStyle({
+      fillColor :'#1F618D',
+      stroke: true,
+      weight: 8,
+      opacity: 0.6,
+      color: '#1F618D',
+      fillOpacity: 0.25,
+      zIndex: 0
+    })
+
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     this.add_GeoJSON_ClickEvent(TempLayer);
 
@@ -90,17 +102,44 @@ var MapContainer = React.createClass({
 
     //zoom highlights need to move this to varriable
     TempCatchmentLayer.setStyle({
-      fillColor :'grey',
+      fillColor :'#1C2833',
       stroke: true,
-      weight: 12,
-      opacity: 0.4,
-      color: 'grey',
-      fillOpacity: 0.0
+      weight: 20,
+      opacity: 0.6,
+      color: '#1C2833',
+      fillOpacity: 0.25,
+      zIndex: 100
     })
 
 
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     this.add_GeoJSON_ClickEvent(TempCatchmentLayer);
+
+
+    leafletMap.invalidateSize();
+
+    //return the layer
+    return TempCatchmentLayer
+
+  },
+  map_point_GeoJson: function(features){
+    //get the leaflet Map object
+    const leafletMap = this.props.leafletMap.leafletMap;
+
+    //check if the layer has been added yes it is global varriable :)
+    const isLayerVis = leafletMap.hasLayer(TempMapPoint);
+
+    //if a geojson layer has been added remove it.
+    //  eventually we want to only remove when user elects too.
+    if (isLayerVis){
+      leafletMap.removeLayer(TempMapPoint)
+    }
+
+    //add a blank layer to leaflet
+    TempMapPoint = L.geoJson().addTo(leafletMap);
+
+    //add the GeoJSON data to the layer
+    TempMapPoint.addData(features);
 
     leafletMap.invalidateSize();
 
@@ -134,7 +173,8 @@ var MapContainer = React.createClass({
       weight: 8,
       opacity: 0.4,
       color: 'red',
-      fillOpacity: 0.0
+      fillOpacity: 0.25,
+      zIndex: 50
     })
 
 
@@ -173,7 +213,8 @@ var MapContainer = React.createClass({
       weight: 8,
       opacity: 0.4,
       color: 'yellow',
-      fillOpacity: 0.0
+      fillOpacity: 0.0,
+      zIndex: 75
     })
 
     //pan and zoom to bounds of layers bounds
@@ -209,6 +250,18 @@ var MapContainer = React.createClass({
     //check if there was a prevProps
     // need to functionise this.
     if (prevProps){
+
+      //map point
+      // add a marker to the map click or map search
+
+      if(this.props.map_settings){
+        if(this.props.map_settings.map_point){
+          if(this.props.map_settings.map_point.features){
+            // console.log(this.props.map_settings.map_point.features)
+            this.map_point_GeoJson(this.props.map_settings.map_point.features)
+          }
+        }
+      }
 
 
       if(this.props.NLCDPointInfo){
