@@ -736,6 +736,19 @@ var ChartRow = React.createClass({
              />
 
          }
+
+         { chart_filter &&
+
+           <ChartPie
+             chart_width={chart_width_px}
+             title="Catchment Baseline (Catchment)"
+             title_description=""
+             note={"For Catchment: " + NLCD_ID}
+             chart_data={catchment_chart_data}
+             use_percent={false}
+             />
+
+         }
       </div>
     </div>
     );
