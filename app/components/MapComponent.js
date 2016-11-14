@@ -63,6 +63,17 @@ var MapContainer = React.createClass({
     //add the GeoJSON data to the layer
     TempLayer.addData(features);
 
+    //zoom highlights need to move this to varriable
+    TempLayer.setStyle({
+      fillColor :'#1F618D',
+      stroke: true,
+      weight: 8,
+      opacity: 0.6,
+      color: '#1F618D',
+      fillOpacity: 0.25,
+      zIndex: 0
+    })
+
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     this.add_GeoJSON_ClickEvent(TempLayer);
 
@@ -91,17 +102,19 @@ var MapContainer = React.createClass({
 
     //zoom highlights need to move this to varriable
     TempCatchmentLayer.setStyle({
-      fillColor :'grey',
+      fillColor :'#1C2833',
       stroke: true,
-      weight: 12,
-      opacity: 0.4,
-      color: 'grey',
-      fillOpacity: 0.0
+      weight: 20,
+      opacity: 0.6,
+      color: '#1C2833',
+      fillOpacity: 0.25,
+      zIndex: 100
     })
 
 
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     this.add_GeoJSON_ClickEvent(TempCatchmentLayer);
+
 
     leafletMap.invalidateSize();
 
@@ -127,34 +140,6 @@ var MapContainer = React.createClass({
 
     //add the GeoJSON data to the layer
     TempMapPoint.addData(features);
-
-    // // zoom highlights need to move this to varriable
-    // TempMapPoint.setStyle({
-    //   radius: 8,
-    //   fillColor: "#ff7800",
-    //   color: "red",
-    //   weight: 1,
-    //   opacity: 1,
-    //   fillOpacity: 0.8
-    // })
-
-
-    // //when geojson is added on top of map.  it also needs a map click handler enabled.
-    // // this.add_GeoJSON_ClickEvent(TempMapPoint);
-    // var geojsonMarkerOptions = {
-    //     radius: 6,
-    //     fillColor: "#33ACFF",
-    //     color: "#000",
-    //     weight: 1,
-    //     opacity: 1,
-    //     fillOpacity: 0.8
-    // };
-
-    // TempMapPoint = L.geoJson(features, {
-    //     pointToLayer: function (feature, latlng) {
-    //         return L.circleMarker(latlng, geojsonMarkerOptions);
-    //     }
-    // }).addTo(leafletMap);
 
     leafletMap.invalidateSize();
 
@@ -188,7 +173,8 @@ var MapContainer = React.createClass({
       weight: 8,
       opacity: 0.4,
       color: 'red',
-      fillOpacity: 0.0
+      fillOpacity: 0.25,
+      zIndex: 50
     })
 
 
@@ -227,7 +213,8 @@ var MapContainer = React.createClass({
       weight: 8,
       opacity: 0.4,
       color: 'yellow',
-      fillOpacity: 0.0
+      fillOpacity: 0.0,
+      zIndex: 75
     })
 
     //pan and zoom to bounds of layers bounds
