@@ -2,7 +2,8 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 import ChartRowWrapper from '../components/ChartRowWrapper';
 import ChartPie from '../components/ChartPie';
-import ChartSimpleBar from '../components/ChartSimpleBar'
+import ChartSimpleBar from '../components/ChartSimpleBar';
+import ChartTRA from '../components/ChartTRA';
 var SectionWrapper = require('./SectionWrapper');
 
 import {
@@ -430,14 +431,15 @@ var ChartRow = React.createClass({
     //get the user selected huc so we can filter
     let chart_filter = this.getChart_Filter(baseline_data[0]);
 
-    //get the baseline chart filtered by the user selected huc
-    let baseline_data_limited = this.getChart_FilteredByHUC(baseline_data[0], chart_filter);
-
-    //get the uplift chart filtered by the user selected huc
-    let uplift_data_limited = this.getChart_FilteredByHUC(uplift_data[0], chart_filter);
+    // //get the baseline chart filtered by the user selected huc
+    // let baseline_data_limited = this.getChart_FilteredByHUC(baseline_data[0], chart_filter);
+    //
+    // //get the uplift chart filtered by the user selected huc
+    // let uplift_data_limited = this.getChart_FilteredByHUC(uplift_data[0], chart_filter);
 
     //get the tra chart filtered by the user selected huc
-    let tra_data_limited = this.getChart_FilteredByHUC(tra_data[0], chart_filter);
+    // let tra_data_limited = this.getChart_FilteredByHUC(tra_data[0], chart_filter);
+
 
     let chart_baseline_bar = [];
     let chart_upflift_bar = [];
@@ -583,6 +585,7 @@ var ChartRow = React.createClass({
       });
 
 
+      //get catchment data from redux store
       const CATCHMENTData = this.props.CATCHMENTData ? this.props.CATCHMENTData.features : []
 
 
@@ -598,7 +601,8 @@ var ChartRow = React.createClass({
       const catchment_chart_data_unsorted = filtered_catchment_data.map( catchment => {
         const level = catchment.properties.chart_level
         const name = catchment.properties.chart_level_label;
-        const value = Number(catchment.properties.chart_value);
+        const value = Number(catchment.properties.chart_value.substring(0,5))
+        //Number(catchment.properties.chart_value);
         return {name, value}
       })
 
@@ -614,13 +618,20 @@ var ChartRow = React.createClass({
           return 0;
         });
 
+
+        //get nlcd id which is reallyt the catchment gridcode
         var catchment_chart_object = new Object;
         catchment_chart_object["name"] = NLCD_ID;
 
+        //get the catchment id and value and make that an object
+        //  this sets up the data structure for the recharts bar chart
+        //  structure is {name: "name", chartvaluename: chartvalue, chartvaluename: chartvalue}
+        //  where chartvaluename is something like Hydrology, Habitat, or Water Quality
         catchment_chart_data.map( catchment => {
            catchment_chart_object[catchment.name] = catchment.value
         })
 
+        //make the object an array.
         const catchment_chart_ar = [catchment_chart_object]
 
     return (
@@ -649,13 +660,13 @@ var ChartRow = React.createClass({
       }
 
       { chart_filter &&
-        <ChartRowWrapper key="tra"
+        <ChartTRA key="tra"
           chart_width={chart_width_px}
           title="Targeted Resource Areas (TRA)"
           title_description=""
           note="TRA's in this Cataloging Unit"
           chart_type="tra"
-          chart_data={chart_tar_bar}
+          chart_data={tra_data}
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
           change_geographyLevelActive={this.props.change_geographyLevelActive}
