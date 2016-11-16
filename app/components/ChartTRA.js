@@ -111,6 +111,7 @@ var ChartTRA = React.createClass({
                 onMouseEnter={this.handleStatClick.bind(null,this,key.ID)}
                 onMouseLeave={this.handleStatClick.bind(null,this,"")}
                 onMouseOut={this.handleStatClick.bind(null,this,"")}
+                onMouseMove={this.handleStatClick.bind(null,this,"")}
                 onClick={this.handleStatClick.bind(null,this,key.ID)}
                 style={{cursor: "pointer"}}>
               <div className="label" style={{cursor: "pointer"}}>

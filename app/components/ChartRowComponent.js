@@ -492,7 +492,7 @@ var ChartRow = React.createClass({
         //  and that location or cliced point was inside a tra format the message
         if(TRA_OBJ.length > 0){
           const extra_tra = TRA_OBJ.length > 1 ? "'s" : "";
-          icon_map = (<i className="marker icon" style={{color:"#3388cc"}}></i>)
+          icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
           tra_text_message_point = "The point " + searchMethod + " on the map is in a TRA. "
           success_class_point = "ui icon success message"
           icon_point = (<i className="check circle icon"></i>)
@@ -501,7 +501,7 @@ var ChartRow = React.createClass({
           //if the user clicked or searched the map.
           //  and that location or cliced point was NOT inside a tra format the message
         } else {
-          icon_map = (<i className="marker icon" style={{color:"#3388cc"}}></i>)
+          icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
           success_class_point = "ui icon negative message"
           icon_point = (<i className="remove circle icon"></i>)
           tra_text_message_point = "The point " + searchMethod + " on the map is NOT in a TRA"
