@@ -51,7 +51,7 @@ var ChartTRA = React.createClass({
     let tra_style = {cursor: "pointer",boxShadow:"0 1px 3px 0 #d4d4d5,0 0 0 1px #d4d4d5"}
     if(this.state){
       if(tra === this.state.tra_filter){
-        tra_style = {cursor: "pointer", boxShadow: "0 1px 3px 0 #FF0000,0 0 0 2px #FF0000"}
+        tra_style = {cursor: "pointer", boxShadow: "0 1px 4px 0 #FF0000,0 0 0 2px #FF0000"}
       }
     }
     return tra_style
@@ -68,6 +68,7 @@ var ChartTRA = React.createClass({
 
             <div key={key.ID} className="card"
               onMouseEnter={this.handleStatClick.bind(null,this,key.ID)}
+              onMouseLeave={this.handleStatClick.bind(null,this,key.ID)}
               onClick={this.handleStatClick.bind(null,this,key.ID)}
               style={this.get_tra_outline(key.ID)}>
               <div className="content center aligned">

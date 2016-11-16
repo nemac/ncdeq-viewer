@@ -463,6 +463,8 @@ var ChartRow = React.createClass({
 
     var icon_point = ""
 
+    var icon_map = ""
+
     var sub_header_point = ""
 
     var TRA_OBJ = []
@@ -489,17 +491,20 @@ var ChartRow = React.createClass({
         //if the user clicked or searched the map.
         //  and that location or cliced point was inside a tra format the message
         if(TRA_OBJ.length > 0){
-          tra_text_message_point = "The point " + searchMethod + " is in a TRA. "
+          const extra_tra = TRA_OBJ.length > 1 ? "'s" : "";
+          icon_map = (<i className="marker icon" style={{color:"#3388cc"}}></i>)
+          tra_text_message_point = "The point " + searchMethod + " on the map is in a TRA. "
           success_class_point = "ui icon success message"
           icon_point = (<i className="check circle icon"></i>)
-          sub_header_point = (<p>This includes the TRA(s): {tra_string}</p>)
+          sub_header_point = (<p>This includes the TRA{extra_tra}: {tra_string}</p>)
 
           //if the user clicked or searched the map.
           //  and that location or cliced point was NOT inside a tra format the message
         } else {
+          icon_map = (<i className="marker icon" style={{color:"#3388cc"}}></i>)
           success_class_point = "ui icon negative message"
           icon_point = (<i className="remove circle icon"></i>)
-          tra_text_message_point = "The point " + searchMethod + " is NOT in a TRA"
+          tra_text_message_point = "The point " + searchMethod + " on the map is NOT in a TRA"
           sub_header_point = ""
 
         }
@@ -524,7 +529,7 @@ var ChartRow = React.createClass({
         {icon_point}
         <div className="content">
           <div className="header">
-            {tra_text_message_point}
+            {icon_map}{tra_text_message_point}
           </div>
           {sub_header_point}
         </div>
