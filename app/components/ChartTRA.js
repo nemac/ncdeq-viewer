@@ -47,23 +47,29 @@ var ChartTRA = React.createClass({
     }
     return color;
   },
-  
+  get_tra_outline: function(tra){
+    let tra_style = {cursor: "pointer",boxShadow:"0 1px 3px 0 #d4d4d5,0 0 0 1px #d4d4d5"}
+    if(this.state){
+      if(tra === this.state.tra_filter){
+        tra_style = {cursor: "pointer", boxShadow: "0 1px 3px 0 #FF0000,0 0 0 2px #FF0000"}
+      }
+    }
+    return tra_style
+  },
   get_tras_cards: function(data){
     let keycnt = 0;
 
 
     //return bars
     return (
-      <div key={keycnt++} className="ui cards" style={{paddingLeft:10}}>
+      <div key={keycnt++} className="ui cards" style={{paddingLeft:10}} >
         {
           data.map(key => (
 
             <div key={key.ID} className="card"
               onMouseEnter={this.handleStatClick.bind(null,this,key.ID)}
-              onMouseLeave={this.handleStatClick.bind(null,this,"")}
-              onMouseOut={this.handleStatClick.bind(null,this,"")}
               onClick={this.handleStatClick.bind(null,this,key.ID)}
-              style={{cursor: "pointer",}}>
+              style={this.get_tra_outline(key.ID)}>
               <div className="content center aligned">
                 <div className="header">{key.ID} is a <span style={{color: this.get_Colors(key.NAME),cursor: "pointer"}}>{key.NAME}</span> TRA</div>
                 <div className="description">
