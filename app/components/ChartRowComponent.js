@@ -2,7 +2,8 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 import ChartRowWrapper from '../components/ChartRowWrapper';
 import ChartPie from '../components/ChartPie';
-import ChartSimpleBar from '../components/ChartSimpleBar'
+import ChartSimpleBar from '../components/ChartSimpleBar';
+import ChartTRA from '../components/ChartTRA';
 var SectionWrapper = require('./SectionWrapper');
 
 import {
@@ -430,14 +431,15 @@ var ChartRow = React.createClass({
     //get the user selected huc so we can filter
     let chart_filter = this.getChart_Filter(baseline_data[0]);
 
-    //get the baseline chart filtered by the user selected huc
-    let baseline_data_limited = this.getChart_FilteredByHUC(baseline_data[0], chart_filter);
-
-    //get the uplift chart filtered by the user selected huc
-    let uplift_data_limited = this.getChart_FilteredByHUC(uplift_data[0], chart_filter);
+    // //get the baseline chart filtered by the user selected huc
+    // let baseline_data_limited = this.getChart_FilteredByHUC(baseline_data[0], chart_filter);
+    //
+    // //get the uplift chart filtered by the user selected huc
+    // let uplift_data_limited = this.getChart_FilteredByHUC(uplift_data[0], chart_filter);
 
     //get the tra chart filtered by the user selected huc
-    let tra_data_limited = this.getChart_FilteredByHUC(tra_data[0], chart_filter);
+    // let tra_data_limited = this.getChart_FilteredByHUC(tra_data[0], chart_filter);
+
 
     let chart_baseline_bar = [];
     let chart_upflift_bar = [];
@@ -460,6 +462,8 @@ var ChartRow = React.createClass({
     var success_class_point = ""
 
     var icon_point = ""
+
+    var icon_map = ""
 
     var sub_header_point = ""
 
@@ -487,17 +491,20 @@ var ChartRow = React.createClass({
         //if the user clicked or searched the map.
         //  and that location or cliced point was inside a tra format the message
         if(TRA_OBJ.length > 0){
-          tra_text_message_point = "The point " + searchMethod + " is in a TRA. "
+          const extra_tra = TRA_OBJ.length > 1 ? "'s" : "";
+          icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
+          tra_text_message_point = "The point " + searchMethod + " on the map is in a TRA. "
           success_class_point = "ui icon success message"
           icon_point = (<i className="check circle icon"></i>)
-          sub_header_point = (<p>This includes the TRA(s): {tra_string}</p>)
+          sub_header_point = (<p>This includes the TRA{extra_tra}: {tra_string}</p>)
 
           //if the user clicked or searched the map.
           //  and that location or cliced point was NOT inside a tra format the message
         } else {
+          icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
           success_class_point = "ui icon negative message"
           icon_point = (<i className="remove circle icon"></i>)
-          tra_text_message_point = "The point " + searchMethod + " is NOT in a TRA"
+          tra_text_message_point = "The point " + searchMethod + " on the map is NOT in a TRA"
           sub_header_point = ""
 
         }
@@ -522,7 +529,7 @@ var ChartRow = React.createClass({
         {icon_point}
         <div className="content">
           <div className="header">
-            {tra_text_message_point}
+            {icon_map}{tra_text_message_point}
           </div>
           {sub_header_point}
         </div>
@@ -583,6 +590,7 @@ var ChartRow = React.createClass({
       });
 
 
+      //get catchment data from redux store
       const CATCHMENTData = this.props.CATCHMENTData ? this.props.CATCHMENTData.features : []
 
 
@@ -598,7 +606,8 @@ var ChartRow = React.createClass({
       const catchment_chart_data_unsorted = filtered_catchment_data.map( catchment => {
         const level = catchment.properties.chart_level
         const name = catchment.properties.chart_level_label;
-        const value = Number(catchment.properties.chart_value);
+        const value = Number(catchment.properties.chart_value.substring(0,5))
+        //Number(catchment.properties.chart_value);
         return {name, value}
       })
 
@@ -614,15 +623,27 @@ var ChartRow = React.createClass({
           return 0;
         });
 
+
+        //get nlcd id which is reallyt the catchment gridcode
         var catchment_chart_object = new Object;
         catchment_chart_object["name"] = NLCD_ID;
 
+        //get the catchment id and value and make that an object
+        //  this sets up the data structure for the recharts bar chart
+        //  structure is {name: "name", chartvaluename: chartvalue, chartvaluename: chartvalue}
+        //  where chartvaluename is something like Hydrology, Habitat, or Water Quality
         catchment_chart_data.map( catchment => {
            catchment_chart_object[catchment.name] = catchment.value
         })
 
+        //make the object an array.
         const catchment_chart_ar = [catchment_chart_object]
 
+        //tra note
+        let tra_note = "TRA's in this Cataloging Unit"
+        if(chart_filter){
+          tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
+        }
     return (
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
         <div className={working_class}>
@@ -649,13 +670,13 @@ var ChartRow = React.createClass({
       }
 
       { chart_filter &&
-        <ChartRowWrapper key="tra"
+        <ChartTRA key="tra"
           chart_width={chart_width_px}
           title="Targeted Resource Areas (TRA)"
           title_description=""
-          note="TRA's in this Cataloging Unit"
+          note={tra_note}
           chart_type="tra"
-          chart_data={chart_tar_bar}
+          chart_data={tra_data}
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
           change_geographyLevelActive={this.props.change_geographyLevelActive}
@@ -761,27 +782,3 @@ var ChartRow = React.createClass({
 });
 
 module.exports = ChartRow;
-
-
-//
-// <ChartRowWrapper key="CATCHMENTS_BASELINE"
-//   chart_width={chart_width_px}
-//   title="Catchment Baseline (Catchment)"
-//   title_description=""
-//   note={"For Catchment: " + NLCD_ID}
-//   chart_type="CATCHMENTS_BASELINE"
-//   chart_data={catchment_chart_data}
-//   chart_filter={NLCD_ID}
-//   get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
-//   change_geographyLevelActive={this.props.change_geographyLevelActive}
-//   set_search_method={this.props.set_search_method }
-//   tra_data={this.props.tra_data}
-//   get_tra_info={this.props.get_tra_info}
-//   charts={this.props.charts}
-//   update_ChartLevels={this.props.update_ChartLevels}
-//   update_ChartMatchId={this.props.update_ChartMatchId}
-//   get_keyColors={this.get_keyColors}
-//   top_label="Most Impaired"
-//   bottom_label="Least Impaired"
-//   level_label={"catchments_baseline"}
-//   />

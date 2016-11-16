@@ -173,7 +173,7 @@ var MapContainer = React.createClass({
       weight: 8,
       opacity: 0.4,
       color: 'red',
-      fillOpacity: 0.25,
+      fillOpacity: 0.0,
       zIndex: 50
     })
 
@@ -220,8 +220,6 @@ var MapContainer = React.createClass({
     //pan and zoom to bounds of layers bounds
     leafletMap.fitBounds(TempZoomLayer.getBounds());
 
-    // leafletMap.removeLayer(TempZoomLayer)
-
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     this.add_GeoJSON_ClickEvent(TempZoomLayer);
 
@@ -253,7 +251,6 @@ var MapContainer = React.createClass({
 
       //map point
       // add a marker to the map click or map search
-
       if(this.props.map_settings){
         if(this.props.map_settings.map_point){
           if(this.props.map_settings.map_point.features){
