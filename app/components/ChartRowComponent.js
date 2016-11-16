@@ -634,6 +634,11 @@ var ChartRow = React.createClass({
         //make the object an array.
         const catchment_chart_ar = [catchment_chart_object]
 
+        //tra note
+        let tra_note = "TRA's in this Cataloging Unit"
+        if(chart_filter){
+          tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
+        }
     return (
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
         <div className={working_class}>
@@ -664,7 +669,7 @@ var ChartRow = React.createClass({
           chart_width={chart_width_px}
           title="Targeted Resource Areas (TRA)"
           title_description=""
-          note="TRA's in this Cataloging Unit"
+          note={tra_note}
           chart_type="tra"
           chart_data={tra_data}
           chart_filter={chart_filter}
@@ -772,27 +777,3 @@ var ChartRow = React.createClass({
 });
 
 module.exports = ChartRow;
-
-
-//
-// <ChartRowWrapper key="CATCHMENTS_BASELINE"
-//   chart_width={chart_width_px}
-//   title="Catchment Baseline (Catchment)"
-//   title_description=""
-//   note={"For Catchment: " + NLCD_ID}
-//   chart_type="CATCHMENTS_BASELINE"
-//   chart_data={catchment_chart_data}
-//   chart_filter={NLCD_ID}
-//   get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
-//   change_geographyLevelActive={this.props.change_geographyLevelActive}
-//   set_search_method={this.props.set_search_method }
-//   tra_data={this.props.tra_data}
-//   get_tra_info={this.props.get_tra_info}
-//   charts={this.props.charts}
-//   update_ChartLevels={this.props.update_ChartLevels}
-//   update_ChartMatchId={this.props.update_ChartMatchId}
-//   get_keyColors={this.get_keyColors}
-//   top_label="Most Impaired"
-//   bottom_label="Least Impaired"
-//   level_label={"catchments_baseline"}
-//   />

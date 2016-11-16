@@ -173,7 +173,7 @@ var MapContainer = React.createClass({
       weight: 8,
       opacity: 0.4,
       color: 'red',
-      fillOpacity: 0.25,
+      fillOpacity: 0.0,
       zIndex: 50
     })
 
