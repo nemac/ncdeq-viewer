@@ -1,3 +1,6 @@
+var webpack = require('webpack');
+const prod = process.argv.indexOf('-p') !== -1;
+
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
   template: __dirname + '/app/index.html',
@@ -28,5 +31,14 @@ module.exports = {
       { test: /\.css$/, loader: "style-loader!css-loader" }
     ]
   },
-  plugins: [HTMLWebpackPluginConfig]
+  plugins: [
+      HTMLWebpackPluginConfig,
+      new webpack.DefinePlugin({
+          process: {
+            env: {
+              NODE_ENV: prod? `"production"`: '"development"'
+            }
+          }
+        }),
+    ]
 };
