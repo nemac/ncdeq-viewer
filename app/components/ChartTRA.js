@@ -48,10 +48,20 @@ var ChartTRA = React.createClass({
     return color;
   },
   get_tra_outline: function(tra){
-    let tra_style = {cursor: "pointer",boxShadow:"0 1px 3px 0 #d4d4d5,0 0 0 1px #d4d4d5"}
+    let tra_style = {
+                      cursor: "pointer",
+                      boxShadow:"0 1px 3px 0 rgba(212, 212, 213, 1),0 0 0 1px rgba(212, 212, 213, 1)",
+                      WebkitBoxShadow: "0 1px 3px 0 rgba(212, 212, 213, 1),0 0 0 1px rgba(212, 212, 213, 1)",
+                      MozBoxShadow: "0 1px 3px 0 rgba(212, 212, 213, 1),0 0 0 1px rgba(212, 212, 213, 1)",
+                    }
     if(this.state){
       if(tra === this.state.tra_filter){
-        tra_style = {cursor: "pointer", boxShadow: "0 1px 4px 0 #FF0000,0 0 0 2px #FF0000"}
+        tra_style = {
+                      cursor: "pointer",
+                      boxShadow: "0 1px 4px 0 rgba(255, 0, 0, 0.4),0 0 0 2px rgba(255, 0, 0, 0.4)",
+                      WebkitBoxShadow: "0 4px 4px 0 rgba(255, 0, 0, 0.4),0 0 0 2px rgba(255, 0, 0, 0.4)",
+                      MozBoxShadow: "0 4px 4px 0 rgba(255, 0, 0, 0.4),0 0 0 2px rgba(255, 0, 0, 0.4)",
+                    }
       }
     }
     return tra_style
@@ -69,12 +79,14 @@ var ChartTRA = React.createClass({
             <div key={key.ID} className="card"
               onMouseEnter={this.handleStatClick.bind(null,this,key.ID)}
               onMouseLeave={this.handleStatClick.bind(null,this,key.ID)}
+              onMouseOut={this.handleStatClick.bind(null,this,key.ID)}
+              onMouseMove={this.handleStatClick.bind(null,this,key.ID)}
               onClick={this.handleStatClick.bind(null,this,key.ID)}
               style={this.get_tra_outline(key.ID)}>
               <div className="content center aligned">
                 <div className="header">{key.ID} is a <span style={{color: this.get_Colors(key.NAME),cursor: "pointer"}}>{key.NAME}</span> TRA</div>
                 <div className="description">
-                    <div className="ui statistic"
+                    <div className="ui tiny statistic"
                       style={{cursor: "pointer"}}>
                       <div className="label" style={{cursor: "pointer"}}>
                         with a score of
