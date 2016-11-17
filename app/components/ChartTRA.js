@@ -6,6 +6,16 @@ var ChartTRA = React.createClass({
 
     const name = entry
 
+    //if the tra is same as current state do nothing.  this will help with
+    //  ensure the hover does not try and search for the tra over and over again on a mouse on
+    if(this.state){
+      if(name === this.state.tra_filter){
+        return
+      }
+    }
+
+
+
     const chart_type = this.props.chart_type
 
     //set current geography level in redux state store
@@ -78,10 +88,10 @@ var ChartTRA = React.createClass({
 
             <div key={key.ID} className="card"
               onMouseEnter={this.handleStatClick.bind(null,this,key.ID)}
-              onMouseLeave={this.handleStatClick.bind(null,this,key.ID)}
-              onMouseOut={this.handleStatClick.bind(null,this,key.ID)}
-              onMouseMove={this.handleStatClick.bind(null,this,key.ID)}
               onClick={this.handleStatClick.bind(null,this,key.ID)}
+              onMouseOver={this.handleStatClick.bind(null,this,key.ID)}
+              onMouseLeave={this.handleStatClick.bind(null,this,'')}
+              onMouseOut={this.handleStatClick.bind(null,this,'')}
               style={this.get_tra_outline(key.ID)}>
               <div className="content center aligned">
                 <div className="header">{key.ID} is a <span style={{color: this.get_Colors(key.NAME),cursor: "pointer"}}>{key.NAME}</span> TRA</div>
@@ -121,9 +131,10 @@ var ChartTRA = React.createClass({
           data.map(key => (
             <div key={key.ID}  className="statistic"
                 onMouseEnter={this.handleStatClick.bind(null,this,key.ID)}
-                onMouseLeave={this.handleStatClick.bind(null,this,"")}
-                onMouseOut={this.handleStatClick.bind(null,this,"")}
-                onMouseMove={this.handleStatClick.bind(null,this,"")}
+                onClick={this.handleStatClick.bind(null,this,key.ID)}
+                onMouseOver={this.handleStatClick.bind(null,this,key.ID)}
+                onMouseLeave={this.handleStatClick.bind(null,this,'')}
+                onMouseOut={this.handleStatClick.bind(null,this,'')}
                 onClick={this.handleStatClick.bind(null,this,key.ID)}
                 style={{cursor: "pointer"}}>
               <div className="label" style={{cursor: "pointer"}}>
