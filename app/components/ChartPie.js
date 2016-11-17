@@ -142,55 +142,58 @@ const ChartPie = React.createClass({
   	return (
 
       <div className="item" style={{display: "block"}}>
-
-        <div className="item" style={{display: "block", minHeight: "30px"}}>
-          <i className="left floated dropdown icon"></i>
-          <h4 className="ui left floated header">
+        <div className="content">
+          <div className="header">
+            <i className="left floated dropdown icon"></i>
             {this.props.title}
-          </h4>
-          <div className="meta">
-            <span className="description">{this.props.title_description}</span>
-            <span className="note">{note}</span>
+          </div>
+          <div className="content center aligned">
+            <div className="meta">
+              <span className="description">{this.props.title_description}</span>
+              <span className="note">{note}</span>
+            </div>
+          </div>
+          <div className="description" style={{paddingLeft:"10px",width:this.props.chart_width}}>
+            { data.length < 1 &&
+              <div className='ui icon negative message' >
+                <i className="remove circle icon"></i>
+                <div className="content">
+                  <div className="header">
+                    {note}
+                  </div>
+                  {sub_header}
+                </div>
+              </div>
+            }
+            { data.length > 0 &&
+              <PieChart key="" width={200} height={250}
+                margin={{top: 0, right: 0, left: 0, bottom: 0}}  >
+                { this.props.use_percent &&
+                  <Legend content={renderLegendPercent} verticalAlign={"top"} align={"right"}/>
+                }
+                { !this.props.use_percent &&
+                  <Legend content={renderLegendTotal} verticalAlign={"top"} align={"right"}/>
+                }
+
+                <Pie
+                  data={data}
+                  labelLine={false}
+                  fill="#8884d8"
+                  outerRadius={100}
+                  >
+                  {
+                    data.map((entry, index) => <Cell key={index} fill={get_keyColors(entry.name)}/>)
+                  }
+                </Pie>
+                <Tooltip/>
+              </PieChart>
+            }
           </div>
         </div>
-        <div className="item" style={{display: "block"}}>
-          { data.length < 1 &&
-            <div className='ui icon negative message' >
-              <i className="remove circle icon"></i>
-              <div className="content">
-                <div className="header">
-                  {note}
-                </div>
-                {sub_header}
-              </div>
-            </div>
-          }
-          { data.length > 0 &&
-          <PieChart key="" width={this.props.chart_width} height={200} onMouseEnter={this.onPieEnter}>
-            { this.props.use_percent &&
-              <Legend content={renderLegendPercent} verticalAlign={"top"} align={"right"}/>
-            }
-            { !this.props.use_percent &&
-              <Legend content={renderLegendTotal} verticalAlign={"top"} align={"right"}/>
-            }
-
-            <Pie
-              data={data}
-              labelLine={false}
-              fill="#8884d8"
-            >
-            	{
-              	data.map((entry, index) => <Cell key={index} fill={get_keyColors(entry.name)}/>)
-              }
-            </Pie>
-            <Tooltip/>
-          </PieChart>
-        }
-
-        </div>
-
-
       </div>
+
+
+
 
 
     );

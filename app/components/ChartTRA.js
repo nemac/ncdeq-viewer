@@ -14,8 +14,7 @@ var ChartTRA = React.createClass({
       }
     }
 
-
-
+    //get the chart type {tra, baseline, uplift, LULC, catchment}
     const chart_type = this.props.chart_type
 
     //set current geography level in redux state store
@@ -90,8 +89,6 @@ var ChartTRA = React.createClass({
               onMouseEnter={this.handleStatClick.bind(null,this,key.ID)}
               onClick={this.handleStatClick.bind(null,this,key.ID)}
               onMouseOver={this.handleStatClick.bind(null,this,key.ID)}
-              onMouseLeave={this.handleStatClick.bind(null,this,'')}
-              onMouseOut={this.handleStatClick.bind(null,this,'')}
               style={this.get_tra_outline(key.ID)}>
               <div className="content center aligned">
                 <div className="header">{key.ID} is a <span style={{color: this.get_Colors(key.NAME),cursor: "pointer"}}>{key.NAME}</span> TRA</div>
@@ -119,43 +116,6 @@ var ChartTRA = React.createClass({
 
       return null;
   },
-  get_tras: function(data){
-
-    let keycnt = 0;
-
-
-    //return bars
-    return (
-      <div key={keycnt++} className="ui small statistics">
-        {
-          data.map(key => (
-            <div key={key.ID}  className="statistic"
-                onMouseEnter={this.handleStatClick.bind(null,this,key.ID)}
-                onClick={this.handleStatClick.bind(null,this,key.ID)}
-                onMouseOver={this.handleStatClick.bind(null,this,key.ID)}
-                onMouseLeave={this.handleStatClick.bind(null,this,'')}
-                onMouseOut={this.handleStatClick.bind(null,this,'')}
-                onClick={this.handleStatClick.bind(null,this,key.ID)}
-                style={{cursor: "pointer"}}>
-              <div className="label" style={{cursor: "pointer"}}>
-                {key.ID} is a <span style={{color: this.get_Colors(key.NAME),cursor: "pointer"}}>{key.NAME}</span> TRA
-              </div>
-              <div className="label" style={{cursor: "pointer"}}>
-                with a score of
-              </div>
-              <div className="value" style={{color: this.get_Colors(key.NAME),cursor: "pointer"}}>
-                {Number(key.VALUE.substring(0,5))}
-              </div>
-            </div>
-          ))
-        }
-      </div>
-
-  )
-
-    return null;
-
-  },
 
   render() {
 
@@ -165,8 +125,11 @@ var ChartTRA = React.createClass({
 
     if(data){
 
+
       if(data[0].chart_features){
 
+        //filter the tra data to only show the data for the tra type
+        //  so if the tra is habitat tra only show habitat
         const features = data[0].chart_features
         const filter_data = features.filter( feature => {
           return feature.properties.chart_matchid === 1 &&
@@ -174,6 +137,7 @@ var ChartTRA = React.createClass({
                   feature.properties.chart_level_label === feature.properties.geography_label.replace("TRA ","")
         })
 
+        //sort the tra's
         tra_data_unsorted = filter_data.map( feature => {
           return {
                   ID: feature.properties.ID,
@@ -199,7 +163,6 @@ var ChartTRA = React.createClass({
 
 
     return (
-      <div className="ui items">
         <div className="item" style={{display: "block"}}>
           <div className="content">
             <div className="header">
@@ -214,7 +177,6 @@ var ChartTRA = React.createClass({
             </div>
           </div>
         </div>
-      </div>
 
     );
   }
