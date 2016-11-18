@@ -7,3 +7,12 @@ export function menuLists(state = [], action) {
   }
   return state;
 }
+
+export function fetching_menu(state = [], action){
+  switch (action.type) {
+    case 'FETCHING_MENUS':
+      return {...state, fetching_menu: action.fetching}
+    default:
+      return state
+  }
+}

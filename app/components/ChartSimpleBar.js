@@ -45,7 +45,7 @@ const ChartSimpleBar = React.createClass({
     //return bars
     return (
       data_array.map(key => (
-        <Bar key={keycnt++} dataKey={key}  fill={this.get_keyColors(key)}  >
+        <Bar dataKey={key} key={keycnt++} fill={this.get_keyColors(key)} >
         </Bar>
       ))
     )
@@ -104,6 +104,7 @@ const ChartSimpleBar = React.createClass({
     })
 
     const data = this.props.chart_data
+    console.log(data)
     const bars = this.get_bars(data[0])
     const datas = data[0]
     const datas_length = Object.keys(datas).length
@@ -111,50 +112,51 @@ const ChartSimpleBar = React.createClass({
     const note = datas_length < 2 ? 'No ' + this.props.title + ' found at this location!' : this.props.note ;
     const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
 
-
+    // console.log(JSON.stringify(data))
 
   	return (
 
-      <div className="item" style={{display: "block"}}>
 
-        <div className="item" style={{display: "block", minHeight: "30px"}}>
-          <i className="left floated dropdown icon"></i>
-          <h4 className="ui left floated header">
+      <div className="item" style={{display: "block"}}>
+        <div className="content">
+          <div className="header">
+            <i className="left floated dropdown icon"></i>
             {this.props.title}
-          </h4>
-          <div className="meta">
-            <span className="description">{this.props.title_description}</span>
-            <span className="note">{note}</span>
+          </div>
+          <div className="content center aligned">
+            <div className="meta center aligned">
+              <span className="description center aligned">{this.props.title_description}</span>
+              <span className="note center aligned">{note}</span>
+            </div>
+          </div>
+          <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
+            { datas_length< 2 &&
+              <div className='ui icon negative message' >
+                <i className="remove circle icon"></i>
+                <div className="content">
+                  <div className="header">
+                    {note}
+                  </div>
+                  {sub_header}
+                </div>
+              </div>
+            }
+            { datas_length > 1 &&
+              <BarChart
+                    width={this.props.chart_width/1.5}
+                    height={200}
+                    data={data}
+                    margin={{top: 5, right: 5, left: 50, bottom: 5}}>
+               <XAxis dataKey="name" hide={false} tick={false} tickLine={false} axisLine={false} />
+               <YAxis hide={false} tick={false} tickLine={false} axisLine={false} />
+               <Tooltip/>
+               <Legend />
+               {bars}
+              </BarChart>
+            }
           </div>
         </div>
-        <div className="item" style={{display: "block"}}>
-          { datas_length < 2 &&
-            <div className='ui icon negative message' >
-              <i className="remove circle icon"></i>
-              <div className="content">
-                <div className="header">
-                  {note}
-                </div>
-                {sub_header}
-              </div>
-            </div>
-          }
-
-          { datas_length > 1 &&
-            <BarChart width={this.props.chart_width} height={200} data={data}
-                  margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-             <XAxis dataKey="name" hide={false} tick={false}  tickLine={false} axisLine={false} />
-             <YAxis hide={false} tick={false}  tickLine={false} axisLine={false} />
-             <Legend />
-             {bars}
-             <Tooltip/>
-            </BarChart>
-          }
-        </div>
-
-
       </div>
-
 
     );
   }

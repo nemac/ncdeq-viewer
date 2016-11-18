@@ -112,7 +112,7 @@ const renderLegendTotal = (props) => {
   return (
 
 
-    <div className="ui list">
+    <div className="ui list" style={{marginLeft:5}}>
       {
         payload.map((entry, index) => (
 
@@ -153,7 +153,7 @@ const ChartPie = React.createClass({
               <span className="note">{note}</span>
             </div>
           </div>
-          <div className="description" style={{paddingLeft:"10px",width:this.props.chart_width}}>
+          <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
             { data.length < 1 &&
               <div className='ui icon negative message' >
                 <i className="remove circle icon"></i>
@@ -166,13 +166,13 @@ const ChartPie = React.createClass({
               </div>
             }
             { data.length > 0 &&
-              <PieChart key="" width={200} height={250}
+              <PieChart key="" width={this.props.chart_width/2} height={250}
                 margin={{top: 0, right: 0, left: 0, bottom: 0}}  >
                 { this.props.use_percent &&
-                  <Legend content={renderLegendPercent} verticalAlign={"top"} align={"right"}/>
+                  <Legend content={renderLegendPercent} verticalAlign={"middle"} align={"right"}/>
                 }
                 { !this.props.use_percent &&
-                  <Legend content={renderLegendTotal} verticalAlign={"top"} align={"right"}/>
+                  <Legend content={renderLegendTotal} verticalAlign={"middle"} align={"right"}/>
                 }
 
                 <Pie

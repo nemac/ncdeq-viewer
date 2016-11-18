@@ -285,7 +285,6 @@ var ChartRow = React.createClass({
         return item.chart_type.toUpperCase() === chart_type.toUpperCase();
       })
 
-
           //get the chart types limits to apply to the data
           const current_chart_matchid = (chart_type_limt[0] ? chart_type_limt[0].current_chart_matchid : 2)
 
@@ -295,8 +294,10 @@ var ChartRow = React.createClass({
           // sort by value
           let sorted_hucs = this.getChart_Sorted(levelone);
 
+          //create chart objects
           var blank_chart_object = new Object;
           var blank_chart_object_two = new Object;
+
           //loop through the sorted huvs and prepare the data for the chart.
           sorted_hucs.map(huc => {
 
@@ -384,7 +385,35 @@ var ChartRow = React.createClass({
     }
   },
   render: function() {
-    //get chart width inpixl from redux should handle resize in actiion creators
+
+    // if(this.props.fetching_chart ){
+    //   console.log('fetching chart')
+    // }
+    //
+    // if(this.props.fetching_tra){
+    //   console.log('fetching tra')
+    // }
+    //
+    // if(this.props.fetching_map){
+    //   console.log('fetching map')
+    // }
+    //
+    // if(this.props.fetching_geo){
+    //   console.log('fetching geography levels')
+    // }
+    //
+    // if(this.props.fetching_menu){
+    //   console.log('fetching menu list')
+    // }
+
+    //messages for working
+    const working_message = this.props.fetching_chart || this.props.fetching_tra || this.props.fetching_map || this.props.fetching_geo || this.props.fetching_menu ? "loading..." : ""
+    const working_class = this.props.fetching_chart|| this.props.fetching_tra  || this.props.fetching_map || this.props.fetching_geo || this.props.fetching_menu ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
+    const working_key = this.props.title  + '-working'
+
+    // console.log('chart ' + working_message)
+
+    //get chart width in pixels from redux should handle resize in actiion creators
     let chart_width_px = CHART_WIDTH_PX;
 
     //not sure yet ho to handle this but chartHeight needs to be adjusted by to px in the chart component
@@ -430,16 +459,6 @@ var ChartRow = React.createClass({
 
     //get the user selected huc so we can filter
     let chart_filter = this.getChart_Filter(baseline_data[0]);
-
-    // //get the baseline chart filtered by the user selected huc
-    // let baseline_data_limited = this.getChart_FilteredByHUC(baseline_data[0], chart_filter);
-    //
-    // //get the uplift chart filtered by the user selected huc
-    // let uplift_data_limited = this.getChart_FilteredByHUC(uplift_data[0], chart_filter);
-
-    //get the tra chart filtered by the user selected huc
-    // let tra_data_limited = this.getChart_FilteredByHUC(tra_data[0], chart_filter);
-
 
     let chart_baseline_bar = [];
     let chart_upflift_bar = [];
@@ -545,11 +564,6 @@ var ChartRow = React.createClass({
       huc_message = "The " + this.getLevel() + " " +  chart_filter + " is currently highlighted."
     }
 
-    //messages for working
-    const working_message = this.props.fetching_chart || this.props.fetching_tra || this.props.fetching_map ? "loading..." : ""
-    const working_class = this.props.fetching_chart|| this.props.fetching_tra  || this.props.fetching_map ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
-    const working_key = this.props.title  + '-working'
-
     //land use land cover data
     const NLCDData = this.props.NLCDData ? this.props.NLCDData.features : []
     const NLCD_ID_obj = this.props.NLCDPointInfo ? this.props.NLCDPointInfo : []
@@ -636,8 +650,23 @@ var ChartRow = React.createClass({
            catchment_chart_object[catchment.name] = catchment.value
         })
 
+
+        //get nlcd id which is reallyt the catchment gridcode
+        var catchment_chart_object_one = new Object;
+        catchment_chart_object_one["name"] = 0;
+
+        //get the catchment id and value and make that an object
+        //  this sets up the data structure for the recharts bar chart
+        //  structure is {name: "name", chartvaluename: chartvalue, chartvaluename: chartvalue}
+        //  where chartvaluename is something like Hydrology, Habitat, or Water Quality
+        catchment_chart_data.map( catchment => {
+           catchment_chart_object_one[catchment.name] = 0
+        })
+
+
         //make the object an array.
-        const catchment_chart_ar = [catchment_chart_object]
+        const catchment_chart_ar = [catchment_chart_object,catchment_chart_object_one]
+
 
         //tra note
         let tra_note = "TRA's in this Cataloging Unit"

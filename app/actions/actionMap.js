@@ -520,6 +520,10 @@ export function get_tra_info(id){
     //start fetching state (set to true)
     dispatch(fetching_start())
 
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
+
     //get redux state
     const state = getState()
 
@@ -551,6 +555,8 @@ export function get_tra_info(id){
     //end fetching set fetching state to false
     dispatch(fetching_end())
 
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
   }
 
 }

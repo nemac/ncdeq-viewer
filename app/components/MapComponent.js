@@ -229,7 +229,7 @@ var MapContainer = React.createClass({
     return TempZoomLayer
 
   },
-  add_GeoJSON_ClickEvent(layer){
+  add_GeoJSON_ClickEvent: function(layer){
     //add a click event to the new layer so the new layer does not steal the state...
     //  w/out this when a user clicked on geojson like a huc 6 or huc 8 (riverbasin or Cataloging unit)
     //  nothing would happen.
@@ -243,7 +243,60 @@ var MapContainer = React.createClass({
     }
 
   },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    //only do this if not currently fetching some data
+    //fetching map data
+    if(this.props.fetching_map){
+      return false
+    }
+
+    //fetching chart data
+    if(this.props.fetching_chart ){
+      return false
+    }
+
+    //fetching tra data
+    if(this.props.fetching_tra){
+      return false
+    }
+
+    //fetching tra geography_levels
+    if(this.props.fetching_geo){
+      return false
+    }
+    //fetching menu lists
+    if(this.props.fetching_menu){
+      return false
+    }
+    return true
+  },
+  
   componentDidUpdate: function(prevProps, prevState) {
+
+    //only do this if not currently fetching some data
+    //fetching map data
+    if(this.props.fetching_map){
+      return
+    }
+
+    //fetching chart data
+    if(this.props.fetching_chart ){
+      return
+    }
+
+    //fetching tra data
+    if(this.props.fetching_tra){
+      return
+    }
+
+    //fetching tra geography_levels
+    if(this.props.fetching_geo){
+      return
+    }
+    //fetching menu lists
+    if(this.props.fetching_menu){
+      return
+    }
 
     //check if there was a prevProps
     // need to functionise this.
@@ -622,7 +675,6 @@ var MapContainer = React.createClass({
     },
   render: function() {
     //
-
     //not sure yet ho to handle this but mapHeight needs to be adjusted by to px in the map component
     const mapHeight_adjustment = 10;
     const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;

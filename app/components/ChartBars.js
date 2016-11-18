@@ -202,8 +202,7 @@ var ChartBars = React.createClass({
         if (active) {
           const { payload, label } = this.props;
 
-
-        const thedata =  payload.map( bar_segment => {
+          const thedata = payload.map( bar_segment => {
 
            const colors = self.props.get_keyColors(bar_segment.name)
 
