@@ -121,12 +121,6 @@ var ChartRow = React.createClass({
     //update header vis in action
     this.props.update_HeaderVis()
 
-    //make the leaflet map object is set
-    if(this.props.leafletMap){
-      const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize()}, 100);
-    };
-
   },
   getChartType_Data: function(type){
 
@@ -268,7 +262,6 @@ var ChartRow = React.createClass({
     return sorted_hucs;
 
   },
-
   getChart_data: function(chart_data, chart_type){
     // builds chart data into proper format for rechart library (bar charts)
     let chart_data_array = [];
@@ -390,10 +383,10 @@ var ChartRow = React.createClass({
     //check status of rendering only re-render if not fetching something
     //  since I am doing some caclulations in render this forces render to only happen in rendering
 
-    // //status of fetching map
-    // if( nextProps.fetching_map ){
-    //   should_update = false
-    // }
+    //status of fetching map
+    if( nextProps.fetching_map ){
+      should_update = false
+    }
 
     //status of fetching chart
     if( nextProps.fetching_chart ){
@@ -448,13 +441,10 @@ var ChartRow = React.createClass({
       console.log('fetching meu')
     }
 
-
     //messages for working
     const working_message = is_fetching ? "loading..." : ""
     const working_class = is_fetching ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
     const working_key = this.props.title  + '-working'
-
-    // console.log('chart ' + working_message)
 
     //get chart width in pixels from redux should handle resize in actiion creators
     let chart_width_px = CHART_WIDTH_PX;

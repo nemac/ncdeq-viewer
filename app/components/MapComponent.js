@@ -22,13 +22,13 @@ var TempTraLayer;
 var TempCatchmentLayer;
 var TempMapPoint;
 
+
 var MapContainer = React.createClass({
   handleResize: function(){
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize()}, 400);
-      leafletMap.invalidateSize()
+      setTimeout(function(){ leafletMap.invalidateSize()}, 200);
     };
   },
   handleChartButtonClick: function(comp,e){
@@ -40,8 +40,123 @@ var MapContainer = React.createClass({
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize()}, 100);
+      setTimeout(function(){ leafletMap.invalidateSize()}, 200);
     };
+  },
+  //get geojson symbology
+  geoJSON_renderer: function(layer_name){
+    let renderer = {};
+
+    switch (layer_name) {
+      case 'catchment':
+        renderer = {
+          fillColor :'#1C2833',
+          stroke: true,
+          weight: 20,
+          opacity: 0.6,
+          color: '#1C2833',
+          fillOpacity: 0.25,
+          zIndex: 100
+        }
+        break;
+
+      case 'tra':
+        renderer = {
+          fillColor :'#FF0000',
+          stroke: true,
+          weight: 8,
+          opacity: 0.4,
+          color: '#FF0000',
+          fillOpacity: 0.0,
+          zIndex: 50
+        }
+        break;
+
+      case 'point':
+
+        renderer = {}
+        break;
+
+      case 'huc8':
+        renderer = {
+          fillColor :'#FFFF00',
+          stroke: true,
+          weight: 8,
+          opacity: 0.4,
+          color: '#FFFF00',
+          fillOpacity: 0.0,
+          zIndex: 75
+        }
+        break;
+
+      default:
+        renderer = {
+          fillColor :'#1F618D',
+          stroke: true,
+          weight: 8,
+          opacity: 0.6,
+          color: '#1F618D',
+          fillOpacity: 0.25,
+          zIndex: 0
+        }
+        break;
+    };
+
+    //return renderer symbology
+    return renderer;
+  },
+  //draw geojson layer
+  add_GeoJSON_Layer: function(features, layer_name, do_zoom){
+
+    //get the leaflet Map object
+    const leafletMap = this.props.leafletMap.leafletMap;
+
+    //get the  geojson_layers object from the current state
+    const geojson_layers = this.state.geojson_layers
+
+    //get layer from state
+    let map_layer = geojson_layers[layer_name]
+
+    //check if the layer has been added yes it is global varriable :)
+    const isLayerVis = leafletMap.hasLayer(map_layer);
+
+    //if a geojson layer has been added remove it.
+    //  eventually we want to only remove when user elects too.
+    if (isLayerVis){
+      leafletMap.removeLayer(map_layer)
+    }
+
+    //add ta blank layer to leaflet
+    map_layer = L.geoJson().addTo(leafletMap);
+
+    //add the GeoJSON data to the layer
+    map_layer.addData(features);
+
+    //get render
+    const renderer = this.geoJSON_renderer(layer_name);
+
+    //zoom highlights need to move this to varriable
+    map_layer.setStyle(renderer);
+
+    //pan and zoom to bounds of layers bounds
+    if(do_zoom){
+      leafletMap.fitBounds(TempZoomLayer.getBounds());
+    }
+
+    //when geojson is added on top of map.  it also needs a map click handler enabled.
+    this.add_GeoJSON_ClickEvent(map_layer);
+
+    //update the geojson_layers object with new map layer
+    geojson_layers[layer_name]=map_layer
+
+    //update the state with new geojson_layers object
+    this.setState({
+      ...this.state, geojson_layers
+    })
+
+    //return the layer
+    return map_layer
+
   },
   add_GeoJSON: function(features){
 
@@ -115,9 +230,6 @@ var MapContainer = React.createClass({
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     this.add_GeoJSON_ClickEvent(TempCatchmentLayer);
 
-
-    leafletMap.invalidateSize();
-
     //return the layer
     return TempCatchmentLayer
 
@@ -140,8 +252,6 @@ var MapContainer = React.createClass({
 
     //add the GeoJSON data to the layer
     TempMapPoint.addData(features);
-
-    leafletMap.invalidateSize();
 
     //return the layer
     return TempCatchmentLayer
@@ -180,8 +290,6 @@ var MapContainer = React.createClass({
 
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     this.add_GeoJSON_ClickEvent(TempTraLayer);
-
-    leafletMap.invalidateSize();
 
     //return the layer
     return TempTraLayer
@@ -223,8 +331,6 @@ var MapContainer = React.createClass({
     //when geojson is added on top of map.  it also needs a map click handler enabled.
     this.add_GeoJSON_ClickEvent(TempZoomLayer);
 
-    leafletMap.invalidateSize();
-
     //return the layer
     return TempZoomLayer
 
@@ -243,64 +349,18 @@ var MapContainer = React.createClass({
     }
 
   },
-  // shouldComponentUpdate: function(nextProps, nextState) {
-  //   //only do this if not currently fetching some data
-  //   //fetching map data
-  //   // if(this.props.fetching_map ||
-  //   //    this.props.fetching_chart ||
-  //   //    this.props.fetching_tra ||
-  //   //    this.props.fetching_geo ||
-  //   //    this.props.fetching_menu  ){
-  //   //   return false
-  //   // }
-  //
-  //   // //fetching chart data
-  //   // if(this.props.fetching_chart ){
-  //   //   return false
-  //   // }
-  //
-  //   // //fetching tra data
-  //   // if(this.props.fetching_tra){
-  //   //   return false
-  //   // }
-  //
-  //   // //fetching tra geography_levels
-  //   // if(this.props.fetching_geo){
-  //   //   return false
-  //   // }
-  //   // //fetching menu lists
-  //   // if(this.props.fetching_menu){
-  //   //   return false
-  //   // }
-  //   return true
-  // },
+  componentWillReceiveProps: function(nextProps) {
 
+        //leaflet map dosenot update size this forces the issue
+        if(nextProps.leafletMap){
+          const leafletMap = nextProps.leafletMap.leafletMap;
+          if(leafletMap){
+            leafletMap.invalidateSize()
+          }
+        };
+
+  },
   componentDidUpdate: function(prevProps, prevState) {
-
-    // //only do this if not currently fetching some data
-    // //fetching map data
-    // if(this.props.fetching_map){
-    //   return
-    // }
-    //
-    // //fetching chart data
-    // if(this.props.fetching_chart ){
-    //   return
-    // }
-    //
-    // //fetching tra data
-    // if(this.props.fetching_tra){
-    //   return
-    // }
-    //
-    // //fetching tra geography_levels
-    // if(this.props.fetching_geo){
-    //   return
-    // }
-    // //fetching menu lists
-    // if(this.props.fetching_menu){
-    //   return
-    // }
 
     //check if there was a prevProps
     // need to functionise this.
@@ -494,7 +554,8 @@ var MapContainer = React.createClass({
           if(CurrentFeatures[0]){
 
             //add geojson
-            this.add_GeoJSON(CurrentFeatures);
+            //this.add_GeoJSON(CurrentFeatures);
+            this.add_GeoJSON_Layer(CurrentFeatures, 'huc12', false)
 
             //update menus
             this.updateFilters(CurrentFeatures[0].properties.VALUE);
@@ -511,7 +572,8 @@ var MapContainer = React.createClass({
 
               if(LastFeatures.length === 0){
                 //add geojson
-                this.add_GeoJSON(CurrentFeatures);
+                // this.add_GeoJSON(CurrentFeatures);
+                this.add_GeoJSON_Layer(CurrentFeatures, 'huc12', false)
 
                 //update menus
                 this.updateFilters(CurrentFeatures[0].properties.VALUE);
@@ -522,7 +584,8 @@ var MapContainer = React.createClass({
               if(CurrentFeatures[0].properties.ID != LastFeatures[0].properties.ID){
 
                 //add geojson
-                this.add_GeoJSON(CurrentFeatures);
+                // this.add_GeoJSON(CurrentFeatures);
+                this.add_GeoJSON_Layer(CurrentFeatures, 'huc12', false)
 
                 //update menus
                 this.updateFilters(CurrentFeatures[0].properties.VALUE);
@@ -532,6 +595,7 @@ var MapContainer = React.createClass({
         }
       }
     }
+
 
   },
   HandleMapEnd: function(mapComp,e){
@@ -672,13 +736,20 @@ var MapContainer = React.createClass({
 
   },
   getInitialState: function() {
+    const geojson_layers = {"huc8": null,
+      "huc12": null,
+      "tra": null,
+      "catchment": null,
+      "mappoint": null,}
+
       return {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
         tileUrl:'https://api.tiles.mapbox.com/v3/daveism.oo0p88l4/{z}/{x}/{y}.png',
+        geojson_layers,
       }
-  },
+    },
   render: function() {
-    //
+
     //not sure yet ho to handle this but mapHeight needs to be adjusted by to px in the map component
     const mapHeight_adjustment = 10;
     const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;
