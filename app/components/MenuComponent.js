@@ -169,6 +169,7 @@ var MenuComponent = React.createClass({
     //  not sure why values from other geography levels are making it here.
     if (Number(valueLength) === Number(expectedLength)){
       //update the chartdata redux store
+      console.log(e.target.value, currentLevel)
       this.props.get_ChartData(e.target.value, currentLevel)
       this.props.get_TRAData(e.target.value, currentLevel)
 

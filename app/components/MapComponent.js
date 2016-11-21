@@ -140,7 +140,7 @@ var MapContainer = React.createClass({
 
     //pan and zoom to bounds of layers bounds
     if(do_zoom){
-      leafletMap.fitBounds(TempZoomLayer.getBounds());
+      leafletMap.fitBounds(map_layer.getBounds());
     }
 
     //when geojson is added on top of map.  it also needs a map click handler enabled.
@@ -156,84 +156,6 @@ var MapContainer = React.createClass({
 
     //return the layer
     return map_layer
-
-  },
-  tra_GeoJson: function(features){
-    //get the leaflet Map object
-    const leafletMap = this.props.leafletMap.leafletMap;
-
-    //check if the layer has been added yes it is global varriable :)
-    const isLayerVis = leafletMap.hasLayer(TempTraLayer);
-
-    //if a geojson layer has been added remove it.
-    //  eventually we want to only remove when user elects too.
-    if (isLayerVis){
-      leafletMap.removeLayer(TempTraLayer)
-    }
-
-    //add a blank layer to leaflet
-    TempTraLayer = L.geoJson().addTo(leafletMap);
-
-    //add the GeoJSON data to the layer
-    TempTraLayer.addData(features);
-
-    //zoom highlights need to move this to varriable
-    TempTraLayer.setStyle({
-      fillColor :'red',
-      stroke: true,
-      weight: 8,
-      opacity: 0.4,
-      color: 'red',
-      fillOpacity: 0.0,
-      zIndex: 50
-    })
-
-
-    //when geojson is added on top of map.  it also needs a map click handler enabled.
-    this.add_GeoJSON_ClickEvent(TempTraLayer);
-
-    //return the layer
-    return TempTraLayer
-
-  },
-  zoom_GeoJson: function(features){
-    //get the leaflet Map object
-    const leafletMap = this.props.leafletMap.leafletMap;
-
-    //check if the layer has been added yes it is global varriable :)
-    const isLayerVis = leafletMap.hasLayer(TempZoomLayer);
-
-    //if a geojson layer has been added remove it.
-    //  eventually we want to only remove when user elects too.
-    if (isLayerVis){
-      leafletMap.removeLayer(TempZoomLayer)
-    }
-
-    //add a blank layer to leaflet
-    TempZoomLayer = L.geoJson().addTo(leafletMap);
-
-    //add the GeoJSON data to the layer
-    TempZoomLayer.addData(features);
-
-    //zoom highlights need to move this to varriable
-    TempZoomLayer.setStyle({
-      fillColor :'yellow',
-      stroke: true,
-      weight: 8,
-      opacity: 0.4,
-      color: 'yellow',
-      fillOpacity: 0.0,
-      zIndex: 75
-    })
-
-    //pan and zoom to bounds of layers bounds
-    leafletMap.fitBounds(TempZoomLayer.getBounds());
-
-    //when geojson is added on top of map.  it also needs a map click handler enabled.
-    this.add_GeoJSON_ClickEvent(TempZoomLayer);
-
-    //return the layer
-    return TempZoomLayer
 
   },
   add_GeoJSON_ClickEvent: function(layer){
@@ -330,7 +252,9 @@ var MapContainer = React.createClass({
         if(CurrentTRAFeatures[0]){
 
           //add geojson
-          this.tra_GeoJson(CurrentTRAFeatures)
+          // this.tra_GeoJson(CurrentTRAFeatures)
+          this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
+
 
         }
       }
@@ -346,7 +270,7 @@ var MapContainer = React.createClass({
             if(LastTRAFeatures.length === 0){
 
               //add geojson
-              this.tra_GeoJson(CurrentTRAFeatures)
+              this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
 
             } else {
 
@@ -355,7 +279,7 @@ var MapContainer = React.createClass({
             if(CurrentTRAFeatures[0].properties.ID != LastTRAFeatures[0].properties.ID){
 
               //add geojson
-              this.tra_GeoJson(CurrentTRAFeatures)
+              this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
 
             }
          }
@@ -383,7 +307,8 @@ var MapContainer = React.createClass({
         if(CurrentHuc8Features[0]){
 
           //add geojson
-          this.zoom_GeoJson(CurrentHuc8Features)
+          // this.zoom_GeoJson(CurrentHuc8Features)
+          this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
 
         }
       }
@@ -397,7 +322,7 @@ var MapContainer = React.createClass({
 
             if(LastHUC8Features.length === 0){
               //add geojson
-              this.zoom_GeoJson(CurrentHuc8Features)
+              this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
 
             } else {
 
@@ -406,7 +331,7 @@ var MapContainer = React.createClass({
             if(CurrentHuc8Features[0].properties.ID != LastHUC8Features[0].properties.ID){
 
               //add geojson
-              this.zoom_GeoJson(CurrentHuc8Features)
+              this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
 
 
             }
@@ -489,6 +414,12 @@ var MapContainer = React.createClass({
         }
       }
     }
+
+  },
+  componentDidUpdate: function(prevProps, prevState) {
+
+    //check if there was a prevProps
+    // need to functionise this.
 
   },
   HandleMapEnd: function(mapComp,e){

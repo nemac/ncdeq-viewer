@@ -441,6 +441,7 @@ var ChartRow = React.createClass({
       console.log('fetching meu')
     }
 
+
     //messages for working
     const working_message = is_fetching ? "loading..." : ""
     const working_class = is_fetching ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
@@ -493,6 +494,8 @@ var ChartRow = React.createClass({
     //get the user selected huc so we can filter
     let chart_filter = this.getChart_Filter(baseline_data[0]);
 
+    console.log(baseline_data)
+
     let chart_baseline_bar = [];
     let chart_upflift_bar = [];
     let chart_tar_bar = [];
@@ -502,6 +505,7 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
     chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
+
 
     //probably need to rename this to describe it better I already got confused
     const tra_point_info = this.props.traPointInfo
