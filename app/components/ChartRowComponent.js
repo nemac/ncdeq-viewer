@@ -494,8 +494,6 @@ var ChartRow = React.createClass({
     //get the user selected huc so we can filter
     let chart_filter = this.getChart_Filter(baseline_data[0]);
 
-    console.log(baseline_data)
-
     let chart_baseline_bar = [];
     let chart_upflift_bar = [];
     let chart_tar_bar = [];
@@ -506,7 +504,8 @@ var ChartRow = React.createClass({
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
     chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
 
-
+    console.log(chart_filter)
+    
     //probably need to rename this to describe it better I already got confused
     const tra_point_info = this.props.traPointInfo
 
