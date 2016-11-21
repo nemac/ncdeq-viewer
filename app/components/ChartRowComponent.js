@@ -384,27 +384,49 @@ var ChartRow = React.createClass({
       return null;
     }
   },
+  // shouldComponentUpdate: function(nextProps, nextState) {
+  //   //only do this if not currently fetching some data
+  //   //fetching map data
+  //   //
+  //   // ||
+  //   //     ( this.props.fetching_chart && this.props.fetching_chart != undefined ) ||
+  //   //     ( this.props.fetching_tra && this.props.fetching_tra != undefined ) ||
+  //   //     ( this.props.fetching_geo && this.props.fetching_geo != undefined ) ||
+  //   //     ( this.props.fetching_menu && this.props.fetching_menu != undefined ) ||
+  //
+  //   if(this.props.fetching_map){
+  //     console.log('in scu fetching map')
+  //     return false
+  //   }
+  //
+  //   return true
+  // },
+
   render: function() {
 
-    // if(this.props.fetching_chart ){
-    //   console.log('fetching chart')
-    // }
+    let is_fetching = false;
+    // const is_fetching = this.props.fetching_map ||
+    //    this.props.fetching_chart ||
+    //    this.props.fetching_tra ||
+    //    this.props.fetching_geo ||
+    //    this.props.fetching_menu;
     //
-    // if(this.props.fetching_tra){
-    //   console.log('fetching tra')
-    // }
-    //
-    // if(this.props.fetching_map){
-    //   console.log('fetching map')
-    // }
-    //
-    // if(this.props.fetching_geo){
-    //   console.log('fetching geography levels')
-    // }
-    //
-    // if(this.props.fetching_menu){
-    //   console.log('fetching menu list')
-    // }
+    //   console.log('fetching: ' + is_fetching)
+
+    if( this.props.fetching_map ){
+      is_fetching = true
+      console.log('fetching map')
+    }
+
+    if( this.props.fetching_chart){
+      is_fetching = true
+      console.log('fetching chart')
+    }
+
+    if( this.props.fetching_tra){
+      is_fetching = true
+      console.log('fetching tra')
+    }
 
     //messages for working
     const working_message = this.props.fetching_chart || this.props.fetching_tra || this.props.fetching_map || this.props.fetching_geo || this.props.fetching_menu ? "loading..." : ""

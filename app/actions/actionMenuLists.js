@@ -77,13 +77,16 @@ export function get_MenuList(){
           //send the lists on
           dispatch(MenuList(allList))
 
+          //start fetching state (set to true)
+          dispatch(fetching_end())
+
       })
     )
-    .catch(error => { console.log('request failed', error); });
-
-    //start fetching state (set to true)
-    dispatch(fetching_end())
-
+    .catch(error => {
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
+      console.log('request failed', error);
+    });
   }
 }
 

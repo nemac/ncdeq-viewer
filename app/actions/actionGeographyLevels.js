@@ -192,11 +192,10 @@ export function change_geographyLevelFilter(filter_value, active_level) {
 
       //send the new geography level data on
       dispatch(geography_levels('CHANGE_FILTER_GEOGRAPHY_LEVEL',newLevels))
+
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
     }
-
-    //end fetching set fetching state to false
-    dispatch(fetching_end())
-
   }
 }
 
@@ -256,11 +255,17 @@ export function get_GeographyLevels(){
 
           //send the geography level data on
           dispatch(geography_levels('GET_GEOGRAPHY_LEVELS',GList))
-        })
-        .catch(error => { console.log('request failed', error); });
 
-        //end fetching set fetching state to false
-        dispatch(fetching_end())
+          //end fetching set fetching state to false
+          dispatch(fetching_end())
+
+        })
+        .catch(error => {
+          //end fetching set fetching state to false
+          dispatch(fetching_end())
+          console.log('request failed', error);
+        });
+
   }
 }
 

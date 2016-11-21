@@ -137,9 +137,6 @@ export function set_search_method(method){
     //end fetching set fetching state to false
     dispatch(fetching_end())
   }
-
-
-
 }
 
 export function get_LayerInfo_ByValue(value, layer_id){
@@ -238,14 +235,15 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
 
       dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
 
     }))
-    .catch(error => { console.log('request failed', error); });
-
-    //end fetching set fetching state to false
-    dispatch(fetching_end())
-
-
+    .catch(error => {
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
+      console.log('request failed', error);
+    });
   }
 }
 
@@ -503,13 +501,12 @@ export function handleSearchChange(comp,e){
           const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod, map_point};
 
           dispatch(mapSate('MAP_SEARCH',mapConfig));
+
+          //end fetching set fetching state to false
+          dispatch(fetching_end())
         }))
 
       });
-
-      //end fetching set fetching state to false
-      dispatch(fetching_end())
-
     }
   };
 
@@ -519,10 +516,6 @@ export function get_tra_info(id){
 
     //start fetching state (set to true)
     dispatch(fetching_start())
-
-    //start fetching state (set to true)
-    dispatch(fetching_start())
-
 
     //get redux state
     const state = getState()
@@ -550,15 +543,16 @@ export function get_tra_info(id){
 
         dispatch(mapSate('TRA_GEOMETRY',mapConfig));
 
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
+
       })
-
-    //end fetching set fetching state to false
-    dispatch(fetching_end())
-
-    //end fetching set fetching state to false
-    dispatch(fetching_end())
+      .catch(error => {
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
+        console.log('request failed', error);
+      });
   }
-
 }
 
 function fetching_start(){

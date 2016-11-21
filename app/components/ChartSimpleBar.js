@@ -64,7 +64,7 @@ const ChartSimpleBar = React.createClass({
         payload: PropTypes.array,
       },
       render() {
-        console.log(payload)
+        // console.log(payload)
 
         const { payload } = this.props;
         console.log(payload)

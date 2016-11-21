@@ -243,34 +243,38 @@ var MapContainer = React.createClass({
     }
 
   },
-  shouldComponentUpdate: function(nextProps, nextState) {
-    //only do this if not currently fetching some data
-    //fetching map data
-    if(this.props.fetching_map){
-      return false
-    }
+  // shouldComponentUpdate: function(nextProps, nextState) {
+  //   //only do this if not currently fetching some data
+  //   //fetching map data
+  //   // if(this.props.fetching_map ||
+  //   //    this.props.fetching_chart ||
+  //   //    this.props.fetching_tra ||
+  //   //    this.props.fetching_geo ||
+  //   //    this.props.fetching_menu  ){
+  //   //   return false
+  //   // }
+  //
+  //   // //fetching chart data
+  //   // if(this.props.fetching_chart ){
+  //   //   return false
+  //   // }
+  //
+  //   // //fetching tra data
+  //   // if(this.props.fetching_tra){
+  //   //   return false
+  //   // }
+  //
+  //   // //fetching tra geography_levels
+  //   // if(this.props.fetching_geo){
+  //   //   return false
+  //   // }
+  //   // //fetching menu lists
+  //   // if(this.props.fetching_menu){
+  //   //   return false
+  //   // }
+  //   return true
+  // },
 
-    //fetching chart data
-    if(this.props.fetching_chart ){
-      return false
-    }
-
-    //fetching tra data
-    if(this.props.fetching_tra){
-      return false
-    }
-
-    //fetching tra geography_levels
-    if(this.props.fetching_geo){
-      return false
-    }
-    //fetching menu lists
-    if(this.props.fetching_menu){
-      return false
-    }
-    return true
-  },
-  
   componentDidUpdate: function(prevProps, prevState) {
 
     //only do this if not currently fetching some data

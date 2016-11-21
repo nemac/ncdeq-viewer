@@ -364,7 +364,11 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
 
             return
           })
-          .catch(error => { console.log('request failed', error); });
+          .catch(error => {
+            //end fetching set fetching state to false
+            dispatch(fetching_end())
+            console.log('request failed', error);
+          });
 
       } else {
 
@@ -372,14 +376,9 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
         dispatch(
           ChartLevels('in action UPDATE_CHART_LEVEL', chart_level_data, new_chart_type_limits)
         )
-
         //end fetching set fetching state to false
         dispatch(fetching_end())
-
       }
-
-
-
   }
 }
 
@@ -432,7 +431,11 @@ export function get_ChartLevels(id,level){
       dispatch(fetching_end())
 
     })
-    .catch(error => { console.log('request failed', error); });
+    .catch(error => {
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
+      console.log('request failed', error);
+    });
 
   }
 }
@@ -458,9 +461,11 @@ export function get_nlcd_data(id,level){
         dispatch(fetching_end())
 
       })
-      .catch(error => { console.log('request failed', error); });
-
-
+      .catch(error => {
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
+        console.log('request failed', error);
+      });
   }
 }
 
@@ -486,9 +491,11 @@ export function get_catchment_data(id,level){
         dispatch(fetching_end())
 
       })
-      .catch(error => { console.log('request failed', error); });
-
-
+      .catch(error => {
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
+        console.log('request failed', error);
+      });
   }
 }
 
@@ -609,12 +616,22 @@ export function get_ChartData(id,level){
           dispatch(fetching_end())
 
         })
-        .catch(error => { console.log('request failed', error); });
+        .catch(error => {
+          //end fetching set fetching state to false
+          dispatch(fetching_end())
+          console.log('request failed', error);
+        });
+
 
       })
 
     )
-    .catch(error => { console.log('request failed', error); });
+    .catch(error => {
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
+      console.log('request failed', error);
+    });
+
   }
 }
 
@@ -640,13 +657,11 @@ export function update_ChartVisiblity (visibility){
 
       }
 
-
       //send visibility setting on
       dispatch(ChartData('SET_CHART_VISIBILITY', isVisible, types ))
 
       //end fetching set fetching state to false
       dispatch(fetching_end())
-
 
     }
 }
