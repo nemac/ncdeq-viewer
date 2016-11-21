@@ -653,7 +653,7 @@ var ChartRow = React.createClass({
 
         //get nlcd id which is reallyt the catchment gridcode
         var catchment_chart_object_one = new Object;
-        catchment_chart_object_one["name"] = 0;
+        catchment_chart_object_one["name"] = 1;
 
         //get the catchment id and value and make that an object
         //  this sets up the data structure for the recharts bar chart
@@ -664,8 +664,21 @@ var ChartRow = React.createClass({
         })
 
 
+        //get nlcd id which is reallyt the catchment gridcode
+        var catchment_chart_object_two = new Object;
+        catchment_chart_object_two["name"] = 2;
+
+        //get the catchment id and value and make that an object
+        //  this sets up the data structure for the recharts bar chart
+        //  structure is {name: "name", chartvaluename: chartvalue, chartvaluename: chartvalue}
+        //  where chartvaluename is something like Hydrology, Habitat, or Water Quality
+        catchment_chart_data.map( catchment => {
+           catchment_chart_object_two[catchment.name] = 0
+        })
+
+
         //make the object an array.
-        const catchment_chart_ar = [catchment_chart_object,catchment_chart_object_one]
+        const catchment_chart_ar = [catchment_chart_object_one,catchment_chart_object,catchment_chart_object_two]
 
 
         //tra note

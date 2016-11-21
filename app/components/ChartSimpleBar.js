@@ -104,7 +104,6 @@ const ChartSimpleBar = React.createClass({
     })
 
     const data = this.props.chart_data
-    console.log(data)
     const bars = this.get_bars(data[0])
     const datas = data[0]
     const datas_length = Object.keys(datas).length
@@ -143,10 +142,10 @@ const ChartSimpleBar = React.createClass({
             }
             { datas_length > 1 &&
               <BarChart
-                    width={this.props.chart_width/1.5}
+                    width={this.props.chart_width}
                     height={200}
                     data={data}
-                    margin={{top: 5, right: 5, left: 50, bottom: 5}}>
+                    margin={{top: 5, right: 5, left: 5, bottom: 5}}>
                <XAxis dataKey="name" hide={false} tick={false} tickLine={false} axisLine={false} />
                <YAxis hide={false} tick={false} tickLine={false} axisLine={false} />
                <Tooltip/>
