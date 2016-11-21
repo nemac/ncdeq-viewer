@@ -169,167 +169,15 @@ var MapContainer = React.createClass({
     }
 
   },
-  componentWillReceiveProps: function(nextProps) {
-
+  componentWillUpdate: function(nextProps, nextState) {
     //leaflet map dosenot update size this forces the issue
     if(nextProps.leafletMap){
       const leafletMap = nextProps.leafletMap.leafletMap;
       if(leafletMap){
-        leafletMap.invalidateSize()
+        leafletMap.invalidateSize(true)
       }
     };
 
-
-    //map point
-    // add a marker to the map click or map search
-    if(nextProps.map_settings){
-      if(nextProps.map_settings.map_point){
-        if(nextProps.map_settings.map_point.features){
-          const current_mappoint_features = nextProps.map_settings.map_point.features;
-          this.add_GeoJSON_Layer(current_mappoint_features, 'point', false)
-
-        }
-      }
-    }
-
-
-    //get nlcd data
-    if(nextProps.NLCDPointInfo){
-      if(nextProps.NLCDPointInfo.features){
-
-        //current catchment
-        let current_catchment = nextProps.NLCDPointInfo.features.length > 0 ? nextProps.NLCDPointInfo.features[0].properties.ID : [];
-        let last_catchment = 'not sure';
-        const current_catchment_features = nextProps.NLCDPointInfo.features.length > 0 ? nextProps.NLCDPointInfo.features : [];
-
-        // prevouis catchment
-        if(this.props.NLCDPointInfo){
-          if(this.props.NLCDPointInfo.features){
-            last_catchment = this.props.NLCDPointInfo.features.length > 0 ? this.props.NLCDPointInfo.features[0].properties.ID : [] ;
-          }
-        }
-
-        let LastCatchmentFeatures;
-
-        //get the cathcment geojson if the current and last catchments are different
-        if(current_catchment != last_catchment){
-
-          //get nlcd data
-          nextProps.get_nlcd_data(current_catchment)
-
-          //get catchment baseline data
-          nextProps.get_catchment_data(current_catchment)
-
-          //add geojson
-          // this.catchment_GeoJson(current_catchment_features)
-          this.add_GeoJSON_Layer(current_catchment_features, 'catchment', false)
-
-        }
-      }
-    }
-
-
-    //checks for adding tra data on chart click
-    if(nextProps.traInfo){
-      let LastTRAFeatures;
-
-      let CurrentTRAFeatures = nextProps.traInfo.features;
-
-      //check if there was a layerinfo object in the prevous state redux store
-      if(this.props.traInfo){
-        LastTRAFeatures = this.props.traInfo.features;
-      }
-
-      //in initial state there will not be an objet we still need to zoom and get the data...
-      if(CurrentTRAFeatures && !LastTRAFeatures){
-
-        //make sure there is a feature in the array.  when searching outside of NorthCarolina
-        //   this may return a blank features object.
-        if(CurrentTRAFeatures[0]){
-
-          //add geojson
-          this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
-
-        }
-      }
-
-      //when there are both a last feaures and current feautes JSON object
-      if(LastTRAFeatures && CurrentTRAFeatures){
-
-
-        //make sure there is a feature in the array.  when searching outside of NorthCarolina
-        //   this may return a blank features object.
-        if(CurrentTRAFeatures[0]){
-
-          if(LastTRAFeatures.length === 0){
-
-            //add geojson
-            this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
-
-          } else {
-
-            //when the last features JSON and Current Features JSON do not match
-            //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
-            if(CurrentTRAFeatures[0].properties.ID != LastTRAFeatures[0].properties.ID){
-
-              //add geojson
-              this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
-
-            }
-          }
-        }
-      }
-    }
-
-    if(nextProps.huc8Info){
-
-      let LastHUC8Features;
-
-      let CurrentHuc8Features = nextProps.huc8Info.features;
-
-      //check if there was a layerinfo object in the prevous state redux store
-      if(this.props.huc8Info){
-        LastHUC8Features = this.props.huc8Info.features;
-      }
-
-      //in initial state there will not be an objet we still need to zoom and get the data...
-      if(CurrentHuc8Features && !LastHUC8Features){
-
-        //make sure there is a feature in the array.  when searching outside of NorthCarolina
-        //   this may return a blank features object.
-        if(CurrentHuc8Features[0]){
-
-          //add geojson
-          this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
-
-        }
-      }
-
-      //when there are both a last feaures and current feautes JSON object
-      if(LastHUC8Features && CurrentHuc8Features){
-
-        //make sure there is a feature in the array.  when searching outside of NorthCarolina
-        //   this may return a blank features object.
-        if(CurrentHuc8Features[0]){
-
-          if(LastHUC8Features.length === 0){
-            //add geojson
-            this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
-
-          } else {
-
-            //when the last features JSON and Current Features JSON do not match
-            //  it is a new feature.  so we should select and zoom
-            if(CurrentHuc8Features[0].properties.ID != LastHUC8Features[0].properties.ID){
-
-              //add geojson
-              this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
-
-            }
-          }
-        }
-      }
-    }
   },
   componentDidUpdate: function(prevProps, prevState) {
 
@@ -337,14 +185,162 @@ var MapContainer = React.createClass({
     // need to functionise this.
     if (prevProps){
 
+      //map point
+      // add a marker to the map click or map search
+      if(this.props.map_settings){
+        if(this.props.map_settings.map_point){
+          if(this.props.map_settings.map_point.features){
+            const current_mappoint_features = this.props.map_settings.map_point.features;
+            this.add_GeoJSON_Layer(current_mappoint_features, 'point', false)
+          }
+        }
+      }
 
 
+      if(this.props.NLCDPointInfo){
+        if(this.props.NLCDPointInfo.features){
+
+          //current catchment
+          let current_catchment = this.props.NLCDPointInfo.features.length > 0 ? this.props.NLCDPointInfo.features[0].properties.ID : [];
+          let last_catchment = 'not sure';
+          const current_catchment_features = this.props.NLCDPointInfo.features.length > 0 ? this.props.NLCDPointInfo.features : [];
+
+          // prevouis catchment
+          if(prevProps.NLCDPointInfo){
+            if(prevProps.NLCDPointInfo.features){
+              last_catchment = prevProps.NLCDPointInfo.features.length > 0 ? prevProps.NLCDPointInfo.features[0].properties.ID : [] ;
+            }
+          }
+
+          let LastCatchmentFeatures;
+
+          //get the cathcment geojson if the current and last catchments are different
+          if(current_catchment != last_catchment){
+
+            //get nlcd data
+            this.props.get_nlcd_data(current_catchment)
+
+            //get catchment baseline data
+            this.props.get_catchment_data(current_catchment)
+
+            //add geojson
+            // this.catchment_GeoJson(current_catchment_features)
+            this.add_GeoJSON_Layer(current_catchment_features, 'catchment', false)
 
 
+          }
 
 
+       }
+      }
 
 
+            //checks for adding tra data on chart click
+            if(this.props.traInfo){
+              let LastTRAFeatures;
+
+              let CurrentTRAFeatures = this.props.traInfo.features;
+
+              //check if there was a layerinfo object in the prevous state redux store
+              if(prevProps.traInfo){
+                LastTRAFeatures = prevProps.traInfo.features;
+              }
+
+              //in initial state there will not be an objet we still need to zoom and get the data...
+              if(CurrentTRAFeatures && !LastTRAFeatures){
+
+                //make sure there is a feature in the array.  when searching outside of NorthCarolina
+                //   this may return a blank features object.
+                if(CurrentTRAFeatures[0]){
+
+                  //add geojson
+                  this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
+
+                }
+              }
+
+              //when there are both a last feaures and current feautes JSON object
+              if(LastTRAFeatures && CurrentTRAFeatures){
+
+
+                //make sure there is a feature in the array.  when searching outside of NorthCarolina
+                //   this may return a blank features object.
+                if(CurrentTRAFeatures[0]){
+
+                    if(LastTRAFeatures.length === 0){
+
+                      //add geojson
+                      this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
+
+                    } else {
+
+                    //when the last features JSON and Current Features JSON do not match
+                    //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
+                    if(CurrentTRAFeatures[0].properties.ID != LastTRAFeatures[0].properties.ID){
+
+                      //add geojson
+                      this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
+
+
+                    }
+                 }
+                }
+              }
+
+            }
+
+
+      if(this.props.huc8Info){
+
+        let LastHUC8Features;
+
+        let CurrentHuc8Features = this.props.huc8Info.features;
+
+        //check if there was a layerinfo object in the prevous state redux store
+        if(prevProps.huc8Info){
+          LastHUC8Features = prevProps.huc8Info.features;
+        }
+
+        //in initial state there will not be an objet we still need to zoom and get the data...
+        if(CurrentHuc8Features && !LastHUC8Features){
+
+          //make sure there is a feature in the array.  when searching outside of NorthCarolina
+          //   this may return a blank features object.
+          if(CurrentHuc8Features[0]){
+
+            //add geojson
+            this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
+
+          }
+        }
+
+        //when there are both a last feaures and current feautes JSON object
+        if(LastHUC8Features && CurrentHuc8Features){
+
+          //make sure there is a feature in the array.  when searching outside of NorthCarolina
+          //   this may return a blank features object.
+          if(CurrentHuc8Features[0]){
+
+              if(LastHUC8Features.length === 0){
+                //add geojson
+                this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
+
+              } else {
+
+              //when the last features JSON and Current Features JSON do not match
+              //  it is a new feature.  so we should select and zoom
+              if(CurrentHuc8Features[0].properties.ID != LastHUC8Features[0].properties.ID){
+
+                //add geojson
+                this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
+
+
+              }
+           }
+          }
+        }
+
+      }
 
       //check if there is a layerinfo object in the redux store
       if(this.props.layerInfo){
@@ -358,17 +354,6 @@ var MapContainer = React.createClass({
         if(prevProps.layerInfo){
           LastFeatures = prevProps.layerInfo.features;
         }
-
-        //get the string of the current features so we can compare the JSON data
-        let CurrentFeaturesStr = JSON.stringify(CurrentFeatures)
-
-        let LastLayerStr = ''
-
-        //if the last features existed make it string for comparison otherwise leave it as a blank substring
-        if(LastFeatures){
-          LastLayerStr = JSON.stringify(LastFeatures)
-        }
-
 
         //in initial state there will not be an objet we still need to zoom and get the data...
         if(CurrentFeatures && !LastFeatures){
@@ -412,6 +397,7 @@ var MapContainer = React.createClass({
 
                 //update menus
                 this.updateFilters(CurrentFeatures[0].properties.VALUE);
+
               }
            }
           }
@@ -566,7 +552,6 @@ var MapContainer = React.createClass({
       }
     },
   render: function() {
-
 
 
     //not sure yet ho to handle this but mapHeight needs to be adjusted by to px in the map component

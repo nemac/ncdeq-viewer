@@ -123,20 +123,6 @@ var ChartBars = React.createClass({
     }
     return null
   },
-  set_Info: function(){
-
-
-    if(this.props.chart_data){
-       this.props.chart_data.map( data  => {
-        if(data.name === this.props.chart_filter){
-          this.setState({ data });
-        }
-      })
-    }
-
-    return null;
-
-  },
   render: function() {
     //build chart data component and when there is no data returned
     //  Tell user no chart data Available

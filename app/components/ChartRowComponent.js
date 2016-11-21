@@ -503,8 +503,6 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
     chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
-
-    console.log(chart_filter)
     
     //probably need to rename this to describe it better I already got confused
     const tra_point_info = this.props.traPointInfo
