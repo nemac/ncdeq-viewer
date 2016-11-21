@@ -277,30 +277,30 @@ var MapContainer = React.createClass({
 
   componentDidUpdate: function(prevProps, prevState) {
 
-    //only do this if not currently fetching some data
-    //fetching map data
-    if(this.props.fetching_map){
-      return
-    }
-
-    //fetching chart data
-    if(this.props.fetching_chart ){
-      return
-    }
-
-    //fetching tra data
-    if(this.props.fetching_tra){
-      return
-    }
-
-    //fetching tra geography_levels
-    if(this.props.fetching_geo){
-      return
-    }
-    //fetching menu lists
-    if(this.props.fetching_menu){
-      return
-    }
+    // //only do this if not currently fetching some data
+    // //fetching map data
+    // if(this.props.fetching_map){
+    //   return
+    // }
+    //
+    // //fetching chart data
+    // if(this.props.fetching_chart ){
+    //   return
+    // }
+    //
+    // //fetching tra data
+    // if(this.props.fetching_tra){
+    //   return
+    // }
+    //
+    // //fetching tra geography_levels
+    // if(this.props.fetching_geo){
+    //   return
+    // }
+    // //fetching menu lists
+    // if(this.props.fetching_menu){
+    //   return
+    // }
 
     //check if there was a prevProps
     // need to functionise this.
@@ -676,7 +676,7 @@ var MapContainer = React.createClass({
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
         tileUrl:'https://api.tiles.mapbox.com/v3/daveism.oo0p88l4/{z}/{x}/{y}.png',
       }
-    },
+  },
   render: function() {
     //
     //not sure yet ho to handle this but mapHeight needs to be adjusted by to px in the map component

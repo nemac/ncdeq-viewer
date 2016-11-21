@@ -384,38 +384,48 @@ var ChartRow = React.createClass({
       return null;
     }
   },
-  // shouldComponentUpdate: function(nextProps, nextState) {
-  //   //only do this if not currently fetching some data
-  //   //fetching map data
-  //   //
-  //   // ||
-  //   //     ( this.props.fetching_chart && this.props.fetching_chart != undefined ) ||
-  //   //     ( this.props.fetching_tra && this.props.fetching_tra != undefined ) ||
-  //   //     ( this.props.fetching_geo && this.props.fetching_geo != undefined ) ||
-  //   //     ( this.props.fetching_menu && this.props.fetching_menu != undefined ) ||
-  //
-  //   if(this.props.fetching_map){
-  //     console.log('in scu fetching map')
-  //     return false
-  //   }
-  //
-  //   return true
-  // },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    let should_update = true;
 
+    //check status of rendering only re-render if not fetching something
+    //  since I am doing some caclulations in render this forces render to only happen in rendering
+
+    // //status of fetching map
+    // if( nextProps.fetching_map ){
+    //   should_update = false
+    // }
+
+    //status of fetching chart
+    if( nextProps.fetching_chart ){
+      should_update = false
+    }
+
+    //status of fetching tra
+    if( nextProps.fetching_tra){
+      should_update = false
+    }
+
+    //status of fetching geograpy levels
+    if( nextProps.fetching_geo){
+      should_update = false
+    }
+
+    //status of fetching menus
+    if( nextProps.fetching_menu){
+      should_update = false
+    }
+
+    //return should update.
+    return should_update
+
+  },
   render: function() {
 
     let is_fetching = false;
-    // const is_fetching = this.props.fetching_map ||
-    //    this.props.fetching_chart ||
-    //    this.props.fetching_tra ||
-    //    this.props.fetching_geo ||
-    //    this.props.fetching_menu;
-    //
-    //   console.log('fetching: ' + is_fetching)
 
     if( this.props.fetching_map ){
       is_fetching = true
-      console.log('fetching map')
+      console.log('render fetching map')
     }
 
     if( this.props.fetching_chart){
@@ -428,9 +438,20 @@ var ChartRow = React.createClass({
       console.log('fetching tra')
     }
 
+    if( this.props.fetching_geo){
+      is_fetching = true
+      console.log('fetching geograpy levels')
+    }
+
+    if( this.props.fetching_menu){
+      is_fetching = true
+      console.log('fetching meu')
+    }
+
+
     //messages for working
-    const working_message = this.props.fetching_chart || this.props.fetching_tra || this.props.fetching_map || this.props.fetching_geo || this.props.fetching_menu ? "loading..." : ""
-    const working_class = this.props.fetching_chart|| this.props.fetching_tra  || this.props.fetching_map || this.props.fetching_geo || this.props.fetching_menu ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
+    const working_message = is_fetching ? "loading..." : ""
+    const working_class = is_fetching ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
     const working_key = this.props.title  + '-working'
 
     // console.log('chart ' + working_message)
@@ -486,6 +507,7 @@ var ChartRow = React.createClass({
     let chart_upflift_bar = [];
     let chart_tar_bar = [];
     let all_hucs_bar = [];
+
 
     chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
@@ -629,7 +651,6 @@ var ChartRow = React.createClass({
       //get catchment data from redux store
       const CATCHMENTData = this.props.CATCHMENTData ? this.props.CATCHMENTData.features : []
 
-
       //filter catchment data to only level 2.
       //  there is only one level to catchment data we want to show
       //  level 1 is total.  If we include 1 then total will show up in the chart
@@ -658,7 +679,6 @@ var ChartRow = React.createClass({
         // a must be equal to b
           return 0;
         });
-
 
         //get nlcd id which is reallyt the catchment gridcode
         var catchment_chart_object = new Object;

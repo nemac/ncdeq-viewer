@@ -26,8 +26,8 @@ const mapStateToProps = (state,props) => {
   let fetching_chart = state.fetching_chart.fetching_chart;
   let fetching_map = state.fetching_map.fetching_map;
   let fetching_tra = state.fetching_tra.fetching_tra;
-  let fetching_geo = state.geography_levels.fetching_geo;
-  let fetching_menu = state.menuLists.fetching_menu;
+  let fetching_geo = state.fetching_geo.fetching_geo;
+  let fetching_menu = state.fetching_geo.fetching_menu;
 
   return {
     charts,

@@ -178,12 +178,16 @@ export function get_LayerInfo_ByValue(value, layer_id){
 
         dispatch(mapSate('MAP_GET_LAYER_INFO',mapConfig));
 
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
 
     }))
-    .catch(error => { console.log('request failed', error); });
+    .catch(error => {
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
 
-    //end fetching set fetching state to false
-    dispatch(fetching_end())
+      console.log('request failed', error);
+    });
   }
 }
 
@@ -242,6 +246,7 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
     .catch(error => {
       //end fetching set fetching state to false
       dispatch(fetching_end())
+
       console.log('request failed', error);
     });
   }
@@ -505,7 +510,6 @@ export function handleSearchChange(comp,e){
           //end fetching set fetching state to false
           dispatch(fetching_end())
         }))
-
       });
     }
   };
@@ -547,12 +551,9 @@ export function get_tra_info(id){
         dispatch(fetching_end())
 
       })
-      .catch(error => {
-        //end fetching set fetching state to false
-        dispatch(fetching_end())
-        console.log('request failed', error);
-      });
+
   }
+
 }
 
 function fetching_start(){
