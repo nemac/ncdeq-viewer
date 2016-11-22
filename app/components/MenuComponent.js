@@ -156,11 +156,11 @@ var MenuComponent = React.createClass({
     var currentLevel = val;
 
     if(this.props.searchMethod === "location searched" || this.props.searchMethod === "clicked"){
-      currentLevel = this.getLevel();
+      currentLevel = 'HUC12'
     }
 
     //get the current level
-    this.props.change_geographyLevelActive(val);
+    this.props.change_geographyLevelActive(currentLevel);
 
     //update header vis in action
     this.props.update_HeaderVis()
