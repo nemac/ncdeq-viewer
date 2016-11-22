@@ -151,7 +151,7 @@ var MenuComponent = React.createClass({
       return null
     }
   },
-  menuChange: function(e){
+  menuChange: function(val, e){
 
     // //get the current level
     var currentLevel = this.getLevel();
@@ -175,11 +175,10 @@ var MenuComponent = React.createClass({
       //get the ago layer id of the currentLevel
       const feature_id = getAGOFeatureId(currentLevel)
 
-      //get the attributes of the huc12 layer on a user click
+      //get the attributes of the huc layer on a user click
       this.props.get_LayerInfo_ByValue(e.target.value, feature_id);
-      // console.log(e.target.value)
 
-      //update the menu for curret active layer
+      //update the menu for current active layer
       //  this runs to ensure the list is updated for the active geograhpy Level
       $('#search-select-'+currentLevel.replace(' ','_')).dropdown('set selected',e.target.value);
 

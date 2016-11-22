@@ -45,7 +45,7 @@ var MenuItemComponent = React.createClass({
                 Choose a {this.props.name}  ({HUC_desgination})
               </label>
               <div className="ui input" onClick={this.props.handleMenuClick.bind(null, this.props.name)} style={{height: "50px"}}>
-                <select className="ui fluid search selection dropdown" id={'search-select-'+this.props.name.replace(' ','_')} onChange={this.props.menuChange}   >
+                <select className="ui fluid search selection dropdown" id={'search-select-'+this.props.name.replace(' ','_')} onChange={this.props.menuChange.bind(null, this.props.name)}   >
                   <option value="" >Choose a {this.props.name}  ({HUC_desgination})</option>
                   {namesList}
                 </select>

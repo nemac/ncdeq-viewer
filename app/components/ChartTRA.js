@@ -29,6 +29,7 @@ var ChartTRA = React.createClass({
       this.props.get_tra_info(name)
 
     }
+    this.props.set_search_method('tra clicked')
 
   },
   //keys for tra

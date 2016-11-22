@@ -16,7 +16,7 @@ import { getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd, get_
 
 var PropTypes = React.PropTypes;
 
-var GeoJSON_Layers= {"huc8": null,
+var GeoJSON_Layers = {"huc8": null,
   "huc12": null,
   "tra": null,
   "catchment": null,
@@ -88,9 +88,57 @@ var MapContainer = React.createClass({
         }
         break;
 
-      default:
+      case 'huc12':
         renderer = {
           fillColor :'#1F618D',
+          stroke: true,
+          weight: 8,
+          opacity: 0.6,
+          color: '#1F618D',
+          fillOpacity: 0.25,
+          zIndex: 0
+        }
+        break;
+
+      case 'HUC12':
+        renderer = {
+          fillColor :'#1F618D',
+          stroke: true,
+          weight: 8,
+          opacity: 0.6,
+          color: '#1F618D',
+          fillOpacity: 0.25,
+          zIndex: 0
+        }
+        break;
+
+      case 'Cataloging Units':
+        renderer = {
+          fillColor :'#1F618D',
+          stroke: true,
+          weight: 8,
+          opacity: 0.6,
+          color: '#1F618D',
+          fillOpacity: 0.1,
+          zIndex: 0
+        }
+        break;
+
+      case 'River Basins':
+        renderer = {
+          fillColor :'#1F618D',
+          stroke: true,
+          weight: 8,
+          opacity: 0.6,
+          color: '#1F618D',
+          fillOpacity: 0.1,
+          zIndex: 0
+        }
+        break;
+
+      default:
+        renderer = {
+          fillColor :'red',
           stroke: true,
           weight: 8,
           opacity: 0.6,
@@ -103,6 +151,31 @@ var MapContainer = React.createClass({
 
     //return renderer symbology
     return renderer;
+  },
+  //remove geojson layer
+  remove_GeoJSON_Layer: function(layer_name){
+
+    //get the leaflet Map object
+    const leafletMap = this.props.leafletMap.leafletMap;
+
+    if(leafletMap){
+      //get the  geojson_layers object from the current state
+      const temp_geojson_layers = GeoJSON_Layers
+
+      //get layer from state
+      let map_layer = temp_geojson_layers[layer_name]
+
+      //check if the layer has been added yes it is global varriable :)
+      const isLayerVis = leafletMap.hasLayer(map_layer);
+
+      //if a geojson layer has been added remove it.
+      //  eventually we want to only remove when user elects too.
+      if (isLayerVis){
+        leafletMap.removeLayer(map_layer)
+      }
+    }
+
+
   },
   //draw geojson layer
   add_GeoJSON_Layer: function(features, layer_name, do_zoom){
@@ -146,10 +219,10 @@ var MapContainer = React.createClass({
     this.add_GeoJSON_ClickEvent(map_layer);
 
     //update the geojson_layers object with new map layer
-    temp_geojson_layers[layer_name]=map_layer
+    temp_geojson_layers[layer_name] = map_layer
 
     //update the state with new geojson_layers object
-    GeoJSON_Layers = {...GeoJSON_Layers, temp_geojson_layers}
+    GeoJSON_Layers = {...GeoJSON_Layers, ...temp_geojson_layers}
 
     //return the layer
     return map_layer
@@ -208,24 +281,58 @@ var MapContainer = React.createClass({
         leafletMap.invalidateSize(true)
       }
     };
+
   },
   componentDidUpdate: function(prevProps, prevState) {
+
+
 
     //check if there was a prevProps
     // need to functionise this.
     if (prevProps){
 
-      //map point
+      let level = this.getLevel();
+      const method = this.props.searchMethod;
+
+      if(method === 'menu'){
+        if(level != 'Cataloging Units'){
+          this.remove_GeoJSON_Layer('Cataloging Units');
+        }
+        if(level != 'River Basins'){
+          this.remove_GeoJSON_Layer('River Basins');
+        }
+        if(level != 'HUC12'){
+          this.remove_GeoJSON_Layer('HUC12');
+        }
+      }
+
+      //map point (location search or map click)
       // add a marker to the map click or map search
-      if(this.props.map_settings){
+      if(prevProps.map_settings) {
+
+        if(prevProps.map_settings.map_point) {
+          //map_poin features
+          const map_point_features_current = this.get_features(this.props.map_settings.map_point)
+          const map_point_features_last = this.get_features(prevProps.map_settings.map_point)
+        }
+
         let has_features = this.has_features(this.props.map_settings.map_point)
         if(has_features){
           const current_mappoint_features = this.props.map_settings.map_point.features;
           this.add_GeoJSON_Layer(current_mappoint_features, 'point', false)
         }
-      }
 
-      //catchments and NLCD
+        // //do draw geojson point when search methd is menu/chart clicked
+        // const method = this.props.searchMethod;
+        // if(method === "chart clicked" || method === "menu"){
+        //   this.remove_GeoJSON_Layer('point')
+        // }
+
+      }
+      //end map point (location search or map click)
+
+
+      //start catchments and NLCD
 
       //catchments and NLCD features
       const catchment_features_current = this.get_features(this.props.NLCDPointInfo)
@@ -245,179 +352,159 @@ var MapContainer = React.createClass({
         this.props.get_catchment_data(catchment_id_curent)
 
         //add geojson
-        // this.catchment_GeoJson(current_catchment_features)
         this.add_GeoJSON_Layer(catchment_features_current, 'catchment', false)
       }
 
-
-            //checks for adding tra data on chart click
-            if(this.props.traInfo){
-              let LastTRAFeatures;
-
-              let CurrentTRAFeatures = this.props.traInfo.features;
-
-              //check if there was a layerinfo object in the prevous state redux store
-              if(prevProps.traInfo){
-                LastTRAFeatures = prevProps.traInfo.features;
-              }
-
-              //in initial state there will not be an objet we still need to zoom and get the data...
-              if(CurrentTRAFeatures && !LastTRAFeatures){
-
-                //make sure there is a feature in the array.  when searching outside of NorthCarolina
-                //   this may return a blank features object.
-                if(CurrentTRAFeatures[0]){
-
-                  //add geojson
-                  this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
-
-                }
-              }
-
-              //when there are both a last feaures and current feautes JSON object
-              if(LastTRAFeatures && CurrentTRAFeatures){
-
-
-                //make sure there is a feature in the array.  when searching outside of NorthCarolina
-                //   this may return a blank features object.
-                if(CurrentTRAFeatures[0]){
-
-                    if(LastTRAFeatures.length === 0){
-
-                      //add geojson
-                      this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
-
-                    } else {
-
-                    //when the last features JSON and Current Features JSON do not match
-                    //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
-                    if(CurrentTRAFeatures[0].properties.ID != LastTRAFeatures[0].properties.ID){
-
-                      //add geojson
-                      this.add_GeoJSON_Layer(CurrentTRAFeatures, 'tra', false)
-
-
-                    }
-                 }
-                }
-              }
-
-            }
-
-
-      if(this.props.huc8Info){
-
-        let LastHUC8Features;
-
-        let CurrentHuc8Features = this.props.huc8Info.features;
-
-        //check if there was a layerinfo object in the prevous state redux store
-        if(prevProps.huc8Info){
-          LastHUC8Features = prevProps.huc8Info.features;
-        }
-
-        //in initial state there will not be an objet we still need to zoom and get the data...
-        if(CurrentHuc8Features && !LastHUC8Features){
-
-          //make sure there is a feature in the array.  when searching outside of NorthCarolina
-          //   this may return a blank features object.
-          if(CurrentHuc8Features[0]){
-
+      //if length of last feaures is 0 then last feature is different we will draw
+      if(catchment_features_last && catchment_features_current){
+        //make sure there is a feature in the array.  when searching outside of NorthCarolina
+        //   this may return a blank features object.
+        if(catchment_features_current[0]){
+          if(catchment_features_last.length === 0){
             //add geojson
-            this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
-
+            this.add_GeoJSON_Layer(catchment_features_current, 'catchment', false)
+          } else {
+            //when the last features JSON and Current Features JSON do not match
+            //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
+            if(catchment_id_curent != catchment_id_last){
+              //add geojson
+              this.add_GeoJSON_Layer(catchment_features_current, 'catchment', false)
+            }
           }
         }
-
-        //when there are both a last feaures and current feautes JSON object
-        if(LastHUC8Features && CurrentHuc8Features){
-
-          //make sure there is a feature in the array.  when searching outside of NorthCarolina
-          //   this may return a blank features object.
-          if(CurrentHuc8Features[0]){
-
-              if(LastHUC8Features.length === 0){
-                //add geojson
-                this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
-
-              } else {
-
-              //when the last features JSON and Current Features JSON do not match
-              //  it is a new feature.  so we should select and zoom
-              if(CurrentHuc8Features[0].properties.ID != LastHUC8Features[0].properties.ID){
-
-                //add geojson
-                this.add_GeoJSON_Layer(CurrentHuc8Features, 'huc8', true)
+      }
+      //end catchments and NLCD
 
 
-              }
-           }
-          }
-        }
+      //start tra data
+      //tra features
+      const tra_features_current = this.get_features(this.props.traInfo)
+      const tra_features_last = this.get_features(prevProps.traInfo)
+
+      //tra id's
+      const tra_id_curent = this.get_property_id(tra_features_current, "ID")
+      const tra_id_last = this.get_property_id(tra_features_last, "ID")
+
+      //in initial state there will not be an object we still need to zoom and get the data...
+      if(tra_features_current && !tra_features_last){
+
+        //add geojson
+        this.add_GeoJSON_Layer(tra_features_current, 'tra', false)
 
       }
-
-      //check if there is a layerinfo object in the redux store
-      if(this.props.layerInfo){
-
-        let LastFeatures;
-
-        //get the feaures in the current redux store
-        let CurrentFeatures = this.props.layerInfo.features;
-
-        //check if there was a layerinfo object in the prevous state redux store
-        if(prevProps.layerInfo){
-          LastFeatures = prevProps.layerInfo.features;
-        }
-
-        //in initial state there will not be an objet we still need to zoom and get the data...
-        if(CurrentFeatures && !LastFeatures){
-
-          //make sure there is a feature in the array.  when searching outside of NorthCarolina
-          //   this may return a blank features object.
-          if(CurrentFeatures[0]){
-
+      //if length of last feaures is 0 then last feature is different we will draw
+      if(tra_features_last && tra_features_current){
+        //make sure there is a feature in the array.  when searching outside of NorthCarolina
+        //   this may return a blank features object.
+        if(tra_features_current[0]){
+          if(tra_features_last.length === 0){
             //add geojson
-            this.add_GeoJSON_Layer(CurrentFeatures, 'huc12', false)
+            this.add_GeoJSON_Layer(tra_features_current, 'tra', false)
+          } else {
+            //when the last features JSON and Current Features JSON do not match
+            //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
+            if(tra_id_curent != tra_id_last){
+              //add geojson
+              this.add_GeoJSON_Layer(tra_features_current, 'tra', false)
+            }
+          }
+        }
+      }
+
+      if(level.toUpperCase() != 'HUC12' && method === "menu"){
+        this.remove_GeoJSON_Layer('tra')
+      }
+      //end tra data
+
+
+      //start huc8 data
+      //huc8 features
+      const huc8_features_current = this.get_features(this.props.huc8Info)
+      const huc8_features_last = this.get_features(prevProps.huc8Info)
+
+      //huc8 id's
+      const huc8_id_curent = this.get_property_id(huc8_features_current, "ID")
+      const huc8_id_last = this.get_property_id(huc8_features_last, "ID")
+
+      //in initial state there will not be an object we still need to zoom and get the data...
+      if(huc8_features_current && !huc8_features_last){
+
+        //add geojson
+        this.add_GeoJSON_Layer(huc8_features_current, 'huc8', true)
+
+      }
+      //if length of last feaures is 0 then last feature is different we will draw
+      if(huc8_features_last && huc8_features_current){
+        //make sure there is a feature in the array.  when searching outside of NorthCarolina
+        //   this may return a blank features object.
+        if(huc8_features_current[0]){
+          if(huc8_features_last.length === 0){
+            //add geojson
+            this.add_GeoJSON_Layer(huc8_features_current, 'huc8', true)
+          } else {
+            //when the last features JSON and Current Features JSON do not match
+            //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
+            if(huc8_id_curent != huc8_id_last){
+              //add geojson
+              this.add_GeoJSON_Layer(huc8_features_current, 'huc8', true)
+            }
+          }
+        }
+      }
+
+      // if(level != 'HUC12' && method === "menu"){
+      //   this.remove_GeoJSON_Layer('huc8')
+      // }
+
+      //end huc8 data
+
+      //start huc12 data
+      //huc12 features
+      const huc12_features_current = this.get_features(this.props.layerInfo)
+      const huc12_features_last = this.get_features(prevProps.layerInfo)
+
+      //huc12 id's
+      const huc12_id_curent = this.get_property_id(huc12_features_current, "ID")
+      const huc12_id_last = this.get_property_id(huc12_features_last, "ID")
+
+      //in initial state there will not be an object we still need to zoom and get the data...
+      if(huc12_features_current && !huc12_features_last){
+
+        //add geojson
+
+        this.add_GeoJSON_Layer(huc12_features_current, level, false)
+
+        //update menus
+        this.updateFilters(huc12_features_current[0].properties.VALUE);
+
+      }
+      //if length of last feaures is 0 then last feature is different we will draw
+      if(huc12_features_last && huc12_features_current){
+        //make sure there is a feature in the array.  when searching outside of NorthCarolina
+        //   this may return a blank features object.
+        if(huc12_features_current[0]){
+          if(huc12_features_last.length === 0){
+            //add geojson
+            this.add_GeoJSON_Layer(huc12_features_current, level, false)
 
             //update menus
-            this.updateFilters(CurrentFeatures[0].properties.VALUE);
+            this.updateFilters(huc12_features_current[0].properties.VALUE);
 
-          }
-        }
+          } else {
+            //when the last features JSON and Current Features JSON do not match
+            //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
+            if(huc12_id_curent != huc12_id_last){
+              //add geojson
+              this.add_GeoJSON_Layer(huc12_features_current, level, false)
 
-        //when there are both a last feaures and current feautes JSON object
-        if(LastFeatures && CurrentFeatures){
-
-          //make sure there is a feature in the array.  when searching outside of NorthCarolina
-          //   this may return a blank features object.
-          if(CurrentFeatures[0]){
-
-              if(LastFeatures.length === 0){
-                //add geojson
-                // this.add_GeoJSON(CurrentFeatures);
-                this.add_GeoJSON_Layer(CurrentFeatures, 'huc12', false)
-
-                //update menus
-                this.updateFilters(CurrentFeatures[0].properties.VALUE);
-              } else {
-
-              //when the last features JSON and Current Features JSON do not match
-              //  it is a new feature.  so we should select and zoom
-              if(CurrentFeatures[0].properties.ID != LastFeatures[0].properties.ID){
-
-                //add geojson
-                // this.add_GeoJSON(CurrentFeatures);
-                this.add_GeoJSON_Layer(CurrentFeatures, 'huc12', false)
-
-                //update menus
-                this.updateFilters(CurrentFeatures[0].properties.VALUE);
-
-              }
-           }
+              //update menus
+              this.updateFilters(huc12_features_current[0].properties.VALUE);
+            }
           }
         }
       }
+      //end huc12 data
+
     }
 
 
@@ -498,7 +585,7 @@ var MapContainer = React.createClass({
 
           //set the filter in redux store for the level
           //  this will ensure the menus/breadcrumbs will also update appropiately
-          this.props.change_geographyLevelFilter(selectedValue,level)
+          this.props.change_geographyLevelFilter(selectedValue, level)
 
           //kind of hacky--how to do this in redux?
           $('#search-select-'+level.replace(' ','_')).dropdown('set selected',selectedValue);

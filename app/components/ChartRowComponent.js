@@ -19,14 +19,10 @@ import { getCategoryName, getFriendlyName } from '../utils/helpers';
 var Divider = require('./Divider');
 
 var ChartRow = React.createClass({
-  getJSONElement_ById: function(data,id){
-
-    const dataFiltered = data.filter( key => {
-      return key.properties.chart_id === id
-    })
-
-    return dataFiltered
-
+  getInitialState: function() {
+    return {
+      working: false
+    };
   },
   get_keyColors: function(key){
     let key_colors = [];
@@ -378,6 +374,7 @@ var ChartRow = React.createClass({
     }
   },
   shouldComponentUpdate: function(nextProps, nextState) {
+
     let should_update = true;
 
     //check status of rendering only re-render if not fetching something
@@ -409,7 +406,17 @@ var ChartRow = React.createClass({
     }
 
     //return should update.
-    return should_update
+    return true
+
+  },
+  componentWillReceiveProps: function(nextProps) {
+
+    // console.log('true')
+
+  },
+  componentDidUpdate: function(prevProps, prevState) {
+
+    // console.log('false')
 
   },
   render: function() {
@@ -418,33 +425,29 @@ var ChartRow = React.createClass({
 
     if( this.props.fetching_map ){
       is_fetching = true
-      console.log('render fetching map')
     }
 
     if( this.props.fetching_chart){
       is_fetching = true
-      console.log('fetching chart')
     }
 
     if( this.props.fetching_tra){
       is_fetching = true
-      console.log('fetching tra')
     }
 
     if( this.props.fetching_geo){
       is_fetching = true
-      console.log('fetching geograpy levels')
     }
 
     if( this.props.fetching_menu){
       is_fetching = true
-      console.log('fetching meu')
     }
 
+    const working = is_fetching
 
     //messages for working
-    const working_message = is_fetching ? "loading..." : ""
-    const working_class = is_fetching ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
+    const working_message = working ? "loading..." : ""
+    const working_class = working ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
     const working_key = this.props.title  + '-working'
 
     //get chart width in pixels from redux should handle resize in actiion creators
@@ -503,7 +506,7 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
     chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
-    
+
     //probably need to rename this to describe it better I already got confused
     const tra_point_info = this.props.traPointInfo
 
