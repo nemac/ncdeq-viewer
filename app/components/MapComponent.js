@@ -27,7 +27,7 @@ var MapContainer = React.createClass({
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize()}, 200);
+      setTimeout(function(){ leafletMap.invalidateSize(true)}, 200);
     };
   },
   handleChartButtonClick: function(comp,e){
@@ -39,7 +39,7 @@ var MapContainer = React.createClass({
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize()}, 200);
+      setTimeout(function(){ leafletMap.invalidateSize(true)}, 200);
     };
   },
   //get geojson symbology
@@ -169,6 +169,37 @@ var MapContainer = React.createClass({
     }
 
   },
+  get_features: function(prop){
+    const has_features = this.has_features(prop)
+    if(has_features){
+      // return prop.features.length > 0 ? prop.features : [];
+      return prop.features
+    }
+
+    return []
+  },
+  get_property_id: function(features, name){
+    if(features[0]){
+      const value = features[0].properties[name]
+      return value
+    }
+
+    return ''
+  },
+  has_features: function(prop){
+
+    //check if the prop exists
+    if(prop){
+      //check if prop has properties
+      if(prop.features){
+        return true
+      }
+    }
+
+    //prop does not exist for does not features.
+    //  either way it does not have feature
+    return false
+  },
   componentWillUpdate: function(nextProps, nextState) {
     //leaflet map dosenot update size this forces the issue
     if(nextProps.leafletMap){
@@ -177,7 +208,6 @@ var MapContainer = React.createClass({
         leafletMap.invalidateSize(true)
       }
     };
-
   },
   componentDidUpdate: function(prevProps, prevState) {
 
@@ -188,50 +218,35 @@ var MapContainer = React.createClass({
       //map point
       // add a marker to the map click or map search
       if(this.props.map_settings){
-        if(this.props.map_settings.map_point){
-          if(this.props.map_settings.map_point.features){
-            const current_mappoint_features = this.props.map_settings.map_point.features;
-            this.add_GeoJSON_Layer(current_mappoint_features, 'point', false)
-          }
+        let has_features = this.has_features(this.props.map_settings.map_point)
+        if(has_features){
+          const current_mappoint_features = this.props.map_settings.map_point.features;
+          this.add_GeoJSON_Layer(current_mappoint_features, 'point', false)
         }
       }
 
+      //catchments and NLCD
 
-      if(this.props.NLCDPointInfo){
-        if(this.props.NLCDPointInfo.features){
+      //catchments and NLCD features
+      const catchment_features_current = this.get_features(this.props.NLCDPointInfo)
+      const catchment_features_last = this.get_features(prevProps.NLCDPointInfo)
 
-          //current catchment
-          let current_catchment = this.props.NLCDPointInfo.features.length > 0 ? this.props.NLCDPointInfo.features[0].properties.ID : [];
-          let last_catchment = 'not sure';
-          const current_catchment_features = this.props.NLCDPointInfo.features.length > 0 ? this.props.NLCDPointInfo.features : [];
+      //catchments and NLCD id's
+      const catchment_id_curent = this.get_property_id(catchment_features_current, "ID")
+      const catchment_id_last = this.get_property_id(catchment_features_last, "ID")
 
-          // prevouis catchment
-          if(prevProps.NLCDPointInfo){
-            if(prevProps.NLCDPointInfo.features){
-              last_catchment = prevProps.NLCDPointInfo.features.length > 0 ? prevProps.NLCDPointInfo.features[0].properties.ID : [] ;
-            }
-          }
+      //check of current matches last id.
+      //  only do add and do this if they have changed
+      if(catchment_id_curent != catchment_id_last){
+        //get nlcd data
+        this.props.get_nlcd_data(catchment_id_curent)
 
-          let LastCatchmentFeatures;
+        //get catchment baseline data
+        this.props.get_catchment_data(catchment_id_curent)
 
-          //get the cathcment geojson if the current and last catchments are different
-          if(current_catchment != last_catchment){
-
-            //get nlcd data
-            this.props.get_nlcd_data(current_catchment)
-
-            //get catchment baseline data
-            this.props.get_catchment_data(current_catchment)
-
-            //add geojson
-            // this.catchment_GeoJson(current_catchment_features)
-            this.add_GeoJSON_Layer(current_catchment_features, 'catchment', false)
-
-
-          }
-
-
-       }
+        //add geojson
+        // this.catchment_GeoJson(current_catchment_features)
+        this.add_GeoJSON_Layer(catchment_features_current, 'catchment', false)
       }
 
 
