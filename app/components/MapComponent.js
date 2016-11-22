@@ -43,7 +43,7 @@ var MapContainer = React.createClass({
     };
   },
   //get geojson symbology
-  geoJSON_renderer: function(layer_name){
+  geoJSON_renderer: function(layer_name, method){
     let renderer = {};
 
     switch (layer_name) {
@@ -294,7 +294,7 @@ var MapContainer = React.createClass({
       let level = this.getLevel();
       const method = this.props.searchMethod;
 
-      if(method === 'menu'){
+      // if(method === 'menu'){
         if(level != 'Cataloging Units'){
           this.remove_GeoJSON_Layer('Cataloging Units');
         }
@@ -304,7 +304,7 @@ var MapContainer = React.createClass({
         if(level != 'HUC12'){
           this.remove_GeoJSON_Layer('HUC12');
         }
-      }
+      // }
 
       //map point (location search or map click)
       // add a marker to the map click or map search
@@ -419,6 +419,8 @@ var MapContainer = React.createClass({
 
       //start huc8 data
       //huc8 features
+      let zoom = (method === 'menu') ? false : true
+
       const huc8_features_current = this.get_features(this.props.huc8Info)
       const huc8_features_last = this.get_features(prevProps.huc8Info)
 
@@ -628,19 +630,17 @@ var MapContainer = React.createClass({
   },
   handleMapClick: function(e,self){
 
+    //set current geography level in redux state store
+    this.props.change_geographyLevelActive("HUC12");
+
+    //set search method
     this.props.set_search_method('clicked')
 
     //update header vis in action
     this.props.update_HeaderVis()
 
-    //set current geography level in redux state store
-    this.props.change_geographyLevelActive("HUC12");
-
-    //get the leaftet map object
-    var L = this.refs.map.leafletElement
-
     //update map height
-    this.props.update_MapHeight();
+    //this.props.update_MapHeight();
 
     //get the attributes of the huc12 layer on a user click
     this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
