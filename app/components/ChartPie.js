@@ -59,6 +59,83 @@ var PropTypes = React.PropTypes;
   return color;
 }
 
+const tooltipstyle = {
+  width: '100%',
+  margin: 0,
+  lineHeight: 24,
+  border: '1px solid #f5f5f5',
+  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+  padding: 10,
+};
+
+const toolTipLabel = {
+  margin: '0',
+  color: '#666',
+  fontWeight: '700',
+};
+
+const CustomTooltip  = React.createClass({
+  propTypes: {
+    type: PropTypes.string,
+    payload: PropTypes.array,
+    label: PropTypes.string,
+  },
+
+  render() {
+    const { active } = this.props;
+    let html_hov = '';
+    if (active) {
+      const { payload, label } = this.props;
+
+
+      const values = this.props.data.map( val => {
+        return val.value
+      })
+      //get the total of the values
+      var total = values.reduce(function(a, b) {
+        return a + b;
+      }, 0);
+
+      const thedata = payload.map( bar_segment => {
+
+       const colors = get_keyColors(bar_segment.name)
+        const toolTipName = {
+          margin: '0',
+          color: '#000',
+        }
+
+        const toolTipValue = {
+          fontWeight: '800',
+        }
+
+
+        const value = bar_segment.value ? ((bar_segment.value/total) * 100).toFixed(1).toString() + '%' : '';
+        const name = bar_segment.name + ": "
+
+        return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
+      })
+
+      let tooltip = (<div />)
+      if (label === 1 || label === 2 ){
+        return (<div />)
+      }
+
+      const lablestr = label.toString();
+
+      return (
+
+        <div style={tooltipstyle}>
+          {thedata}
+      </div>
+
+      );
+    }
+
+    return null;
+  }
+});
+
+
 //custom legend. to display landuse landcover category with correct fill
 const renderLegendPercent = (props) => {
   const { payload } = props;
@@ -112,7 +189,7 @@ const renderLegendTotal = (props) => {
   return (
 
 
-    <div className="ui list" style={{marginLeft:5}}>
+    <div className="ui list" >
       {
         payload.map((entry, index) => (
 
@@ -138,6 +215,8 @@ const ChartPie = React.createClass({
     const data = this.props.chart_data
     const note = data.length < 1 ? 'No ' + this.props.title + ' found at this location!' : this.props.note ;
     const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
+
+    const self = this;
 
   	return (
 
@@ -169,7 +248,7 @@ const ChartPie = React.createClass({
               <PieChart key="" width={this.props.chart_width/2} height={250}
                 margin={{top: 0, right: 0, left: 0, bottom: 0}}  >
                 { this.props.use_percent &&
-                  <Legend content={renderLegendPercent} verticalAlign={"middle"} align={"right"}/>
+                  <Legend content={renderLegendPercent} verticalAlign={"middle"} align={"right"} />
                 }
                 { !this.props.use_percent &&
                   <Legend content={renderLegendTotal} verticalAlign={"middle"} align={"right"}/>
@@ -185,8 +264,9 @@ const ChartPie = React.createClass({
                     data.map((entry, index) => <Cell key={index} fill={get_keyColors(entry.name)}/>)
                   }
                 </Pie>
-                <Tooltip/>
+                <Tooltip content={<CustomTooltip data={data}/>}/>
               </PieChart>
+
             }
           </div>
         </div>
