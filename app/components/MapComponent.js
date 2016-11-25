@@ -312,7 +312,7 @@ var MapContainer = React.createClass({
   },
 
   componentWillUpdate: function(nextProps, nextState) {
-    //leaflet map dosenot update size this forces the issue
+    //leaflet map dose not update size this forces the issue
     if(nextProps.leafletMap){
       const leafletMap = nextProps.leafletMap.leafletMap;
       if(leafletMap){
@@ -323,12 +323,14 @@ var MapContainer = React.createClass({
     let level = this.getLevel();
     const method = nextProps.searchMethod;
 
+    //when menu change remove the point, catchment, and huc8
     if(method === 'menu'){
       this.remove_GeoJSON_Layer('point');
       this.remove_GeoJSON_Layer('catchment');
       this.remove_GeoJSON_Layer('huc8');
     }
 
+    //remove the menu selection when the geography layer does not match
     if(level != 'Cataloging Units'){
       this.remove_GeoJSON_Layer('Cataloging Units');
     }
@@ -341,16 +343,12 @@ var MapContainer = React.createClass({
 
   },
   componentDidUpdate: function(prevProps, prevState) {
-
-
-
     //check if there was a prevProps
     // need to functionise this.
     if (prevProps){
 
       let level = this.getLevel();
       const method = this.props.searchMethod;
-
 
       //map point (location search or map click)
       // add a marker to the map click or map search
@@ -416,7 +414,6 @@ var MapContainer = React.createClass({
             }
           }
         }
-
       //end catchments and NLCD
 
 
