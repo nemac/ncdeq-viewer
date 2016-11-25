@@ -122,21 +122,25 @@ var ChartRowWrapper = React.createClass({
     //get the previous labels
     const previous_label = last_chart.last_chart_label.trim() === "" ?  "Total" : last_chart.last_chart_label;
 
-
+    const space = (<span>&nbsp;</span>)
     return (
 
       <div className="item" style={{display: "block"}}>
         <div className="content">
-          <div className="header">
+          <div className="header left floated">
             <i className="left floated dropdown icon"></i>
             {this.props.title} ({this.props.level_label})
           </div>
-          <div className="content center aligned">
+          <div className="meta">
+            <span className="note">{space}- {this.props.note}</span>
+          </div>
+        </div>
+
+          <div className="content">
             <div className="meta">
               <span className="description">{this.props.title_description}</span>
-              <span className="note">{this.props.note}</span>
             </div>
-          </div>
+
           <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
 
             <div >
