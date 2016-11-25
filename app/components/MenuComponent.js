@@ -155,6 +155,7 @@ var MenuComponent = React.createClass({
 
     var currentLevel = val;
 
+    //make sure location search and map click are set to huc12 level
     if(this.props.searchMethod === "location searched" || this.props.searchMethod === "clicked"){
       currentLevel = 'HUC12'
     }
@@ -168,7 +169,6 @@ var MenuComponent = React.createClass({
     //get the expected length for the level
     const expectedLength = get_matchEnd(currentLevel);
     const valueLength = e.target.value.length;
-
     this.updateFilters(e.target.value)
 
     //only get chart data and feature data when expectedLength and the value lenght match.
@@ -180,6 +180,7 @@ var MenuComponent = React.createClass({
 
       //get the ago layer id of the currentLevel
       const feature_id = getAGOFeatureId(currentLevel)
+      console.log(currentLevel, e.target.value, valueLength, expectedLength, feature_id)
 
       //get the attributes of the huc layer on a user click
       this.props.get_LayerInfo_ByValue(e.target.value, feature_id);

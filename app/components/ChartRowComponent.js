@@ -382,7 +382,7 @@ var ChartRow = React.createClass({
 
     //status of fetching map
     if( nextProps.fetching_map ){
-      should_update = false
+      should_update = true
     }
 
     //status of fetching chart
@@ -406,7 +406,7 @@ var ChartRow = React.createClass({
     }
 
     //return should update.
-    return true
+    return should_update
 
   },
   componentWillReceiveProps: function(nextProps) {

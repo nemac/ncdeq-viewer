@@ -273,6 +273,44 @@ var MapContainer = React.createClass({
     //  either way it does not have feature
     return false
   },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+
+    let should_update = true;
+
+    //check status of rendering only re-render if not fetching something
+    //  since I am doing some caclulations in render this forces render to only happen in rendering
+
+    //status of fetching map
+    if( nextProps.fetching_map ){
+      should_update = true
+    }
+
+    //status of fetching chart
+    if( nextProps.fetching_chart ){
+      should_update = false
+    }
+
+    //status of fetching tra
+    if( nextProps.fetching_tra){
+      should_update = false
+    }
+
+    //status of fetching geograpy levels
+    if( nextProps.fetching_geo){
+      should_update = false
+    }
+
+    //status of fetching menus
+    if( nextProps.fetching_menu){
+      should_update = false
+    }
+
+    //return should update.
+    return should_update
+
+  },
+
   componentWillUpdate: function(nextProps, nextState) {
     //leaflet map dosenot update size this forces the issue
     if(nextProps.leafletMap){
@@ -288,6 +326,7 @@ var MapContainer = React.createClass({
     if(method === 'menu'){
       this.remove_GeoJSON_Layer('point');
       this.remove_GeoJSON_Layer('catchment');
+      this.remove_GeoJSON_Layer('huc8');
     }
 
     if(level != 'Cataloging Units'){
@@ -299,7 +338,6 @@ var MapContainer = React.createClass({
     if(level != 'HUC12'){
       this.remove_GeoJSON_Layer('HUC12');
     }
-
 
   },
   componentDidUpdate: function(prevProps, prevState) {
@@ -347,11 +385,6 @@ var MapContainer = React.createClass({
           let catchment_id_curent = this.get_property_id(catchment_features_current, "ID")
           let catchment_id_last = this.get_property_id(catchment_features_last, "ID")
 
-          //this removes the catchment and point select when menu is changed
-          // if(method === 'menu'){
-          //   catchment_id_curent = '0'
-          //   catchment_id_last = '1'
-          // }
         // //check of current matches last id.
         //  only do add and do this if they have changed
         if(catchment_id_curent != catchment_id_last){
@@ -466,11 +499,6 @@ var MapContainer = React.createClass({
           }
         }
       }
-
-      // if(level != 'HUC12' && method === "menu"){
-      //   this.remove_GeoJSON_Layer('huc8')
-      // }
-
       //end huc8 data
 
       //start huc12 data
@@ -482,11 +510,15 @@ var MapContainer = React.createClass({
       const huc12_id_curent = this.get_property_id(huc12_features_current, "ID")
       const huc12_id_last = this.get_property_id(huc12_features_last, "ID")
 
+      //when menu used force the selection on the map
+      if(method === 'menu'){
+        //add geojson
+        this.add_GeoJSON_Layer(huc12_features_current, level, false)
+      }
       //in initial state there will not be an object we still need to zoom and get the data...
       if(huc12_features_current && !huc12_features_last){
 
         //add geojson
-
         this.add_GeoJSON_Layer(huc12_features_current, level, false)
 
         //update menus
@@ -519,7 +551,6 @@ var MapContainer = React.createClass({
         }
       }
       //end huc12 data
-
     }
 
 
@@ -651,9 +682,6 @@ var MapContainer = React.createClass({
 
     //update header vis in action
     this.props.update_HeaderVis()
-
-    //update map height
-    //this.props.update_MapHeight();
 
     //get the attributes of the huc12 layer on a user click
     this.props.get_LayerInfo_ByPoint(self.latlng.lat, self.latlng.lng, HUC12_MAP_FEATUREID);
