@@ -63,6 +63,7 @@ var ChartTRA = React.createClass({
                       boxShadow:"0 1px 3px 0 rgba(212, 212, 213, 1),0 0 0 1px rgba(212, 212, 213, 1)",
                       WebkitBoxShadow: "0 1px 3px 0 rgba(212, 212, 213, 1),0 0 0 1px rgba(212, 212, 213, 1)",
                       MozBoxShadow: "0 1px 3px 0 rgba(212, 212, 213, 1),0 0 0 1px rgba(212, 212, 213, 1)",
+                      margin: ".4em .4em",
                     }
     if(this.state){
       if(tra === this.state.tra_filter){
@@ -71,6 +72,7 @@ var ChartTRA = React.createClass({
                       boxShadow: "0 1px 4px 0 rgba(255, 0, 0, 0.4),0 0 0 2px rgba(255, 0, 0, 0.4)",
                       WebkitBoxShadow: "0 4px 4px 0 rgba(255, 0, 0, 0.4),0 0 0 2px rgba(255, 0, 0, 0.4)",
                       MozBoxShadow: "0 4px 4px 0 rgba(255, 0, 0, 0.4),0 0 0 2px rgba(255, 0, 0, 0.4)",
+                      margin: ".4em .4em",
                     }
       }
     }
@@ -92,9 +94,10 @@ var ChartTRA = React.createClass({
               onMouseOver={this.handleStatClick.bind(null,this,key.ID)}
               style={this.get_tra_outline(key.ID)}>
               <div className="content center aligned">
-                <div className="header">{key.ID} is a <span style={{color: this.get_Colors(key.NAME),cursor: "pointer"}}>{key.NAME}</span> TRA</div>
+                <div className="header">{key.ID}</div>
+                  <div className="header">is a <span style={{color: this.get_Colors(key.NAME),cursor: "pointer"}}>{key.NAME}</span> TRA</div>
                 <div className="description">
-                    <div className="ui tiny statistic"
+                    <div className="ui mini statistic"
                       style={{cursor: "pointer"}}>
                       <div className="label" style={{cursor: "pointer"}}>
                         with a score of

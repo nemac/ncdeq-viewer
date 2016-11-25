@@ -217,7 +217,7 @@ const ChartPie = React.createClass({
     const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
 
     const self = this;
-
+    const chart_width = this.props.chart_width < 500 ? this.props.chart_width/2.5 : this.props.chart_width/2;
   	return (
 
       <div className="item" style={{display: "block"}}>
@@ -245,7 +245,7 @@ const ChartPie = React.createClass({
               </div>
             }
             { data.length > 0 &&
-              <PieChart key="" width={this.props.chart_width/2} height={250}
+              <PieChart key="" width={chart_width} height={250}
                 margin={{top: 0, right: 0, left: 0, bottom: 0}}  >
                 { this.props.use_percent &&
                   <Legend content={renderLegendPercent} verticalAlign={"middle"} align={"right"} />
