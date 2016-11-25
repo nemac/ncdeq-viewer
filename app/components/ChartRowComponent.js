@@ -464,8 +464,9 @@ var ChartRow = React.createClass({
     //  the point in a tra message
     if(this.props.searchMethod){
         searchMethod = this.props.searchMethod;
-        show_point =  (searchMethod === "location searched" || searchMethod === "clicked");
+        show_point =  (searchMethod === "location searched" || searchMethod === "clicked" || searchMethod === "tra clicked" || searchMethod === "chart clicked");
     }
+
 
     //get the chart width and chart height settings from the redux store
     //  so we can pass it as a prop to the chart components
@@ -551,7 +552,7 @@ var ChartRow = React.createClass({
         if(TRA_OBJ.length > 0){
           const extra_tra = TRA_OBJ.length > 1 ? "'s" : "";
           icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
-          tra_text_message_point = "The point " + searchMethod + " on the map is in a TRA. "
+          tra_text_message_point = "The point on the map is in a TRA. "
           success_class_point = "ui icon success message"
           icon_point = (<i className="check circle icon"></i>)
           sub_header_point = (<p>This includes the TRA{extra_tra}: {tra_string}</p>)
@@ -562,7 +563,7 @@ var ChartRow = React.createClass({
           icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
           success_class_point = "ui icon negative message"
           icon_point = (<i className="remove circle icon"></i>)
-          tra_text_message_point = "The point " + searchMethod + " on the map is NOT in a TRA"
+          tra_text_message_point = "The point on the map is NOT in a TRA"
           sub_header_point = ""
 
         }
@@ -604,8 +605,13 @@ var ChartRow = React.createClass({
     }
 
     //land use land cover data
-    const NLCDData = this.props.NLCDData ? this.props.NLCDData.features : []
-    const NLCD_ID_obj = this.props.NLCDPointInfo ? this.props.NLCDPointInfo : []
+    let NLCDData = this.props.NLCDData ? this.props.NLCDData.features : []
+    let NLCD_ID_obj = this.props.NLCDPointInfo ? this.props.NLCDPointInfo : []
+
+    if(this.props.searchMethod === 'menu'){
+      NLCDData = []
+      NLCD_ID_obj = []
+    }
 
     //make ure there is features in the object: NLCD_ID_obj
     //  this object holds the catchment id
@@ -644,8 +650,11 @@ var ChartRow = React.createClass({
 
 
       //get catchment data from redux store
-      const CATCHMENTData = this.props.CATCHMENTData ? this.props.CATCHMENTData.features : []
+      let CATCHMENTData = this.props.CATCHMENTData ? this.props.CATCHMENTData.features : []
 
+      if(this.props.searchMethod === 'menu'){
+        CATCHMENTData = []
+      }
       //filter catchment data to only level 2.
       //  there is only one level to catchment data we want to show
       //  level 1 is total.  If we include 1 then total will show up in the chart

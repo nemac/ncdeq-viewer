@@ -282,6 +282,25 @@ var MapContainer = React.createClass({
       }
     };
 
+    let level = this.getLevel();
+    const method = nextProps.searchMethod;
+
+    if(method === 'menu'){
+      this.remove_GeoJSON_Layer('point');
+      this.remove_GeoJSON_Layer('catchment');
+    }
+
+    if(level != 'Cataloging Units'){
+      this.remove_GeoJSON_Layer('Cataloging Units');
+    }
+    if(level != 'River Basins'){
+      this.remove_GeoJSON_Layer('River Basins');
+    }
+    if(level != 'HUC12'){
+      this.remove_GeoJSON_Layer('HUC12');
+    }
+
+
   },
   componentDidUpdate: function(prevProps, prevState) {
 
@@ -294,85 +313,77 @@ var MapContainer = React.createClass({
       let level = this.getLevel();
       const method = this.props.searchMethod;
 
-      // if(method === 'menu'){
-        if(level != 'Cataloging Units'){
-          this.remove_GeoJSON_Layer('Cataloging Units');
-        }
-        if(level != 'River Basins'){
-          this.remove_GeoJSON_Layer('River Basins');
-        }
-        if(level != 'HUC12'){
-          this.remove_GeoJSON_Layer('HUC12');
-        }
-      // }
 
       //map point (location search or map click)
       // add a marker to the map click or map search
-      if(prevProps.map_settings) {
+      if(method != 'menu'){
 
-        if(prevProps.map_settings.map_point) {
-          //map_poin features
-          const map_point_features_current = this.get_features(this.props.map_settings.map_point)
-          const map_point_features_last = this.get_features(prevProps.map_settings.map_point)
+        if(prevProps.map_settings) {
+
+          if(prevProps.map_settings.map_point) {
+            //map_poin features
+            const map_point_features_current = this.get_features(this.props.map_settings.map_point)
+            const map_point_features_last = this.get_features(prevProps.map_settings.map_point)
+          }
+
+          let has_features = this.has_features(this.props.map_settings.map_point)
+          if(has_features){
+            const current_mappoint_features = this.props.map_settings.map_point.features;
+            this.add_GeoJSON_Layer(current_mappoint_features, 'point', false)
+          }
+
         }
-
-        let has_features = this.has_features(this.props.map_settings.map_point)
-        if(has_features){
-          const current_mappoint_features = this.props.map_settings.map_point.features;
-          this.add_GeoJSON_Layer(current_mappoint_features, 'point', false)
-        }
-
-        // //do draw geojson point when search methd is menu/chart clicked
-        // const method = this.props.searchMethod;
-        // if(method === "chart clicked" || method === "menu"){
-        //   this.remove_GeoJSON_Layer('point')
-        // }
-
       }
       //end map point (location search or map click)
 
 
       //start catchments and NLCD
 
-      //catchments and NLCD features
-      const catchment_features_current = this.get_features(this.props.NLCDPointInfo)
-      const catchment_features_last = this.get_features(prevProps.NLCDPointInfo)
+        //catchments and NLCD features
+        const catchment_features_current = this.get_features(this.props.NLCDPointInfo)
+        const catchment_features_last = this.get_features(prevProps.NLCDPointInfo)
 
-      //catchments and NLCD id's
-      const catchment_id_curent = this.get_property_id(catchment_features_current, "ID")
-      const catchment_id_last = this.get_property_id(catchment_features_last, "ID")
+        //catchments and NLCD id's
+          let catchment_id_curent = this.get_property_id(catchment_features_current, "ID")
+          let catchment_id_last = this.get_property_id(catchment_features_last, "ID")
 
-      //check of current matches last id.
-      //  only do add and do this if they have changed
-      if(catchment_id_curent != catchment_id_last){
-        //get nlcd data
-        this.props.get_nlcd_data(catchment_id_curent)
+          //this removes the catchment and point select when menu is changed
+          // if(method === 'menu'){
+          //   catchment_id_curent = '0'
+          //   catchment_id_last = '1'
+          // }
+        // //check of current matches last id.
+        //  only do add and do this if they have changed
+        if(catchment_id_curent != catchment_id_last){
+          //get nlcd data
+          this.props.get_nlcd_data(catchment_id_curent)
 
-        //get catchment baseline data
-        this.props.get_catchment_data(catchment_id_curent)
+          //get catchment baseline data
+          this.props.get_catchment_data(catchment_id_curent)
 
-        //add geojson
-        this.add_GeoJSON_Layer(catchment_features_current, 'catchment', false)
-      }
+          //add geojson
+          this.add_GeoJSON_Layer(catchment_features_current, 'catchment', false)
+        }
 
-      //if length of last feaures is 0 then last feature is different we will draw
-      if(catchment_features_last && catchment_features_current){
-        //make sure there is a feature in the array.  when searching outside of NorthCarolina
-        //   this may return a blank features object.
-        if(catchment_features_current[0]){
-          if(catchment_features_last.length === 0){
-            //add geojson
-            this.add_GeoJSON_Layer(catchment_features_current, 'catchment', false)
-          } else {
-            //when the last features JSON and Current Features JSON do not match
-            //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
-            if(catchment_id_curent != catchment_id_last){
+        //if length of last feaures is 0 then last feature is different we will draw
+        if(catchment_features_last && catchment_features_current){
+          //make sure there is a feature in the array.  when searching outside of NorthCarolina
+          //   this may return a blank features object.
+          if(catchment_features_current[0]){
+            if(catchment_features_last.length === 0){
               //add geojson
               this.add_GeoJSON_Layer(catchment_features_current, 'catchment', false)
+            } else {
+              //when the last features JSON and Current Features JSON do not match
+              //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
+              if(catchment_id_curent != catchment_id_last){
+                //add geojson
+                this.add_GeoJSON_Layer(catchment_features_current, 'catchment', false)
+              }
             }
           }
         }
-      }
+
       //end catchments and NLCD
 
 
@@ -414,7 +425,7 @@ var MapContainer = React.createClass({
       if(level){
         if(level.toUpperCase() != 'HUC12' && method === "menu"){
           this.remove_GeoJSON_Layer('tra')
-        }        
+        }
       }
       //end tra data
 
