@@ -411,8 +411,10 @@ var MapContainer = React.createClass({
         }
       }
 
-      if(level.toUpperCase() != 'HUC12' && method === "menu"){
-        this.remove_GeoJSON_Layer('tra')
+      if(level){
+        if(level.toUpperCase() != 'HUC12' && method === "menu"){
+          this.remove_GeoJSON_Layer('tra')
+        }        
       }
       //end tra data
 
@@ -432,7 +434,7 @@ var MapContainer = React.createClass({
       if(huc8_features_current && !huc8_features_last){
 
         //add geojson
-        this.add_GeoJSON_Layer(huc8_features_current, 'huc8', true)
+        this.add_GeoJSON_Layer(huc8_features_current, 'huc8', zoom)
 
       }
       //if length of last feaures is 0 then last feature is different we will draw
@@ -442,13 +444,13 @@ var MapContainer = React.createClass({
         if(huc8_features_current[0]){
           if(huc8_features_last.length === 0){
             //add geojson
-            this.add_GeoJSON_Layer(huc8_features_current, 'huc8', true)
+            this.add_GeoJSON_Layer(huc8_features_current, 'huc8', zoom)
           } else {
             //when the last features JSON and Current Features JSON do not match
             //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
             if(huc8_id_curent != huc8_id_last){
               //add geojson
-              this.add_GeoJSON_Layer(huc8_features_current, 'huc8', true)
+              this.add_GeoJSON_Layer(huc8_features_current, 'huc8', zoom)
             }
           }
         }

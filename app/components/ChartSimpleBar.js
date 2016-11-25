@@ -56,6 +56,72 @@ const ChartSimpleBar = React.createClass({
 
 	render () {
 
+    const self = this;
+
+    const tooltipstyle = {
+      width: '100%',
+      margin: 0,
+      lineHeight: 24,
+      border: '1px solid #f5f5f5',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      padding: 10,
+    };
+
+    const toolTipLabel = {
+      margin: '0',
+      color: '#666',
+      fontWeight: '700',
+    };
+
+    const CustomTooltip  = React.createClass({
+      propTypes: {
+        type: PropTypes.string,
+        payload: PropTypes.array,
+        label: PropTypes.string,
+      },
+
+      render() {
+        const { active } = this.props;
+        let html_hov = '';
+        if (active) {
+          const { payload, label } = this.props;
+
+          const thedata = payload.map( bar_segment => {
+
+           const colors = self.get_keyColors(bar_segment.name)
+
+            const toolTipName = {
+              margin: '0',
+              color: colors,
+            }
+
+            const toolTipValue = {
+              fontWeight: '800',
+            }
+
+            const value = bar_segment.value ?  bar_segment.value.toString().substring(0,5) : 'N/A';
+            const name = bar_segment.name + ": "
+
+            return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
+          })
+
+          let tooltip = (<div />)
+          if (label === 1 || label === 2 ){
+            return (<div />)
+          }
+          return (
+
+            <div style={tooltipstyle}>
+              <p style={toolTipLabel}>Cathcment: {`${label}`}</p>
+              {thedata}
+          </div>
+
+          );
+        }
+
+        return null;
+      }
+    });
 
     //custom legend
     const customLegend = React.createClass({
@@ -148,7 +214,7 @@ const ChartSimpleBar = React.createClass({
                     margin={{top: 5, right: 5, left: 5, bottom: 5}}>
                <XAxis dataKey="name" hide={false} tick={false} tickLine={false} axisLine={false} />
                <YAxis hide={false} tick={false} tickLine={false} axisLine={false} />
-               <Tooltip/>
+               <Tooltip content={<CustomTooltip />}/>
                <Legend />
                {bars}
               </BarChart>
