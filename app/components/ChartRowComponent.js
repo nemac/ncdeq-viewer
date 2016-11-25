@@ -454,7 +454,7 @@ var ChartRow = React.createClass({
     let chart_width_px = CHART_WIDTH_PX;
 
     //not sure yet ho to handle this but chartHeight needs to be adjusted by to px in the chart component
-    const chartHeight_adjustment = 65
+    const chartHeight_adjustment = 145
     let chart_grid_height =  MAP_HEIGHT-chartHeight_adjustment;
 
     let searchMethod = ""
