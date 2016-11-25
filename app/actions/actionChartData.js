@@ -287,7 +287,6 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
       //make sure there is data in the state
       if(state.chartData){
 
-
         //get the chart level data if not set yet make it a blank array
         chart_level_data = ( state.chartData.chart_levels.levels ? state.chartData.chart_levels.levels : []);
 
