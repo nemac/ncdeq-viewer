@@ -56,6 +56,7 @@ var MainComponent = React.createClass({
       //for semantic-ui dropdowns
       $('.ui.dropdown').dropdown();
       $('#search-select').dropdown();
+      $('.ui.sticky').sticky();
     },
     render: function() {
 

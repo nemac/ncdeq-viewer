@@ -528,6 +528,7 @@ var ChartRow = React.createClass({
 
     //set defaults for messages abouyt
     tra_text_message_point = "Please Click on the Map or Search for a location to discover if it is in a TRA"
+    icon_map = (<div />)
     success_class_point = "ui icon info message"
     icon_point = (<i className="info circle icon"></i>)
     sub_header_point = ""
@@ -727,15 +728,16 @@ var ChartRow = React.createClass({
         <div className={working_class}>
             <div className="ui loader"></div>
         </div>
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px"}}>
-        <div className="ui item" >
 
-          <div className="content">
-            <div className="ui header left floated">
-              {chart_cataloging_unit}
-            </div>
+        <div className="ui sticky" >
+          <div className="ui header">
+            {chart_cataloging_unit}
           </div>
+          <div className="ui divider" ></div>
         </div>
+
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px"}}>
+
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
