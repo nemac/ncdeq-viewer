@@ -738,14 +738,13 @@ var ChartRow = React.createClass({
             <div className="ui loader"></div>
         </div>
 
-        <div className="ui sticky" >
+        <div className="ui sticky" style={{borderBottom:"1px solid rgba(34,36,38,.15)"}}>
           <div className="ui header">
             {chart_cataloging_unit}
           </div>
-          <div className="ui divider" ></div>
         </div>
 
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px"}}>
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
 
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
