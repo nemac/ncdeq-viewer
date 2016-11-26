@@ -25,7 +25,7 @@ export function CATCHMENTDATA(state = [], action){
 export function NLCDDATA(state = [], action){
   switch (action.type) {
     case 'GET_NLCD_DATA':
-      return {...state, NLCDData: action.NLCDData}
+      return {...state, ncld_chart_data: action.ncld_chart_data}
     default:
       return state
   }

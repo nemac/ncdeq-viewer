@@ -18,7 +18,6 @@ function mapStateToProps(state) {
   let fetching_tra = state.fetching_tra.fetching_tra;
   let fetching_geo = state.fetching_geo.fetching_geo;
   let fetching_menu = state.fetching_menu.fetching_menu;
-  let NLCDData = state.NLCDDATA.NLCDData;
   let CATCHMENTData = state.CATCHMENTDATA.CATCHMENTData;
 
   return {
@@ -32,7 +31,6 @@ function mapStateToProps(state) {
     fetching_chart,
     fetching_map,
     fetching_tra,
-    NLCDData,
     CATCHMENTData,
     fetching_geo,
     fetching_menu,

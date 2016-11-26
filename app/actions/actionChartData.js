@@ -454,9 +454,41 @@ export function get_nlcd_data(id,level){
         //add geometry here
         const nlcd_data = CheckReponse(nlcd_response,'AGO_API_ERROR');
 
+        //land use land cover data
+        let NLCDDatas = nlcd_data ? nlcd_data.features : []
+
+        //filter NLCD data to only level 2.
+        //  there is only one level to NCLD data we want to show
+        //  level 1 is total.  If we include 1 then total will show up in the chart
+        const filtered_nlcd_data = NLCDDatas.filter( data => {
+          return data.properties.chart_level === 2
+        })
+
+        //format data into the recharts pie chart format.
+        // [{name:"", value:0}]
+        const ncld_chart_data_unsorted = filtered_nlcd_data.map( nlcd => {
+          const level = nlcd.properties.chart_level
+          const name = nlcd.properties.chart_level_label;
+          const value = Number(nlcd.properties.chart_value);
+          return {name, value}
+        })
+
+        //sort the nlcd data.
+        const ncld_chart_data = ncld_chart_data_unsorted.sort(function (a, b) {
+          if (a.value > b.value) {
+            return -1;
+          }
+          if (a.value < b.value) {
+            return 1;
+          }
+          // a must be equal to b
+            return 0;
+          });
+
+
         //send the chart data on
         dispatch(
-          NLCDData('GET_NLCD_DATA', nlcd_data)
+          NLCDData('GET_NLCD_DATA', ncld_chart_data)
         )
 
         //end fetching set fetching state to false
@@ -587,9 +619,9 @@ export function get_ChartData(id,level){
 
             }
 
-          //use TURF.JS to create geoJSON feature collections
-          var chartData_ID_fc = turf_FC(chart_id_base);
-          var chartData_Level_fc = turf_FC(chart_all_base);
+          // //use TURF.JS to create geoJSON feature collections
+          // var chartData_ID_fc = turf_FC(chart_id_base);
+          // var chartData_Level_fc = turf_FC(chart_all_base);
 
           //create a array objects for the chart types: baseline and uplift
           //  this chart limit is passed so we can limit the charts for a spefic huc N level
@@ -708,14 +740,14 @@ function ChartData(type, visibility, types) {
  }
 }
 
-function NLCDData(type, data){
-  return {type: type, NLCDData: data}
+function NLCDData(type, ncld_chart_data){
+  return {type: type, ncld_chart_data: ncld_chart_data}
 }
-
 
 function fetching_start(){
   return {type: "FETCHING_CHART", fetching: true}
 }
+
 function fetching_end(){
   return {type: "FETCHING_CHART", fetching: false}
 }

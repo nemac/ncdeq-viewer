@@ -271,7 +271,7 @@ var ChartRow = React.createClass({
           //get the chart types limits to apply to the data
           const current_chart_matchid = (chart_type_limt[0] ? chart_type_limt[0].current_chart_matchid : 2)
 
-          //get the chart for the current chart heierchal level
+          //get the chart for the current chart hierarchical level
           let levelone =  this.getChart_FilteredByChartLevel( chart_data, current_chart_matchid, false );
 
           // sort by value
@@ -596,11 +596,9 @@ var ChartRow = React.createClass({
     }
 
     //land use land cover data
-    let NLCDData = this.props.NLCDData ? this.props.NLCDData.features : []
     let NLCD_ID_obj = this.props.NLCDPointInfo ? this.props.NLCDPointInfo : []
 
     if(this.props.searchMethod === 'menu'){
-      NLCDData = []
       NLCD_ID_obj = []
     }
 
@@ -611,33 +609,8 @@ var ChartRow = React.createClass({
       NLCD_ID = NLCD_ID_obj.features.length > 0 ? NLCD_ID_obj.features[0].properties.ID : []
     }
 
-    //filter NLCD data to only level 2.
-    //  there is only one level to NCLD data we want to show
-    //  level 1 is total.  If we include 1 then total will show up in the chart
-    const filtered_nlcd_data = NLCDData.filter( data => {
-      return data.properties.chart_level === 2
-    })
 
-    //format data into the recharts pie chart format.
-    // [{name:"", value:0}]
-    const ncld_chart_data_unsorted = filtered_nlcd_data.map( nlcd => {
-      const level = nlcd.properties.chart_level
-      const name = nlcd.properties.chart_level_label;
-      const value = Number(nlcd.properties.chart_value);
-      return {name, value}
-    })
-
-    //sort the nlcd data.
-    const ncld_chart_data = ncld_chart_data_unsorted.sort(function (a, b) {
-      if (a.value > b.value) {
-        return -1;
-      }
-      if (a.value < b.value) {
-        return 1;
-      }
-      // a must be equal to b
-        return 0;
-      });
+      let ncld_chart_data = this.props.ncld_chart_data ? this.props.ncld_chart_data : []
 
       //get catchment data from redux store
       let CATCHMENTData = this.props.CATCHMENTData ? this.props.CATCHMENTData.features : []
