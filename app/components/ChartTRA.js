@@ -176,7 +176,7 @@ var ChartTRA = React.createClass({
             <div className="meta">
               <span className="note">{this.props.note }</span>
             </div>
-            <div className="description">
+            <div className="description" style={{paddingTop:"5px"}}>
               {this.get_tras_cards(tra_data)}
             </div>
           </div>
