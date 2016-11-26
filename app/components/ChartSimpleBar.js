@@ -126,52 +126,6 @@ const ChartSimpleBar = React.createClass({
       }
     });
 
-    //custom legend
-    const customLegend = React.createClass({
-
-      propTypes: {
-        payload: PropTypes.array,
-      },
-      render() {
-        // console.log(payload)
-
-        const { payload } = this.props;
-        console.log(payload)
-        let data_array = []
-
-        //make the name an array
-        Object.keys(this.props.datas).forEach(key => {
-          if(key.toUpperCase() != 'NAME'){
-            data_array.push(key)
-          }
-        })
-
-        data_array.map( d => {
-          console.log(d + " :" + datas[d])
-        })
-
-          return (
-
-
-            <div className="ui list">
-              {
-                payload.map((entry, index) => (
-
-                  <div className="item"  key={`item-${index}`}>
-
-                  <svg  width="14" height="14" >
-                    <path stroke-strokeWidth="4" fill={entry.fill} stroke={entry.stroke} d="M0,0h32v32h-32z" >
-                    </path>
-                  </svg>
-                  {`  ${entry.name}  (${entry.value})` }
-                  </div>
-                ))
-              }
-            </div>
-          );
-      }
-    })
-
     const data = this.props.chart_data
     const bars = this.get_bars(data[0])
     const datas = data[0]
@@ -179,8 +133,6 @@ const ChartSimpleBar = React.createClass({
 
     const note = datas_length < 2 ? 'No ' + this.props.title + ' found at this location!' : this.props.note ;
     const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
-
-    // console.log(JSON.stringify(data))
 
   	return (
 

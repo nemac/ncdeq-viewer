@@ -609,92 +609,25 @@ var ChartRow = React.createClass({
       NLCD_ID = NLCD_ID_obj.features.length > 0 ? NLCD_ID_obj.features[0].properties.ID : []
     }
 
-
       let ncld_chart_data = this.props.ncld_chart_data ? this.props.ncld_chart_data : []
 
-      //get catchment data from redux store
-      let CATCHMENTData = this.props.CATCHMENTData ? this.props.CATCHMENTData.features : []
+      //clear chart data when menu selected
+      if(this.props.searchMethod === 'menu'){
+        ncld_chart_data =[]
+      }
+
+      // get catchment data from redux store
+      let catchment_chart_ar = this.props || this.props.catchment_chart_ar ? this.props.catchment_chart_ar : []
 
       if(this.props.searchMethod === 'menu'){
-        CATCHMENTData = []
+        catchment_chart_ar = []
       }
-      //filter catchment data to only level 2.
-      //  there is only one level to catchment data we want to show
-      //  level 1 is total.  If we include 1 then total will show up in the chart
-      const filtered_catchment_data = CATCHMENTData.filter( data => {
-        return data.properties.chart_level === 2
-      })
 
-      //format data into the recharts pie chart format.
-      // [{name:"", value:0}]
-      const catchment_chart_data_unsorted = filtered_catchment_data.map( catchment => {
-        const level = catchment.properties.chart_level
-        const name = catchment.properties.chart_level_label;
-        const value = Number(catchment.properties.chart_value.substring(0,5))
-        //Number(catchment.properties.chart_value);
-        return {name, value}
-      })
-
-      //sort the catchment data.
-      const catchment_chart_data = catchment_chart_data_unsorted.sort(function (a, b) {
-        if (a.value > b.value) {
-          return -1;
-        }
-        if (a.value < b.value) {
-          return 1;
-        }
-        // a must be equal to b
-          return 0;
-        });
-
-        //get nlcd id which is reallyt the catchment gridcode
-        var catchment_chart_object = new Object;
-        catchment_chart_object["name"] = NLCD_ID;
-
-        //get the catchment id and value and make that an object
-        //  this sets up the data structure for the recharts bar chart
-        //  structure is {name: "name", chartvaluename: chartvalue, chartvaluename: chartvalue}
-        //  where chartvaluename is something like Hydrology, Habitat, or Water Quality
-        catchment_chart_data.map( catchment => {
-           catchment_chart_object[catchment.name] = catchment.value
-        })
-
-
-        //get nlcd id which is reallyt the catchment gridcode
-        var catchment_chart_object_one = new Object;
-        catchment_chart_object_one["name"] = 1;
-
-        //get the catchment id and value and make that an object
-        //  this sets up the data structure for the recharts bar chart
-        //  structure is {name: "name", chartvaluename: chartvalue, chartvaluename: chartvalue}
-        //  where chartvaluename is something like Hydrology, Habitat, or Water Quality
-        catchment_chart_data.map( catchment => {
-           catchment_chart_object_one[catchment.name] = 0
-        })
-
-
-        //get nlcd id which is reallyt the catchment gridcode
-        var catchment_chart_object_two = new Object;
-        catchment_chart_object_two["name"] = 2;
-
-        //get the catchment id and value and make that an object
-        //  this sets up the data structure for the recharts bar chart
-        //  structure is {name: "name", chartvaluename: chartvalue, chartvaluename: chartvalue}
-        //  where chartvaluename is something like Hydrology, Habitat, or Water Quality
-        catchment_chart_data.map( catchment => {
-           catchment_chart_object_two[catchment.name] = 0
-        })
-
-
-        //make the object an array.
-        const catchment_chart_ar = [catchment_chart_object_one,catchment_chart_object,catchment_chart_object_two]
-
-
-        //tra note
-        let tra_note = "TRA's in this Cataloging Unit"
-        if(chart_filter){
-          tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
-        }
+      //tra note
+      let tra_note = "TRA's in this Cataloging Unit"
+      if(chart_filter){
+        tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
+      }
 
 
     return (
@@ -801,7 +734,7 @@ var ChartRow = React.createClass({
              use_percent={true}
              />
          }
-         { chart_filter &&
+         { chart_filter && catchment_chart_ar &&
 
            <ChartSimpleBar
              chart_width={chart_width_px}
@@ -809,7 +742,6 @@ var ChartRow = React.createClass({
              title_description=""
              note={"For Catchment: " + NLCD_ID}
              chart_data={catchment_chart_ar}
-             use_percent={false}
              />
 
          }

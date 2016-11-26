@@ -506,7 +506,7 @@ export function get_nlcd_data(id,level){
 
 
 //catchment data from api
-export function get_catchment_data(id,level){
+export function get_catchment_data(id, level){
   return (dispatch,getState) => {
     //start fetching state (set to true)
     dispatch(fetching_start())
@@ -517,9 +517,81 @@ export function get_catchment_data(id,level){
         //add geometry here
         const catchment_data = CheckReponse(catchment_response,'AGO_API_ERROR');
 
+        let CATCHMENTDataRaw = catchment_data ? catchment_data.features : []
+
+        //filter catchment data to only level 2.
+        //  there is only one level to catchment data we want to show
+        //  level 1 is total.  If we include 1 then total will show up in the chart
+        const filtered_catchment_data = CATCHMENTDataRaw.filter( data => {
+          return data.properties.chart_level === 2
+        })
+
+        //format data into the recharts pie chart format.
+        // [{name:"", value:0}]
+        const catchment_chart_data_unsorted = filtered_catchment_data.map( catchment => {
+          const level = catchment.properties.chart_level
+          const name = catchment.properties.chart_level_label;
+          const value = Number(catchment.properties.chart_value.substring(0,5))
+          return {name, value}
+        })
+
+        //sort the catchment data.
+        const catchment_chart_data = catchment_chart_data_unsorted.sort(function (a, b) {
+          if (a.value > b.value) {
+            return -1;
+          }
+          if (a.value < b.value) {
+            return 1;
+          }
+          // a must be equal to b
+            return 0;
+          });
+
+          //get nlcd id which is really the catchment gridcode
+          var catchment_chart_object = new Object;
+          catchment_chart_object["name"] = id;
+
+          //get the catchment id and value and make that an object
+          //  this sets up the data structure for the recharts bar chart
+          //  structure is {name: "name", chartvaluename: chartvalue, chartvaluename: chartvalue}
+          //  where chartvaluename is something like Hydrology, Habitat, or Water Quality
+          catchment_chart_data.map( catchment => {
+             catchment_chart_object[catchment.name] = catchment.value
+          })
+
+
+          //get nlcd id which is reallyt the catchment gridcode
+          var catchment_chart_object_one = new Object;
+          catchment_chart_object_one["name"] = 1;
+
+          //get the catchment id and value and make that an object
+          //  this sets up the data structure for the recharts bar chart
+          //  structure is {name: "name", chartvaluename: chartvalue, chartvaluename: chartvalue}
+          //  where chartvaluename is something like Hydrology, Habitat, or Water Quality
+          catchment_chart_data.map( catchment => {
+             catchment_chart_object_one[catchment.name] = 0
+          })
+
+
+          //get nlcd id which is reallyt the catchment gridcode
+          var catchment_chart_object_two = new Object;
+          catchment_chart_object_two["name"] = 2;
+
+          //get the catchment id and value and make that an object
+          //  this sets up the data structure for the recharts bar chart
+          //  structure is {name: "name", chartvaluename: chartvalue, chartvaluename: chartvalue}
+          //  where chartvaluename is something like Hydrology, Habitat, or Water Quality
+          catchment_chart_data.map( catchment => {
+             catchment_chart_object_two[catchment.name] = 0
+          })
+
+
+          //make the object an array.
+          const catchment_chart_ar = [catchment_chart_object_one, catchment_chart_object, catchment_chart_object_two]
+
         //send the chart data on
         dispatch(
-          CATCHMENTData('GET_CATCHMENT_DATA', catchment_data)
+          CATCHMENTData('GET_CATCHMENT_DATA', catchment_data, catchment_chart_ar)
         )
 
         //end fetching set fetching state to false
@@ -717,8 +789,8 @@ function ChartLevels(type, levels, chart_limits) {
  }
 }
 
-function CATCHMENTData(type, data){
-  return {type: type, CATCHMENTData: data}
+function CATCHMENTData(type, data, catchment_chart_ar){
+  return {type: type, CATCHMENTData: data, catchment_chart_ar: catchment_chart_ar}
 }
 
 

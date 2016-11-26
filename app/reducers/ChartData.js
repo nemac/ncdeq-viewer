@@ -16,7 +16,7 @@ export function chartData(state = [], action) {
 export function CATCHMENTDATA(state = [], action){
   switch (action.type) {
     case 'GET_CATCHMENT_DATA':
-      return {...state, CATCHMENTData: action.CATCHMENTData}
+      return {...state, CATCHMENTData: action.CATCHMENTData, catchment_chart_ar: action.catchment_chart_ar}
     default:
       return state
   }
