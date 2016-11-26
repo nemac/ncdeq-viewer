@@ -153,9 +153,8 @@ function ago_get_tra_by_ids( id_list){
 
  //send the ajax request via axios
  return axios.get(query_URL);
-
-
 }
+
 //get chart data for all
 function ago_get_traxwalk_by_id(hucid, current_geography_level){
 
@@ -518,7 +517,6 @@ export function get_ChartData(id,level){
 
         //get tra id from xwalk
         //get tra chart from table
-
         let visibility = CHART_VISIBILITY;
 
         //get visibility state of charts
@@ -532,7 +530,6 @@ export function get_ChartData(id,level){
         let chart_all_tra = [];
         let chart_id_base = [];
         let chart_all_upflift = [];
-        let chart_id_upflift = [];
 
         //check response and get response data - chartdata_response
         chart_data = CheckReponse(chartdata_response,'AGO_API_ERROR');
@@ -611,7 +608,6 @@ export function get_ChartData(id,level){
                   },
                 ];
 
-
           //send the chart data on
           dispatch(
             ChartData('GET_CHART_DATA', visibility, types)
@@ -668,10 +664,8 @@ export function update_ChartVisiblity (visibility){
       //end fetching set fetching state to false
       dispatch(fetching_end())
 
-
     }
 }
-
 
 //function to handle sending to reducer and store
 function ChartLevels(type, levels, chart_limits) {

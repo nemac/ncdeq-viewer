@@ -86,18 +86,13 @@ export function update_ChartHeight(){
       const state = getState();
       const heights = calculate_NewHeights(state);
 
-      const headerHeight = state.default_settings.default_settings.headerHeight;
-      const breadCrumbsHeight = state.default_settings.default_settings.breadCrumbsHeight;
-      const rowPadding = state.default_settings.default_settings.rowPadding;
-      const defpad = state.default_settings.default_settings.defpad;
       const mapHeight = heights.mapHeight;
       const chartHeight = heights.chartHeight;
       const mapWidth = heights.map_px_width;
       const chartWidth = heights.chart_px_width;
-      const header_description_visibility =  state.default_settings.default_settings ? state.default_settings.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
 
       //create map config object
-      const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth};
+      const default_settings = {...state.default_settings.default_set, mapHeight, chartHeight, mapWidth, chartWidth};
 
       dispatch(defaultSate('UPDATE_CHART_HEIGHT',default_settings));
 

@@ -237,10 +237,6 @@ var ChartRow = React.createClass({
     //get the hucs grouped and summed (grouped by the huc and the machted chart id which is the next level up chart...)
     const grouped_sum =  this.getChart_GroupSum(chart_data)
 
-    // Object.keys(grouped_sum).map( test => {
-    //   console.log(test + " = " + grouped_sum[test])
-    // })
-
     //now sort the grouped hucs
     const sorted_hucs = Object.keys(grouped_sum).sort(function (a, b) {
       if (grouped_sum[a] > grouped_sum[b]) {
@@ -264,9 +260,7 @@ var ChartRow = React.createClass({
 
     if(chart_data){
 
-
       //get constants from redux
-      const charts_levels = this.props.charts.chart_levels.levels.features;
       const charts_limits = this.props.charts.chart_levels.chart_limits;
 
       //get a filtered array of the chart type limits
@@ -448,13 +442,12 @@ var ChartRow = React.createClass({
     //messages for working
     const working_message = working ? "loading..." : ""
     const working_class = working ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
-    const working_key = this.props.title  + '-working'
 
     //get chart width in pixels from redux should handle resize in actiion creators
     let chart_width_px = CHART_WIDTH_PX;
 
     //not sure yet ho to handle this but chartHeight needs to be adjusted by to px in the chart component
-    const chartHeight_adjustment = 145
+    const chartHeight_adjustment = 125
     let chart_grid_height =  MAP_HEIGHT-chartHeight_adjustment;
 
     let searchMethod = ""
@@ -466,7 +459,6 @@ var ChartRow = React.createClass({
         searchMethod = this.props.searchMethod;
         show_point =  (searchMethod === "location searched" || searchMethod === "clicked" || searchMethod === "tra clicked" || searchMethod === "chart clicked");
     }
-
 
     //get the chart width and chart height settings from the redux store
     //  so we can pass it as a prop to the chart components
@@ -503,7 +495,7 @@ var ChartRow = React.createClass({
     let chart_tar_bar = [];
     let all_hucs_bar = [];
 
-
+    //get the chart data
     chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
     chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
@@ -569,7 +561,6 @@ var ChartRow = React.createClass({
         }
       }
     }
-
 
 
   //if the method to get a huc was not a map click or search for location we need
@@ -647,7 +638,6 @@ var ChartRow = React.createClass({
       // a must be equal to b
         return 0;
       });
-
 
       //get catchment data from redux store
       let CATCHMENTData = this.props.CATCHMENTData ? this.props.CATCHMENTData.features : []
@@ -732,6 +722,8 @@ var ChartRow = React.createClass({
         if(chart_filter){
           tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
         }
+
+
     return (
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
         <div className={working_class}>
