@@ -598,7 +598,7 @@ var ChartRow = React.createClass({
     //land use land cover data
     let NLCD_ID_obj = this.props.NLCDPointInfo ? this.props.NLCDPointInfo : []
 
-    if(this.props.searchMethod === 'menu'){
+    if(searchMethod === 'menu'){
       NLCD_ID_obj = []
     }
 
@@ -611,16 +611,13 @@ var ChartRow = React.createClass({
 
       let ncld_chart_data = this.props.ncld_chart_data ? this.props.ncld_chart_data : []
 
-      //clear chart data when menu selected
-      if(this.props.searchMethod === 'menu'){
-        ncld_chart_data =[]
-      }
-
       // get catchment data from redux store
       let catchment_chart_ar = this.props || this.props.catchment_chart_ar ? this.props.catchment_chart_ar : []
 
-      if(this.props.searchMethod === 'menu'){
-        catchment_chart_ar = []
+      //clear chart data when menu selected
+      if(searchMethod === 'menu'){
+        ncld_chart_data =[];
+        catchment_chart_ar = [];
       }
 
       //tra note
@@ -742,6 +739,7 @@ var ChartRow = React.createClass({
              title_description=""
              note={"For Catchment: " + NLCD_ID}
              chart_data={catchment_chart_ar}
+             searchMethod={searchMethod}
              />
 
          }

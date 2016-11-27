@@ -35,12 +35,15 @@ const ChartSimpleBar = React.createClass({
 
     let keycnt = 0;
     let data_array = []
-    //make the name an array
-    Object.keys(data).forEach(key => {
-      if(key.toUpperCase() != 'NAME'){
-        data_array.push(key)
-      }
-    })
+
+    if(data){
+      //make the name an array
+      Object.keys(data).forEach(key => {
+        if(key.toUpperCase() != 'NAME'){
+          data_array.push(key)
+        }
+      })
+    }
 
     //return bars
     return (
@@ -129,7 +132,7 @@ const ChartSimpleBar = React.createClass({
     const data = this.props.chart_data
     const bars = this.get_bars(data[0])
     const datas = data[0]
-    const datas_length = Object.keys(datas).length
+    const datas_length = this.props.searchMethod === 'menu' ? 0 : Object.keys(datas).length;
 
     const note = datas_length < 2 ? 'No ' + this.props.title + ' found at this location!' : this.props.note ;
     const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
@@ -150,7 +153,7 @@ const ChartSimpleBar = React.createClass({
             </div>
           </div>
           <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
-            { datas_length< 2 &&
+            { datas_length < 2 &&
               <div className='ui icon negative message' >
                 <i className="remove circle icon"></i>
                 <div className="content">
