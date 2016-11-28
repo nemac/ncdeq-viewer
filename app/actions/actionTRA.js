@@ -174,17 +174,24 @@ export function get_TRAData(hucid, current_geography_level){
               //only dispatch when have down all features
               if(count === tra_datas.features.length){
                 dispatch(tra_data('GET_TRA_DATA', group));
+                dispatch(fetching_end())
               }
 
             })
-            .catch(error => { console.log('request failed', error); });
+            .catch(error => {
+              //end fetching set fetching state to false
+              dispatch(fetching_end())
+              console.log('request failed', error);
+            });
 
         })
       }
-
-
     })
-    .catch(error => { console.log('request failed', error); });
+    .catch(error => {
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
+      console.log('request failed', error);
+    });
 
     let group = [];
 

@@ -19,14 +19,10 @@ import { getCategoryName, getFriendlyName } from '../utils/helpers';
 var Divider = require('./Divider');
 
 var ChartRow = React.createClass({
-  getJSONElement_ById: function(data,id){
-
-    const dataFiltered = data.filter( key => {
-      return key.properties.chart_id === id
-    })
-
-    return dataFiltered
-
+  getInitialState: function() {
+    return {
+      working: false
+    };
   },
   get_keyColors: function(key){
     let key_colors = [];
@@ -120,12 +116,6 @@ var ChartRow = React.createClass({
 
     //update header vis in action
     this.props.update_HeaderVis()
-
-    //make the leaflet map object is set
-    if(this.props.leafletMap){
-      const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize()}, 100);
-    };
 
   },
   getChartType_Data: function(type){
@@ -247,10 +237,6 @@ var ChartRow = React.createClass({
     //get the hucs grouped and summed (grouped by the huc and the machted chart id which is the next level up chart...)
     const grouped_sum =  this.getChart_GroupSum(chart_data)
 
-    // Object.keys(grouped_sum).map( test => {
-    //   console.log(test + " = " + grouped_sum[test])
-    // })
-
     //now sort the grouped hucs
     const sorted_hucs = Object.keys(grouped_sum).sort(function (a, b) {
       if (grouped_sum[a] > grouped_sum[b]) {
@@ -268,16 +254,13 @@ var ChartRow = React.createClass({
     return sorted_hucs;
 
   },
-
   getChart_data: function(chart_data, chart_type){
     // builds chart data into proper format for rechart library (bar charts)
     let chart_data_array = [];
 
     if(chart_data){
 
-
       //get constants from redux
-      const charts_levels = this.props.charts.chart_levels.levels.features;
       const charts_limits = this.props.charts.chart_levels.chart_limits;
 
       //get a filtered array of the chart type limits
@@ -285,18 +268,19 @@ var ChartRow = React.createClass({
         return item.chart_type.toUpperCase() === chart_type.toUpperCase();
       })
 
-
           //get the chart types limits to apply to the data
           const current_chart_matchid = (chart_type_limt[0] ? chart_type_limt[0].current_chart_matchid : 2)
 
-          //get the chart for the current chart heierchal level
+          //get the chart for the current chart hierarchical level
           let levelone =  this.getChart_FilteredByChartLevel( chart_data, current_chart_matchid, false );
 
           // sort by value
           let sorted_hucs = this.getChart_Sorted(levelone);
 
+          //create chart objects
           var blank_chart_object = new Object;
           var blank_chart_object_two = new Object;
+
           //loop through the sorted huvs and prepare the data for the chart.
           sorted_hucs.map(huc => {
 
@@ -383,12 +367,87 @@ var ChartRow = React.createClass({
       return null;
     }
   },
+  shouldComponentUpdate: function(nextProps, nextState) {
+
+    let should_update = true;
+
+    //check status of rendering only re-render if not fetching something
+    //  since I am doing some caclulations in render this forces render to only happen in rendering
+
+    //status of fetching map
+    if( nextProps.fetching_map ){
+      should_update = true
+    }
+
+    //status of fetching chart
+    if( nextProps.fetching_chart ){
+      should_update = true
+    }
+
+    //status of fetching tra
+    if( nextProps.fetching_tra){
+      should_update = false
+    }
+
+    //status of fetching geograpy levels
+    if( nextProps.fetching_geo){
+      should_update = false
+    }
+
+    //status of fetching menus
+    if( nextProps.fetching_menu){
+      should_update = false
+    }
+
+    //return should update.
+    return should_update
+
+  },
+  componentWillReceiveProps: function(nextProps) {
+
+    // console.log('true')
+
+  },
+  componentDidUpdate: function(prevProps, prevState) {
+
+    // console.log('false')
+
+  },
   render: function() {
-    //get chart width inpixl from redux should handle resize in actiion creators
+
+    let is_fetching = false;
+
+    if( this.props.fetching_map ){
+      is_fetching = true
+    }
+
+    if( this.props.fetching_chart){
+      is_fetching = true
+    }
+
+    if( this.props.fetching_tra){
+      is_fetching = true
+    }
+
+    if( this.props.fetching_geo){
+      is_fetching = true
+    }
+
+    if( this.props.fetching_menu){
+      is_fetching = true
+    }
+
+    const working = is_fetching
+
+    //messages for working
+    const working_message = working ? "loading..." : ""
+    const working_class = working ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
+
+    //get chart width in pixels from redux should handle resize in actiion creators
     let chart_width_px = CHART_WIDTH_PX;
 
     //not sure yet ho to handle this but chartHeight needs to be adjusted by to px in the chart component
-    const chartHeight_adjustment = 65
+    const chartHeight_adjustment = 125
     let chart_grid_height =  MAP_HEIGHT-chartHeight_adjustment;
 
     let searchMethod = ""
@@ -398,7 +457,7 @@ var ChartRow = React.createClass({
     //  the point in a tra message
     if(this.props.searchMethod){
         searchMethod = this.props.searchMethod;
-        show_point =  (searchMethod === "location searched" || searchMethod === "clicked");
+        show_point =  (searchMethod === "location searched" || searchMethod === "clicked" || searchMethod === "tra clicked" || searchMethod === "chart clicked");
     }
 
     //get the chart width and chart height settings from the redux store
@@ -431,21 +490,12 @@ var ChartRow = React.createClass({
     //get the user selected huc so we can filter
     let chart_filter = this.getChart_Filter(baseline_data[0]);
 
-    // //get the baseline chart filtered by the user selected huc
-    // let baseline_data_limited = this.getChart_FilteredByHUC(baseline_data[0], chart_filter);
-    //
-    // //get the uplift chart filtered by the user selected huc
-    // let uplift_data_limited = this.getChart_FilteredByHUC(uplift_data[0], chart_filter);
-
-    //get the tra chart filtered by the user selected huc
-    // let tra_data_limited = this.getChart_FilteredByHUC(tra_data[0], chart_filter);
-
-
     let chart_baseline_bar = [];
     let chart_upflift_bar = [];
     let chart_tar_bar = [];
     let all_hucs_bar = [];
 
+    //get the chart data
     chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
     chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
@@ -471,6 +521,7 @@ var ChartRow = React.createClass({
 
     //set defaults for messages abouyt
     tra_text_message_point = "Please Click on the Map or Search for a location to discover if it is in a TRA"
+    icon_map = (<div />)
     success_class_point = "ui icon info message"
     icon_point = (<i className="info circle icon"></i>)
     sub_header_point = ""
@@ -493,7 +544,7 @@ var ChartRow = React.createClass({
         if(TRA_OBJ.length > 0){
           const extra_tra = TRA_OBJ.length > 1 ? "'s" : "";
           icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
-          tra_text_message_point = "The point " + searchMethod + " on the map is in a TRA. "
+          tra_text_message_point = "The point on the map is in a TRA. "
           success_class_point = "ui icon success message"
           icon_point = (<i className="check circle icon"></i>)
           sub_header_point = (<p>This includes the TRA{extra_tra}: {tra_string}</p>)
@@ -504,13 +555,12 @@ var ChartRow = React.createClass({
           icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
           success_class_point = "ui icon negative message"
           icon_point = (<i className="remove circle icon"></i>)
-          tra_text_message_point = "The point " + searchMethod + " on the map is NOT in a TRA"
+          tra_text_message_point = "The point on the map is NOT in a TRA"
           sub_header_point = ""
 
         }
       }
     }
-
 
 
   //if the method to get a huc was not a map click or search for location we need
@@ -545,14 +595,12 @@ var ChartRow = React.createClass({
       huc_message = "The " + this.getLevel() + " " +  chart_filter + " is currently highlighted."
     }
 
-    //messages for working
-    const working_message = this.props.fetching_chart || this.props.fetching_tra || this.props.fetching_map ? "loading..." : ""
-    const working_class = this.props.fetching_chart|| this.props.fetching_tra  || this.props.fetching_map ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
-    const working_key = this.props.title  + '-working'
-
     //land use land cover data
-    const NLCDData = this.props.NLCDData ? this.props.NLCDData.features : []
-    const NLCD_ID_obj = this.props.NLCDPointInfo ? this.props.NLCDPointInfo : []
+    let NLCD_ID_obj = this.props.NLCDPointInfo ? this.props.NLCDPointInfo : []
+
+    if(searchMethod === 'menu'){
+      NLCD_ID_obj = []
+    }
 
     //make ure there is features in the object: NLCD_ID_obj
     //  this object holds the catchment id
@@ -561,103 +609,38 @@ var ChartRow = React.createClass({
       NLCD_ID = NLCD_ID_obj.features.length > 0 ? NLCD_ID_obj.features[0].properties.ID : []
     }
 
-    //filter NLCD data to only level 2.
-    //  there is only one level to NCLD data we want to show
-    //  level 1 is total.  If we include 1 then total will show up in the chart
-    const filtered_nlcd_data = NLCDData.filter( data => {
-      return data.properties.chart_level === 2
-    })
+      let ncld_chart_data = this.props.ncld_chart_data ? this.props.ncld_chart_data : []
 
-    //format data into the recharts pie chart format.
-    // [{name:"", value:0}]
-    const ncld_chart_data_unsorted = filtered_nlcd_data.map( nlcd => {
-      const level = nlcd.properties.chart_level
-      const name = nlcd.properties.chart_level_label;
-      const value = Number(nlcd.properties.chart_value);
-      return {name, value}
-    })
+      // get catchment data from redux store
+      let catchment_chart_ar = this.props || this.props.catchment_chart_ar ? this.props.catchment_chart_ar : []
 
-    //sort the nlcd data.
-    const ncld_chart_data = ncld_chart_data_unsorted.sort(function (a, b) {
-      if (a.value > b.value) {
-        return -1;
+      //clear chart data when menu selected
+      if(searchMethod === 'menu'){
+        ncld_chart_data =[];
+        catchment_chart_ar = [];
       }
-      if (a.value < b.value) {
-        return 1;
+
+      //tra note
+      let tra_note = "TRA's in this Cataloging Unit"
+      if(chart_filter){
+        tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
       }
-      // a must be equal to b
-        return 0;
-      });
 
 
-      //get catchment data from redux store
-      const CATCHMENTData = this.props.CATCHMENTData ? this.props.CATCHMENTData.features : []
-
-
-      //filter catchment data to only level 2.
-      //  there is only one level to catchment data we want to show
-      //  level 1 is total.  If we include 1 then total will show up in the chart
-      const filtered_catchment_data = CATCHMENTData.filter( data => {
-        return data.properties.chart_level === 2
-      })
-
-      //format data into the recharts pie chart format.
-      // [{name:"", value:0}]
-      const catchment_chart_data_unsorted = filtered_catchment_data.map( catchment => {
-        const level = catchment.properties.chart_level
-        const name = catchment.properties.chart_level_label;
-        const value = Number(catchment.properties.chart_value.substring(0,5))
-        //Number(catchment.properties.chart_value);
-        return {name, value}
-      })
-
-      //sort the catchment data.
-      const catchment_chart_data = catchment_chart_data_unsorted.sort(function (a, b) {
-        if (a.value > b.value) {
-          return -1;
-        }
-        if (a.value < b.value) {
-          return 1;
-        }
-        // a must be equal to b
-          return 0;
-        });
-
-
-        //get nlcd id which is reallyt the catchment gridcode
-        var catchment_chart_object = new Object;
-        catchment_chart_object["name"] = NLCD_ID;
-
-        //get the catchment id and value and make that an object
-        //  this sets up the data structure for the recharts bar chart
-        //  structure is {name: "name", chartvaluename: chartvalue, chartvaluename: chartvalue}
-        //  where chartvaluename is something like Hydrology, Habitat, or Water Quality
-        catchment_chart_data.map( catchment => {
-           catchment_chart_object[catchment.name] = catchment.value
-        })
-
-        //make the object an array.
-        const catchment_chart_ar = [catchment_chart_object]
-
-        //tra note
-        let tra_note = "TRA's in this Cataloging Unit"
-        if(chart_filter){
-          tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
-        }
     return (
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
         <div className={working_class}>
             <div className="ui loader"></div>
         </div>
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px"}}>
-        <div className="ui item" >
 
-          <div className="content">
-            <div className="ui header left floated">
-              {chart_cataloging_unit}
-            </div>
+        <div className="ui sticky" style={{borderBottom:"1px solid rgba(34,36,38,.15)"}}>
+          <div className="ui header">
+            {chart_cataloging_unit}
           </div>
         </div>
+
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
+
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
@@ -748,7 +731,7 @@ var ChartRow = React.createClass({
              use_percent={true}
              />
          }
-         { chart_filter &&
+         { chart_filter && catchment_chart_ar &&
 
            <ChartSimpleBar
              chart_width={chart_width_px}
@@ -756,23 +739,12 @@ var ChartRow = React.createClass({
              title_description=""
              note={"For Catchment: " + NLCD_ID}
              chart_data={catchment_chart_ar}
-             use_percent={false}
+             searchMethod={searchMethod}
              />
 
          }
 
-         { chart_filter &&
 
-           <ChartPie
-             chart_width={chart_width_px}
-             title="Catchment Baseline (Catchment)"
-             title_description=""
-             note={"For Catchment: " + NLCD_ID}
-             chart_data={catchment_chart_data}
-             use_percent={false}
-             />
-
-         }
       </div>
     </div>
     );

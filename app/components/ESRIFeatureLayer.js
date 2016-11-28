@@ -45,8 +45,8 @@ export default class ESRIFeatureLayer extends BaseTileLayer {
     })
 
     var name = this.props.name
+
     //this.leafletElement is the layer to map.addLayer(name) or map.removeLayer(name) - toggle layer
-    //this.setState({maplayer:[{name,layer:this.leafletElement}] })
     this.props.setMapLayers({name,layer:this.leafletElement})
 
 

@@ -181,6 +181,9 @@ function update_activeGeographyLevel( state, active_level ){
 export function change_geographyLevelFilter(filter_value, active_level) {
   return (dispatch, getState) => {
 
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
     const state = getState()
 
     //create new geography_level state object
@@ -189,14 +192,19 @@ export function change_geographyLevelFilter(filter_value, active_level) {
 
       //send the new geography level data on
       dispatch(geography_levels('CHANGE_FILTER_GEOGRAPHY_LEVEL',newLevels))
-    }
 
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
+    }
   }
 }
 
 // change active geography level
 export function change_geographyLevelActive(active_level) {
   return (dispatch, getState) => {
+
+    //start fetching state (set to true)
+    dispatch(fetching_start())
 
     const state = getState()
 
@@ -206,11 +214,17 @@ export function change_geographyLevelActive(active_level) {
     //send the new geography level data on
     dispatch(geography_levels('CHANGE_ACTIVE_GEOGRAPHY_LEVEL',newLevels))
 
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
+
   }
 }
 
 export function get_GeographyLevels(){
   return (dispatch, getState) => {
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
       AGO_GeographyLevels()
         .then(function test(response){
 
@@ -241,9 +255,25 @@ export function get_GeographyLevels(){
 
           //send the geography level data on
           dispatch(geography_levels('GET_GEOGRAPHY_LEVELS',GList))
+
+          //end fetching set fetching state to false
+          dispatch(fetching_end())
+
         })
-        .catch(error => { console.log('request failed', error); });
+        .catch(error => {
+          //end fetching set fetching state to false
+          dispatch(fetching_end())
+          console.log('request failed', error);
+        });
+
   }
+}
+
+function fetching_start(){
+  return {type: "FETCHING_GEO", fetching: true}
+}
+function fetching_end(){
+  return {type: "FETCHING_GEO", fetching: false}
 }
 
 //new geography_levels object to pass to reducer

@@ -54,6 +54,10 @@ function buildMenuList (name, menuList, geoJSON){
 
 export function get_MenuList(){
     return dispatch => {
+
+      //start fetching state (set to true)
+      dispatch(fetching_start())
+
       axios.all([get_Basins(), get_CatalogingUnits(),get_HUCS()])
       .then(axios.spread(function (basins, catalogingUnits, HUCS) {
 
@@ -73,11 +77,26 @@ export function get_MenuList(){
           //send the lists on
           dispatch(MenuList(allList))
 
+          //start fetching state (set to true)
+          dispatch(fetching_end())
+
       })
     )
-    .catch(error => { console.log('request failed', error); });;
+    .catch(error => {
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
+      console.log('request failed', error);
+    });
   }
 }
+
+function fetching_start(){
+  return {type: "FETCHING_MENUS", fetching: true}
+}
+function fetching_end(){
+  return {type: "FETCHING_MENUS", fetching: false}
+}
+
 //new menu list object to pass to reducer
 function MenuList(json) {
   return {

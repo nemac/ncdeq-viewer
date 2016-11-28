@@ -23,6 +23,11 @@ const mapStateToProps = (state,props) => {
   let huc8Info = state.mapConfig.huc8Info;
   let searchMethod = state.mapConfig.searchMethod;
   let traInfo = state.mapConfig.traInfo;
+  let fetching_chart = state.fetching_chart.fetching_chart;
+  let fetching_map = state.fetching_map.fetching_map;
+  let fetching_tra = state.fetching_tra.fetching_tra;
+  let fetching_geo = state.fetching_geo.fetching_geo;
+  let fetching_menu = state.fetching_geo.fetching_menu;
 
   return {
     charts,
@@ -36,6 +41,11 @@ const mapStateToProps = (state,props) => {
     huc8Info,
     searchMethod,
     NLCDPointInfo,
+    fetching_chart,
+    fetching_map,
+    fetching_tra,
+    fetching_geo,
+    fetching_menu,
   }
 }
 

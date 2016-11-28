@@ -19,8 +19,11 @@ const mapStateToProps = (state,props) => {
     fetching_chart: state.fetching_chart.fetching_chart,
     fetching_map: state.fetching_map.fetching_map,
     fetching_tra: state.fetching_tra.fetching_tra,
-    NLCDData: state.NLCDDATA.NLCDData,
+    fetching_geo: state.fetching_geo.fetching_geo,
+    fetching_menu: state.fetching_menu.fetching_menu,
+    ncld_chart_data: state.NLCDDATA.ncld_chart_data,
     CATCHMENTData: state.CATCHMENTDATA.CATCHMENTData,
+    catchment_chart_ar: state.CATCHMENTDATA.catchment_chart_ar,
   }
 }
 

@@ -31,6 +31,19 @@ var MenuComponent = React.createClass({
   componentDidMount: function() {
     this.props.get_MenuList();
   },
+  componentWillUpdate: function(nextProps, nextState) {
+
+    this.props.update_MapHeight();
+
+    //leaflet map dose not update size this forces the issue
+    if(nextProps.leafletMap){
+      const leafletMap = nextProps.leafletMap.leafletMap;
+      if(leafletMap){
+        leafletMap.invalidateSize(true)
+      }
+    };
+
+  },
   getDefaultMenu: function(level){
     //filter the levels to get the active tab
     //check if DefaultMenuLists exsists
@@ -99,7 +112,6 @@ var MenuComponent = React.createClass({
 
     //loop the levels object
     levels.map((level)=>{
-
       //get the string length for substring'  the current value.
       //  the current value should always be huc 12 so River Basins and Cataloging Units
       //  should be 2 and 4 lengths less..
@@ -107,7 +119,6 @@ var MenuComponent = React.createClass({
 
       //ensure value was defined.
       if(value){
-
           //get the value for the level
           const selectedValue = value.substring(0,matchEnd)
 
@@ -151,10 +162,20 @@ var MenuComponent = React.createClass({
       return null
     }
   },
-  menuChange: function(e){
+  menuChange: function(val, e){
 
-    // //get the current level
-    var currentLevel = this.getLevel();
+    //update menu filters
+    this.updateFilters(e.target.value)
+
+    var currentLevel = val;
+
+    //make sure location search and map click are set to huc12 level
+    if(this.props.searchMethod === "location searched" || this.props.searchMethod === "clicked"){
+      currentLevel = 'HUC12'
+    }
+
+    //get the current level
+    this.props.change_geographyLevelActive(currentLevel);
 
     //update header vis in action
     this.props.update_HeaderVis()
@@ -162,8 +183,6 @@ var MenuComponent = React.createClass({
     //get the expected length for the level
     const expectedLength = get_matchEnd(currentLevel);
     const valueLength = e.target.value.length;
-
-    this.updateFilters(e.target.value)
 
     //only get chart data and feature data when expectedLength and the value lenght match.
     //  not sure why values from other geography levels are making it here.
@@ -175,17 +194,22 @@ var MenuComponent = React.createClass({
       //get the ago layer id of the currentLevel
       const feature_id = getAGOFeatureId(currentLevel)
 
-      //get the attributes of the huc12 layer on a user click
+      //get the attributes of the huc layer on a user click
       this.props.get_LayerInfo_ByValue(e.target.value, feature_id);
-      // console.log(e.target.value)
 
-      //update the menu for curret active layer
+      //update the menu for current active layer
       //  this runs to ensure the list is updated for the active geograhpy Level
       $('#search-select-'+currentLevel.replace(' ','_')).dropdown('set selected',e.target.value);
 
+      //update menu filters
+      this.updateFilters(e.target.value)
     }
 
-
+    //hacky way to force map to redraw and reiniate menus
+    let lat = this.props.map_settings.latitude + .00000001
+    let long = this.props.map_settings.longitude + .00000001
+    let zoom =  this.props.map_settings.zoom
+    this.props.set_mapToPoint(lat, long, zoom, null)
   },
   handleMenuClick: function(val,e) {
 
@@ -195,6 +219,7 @@ var MenuComponent = React.createClass({
 
     //update header vis in action
     this.props.update_HeaderVis()
+    console.log('menu click')
 
   },
   getActive: function(val){
@@ -270,7 +295,7 @@ var MenuComponent = React.createClass({
                     }
 
                     return (
-                      <MenuItemComponent key={name} name={name} lists={menuList}  getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}>
+                      <MenuItemComponent key={name} name={name} lists={menuList}  getFilter={this.getFilter} getActive={this.getActive} handleMenuClick={this.handleMenuClick} menuChange={this.menuChange}  set_search_method={this.props.set_search_method}>
                       </MenuItemComponent>
 
 

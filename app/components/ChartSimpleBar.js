@@ -35,17 +35,20 @@ const ChartSimpleBar = React.createClass({
 
     let keycnt = 0;
     let data_array = []
-    //make the name an array
-    Object.keys(data).forEach(key => {
-      if(key.toUpperCase() != 'NAME'){
-        data_array.push(key)
-      }
-    })
+
+    if(data){
+      //make the name an array
+      Object.keys(data).forEach(key => {
+        if(key.toUpperCase() != 'NAME'){
+          data_array.push(key)
+        }
+      })
+    }
 
     //return bars
     return (
       data_array.map(key => (
-        <Bar key={keycnt++} dataKey={key}  fill={this.get_keyColors(key)}  >
+        <Bar dataKey={key} key={keycnt++} fill={this.get_keyColors(key)} >
         </Bar>
       ))
     )
@@ -56,105 +59,127 @@ const ChartSimpleBar = React.createClass({
 
 	render () {
 
+    const self = this;
 
-    //custom legend
-    const customLegend = React.createClass({
+    const tooltipstyle = {
+      width: '100%',
+      margin: 0,
+      lineHeight: 24,
+      border: '1px solid #f5f5f5',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      padding: 10,
+    };
 
+    const toolTipLabel = {
+      margin: '0',
+      color: '#666',
+      fontWeight: '700',
+    };
+
+    const CustomTooltip  = React.createClass({
       propTypes: {
+        type: PropTypes.string,
         payload: PropTypes.array,
+        label: PropTypes.string,
       },
+
       render() {
-        console.log(payload)
+        const { active } = this.props;
+        let html_hov = '';
+        if (active) {
+          const { payload, label } = this.props;
 
-        const { payload } = this.props;
-        console.log(payload)
-        let data_array = []
+          const thedata = payload.map( bar_segment => {
 
-        //make the name an array
-        Object.keys(this.props.datas).forEach(key => {
-          if(key.toUpperCase() != 'NAME'){
-            data_array.push(key)
+           const colors = self.get_keyColors(bar_segment.name)
+
+            const toolTipName = {
+              margin: '0',
+              color: colors,
+            }
+
+            const toolTipValue = {
+              fontWeight: '800',
+            }
+
+            const value = bar_segment.value ?  bar_segment.value.toString().substring(0,5) : 'N/A';
+            const name = bar_segment.name + ": "
+
+            return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
+          })
+
+          let tooltip = (<div />)
+          if (label === '1' || label === '2' ){
+            return (<div />)
           }
-        })
 
-        data_array.map( d => {
-          console.log(d + " :" + datas[d])
-        })
+          const lablestr = label.toString();
 
           return (
 
+            <div style={tooltipstyle}>
+              <p style={toolTipLabel}>Cathcment: {`${lablestr}`}</p>
+              {thedata}
+          </div>
 
-            <div className="ui list">
-              {
-                payload.map((entry, index) => (
-
-                  <div className="item"  key={`item-${index}`}>
-
-                  <svg  width="14" height="14" >
-                    <path stroke-strokeWidth="4" fill={entry.fill} stroke={entry.stroke} d="M0,0h32v32h-32z" >
-                    </path>
-                  </svg>
-                  {`  ${entry.name}  (${entry.value})` }
-                  </div>
-                ))
-              }
-            </div>
           );
+        }
+
+        return null;
       }
-    })
+    });
 
     const data = this.props.chart_data
     const bars = this.get_bars(data[0])
     const datas = data[0]
-    const datas_length = Object.keys(datas).length
+    const datas_length = this.props.searchMethod === 'menu' ? 0 : Object.keys(datas).length;
 
     const note = datas_length < 2 ? 'No ' + this.props.title + ' found at this location!' : this.props.note ;
     const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
 
-
-
   	return (
 
-      <div className="item" style={{display: "block"}}>
 
-        <div className="item" style={{display: "block", minHeight: "30px"}}>
-          <i className="left floated dropdown icon"></i>
-          <h4 className="ui left floated header">
+      <div className="item" style={{display: "block"}}>
+        <div className="content">
+          <div className="header">
+            <i className="left floated dropdown icon"></i>
             {this.props.title}
-          </h4>
-          <div className="meta">
-            <span className="description">{this.props.title_description}</span>
-            <span className="note">{note}</span>
+          </div>
+          <div className="content center aligned">
+            <div className="meta center aligned">
+              <span className="description center aligned">{this.props.title_description}</span>
+              <span className="note center aligned">{note}</span>
+            </div>
+          </div>
+          <div className="description" style={{paddingBottom:"14px",paddingLeft:"20px",width:this.props.chart_width}}>
+            { datas_length < 2 &&
+              <div className='ui icon negative message' >
+                <i className="remove circle icon"></i>
+                <div className="content">
+                  <div className="header">
+                    {note}
+                  </div>
+                  {sub_header}
+                </div>
+              </div>
+            }
+            { datas_length > 1 &&
+              <BarChart
+                    width={this.props.chart_width}
+                    height={200}
+                    data={data}
+                    margin={{top: 5, right: 5, left: 5, bottom: 5}}>
+               <XAxis dataKey="name" hide={false} tick={false} tickLine={false} axisLine={false} />
+               <YAxis hide={false} tick={false} tickLine={false} axisLine={false} />
+               <Tooltip content={<CustomTooltip />}/>
+               <Legend />
+               {bars}
+              </BarChart>
+            }
           </div>
         </div>
-        <div className="item" style={{display: "block"}}>
-          { datas_length < 2 &&
-            <div className='ui icon negative message' >
-              <i className="remove circle icon"></i>
-              <div className="content">
-                <div className="header">
-                  {note}
-                </div>
-                {sub_header}
-              </div>
-            </div>
-          }
-
-          { datas_length > 1 &&
-            <BarChart width={this.props.chart_width} height={200} data={data}
-                  margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-             <XAxis dataKey="name" hide={false} tick={false}  tickLine={false} axisLine={false} />
-             <YAxis hide={false} tick={false}  tickLine={false} axisLine={false} />
-             <Legend />
-             {bars}
-             <Tooltip/>
-            </BarChart>
-          }
-        </div>
-
-
       </div>
-
 
     );
   }
