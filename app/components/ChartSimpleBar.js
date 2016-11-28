@@ -152,7 +152,7 @@ const ChartSimpleBar = React.createClass({
               <span className="note center aligned">{note}</span>
             </div>
           </div>
-          <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
+          <div className="description" style={{paddingBottom:"14px",paddingLeft:"20px",width:this.props.chart_width}}>
             { datas_length < 2 &&
               <div className='ui icon negative message' >
                 <i className="remove circle icon"></i>
