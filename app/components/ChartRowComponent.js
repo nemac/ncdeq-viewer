@@ -381,7 +381,7 @@ var ChartRow = React.createClass({
 
     //status of fetching chart
     if( nextProps.fetching_chart ){
-      should_update = false
+      should_update = true
     }
 
     //status of fetching tra

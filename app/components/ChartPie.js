@@ -116,7 +116,7 @@ const CustomTooltip  = React.createClass({
       })
 
       let tooltip = (<div />)
-      if (label === 1 || label === 2 ){
+      if (label === '1' || label === '2' ){
         return (<div />)
       }
 

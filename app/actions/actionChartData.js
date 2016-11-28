@@ -549,7 +549,7 @@ export function get_catchment_data(id, level){
 
           //get nlcd id which is really the catchment gridcode
           var catchment_chart_object = new Object;
-          catchment_chart_object["name"] = id;
+          catchment_chart_object["name"] = id.toString();
 
           //get the catchment id and value and make that an object
           //  this sets up the data structure for the recharts bar chart
@@ -562,7 +562,7 @@ export function get_catchment_data(id, level){
 
           //get nlcd id which is reallyt the catchment gridcode
           var catchment_chart_object_one = new Object;
-          catchment_chart_object_one["name"] = 1;
+          catchment_chart_object_one["name"] = '1';
 
           //get the catchment id and value and make that an object
           //  this sets up the data structure for the recharts bar chart
@@ -575,7 +575,7 @@ export function get_catchment_data(id, level){
 
           //get nlcd id which is reallyt the catchment gridcode
           var catchment_chart_object_two = new Object;
-          catchment_chart_object_two["name"] = 2;
+          catchment_chart_object_two["name"] = '2';
 
           //get the catchment id and value and make that an object
           //  this sets up the data structure for the recharts bar chart
