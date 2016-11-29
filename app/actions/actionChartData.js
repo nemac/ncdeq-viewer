@@ -172,15 +172,13 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
     id = hucid.substring(START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION);
   }
 
-
-
    //build the query to arcgis online api for getting the raw chart data
    const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
-                   '?where=ID%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
+                   '?where=ID%3D+%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
                    '&objectIds=' +
                    '&time=' +
-                   '&resultType=' +
-                   'none&outFields=*' +
+                   '&resultType=none' +
+                   '&outFields=*' +
                    '&returnIdsOnly=false' +
                    '&returnCountOnly=false' +
                    '&returnDistinctValues=true' +

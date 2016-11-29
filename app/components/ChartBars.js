@@ -204,7 +204,11 @@ var ChartBars = React.createClass({
             const value = bar_segment.value ?  bar_segment.value.toString().substring(0,5) : 'N/A';
             const name = bar_segment.name + ": "
 
-            return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
+            if(value === 'N/A'){
+              return ( <span></span>)              
+            } else {
+              return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
+            }
           })
 
           return (

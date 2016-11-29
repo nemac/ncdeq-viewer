@@ -87,7 +87,7 @@ var ChartRow = React.createClass({
         case 'Aquatic Connectivity':
           key_colors = ['#22c355' , '#67e48f']
           break;
-        case 'Uplift Restoration':
+        case 'Stream Restoration':
           key_colors = ['#2b83ba' , '#6eb3dd']
           break;
         case 'Wetlands and BMPs':
@@ -499,7 +499,7 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
     chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
-
+    // console.log(chart_tar_bar)
     //probably need to rename this to describe it better I already got confused
     const tra_point_info = this.props.traPointInfo
 
@@ -626,6 +626,7 @@ var ChartRow = React.createClass({
         tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
       }
 
+      // console.log(tra_data[0])
 
     return (
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
@@ -653,13 +654,13 @@ var ChartRow = React.createClass({
       }
 
       { chart_filter &&
-        <ChartTRA key="tra"
+        <ChartRowWrapper key="tra"
           chart_width={chart_width_px}
-          title="Targeted Resource Areas (TRA)"
+          title="Targeted Resource Areas"
           title_description=""
           note={tra_note}
           chart_type="tra"
-          chart_data={tra_data}
+          chart_data={chart_tar_bar}
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
           change_geographyLevelActive={this.props.change_geographyLevelActive}
@@ -754,3 +755,27 @@ var ChartRow = React.createClass({
 });
 
 module.exports = ChartRow;
+
+
+
+// <ChartTRA key="tra"
+// chart_width={chart_width_px}
+// title="Targeted Resource Areas (TRA)"
+// title_description=""
+// note={tra_note}
+// chart_type="tra"
+// chart_data={tra_data}
+// chart_filter={chart_filter}
+// get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
+// change_geographyLevelActive={this.props.change_geographyLevelActive}
+// set_search_method={this.props.set_search_method }
+// tra_data={this.props.tra_data}
+// get_tra_info={this.props.get_tra_info}
+// charts={this.props.charts}
+// update_ChartLevels={this.props.update_ChartLevels}
+// update_ChartMatchId={this.props.update_ChartMatchId}
+// get_keyColors={this.get_keyColors}
+// top_label=""
+// bottom_label=""
+// level_label={"TRA"}
+// />
