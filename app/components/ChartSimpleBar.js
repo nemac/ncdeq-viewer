@@ -108,17 +108,16 @@ const ChartSimpleBar = React.createClass({
             return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
           })
 
-          let tooltip = (<div />)
           if (label === '1' || label === '2' ){
             return (<div />)
           }
 
-          const lablestr = label.toString();
+          const labelstr = label.toString();
 
           return (
 
             <div style={tooltipstyle}>
-              <p style={toolTipLabel}>Cathcment: {`${lablestr}`}</p>
+              <p style={toolTipLabel}>Cathcment: {`${labelstr}`}</p>
               {thedata}
           </div>
 

@@ -185,6 +185,7 @@ var ChartBars = React.createClass({
       render() {
         const { active } = this.props;
         let html_hov = '';
+
         if (active) {
           const { payload, label } = this.props;
 
@@ -204,19 +205,26 @@ var ChartBars = React.createClass({
             const value = bar_segment.value ?  bar_segment.value.toString().substring(0,5) : 'N/A';
             const name = bar_segment.name + ": "
 
-            if(value === 'N/A'){
-              return ( <span></span>)              
+            //when tra's have a value of 0 do not display the tool tip...
+            if((bar_segment.value === 0 || !bar_segment.value ) && this.props.chart_type.toUpperCase() === 'TRA'){
+              return ( <span></span>)
             } else {
               return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
             }
           })
 
+          const labelstr = label.toString().trim();
+
+          //null tip when there is no id
+          if (!labelstr){
+            return (<div />)
+          }
+
           return (
             <div style={tooltipstyle}>
-              <p style={toolTipLabel}>{this.props.level_label}: {`${label}`}</p>
+              <p style={toolTipLabel}>{this.props.level_label}: {`${labelstr}`}</p>
               {thedata}
-          </div>
-
+            </div>
           );
         }
 
@@ -248,7 +256,7 @@ var ChartBars = React.createClass({
                     margin={{top: 20, right: 30, left: 20, bottom: 5}}  >
             <XAxis  dataKey="name" hide={false} tick={false} label={<CustomizedLabelX level_label={this.props.level_label}/>} tickLine={false} axisLine={false} />
             <YAxis width={50} hide={false} label={<CustomizedLabelY top_label={this.props.top_label} bottom_label={this.props.bottom_label} />} tick={false} tickLine={false} axisLine={false} />
-            <Tooltip content={<CustomTooltip level_label={this.props.level_label}/>}/>
+            <Tooltip content={<CustomTooltip chart_type={this.props.chart_type} level_label={this.props.level_label}/>}/>
             {this.get_bars()}
            </BarChart>
         </div>
