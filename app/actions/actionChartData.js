@@ -420,7 +420,6 @@ export function get_ChartLevels(id,level){
         chart_type_levels.push({chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid, last_chart_label, is_next_level})
       })
 
-
       //send the chart data on
       dispatch(
         ChartLevels('GET_CHART_LEVELS', chart_level_data, chart_type_levels)
@@ -441,7 +440,7 @@ export function get_ChartLevels(id,level){
 }
 
 //nlcd data from api
-export function get_nlcd_data(id,level){
+export function get_nlcd_data(id, level){
   return (dispatch,getState) => {
     //start fetching state (set to true)
     dispatch(fetching_start())
@@ -459,7 +458,7 @@ export function get_nlcd_data(id,level){
         //  there is only one level to NCLD data we want to show
         //  level 1 is total.  If we include 1 then total will show up in the chart
         const filtered_nlcd_data = NLCDDatas.filter( data => {
-          return data.properties.chart_level === 2
+          return data.properties.chart_level === level
         })
 
         //format data into the recharts pie chart format.
