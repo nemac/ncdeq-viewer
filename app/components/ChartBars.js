@@ -207,7 +207,7 @@ var ChartBars = React.createClass({
 
             //when tra's have a value of 0 do not display the tool tip...
             if((bar_segment.value === 0 || !bar_segment.value ) && this.props.chart_type.toUpperCase() === 'TRA'){
-              return ( <span></span>)
+              return ( <span key={bar_segment.name+'blanvalue'}></span>)
             } else {
               return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
             }
@@ -217,11 +217,12 @@ var ChartBars = React.createClass({
 
           //null tip when there is no id
           if (!labelstr){
-            return (<div />)
+            return (<div key={labelstr+'blanktip'} />)
           }
 
+          //return tooltip
           return (
-            <div style={tooltipstyle}>
+            <div key={labelstr+'tooltip'} style={tooltipstyle}>
               <p style={toolTipLabel}>{this.props.level_label}: {`${labelstr}`}</p>
               {thedata}
             </div>

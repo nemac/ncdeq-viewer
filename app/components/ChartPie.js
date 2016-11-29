@@ -117,14 +117,14 @@ const CustomTooltip  = React.createClass({
 
       let tooltip = (<div />)
       if (label === '1' || label === '2' ){
-        return (<div />)
+        return (<div key={label+'blanktip'}/>)
       }
 
-      const lablestr = label.toString();
+      const labelstr = label.toString();
 
       return (
 
-        <div style={tooltipstyle}>
+        <div key={labelstr+'tooltip'} style={tooltipstyle}>
           {thedata}
       </div>
 
