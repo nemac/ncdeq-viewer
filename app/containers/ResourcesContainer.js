@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../actions/actionCreators';
 import ResourcesComponent from '../components/ResourcesComponent';
 
+
+//import actions
+import {  update_HeaderVis } from '../actions/actionCreators'
+
 //either rename the properties or rename it also in main
 function mapStateToProps(state) {
 
@@ -19,9 +23,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-const ResourceContainer = connect(
+const ResourcesContainer = connect(
       mapStateToProps,
       mapDispatchToProps
     )(ResourcesComponent)
 
-export default ResourceContainer
+export default ResourcesContainer

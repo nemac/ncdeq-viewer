@@ -30,18 +30,21 @@ var HeaderComponent = React.createClass({
               River Basin Restoration Priorities Web Application
             </div>
             { this.props.header_description_visibility &&
-            <div className="description">
-              <span style={{color: "#fff"}} >{ this.state.content}<br /><br /></span>
-              <span style={{color: "#fff"}} >From North Carolina Department of Environmental Quality (NCDEQ) -Division of Mitigation Services</span>
-            </div>
-          }
+              <div className="description">
+                <span style={{color: "#fff"}} >{ this.state.content}<br /><br /></span>
+                <span style={{color: "#fff"}} >From North Carolina Department of Environmental Quality (NCDEQ) -Division of Mitigation Services</span>
+              </div>
+            }
             <div className="extra">
-              <button className="ui right floated inverted button">
+              <a  className="ui right floated inverted button"  href="#/Resources/" >
                 Resources
-              </button>
+              </a>
               <button id="about" className="ui right floated inverted button"  >
                 About
               </button>
+              <a  className="ui right floated inverted button"  href="#/" >
+                Map and Charts
+              </a>
             </div>
           </div>
         </div>
