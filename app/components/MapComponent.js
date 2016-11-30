@@ -521,6 +521,10 @@ var MapContainer = React.createClass({
         //update menus
         this.updateFilters(huc12_features_current[0].properties.VALUE);
 
+        //get ncld for huc12
+        this.props.get_nlcd_data_huc12(huc12_features_current[0].properties.VALUE, 2)
+
+
       }
       //if length of last feaures is 0 then last feature is different we will draw
       if(huc12_features_last && huc12_features_current){
@@ -534,6 +538,9 @@ var MapContainer = React.createClass({
             //update menus
             this.updateFilters(huc12_features_current[0].properties.VALUE);
 
+            //get ncld for huc12
+            this.props.get_nlcd_data_huc12(huc12_features_current[0].properties.VALUE, 2)
+
           } else {
             //when the last features JSON and Current Features JSON do not match
             //  it is a new feature.  so we should select and zoom TRA's have lower case id need to change this in data and api
@@ -543,6 +550,9 @@ var MapContainer = React.createClass({
 
               //update menus
               this.updateFilters(huc12_features_current[0].properties.VALUE);
+
+              //get ncld for huc12
+              this.props.get_nlcd_data_huc12(huc12_features_current[0].properties.VALUE, 2)
             }
           }
         }

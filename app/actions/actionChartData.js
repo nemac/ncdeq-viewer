@@ -526,6 +526,69 @@ export function get_nlcd_data(id, level){
 }
 
 
+//nlcd data from api
+export function get_nlcd_data_huc12(id, level){
+  return (dispatch,getState) => {
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
+    AGO_ChartData_Catchment_byID(id, 'NLCD_huc_12')
+      .then( nlcd_response => {
+
+        //add geometry here
+        const nlcd_data = CheckReponse(nlcd_response,'AGO_API_ERROR');
+
+        //land use land cover data
+        let NLCDDatas = nlcd_data ? nlcd_data.features : []
+
+        //filter NLCD data to only level 2.
+        //  there is only one level to NCLD data we want to show
+        //  level 1 is total.  If we include 1 then total will show up in the chart
+        const filtered_nlcd_data = NLCDDatas.filter( data => {
+          return data.properties.chart_level === level
+        })
+
+        //format data into the recharts pie chart format.
+        // [{name:"", value:0}]
+        const ncld_chart_data_unsorted = filtered_nlcd_data.map( nlcd => {
+          const level = nlcd.properties.chart_level
+          const name = nlcd.properties.chart_level_label;
+          const value = Number(nlcd.properties.chart_value);
+          return {name, value}
+        })
+
+        //sort the nlcd data.
+        const ncld_chart_data = ncld_chart_data_unsorted.sort(function (a, b) {
+          if (a.value > b.value) {
+            return -1;
+          }
+          if (a.value < b.value) {
+            return 1;
+          }
+          // a must be equal to b
+            return 0;
+          });
+
+
+        //send the chart data on
+        dispatch(
+          NLCDData('GET_NLCD_DATA_HUC12', ncld_chart_data)
+        )
+
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
+
+      })
+      .catch(error => {
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
+
+        console.log('request failed', error);
+      });
+  }
+}
+
+
 //catchment data from api
 export function get_catchment_data(id, level){
   return (dispatch,getState) => {
