@@ -96,8 +96,7 @@ var ChartRowWrapper = React.createClass({
 
   },
   componentWillUpdate: function(nextProps, nextState) {
-    // console.log('will update comp row wrapper - ' + this.props.chart_filter)
-    // console.log(this.props.chart_data)
+
   },
   render: function() {
 

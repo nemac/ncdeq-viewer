@@ -1,5 +1,6 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
+var CustomToolTipBarCharts = require('./CustomToolTipBarCharts')
 
 import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { HUC12_MAP_FEATUREID, CATALOGING_MAP_FEATUREID } from '../constants/actionConstants';
@@ -14,11 +15,13 @@ var ChartBars = React.createClass({
       title:'Title'
     };
   },
+  handleClickTest(){
+      console.log('test click')
+  },
   handleClickBar(constructor, entry, data, index, test){
       console.log(entry)
   },
   handleClick(constructor, entry, data, index, test) {
-    console.log(entry)
 
     const name = entry.name
 
@@ -105,7 +108,7 @@ var ChartBars = React.createClass({
     if(chart_keys){
       return (
         chart_keys.map(key => (
-          <Bar key={keycnt++} dataKey={key} stackId="a" fill="#beaed4"  >
+          <Bar key={keycnt++} dataKey={key} stackId="a" fill="#beaed4" >
             {this.get_cell(key)}
           </Bar>
         ))
@@ -130,20 +133,7 @@ var ChartBars = React.createClass({
     let title;
     const self = this;
 
-    const tooltipstyle = {
-      width: '100%',
-      margin: 0,
-      lineHeight: 24,
-      border: '1px solid #f5f5f5',
-      backgroundColor: 'rgba(255, 255, 255, 0.95)',
-      padding: 10,
-    };
 
-    const toolTipLabel = {
-      margin: '0',
-      color: '#666',
-      fontWeight: '700',
-    };
     const CustomizedLabelX = React.createClass({
       render () {
         const {x, y, stroke, payload, height, width} = this.props;
@@ -176,71 +166,6 @@ var ChartBars = React.createClass({
         )
       }
     });
-    const CustomTooltip  = React.createClass({
-      propTypes: {
-        type: PropTypes.string,
-        payload: PropTypes.array,
-        label: PropTypes.string,
-      },
-
-      render() {
-        const { active } = this.props;
-        let html_hov = '';
-
-        if (active) {
-          const { payload, label } = this.props;
-
-          const thedata = payload.map( bar_segment => {
-
-           const colors = self.props.get_keyColors(bar_segment.name)
-
-            const toolTipName = {
-              margin: '0',
-              color: colors[1],
-            }
-
-            const toolTipValue = {
-              fontWeight: '800',
-            }
-
-            const value = bar_segment.value ?  bar_segment.value.toString().substring(0,5) : 'N/A';
-            const name = bar_segment.name + ": "
-
-            //when tra's have a value of 0 do not display the tool tip...
-            if((bar_segment.value === 0 || !bar_segment.value ) && this.props.chart_type.toUpperCase() === 'TRA'){
-              return null
-            } else {
-              return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
-            }
-          })
-
-          //check to see if there is data in the case of tra's there could be no data and
-          //  we want to tell users that there is no data.
-          let hasdata = false;
-          thedata.map( d  => {
-            if(d){hasdata = true}
-          })
-
-          const labelstr = label.toString().trim();
-
-          //null tip when there is no id
-          if (!labelstr || !hasdata){
-            return (<div key={labelstr+'blanktip'} />)
-          }
-
-
-          //return tooltip
-          return (
-            <div key={labelstr+'tooltip'} style={tooltipstyle}>
-              <p style={toolTipLabel}>{this.props.level_label}: {`${labelstr}`}</p>
-              {thedata}
-            </div>
-          );
-        }
-
-        return null;
-      }
-    });
 
 
     if (this.props.chart_filter){
@@ -258,7 +183,7 @@ var ChartBars = React.createClass({
     return (
 
       <div >
-        <div id="bar-chart" style={{float:"left"}} >
+        <div id="bar-chart" >
           <BarChart key={this.props.chart_type}
                     width={this.props.chart_width}
                     height={200}
@@ -266,7 +191,7 @@ var ChartBars = React.createClass({
                     margin={{top: 20, right: 30, left: 20, bottom: 5}}  >
             <XAxis  dataKey="name" hide={false} tick={false} label={<CustomizedLabelX level_label={this.props.level_label}/>} tickLine={false} axisLine={false} />
             <YAxis width={50} hide={false} label={<CustomizedLabelY top_label={this.props.top_label} bottom_label={this.props.bottom_label} />} tick={false} tickLine={false} axisLine={false} />
-            <Tooltip content={<CustomTooltip chart_type={this.props.chart_type} level_label={this.props.level_label}/>}/>
+            <Tooltip content={<CustomToolTipBarCharts  get_keyColors={this.props.get_keyColors} chart_type={this.props.chart_type} level_label={this.props.level_label}/>}/>
             {this.get_bars()}
            </BarChart>
         </div>
@@ -274,7 +199,5 @@ var ChartBars = React.createClass({
     );
   }
 });
-//<Legend   payload={this.get_legend_payload(this.props.chart_type)}  />
-//            <Tooltip content={<CustomTooltip/>}/>
 
 module.exports = ChartBars;

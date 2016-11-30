@@ -502,7 +502,7 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
     chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
-    // console.log(chart_tar_bar)
+
     //probably need to rename this to describe it better I already got confused
     const tra_point_info = this.props.traPointInfo
 
@@ -628,8 +628,6 @@ var ChartRow = React.createClass({
       if(chart_filter){
         tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
       }
-
-      // console.log(tra_data[0])
 
     return (
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>

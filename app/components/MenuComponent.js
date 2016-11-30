@@ -219,7 +219,6 @@ var MenuComponent = React.createClass({
 
     //update header vis in action
     this.props.update_HeaderVis()
-    console.log('menu click')
 
   },
   getActive: function(val){
