@@ -220,6 +220,29 @@ function ago_getChartLevels(){
      return axios.get(query_URL);
 }
 
+function ago_getNextChart_isvalid(chart_type, match_id, chart_id){
+// query?&objectIds=&time=&resultType=none&outFields=chart_id+&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=pgeojson&token=
+  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+                       '?where=chart_type+%3D+%27' + chart_type +'%27+and+chart_matchid+%3D+%27' + match_id +'%27+and+ID+%3D+%27' + chart_id +'%27' +
+                       '&objectIds=' +
+                       '&time=' +
+                       '&resultType=none' +
+                       '&outFields=chart_id' +
+                       '&returnIdsOnly=false' +
+                       '&returnCountOnly=false' +
+                       '&returnDistinctValues=true' +
+                       '&orderByFields=' +
+                       '&groupByFieldsForStatistics=' +
+                       '&outStatistics=' +
+                       '&resultOffset=' +
+                       '&resultRecordCount=' +
+                       '&sqlFormat=none' +
+                       '&f=pgeojson' +
+                       '&token='
+
+  //send the ajax request via axios
+  return axios.get(query_URL);
+}
 
 function ago_getPreviousChart(chart_level, chart_id){
 
@@ -267,6 +290,7 @@ function check_limits_valid(data, item){
 
   return true
 }
+
 export function update_ChartLevels(new_level, new_matchid, chart_type){
   return (dispatch,getState) => {
 
@@ -398,7 +422,7 @@ export function get_ChartLevels(id,level){
        //get all the chart level featurs
        const charts_levels = chart_level_data.features;
 
-       //get thge chart types.  there will be duplicates since there are multiple chart heierchal levels
+       //get the chart types.  there will be duplicates since there are multiple chart levels
        const chart_types_all = charts_levels.map( charts_levels_features => {
           return charts_levels_features.properties.chart_type
        })

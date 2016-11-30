@@ -18,6 +18,7 @@ var ChartBars = React.createClass({
       console.log(entry)
   },
   handleClick(constructor, entry, data, index, test) {
+    console.log(entry)
 
     const name = entry.name
 
@@ -207,18 +208,26 @@ var ChartBars = React.createClass({
 
             //when tra's have a value of 0 do not display the tool tip...
             if((bar_segment.value === 0 || !bar_segment.value ) && this.props.chart_type.toUpperCase() === 'TRA'){
-              return ( <span key={bar_segment.name+'blanvalue'}></span>)
+              return null
             } else {
               return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
             }
           })
 
+          //check to see if there is data in the case of tra's there could be no data and
+          //  we want to tell users that there is no data.
+          let hasdata = false;
+          thedata.map( d  => {
+            if(d){hasdata = true}
+          })
+
           const labelstr = label.toString().trim();
 
           //null tip when there is no id
-          if (!labelstr){
+          if (!labelstr || !hasdata){
             return (<div key={labelstr+'blanktip'} />)
           }
+
 
           //return tooltip
           return (

@@ -65,14 +65,17 @@ var ChartRow = React.createClass({
         key_colors = ['#2b83ba' , '#6eb3dd']
         break;
 
-        case '100 year peak':
+        case '2 year peak':
           key_colors = ['#22c355' , '#67e48f']
           break;
-        case '2 year peak':
+        case '10 year peak':
           key_colors = ['#2b83ba' , '#6eb3dd']
           break;
         case '50 year peak':
           key_colors = ['#fd9935' , '#fecc9a']
+          break;
+        case '100 year peak':
+          key_colors = ['#aa64b4' , '#aa64b4']
           break;
 
       case 'Habitat':
@@ -87,7 +90,7 @@ var ChartRow = React.createClass({
         case 'Aquatic Connectivity':
           key_colors = ['#22c355' , '#67e48f']
           break;
-        case 'Stream Restoration':
+        case 'Streams Restoration':
           key_colors = ['#2b83ba' , '#6eb3dd']
           break;
         case 'Wetlands and BMPs':
@@ -755,27 +758,3 @@ var ChartRow = React.createClass({
 });
 
 module.exports = ChartRow;
-
-
-
-// <ChartTRA key="tra"
-// chart_width={chart_width_px}
-// title="Targeted Resource Areas (TRA)"
-// title_description=""
-// note={tra_note}
-// chart_type="tra"
-// chart_data={tra_data}
-// chart_filter={chart_filter}
-// get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
-// change_geographyLevelActive={this.props.change_geographyLevelActive}
-// set_search_method={this.props.set_search_method }
-// tra_data={this.props.tra_data}
-// get_tra_info={this.props.get_tra_info}
-// charts={this.props.charts}
-// update_ChartLevels={this.props.update_ChartLevels}
-// update_ChartMatchId={this.props.update_ChartMatchId}
-// get_keyColors={this.get_keyColors}
-// top_label=""
-// bottom_label=""
-// level_label={"TRA"}
-// />
