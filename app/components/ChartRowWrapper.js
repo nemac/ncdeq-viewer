@@ -81,7 +81,6 @@ var ChartRowWrapper = React.createClass({
     return {last_chart_level, last_chart_matchid, last_chart_label, current_chart_level, current_chart_matchid }
   },
   check_next_level_valid: function(){
-
     //get constants from redux
     const charts_limits = this.props.charts.chart_levels.chart_limits;
     const chart_type =  this.props.chart_type;
@@ -94,6 +93,9 @@ var ChartRowWrapper = React.createClass({
     const is_valid = (chart_type_limt[0] ? chart_type_limt[0].is_next_level : true)
 
     return is_valid
+
+  },
+  componentWillUpdate: function(nextProps, nextState) {
 
   },
   render: function() {
@@ -185,21 +187,22 @@ var ChartRowWrapper = React.createClass({
             }.bind(this))
           }
 
-            <ChartBars key={this.props.title} chart_width={this.props.chart_width}
-                                      chart_type={this.props.chart_type}
-                                      chart_data={this.props.chart_data}
-                                      chart_filter={this.props.chart_filter}
-                                      get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
-                                      change_geographyLevelActive={this.props.change_geographyLevelActive}
-                                      set_search_method={this.props.set_search_method }
-                                      tra_data={this.props.tra_data}
-                                      get_tra_info={this.props.get_tra_info}
-                                      charts={this.props.charts}
-                                      ChartLevels={chart_levels}
-                                      get_keyColors={this.props.get_keyColors}
-                                      top_label={this.props.top_label}
-                                      bottom_label={this.props.bottom_label}
-                                      level_label={this.props.level_label}
+            <ChartBars key={this.props.title}
+                        chart_width={this.props.chart_width}
+                        chart_type={this.props.chart_type}
+                        chart_data={this.props.chart_data}
+                        chart_filter={this.props.chart_filter}
+                        get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
+                        change_geographyLevelActive={this.props.change_geographyLevelActive}
+                        set_search_method={this.props.set_search_method }
+                        tra_data={this.props.tra_data}
+                        get_tra_info={this.props.get_tra_info}
+                        charts={this.props.charts}
+                        ChartLevels={chart_levels}
+                        get_keyColors={this.props.get_keyColors}
+                        top_label={this.props.top_label}
+                        bottom_label={this.props.bottom_label}
+                        level_label={this.props.level_label}
                                       />
 
           </div>

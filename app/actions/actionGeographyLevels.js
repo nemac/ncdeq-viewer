@@ -15,7 +15,7 @@ const CHART_DATA_ORDER_BY_FIELDS = 'geography_level';
 function AGO_GeographyLevels(){
 
   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
-                    '?where=id<>%27%27+and+geography_level+%21%3D+99+and+geography_label+%21%3D+%27NLCD_Catchments%27+and+geography_label+%21%3D+%27catchments_baseline%27' +
+                    '?where=id<>%27%27+and+geography_level+%21%3D+99+and+geography_label+%21%3D+%27NLCD_Catchments%27+and+geography_label+%21%3D+%27catchments_baseline%27+and+geography_label+%21%3D+%27NLCD_huc_12%27' +
                     '&objectIds=' +
                     '&time=&resultType=none' +
                     '&outFields=' + CHART_DATA_OUT_FIELDS +
@@ -29,7 +29,6 @@ function AGO_GeographyLevels(){
                     '&resultRecordCount='
                     +'&f=pgeojson' +
                     '&token='
-
   return axios.get(query_URL);
 
 };

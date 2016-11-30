@@ -1,6 +1,8 @@
 import React from 'react';
 import App from '../containers/App';
 import MainComponent from '../components/MainComponent';
+import ResourcesContainer from '../containers/ResourcesContainer';
+import ResourcesComponent from '../components/ResourcesComponent';
 
 import { Router, Route, IndexRoute, browserHistory, hashHistory} from 'react-router';
 
@@ -15,6 +17,9 @@ var routes = (
     <Router history={hashHistory}>
       <Route path='/' component={App}>
         <IndexRoute component={MainComponent} />
+      </Route>
+      <Route path='/Resources' component={ResourcesContainer}>
+        <IndexRoute component={ResourcesComponent} />
       </Route>
     </Router>
   </Provider>

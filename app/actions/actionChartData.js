@@ -172,15 +172,13 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
     id = hucid.substring(START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION);
   }
 
-
-
    //build the query to arcgis online api for getting the raw chart data
    const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
                    '?where=ID%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
                    '&objectIds=' +
                    '&time=' +
-                   '&resultType=' +
-                   'none&outFields=*' +
+                   '&resultType=none' +
+                   '&outFields=*' +
                    '&returnIdsOnly=false' +
                    '&returnCountOnly=false' +
                    '&returnDistinctValues=true' +
@@ -222,6 +220,29 @@ function ago_getChartLevels(){
      return axios.get(query_URL);
 }
 
+function ago_getNextChart_isvalid(chart_type, match_id, chart_id){
+// query?&objectIds=&time=&resultType=none&outFields=chart_id+&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=pgeojson&token=
+  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+                       '?where=chart_type+%3D+%27' + chart_type +'%27+and+chart_matchid+%3D+%27' + match_id +'%27+and+ID+%3D+%27' + chart_id +'%27' +
+                       '&objectIds=' +
+                       '&time=' +
+                       '&resultType=none' +
+                       '&outFields=chart_id' +
+                       '&returnIdsOnly=false' +
+                       '&returnCountOnly=false' +
+                       '&returnDistinctValues=true' +
+                       '&orderByFields=' +
+                       '&groupByFieldsForStatistics=' +
+                       '&outStatistics=' +
+                       '&resultOffset=' +
+                       '&resultRecordCount=' +
+                       '&sqlFormat=none' +
+                       '&f=pgeojson' +
+                       '&token='
+
+  //send the ajax request via axios
+  return axios.get(query_URL);
+}
 
 function ago_getPreviousChart(chart_level, chart_id){
 
@@ -269,6 +290,7 @@ function check_limits_valid(data, item){
 
   return true
 }
+
 export function update_ChartLevels(new_level, new_matchid, chart_type){
   return (dispatch,getState) => {
 
@@ -400,7 +422,7 @@ export function get_ChartLevels(id,level){
        //get all the chart level featurs
        const charts_levels = chart_level_data.features;
 
-       //get thge chart types.  there will be duplicates since there are multiple chart heierchal levels
+       //get the chart types.  there will be duplicates since there are multiple chart levels
        const chart_types_all = charts_levels.map( charts_levels_features => {
           return charts_levels_features.properties.chart_type
        })
@@ -422,7 +444,6 @@ export function get_ChartLevels(id,level){
         chart_type_levels.push({chart_type, current_chart_level, current_chart_matchid, last_chart_level, last_chart_matchid, last_chart_label, is_next_level})
       })
 
-
       //send the chart data on
       dispatch(
         ChartLevels('GET_CHART_LEVELS', chart_level_data, chart_type_levels)
@@ -443,7 +464,7 @@ export function get_ChartLevels(id,level){
 }
 
 //nlcd data from api
-export function get_nlcd_data(id,level){
+export function get_nlcd_data(id, level){
   return (dispatch,getState) => {
     //start fetching state (set to true)
     dispatch(fetching_start())
@@ -461,7 +482,7 @@ export function get_nlcd_data(id,level){
         //  there is only one level to NCLD data we want to show
         //  level 1 is total.  If we include 1 then total will show up in the chart
         const filtered_nlcd_data = NLCDDatas.filter( data => {
-          return data.properties.chart_level === 2
+          return data.properties.chart_level === level
         })
 
         //format data into the recharts pie chart format.

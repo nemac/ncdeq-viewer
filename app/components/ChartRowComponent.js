@@ -65,14 +65,17 @@ var ChartRow = React.createClass({
         key_colors = ['#2b83ba' , '#6eb3dd']
         break;
 
-        case '100 year peak':
+        case '2 year peak':
           key_colors = ['#22c355' , '#67e48f']
           break;
-        case '2 year peak':
+        case '10 year peak':
           key_colors = ['#2b83ba' , '#6eb3dd']
           break;
         case '50 year peak':
           key_colors = ['#fd9935' , '#fecc9a']
+          break;
+        case '100 year peak':
+          key_colors = ['#aa64b4' , '#aa64b4']
           break;
 
       case 'Habitat':
@@ -87,7 +90,7 @@ var ChartRow = React.createClass({
         case 'Aquatic Connectivity':
           key_colors = ['#22c355' , '#67e48f']
           break;
-        case 'Uplift Restoration':
+        case 'Streams Restoration':
           key_colors = ['#2b83ba' , '#6eb3dd']
           break;
         case 'Wetlands and BMPs':
@@ -626,7 +629,6 @@ var ChartRow = React.createClass({
         tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
       }
 
-
     return (
       <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
         <div className={working_class}>
@@ -653,13 +655,13 @@ var ChartRow = React.createClass({
       }
 
       { chart_filter &&
-        <ChartTRA key="tra"
+        <ChartRowWrapper key="tra"
           chart_width={chart_width_px}
-          title="Targeted Resource Areas (TRA)"
+          title="Targeted Resource Areas"
           title_description=""
           note={tra_note}
           chart_type="tra"
-          chart_data={tra_data}
+          chart_data={chart_tar_bar}
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
           change_geographyLevelActive={this.props.change_geographyLevelActive}

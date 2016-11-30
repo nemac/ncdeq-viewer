@@ -387,7 +387,7 @@ var MapContainer = React.createClass({
         //  only do add and do this if they have changed
         if(catchment_id_curent != catchment_id_last){
           //get nlcd data
-          this.props.get_nlcd_data(catchment_id_curent)
+          this.props.get_nlcd_data(catchment_id_curent, 2)
 
           //get catchment baseline data
           this.props.get_catchment_data(catchment_id_curent)
