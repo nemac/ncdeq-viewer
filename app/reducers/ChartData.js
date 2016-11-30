@@ -26,6 +26,8 @@ export function NLCDDATA(state = [], action){
   switch (action.type) {
     case 'GET_NLCD_DATA':
       return {...state, ncld_chart_data: action.ncld_chart_data}
+    case 'GET_NLCD_DATA_HUC12':
+      return {...state, ncld_chart_data_huc12: action.ncld_chart_data}
     default:
       return state
   }

@@ -613,6 +613,7 @@ var ChartRow = React.createClass({
     }
 
       let ncld_chart_data = this.props.ncld_chart_data ? this.props.ncld_chart_data : []
+      let ncld_chart_data_huc12 = this.props.ncld_chart_data_huc12 ? this.props.ncld_chart_data_huc12 : []
 
       // get catchment data from redux store
       let catchment_chart_ar = this.props || this.props.catchment_chart_ar ? this.props.catchment_chart_ar : []
@@ -722,6 +723,16 @@ var ChartRow = React.createClass({
            bottom_label="Less Potential"
            level_label={this.getLevel()}
            />
+         }
+         { chart_filter &&
+           <ChartPie
+             chart_width={chart_width_px}
+             title="Landuse-Landcover (HUC12)"
+             title_description=""
+             note={"For HUC12: " + chart_filter}
+             chart_data={ncld_chart_data_huc12}
+             use_percent={true}
+             />
          }
          { chart_filter &&
            <ChartPie
