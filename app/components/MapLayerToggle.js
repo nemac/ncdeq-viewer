@@ -13,7 +13,7 @@ var MapLayerToggle = React.createClass({
 
     //get the current layer object.
     const leafletLayer = this.props.layer;
-    console.log(this.props)
+
     //check if the layer is vissible
     const isLayerVis = leafletMap.hasLayer(leafletLayer);
 

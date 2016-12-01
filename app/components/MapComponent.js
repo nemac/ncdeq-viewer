@@ -734,7 +734,7 @@ var MapContainer = React.createClass({
         </Control>
 
         <Control position="topright" className="mapbutton" >
-          <MapLayerToggleWrapper map_settings={this.props.map_settings} leafletMap={this.props.leafletMap}/>
+          <MapLayerToggleWrapper map_settings={this.props.map_settings} leafletMap={this.props.leafletMap} geojson_layers={GeoJSON_Layers}/>
         </Control>
 
 
