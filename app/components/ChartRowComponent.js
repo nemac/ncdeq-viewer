@@ -10,7 +10,8 @@ import {
   CHART_WIDTH,
   CHART_WIDTH_PX,
   MAP_HEIGHT,
-  CHART_HEIGHT_ADJUSTMENT
+  CHART_HEIGHT_ADJUSTMENT,
+  BOX_BORDER
 } from '../constants/appConstants'
 
 
@@ -631,12 +632,12 @@ var ChartRow = React.createClass({
       }
 
     return (
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{paddingTop:"0px"}}>
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:"14px"}}>
         <div className={working_class}>
             <div className="ui loader"></div>
         </div>
 
-        <div className="ui sticky" style={{width:"50px!important",border: "1px solid rgba(34, 36, 38, 0.14902)",padding: "14px",marginBottom: "14px",backgroundColor:"#ffffff"  }}>
+        <div className="ui sticky" style={{width:"50px!important",border:BOX_BORDER,padding: "14px",marginBottom: "14px",backgroundColor:"#ffffff"  }}>
           <div className="content" style={{marginTop: "14px"}}>
           <div className="ui header">
             {chart_cataloging_unit}
@@ -650,7 +651,7 @@ var ChartRow = React.createClass({
         that results in data and charts that can be displayed
         */}
       { chart_filter &&
-          <div className="ui item" style={{backgroundColor: "#ffffff",marginBottom: "14px!important",marginTop: "14px!important",padding:"14px",border: "1px solid rgba(34,36,38,.15)"}}>
+          <div className="ui item" style={{backgroundColor: "#ffffff",marginBottom: "14px!important",marginTop: "14px!important",padding:"14px",border: BOX_BORDER}}>
             <div className="content" style={{marginTop: "14px"}}>
               {tra_message_point}
             </div>

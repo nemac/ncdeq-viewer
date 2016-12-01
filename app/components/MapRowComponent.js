@@ -10,7 +10,7 @@ var MapRowComponent = React.createClass({
   render: function() {
     const columnWidth = this.props.columnWidth;
     return (
-      <div className={"ui stackable internally celled " + columnWidth + " wide column grid"}>
+      <div className={"ui stackable internally celled " + columnWidth + " wide column grid"} style={{paddingTop:"0px"}}>
         <div className="stretched row" >
 
           <MapWrapper />

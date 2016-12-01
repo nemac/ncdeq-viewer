@@ -2,6 +2,10 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var ChartBars = require('../components/ChartBars');
 
+import {
+  BOX_BORDER
+} from '../constants/appConstants'
+
 var ChartRowWrapper = React.createClass({
   propTypes: {
     title: PropTypes.string,
@@ -127,8 +131,8 @@ var ChartRowWrapper = React.createClass({
     const space = (<span>&nbsp;</span>)
     return (
 
-      <div className="item" style={{display: "block", backgroundColor: "#ffffff",marginBottom: "14px",border: "1px solid rgba(34,36,38,.15)",paddingTop:"0px"}}>
-        <div className="content" style={{borderBottom: "1px solid rgba(34,36,38,.15)",marginTop: "14px",paddingTop: "14px",paddingBottom: "14px"}}>
+      <div className="item" style={{display: "block", backgroundColor: "#ffffff",marginBottom: "14px",border: BOX_BORDER,paddingTop:"0px"}}>
+        <div className="content" style={{borderBottom: BOX_BORDER,marginTop: "14px",paddingTop: "14px",paddingBottom: "14px"}}>
           <div className="header left floated"  >
             <i className="left floated dropdown icon"></i>
             {this.props.title} ({this.props.level_label})

@@ -20,7 +20,8 @@ import {HEADER_HEIGHT ,
   CHART_VISIBILITY,
   MAX_SEARCH_ZOOM,
   MAP_FULL_WIDTH,
-  MAP_CHART_WIDTH
+  MAP_CHART_WIDTH,
+  BOX_BORDER
 } from '../constants/appConstants'
 
 var MainComponent = React.createClass({
@@ -88,20 +89,16 @@ var MainComponent = React.createClass({
                       "or search for a location to zoom to."
       return (
         <div className="ui stackable one column padded grid" style={{backgroundColor: "#fafafa"}}>
-
           <HeaderComponent content={HeaderContent}  header_description_visibility={header_description_visibility} />
+          <MenuContainer />
 
+              {/* only render the charts section when the user has made the charts visibility true */}
+              { is_chart_vis &&
+                <ChartRowContainer />
+              }
+              <MapRowComponent columnWidth={columnWidth} />
+              <ModalAbout />
 
-            <MenuContainer />
-
-
-            {/* only render the charts section when the user has made the charts visibility true */}
-            { is_chart_vis &&
-              <ChartRowContainer />
-            }
-            <MapRowComponent columnWidth={columnWidth} />
-
-          <ModalAbout />
         </div>
       );
 
