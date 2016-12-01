@@ -50,7 +50,7 @@ var ChartRow = React.createClass({
             break;
 
         case 'Nitrogen':
-            key_colors = ['rgba(35, 155, 86  ,1)' , 'rgba(35, 155, 86  ,.5)']
+            key_colors = ['rgba(29, 131, 72 ,1)' , 'rgba(29, 131, 72,.5)']
           break;
 
           case 'Nitrogen Agriculture':
