@@ -3,6 +3,7 @@ var ReactLeaflet = require('react-leaflet')
 import ESRIFeatureLayer from '../components/ESRIFeatureLayer';
 import ESRITileMapLayer from '../components/ESRITiledMapLayer'
 import Control from '../components/control';
+import MapLayerToggleWrapper from '../components/MapLayerToggleWrapper'
 
 //app constants
 import {
@@ -731,6 +732,11 @@ var MapContainer = React.createClass({
                 {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
               </button>
         </Control>
+
+        <Control position="topright" className="mapbutton" >
+          <MapLayerToggleWrapper map_settings={this.props.map_settings} leafletMap={this.props.leafletMap}/>
+        </Control>
+
 
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
