@@ -30,9 +30,16 @@ var MenuComponent = React.createClass({
   },
   componentDidMount: function() {
     this.props.get_MenuList();
+    // $('.ui.left.icon.input .search.link.icon').on( "click", this.search_OnClick)
+  },
+  search_OnClick: function(e){
+
+    // const search_element = $('.mapSearch')
+    // console.log(search_element.val())
+    // //this.handleSearch(null, search_element, 'location researched' )
+
   },
   componentWillUpdate: function(nextProps, nextState) {
-
     this.props.update_MapHeight();
 
     //leaflet map dose not update size this forces the issue
@@ -42,6 +49,12 @@ var MenuComponent = React.createClass({
         leafletMap.invalidateSize(true)
       }
     };
+    const searchMethod = nextProps.searchMethod
+
+    //clear search box when menu clicked or mapped clicked
+    if(searchMethod === 'menu'|| searchMethod === "clicked" ){
+      $('.mapSearch').val("")
+    }
 
   },
   getDefaultMenu: function(level){

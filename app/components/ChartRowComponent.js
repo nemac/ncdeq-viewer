@@ -11,7 +11,8 @@ import {
   CHART_WIDTH_PX,
   MAP_HEIGHT,
   CHART_HEIGHT_ADJUSTMENT,
-  BOX_BORDER
+  BOX_BORDER,
+  SPACING
 } from '../constants/appConstants'
 
 
@@ -42,21 +43,21 @@ var ChartRow = React.createClass({
             key_colors = ['#22c355' , '#67e48f']
             break;
           case 'Phosphorus Atmosphere':
-            key_colors = ['#2b83ba' , '#6eb3dd']
+            key_colors = ['#456fa2' , '#759ac1']
             break;
           case 'Phosphorus Urban':
             key_colors = ['#fd9935' , '#fecc9a']
             break;
 
         case 'Nitrogen':
-          key_colors = ['#2b83ba' , '#6eb3dd']
+          key_colors = ['#456fa2' , '#759ac1']
           break;
 
           case 'Nitrogen Agriculture':
             key_colors = ['#22c355' , '#67e48f']
             break;
           case 'Nitrogen Atmosphere':
-            key_colors = ['#2b83ba' , '#6eb3dd']
+            key_colors = ['#456fa2' , '#759ac1']
             break;
           case 'Nitrogen Urban':
             key_colors = ['#fd9935' , '#fecc9a']
@@ -64,14 +65,14 @@ var ChartRow = React.createClass({
 
 
       case 'Hydrology':
-        key_colors = ['#2b83ba' , '#6eb3dd']
+        key_colors = ['#456fa2' , '#759ac1']
         break;
 
         case '2 year peak':
           key_colors = ['#22c355' , '#67e48f']
           break;
         case '10 year peak':
-          key_colors = ['#2b83ba' , '#6eb3dd']
+          key_colors = ['#456fa2' , '#759ac1']
           break;
         case '50 year peak':
           key_colors = ['#fd9935' , '#fecc9a']
@@ -93,7 +94,7 @@ var ChartRow = React.createClass({
           key_colors = ['#22c355' , '#67e48f']
           break;
         case 'Streams Restoration':
-          key_colors = ['#2b83ba' , '#6eb3dd']
+          key_colors = ['#456fa2' , '#759ac1']
           break;
         case 'Wetlands and BMPs':
           key_colors = ['#fd9935' , '#fecc9a']
@@ -632,13 +633,13 @@ var ChartRow = React.createClass({
       }
 
     return (
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:"14px"}}>
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
         <div className={working_class}>
             <div className="ui loader"></div>
         </div>
 
-        <div className="ui sticky" style={{width:"50px!important",border:BOX_BORDER,padding: "14px",marginBottom: "14px",backgroundColor:"#ffffff"  }}>
-          <div className="content" style={{marginTop: "14px"}}>
+        <div className="ui sticky" style={{width:"50px!important",border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:"#ffffff"  }}>
+          <div className="content" style={{marginTop: SPACING}}>
           <div className="ui header">
             {chart_cataloging_unit}
           </div>
@@ -651,8 +652,8 @@ var ChartRow = React.createClass({
         that results in data and charts that can be displayed
         */}
       { chart_filter &&
-          <div className="ui item" style={{backgroundColor: "#ffffff",marginBottom: "14px!important",marginTop: "14px!important",padding:"14px",border: BOX_BORDER}}>
-            <div className="content" style={{marginTop: "14px"}}>
+          <div className="ui item" style={{backgroundColor: "#ffffff",marginBottom: SPACING+"!important",marginTop: SPACING+"!important",padding:SPACING,border: BOX_BORDER}}>
+            <div className="content" style={{marginTop: SPACING}}>
               {tra_message_point}
             </div>
           </div>
