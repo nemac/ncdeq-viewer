@@ -36,31 +36,31 @@ var ChartRow = React.createClass({
         break;
 
         case 'Phosphorus':
-          key_colors = ['#22c355' , '#67e48f']
+          key_colors = ['rgba(130, 224, 170, 1)' , 'rgba(130, 224, 170, .5)']
           break;
 
           case 'Phosphorus Agriculture':
-            key_colors = ['#22c355' , '#67e48f']
+            key_colors = ['rgba(130, 224, 170, 1)' , 'rgba(130, 224, 170, .5)']
             break;
           case 'Phosphorus Atmosphere':
-            key_colors = ['#456fa2' , '#759ac1']
+            key_colors = ['rgba(46, 204, 113,1)' , 'rgba(46, 204, 113,.5)']
             break;
           case 'Phosphorus Urban':
-            key_colors = ['#fd9935' , '#fecc9a']
+            key_colors = ['rgba(35, 155, 86  ,1)' , 'rgba(35, 155, 86  ,.5)']
             break;
 
         case 'Nitrogen':
-          key_colors = ['#456fa2' , '#759ac1']
+            key_colors = ['rgba(35, 155, 86  ,1)' , 'rgba(35, 155, 86  ,.5)']
           break;
 
           case 'Nitrogen Agriculture':
-            key_colors = ['#22c355' , '#67e48f']
+            key_colors = ['rgba(130, 224, 170, 1)' , 'rgba(130, 224, 170, .5)']
             break;
           case 'Nitrogen Atmosphere':
-            key_colors = ['#456fa2' , '#759ac1']
+            key_colors = ['rgba(46, 204, 113,1)' , 'rgba(46, 204, 113,.5)']
             break;
           case 'Nitrogen Urban':
-            key_colors = ['#fd9935' , '#fecc9a']
+            key_colors = ['rgba(35, 155, 86  ,1)' , 'rgba(35, 155, 86  ,.5)']
             break;
 
 
@@ -68,17 +68,17 @@ var ChartRow = React.createClass({
         key_colors = ['#456fa2' , '#759ac1']
         break;
 
-        case '2 year peak':
-          key_colors = ['#22c355' , '#67e48f']
-          break;
         case '10 year peak':
-          key_colors = ['#456fa2' , '#759ac1']
-          break;
-        case '50 year peak':
-          key_colors = ['#fd9935' , '#fecc9a']
+          key_colors = ['rgba(133, 193, 233  ,1)' , 'rgba(133, 193, 233  ,.5)'] //133, 193, 233
           break;
         case '100 year peak':
-          key_colors = ['#aa64b4' , '#aa64b4']
+          key_colors = ['rgba(52, 152, 219 ,1)' , 'rgba(52, 152, 219  ,.5)'] //52, 152, 219
+          break;
+        case '2 year peak':
+          key_colors = ['rgba(46, 134, 193  ,1)' , 'rgba(46, 134, 193 ,.5)'] //46, 134, 193
+          break;
+        case '50 year peak':
+          key_colors = ['rgba(33, 97, 140  ,1)' , 'rgba(33, 97, 140 ,.5)'] //33, 97, 140
           break;
 
       case 'Habitat':
@@ -87,20 +87,24 @@ var ChartRow = React.createClass({
 
 
         case 'Habitat Likelhood':
-          key_colors = ['#22c355' , '#67e48f']
-          break;
-
-        case 'Aquatic Connectivity':
-          key_colors = ['#22c355' , '#67e48f']
-          break;
-        case 'Streams Restoration':
-          key_colors = ['#456fa2' , '#759ac1']
-          break;
-        case 'Wetlands and BMPs':
           key_colors = ['#fd9935' , '#fecc9a']
           break;
+
+
         case 'Avoided Conversion':
-          key_colors = ['#aa64b4' , '#d0a9d6' ]
+          key_colors = ['rgba(250, 215, 160 ,1)' , 'rgba(250, 215, 160 ,.5)']  //250, 215, 160
+          break;
+        case 'Aquatic Connectivity':
+          key_colors = ['rgba(245, 176, 65 ,1)' , 'rgba(245, 176, 65 ,.5)']   //245, 176, 65
+          break;
+        case 'Stream Restoration':
+          key_colors = ['rgba(214, 137, 16  ,1)' , 'rgba(214, 137, 16  ,.5)']  //214, 137, 16
+          break;
+        case 'Streams Restoration':
+          key_colors = ['rgba(214, 137, 16  ,1)' , 'rgba(214, 137, 16  ,.5)']  //214, 137, 16
+          break;
+        case 'Wetlands and BMPs':
+          key_colors = ['rgba(211, 84, 0 ,1)' , 'rgba(211, 84, 0 ,.5)']  //211, 84, 0
           break;
 
 
@@ -566,7 +570,6 @@ var ChartRow = React.createClass({
         }
       }
     }
-
 
   //if the method to get a huc was not a map click or search for location we need
   //  show a message to indicate.  this should stop jumpy and give user
