@@ -9,7 +9,8 @@ var SectionWrapper = require('./SectionWrapper');
 import {
   CHART_WIDTH,
   CHART_WIDTH_PX,
-  MAP_HEIGHT
+  MAP_HEIGHT,
+  CHART_HEIGHT_ADJUSTMENT
 } from '../constants/appConstants'
 
 
@@ -450,8 +451,7 @@ var ChartRow = React.createClass({
     let chart_width_px = CHART_WIDTH_PX;
 
     //not sure yet ho to handle this but chartHeight needs to be adjusted by to px in the chart component
-    const chartHeight_adjustment = 125
-    let chart_grid_height =  MAP_HEIGHT-chartHeight_adjustment;
+    let chart_grid_height =  MAP_HEIGHT-CHART_HEIGHT_ADJUSTMENT;
 
     let searchMethod = ""
     let show_point = false;
@@ -467,7 +467,7 @@ var ChartRow = React.createClass({
     //  so we can pass it as a prop to the chart components
     if(this.props.default_settings){
       chart_width_px = this.props.default_settings.chartWidth;
-      chart_grid_height = this.props.default_settings.mapHeight-chartHeight_adjustment;
+      chart_grid_height = this.props.default_settings.mapHeight-CHART_HEIGHT_ADJUSTMENT;
     }
 
     let is_chart_vis = true
@@ -589,7 +589,7 @@ var ChartRow = React.createClass({
       </div>)
 
     //default text for chart is to give user a push to do an action...
-    let chart_cataloging_unit = 'Please Click on the Map, Search for a location, or Choose something to get started.'
+    let chart_cataloging_unit = 'Please Click on the Map, Search for a location, or Choose a HUC to get started.'
     let huc_message = "No HUC's Selected yet."
 
     //if there is filter text for charts and data should be about the data
@@ -631,25 +631,27 @@ var ChartRow = React.createClass({
       }
 
     return (
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{paddingTop:"0px"}}>
         <div className={working_class}>
             <div className="ui loader"></div>
         </div>
 
-        <div className="ui sticky" style={{borderBottom:"1px solid rgba(34,36,38,.15)"}}>
+        <div className="ui sticky" style={{width:"50px!important",border: "1px solid rgba(34, 36, 38, 0.14902)",padding: "14px",marginBottom: "14px",backgroundColor:"#ffffff"  }}>
+          <div className="content" style={{marginTop: "14px"}}>
           <div className="ui header">
             {chart_cataloging_unit}
           </div>
         </div>
+        </div>
 
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,backgroundColor: "#fafafa",height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
 
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
       { chart_filter &&
-          <div className="ui item" >
-            <div className="content">
+          <div className="ui item" style={{backgroundColor: "#ffffff",marginBottom: "14px!important",marginTop: "14px!important",padding:"14px",border: "1px solid rgba(34,36,38,.15)"}}>
+            <div className="content" style={{marginTop: "14px"}}>
               {tra_message_point}
             </div>
           </div>

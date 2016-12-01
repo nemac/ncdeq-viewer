@@ -1,5 +1,5 @@
-export const HEADER_HEIGHT = 165;
-export const HEADER_HEIGHT_SMALL = 90;
+export const HEADER_HEIGHT = 125;
+export const HEADER_HEIGHT_SMALL = 40;
 export const BREAD_CRUMBS_HEIGHT = 110;
 export const ROW_PADDING = 1;
 export const HEADER_PADDING = 15;
@@ -14,7 +14,7 @@ export const CATALOGING_UNIT_FROM_HUC12_END_POISTION = 8;
 export const MAP_HEIGHT_OFFSET = 0;
 export const CHART_BORDER = 30;
 export const CHART_WIDTH_PX = 100;
-
+export const CHART_HEIGHT_ADJUSTMENT = 125;
 //map constants
 export const NORTH_EAST_LATITUDE = 33.7528762817383;
 export const NORTH_EAST_LONGITUDE = -94.3218765258789;

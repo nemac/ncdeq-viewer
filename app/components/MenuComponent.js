@@ -262,7 +262,7 @@ var MenuComponent = React.createClass({
   //{this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
   render: function() {
     return (
-      <div className="html ui top attached  segment">
+      <div className="html ui top attached segment" style={{marginLeft:"10px",marginRight:"10px"}}>
         <div className="ui relaxed stackable divided grid" >
           <div className="row">
             <div className="four wide column" >
