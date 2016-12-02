@@ -40,6 +40,7 @@ export const get_LayerInfo_ByPoint = MapConfig.get_LayerInfo_ByPoint;
 export const get_LayerInfo_ByValue = MapConfig.get_LayerInfo_ByValue;
 export const set_search_method = MapConfig.set_search_method;
 export const get_tra_info = MapConfig.get_tra_info;
+export const get_LayerGeom_ByValue = MapConfig.get_LayerGeom_ByValue;
 
 //default app actions
 export const set_defaults = ActionDefault.set_defaults;

@@ -2,6 +2,7 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 
 import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { HUC12_MAP_FEATUREID, TRA_MAP_FEATUREID, CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID } from '../constants/actionConstants';
 
 const tooltipstyle = {
   width: '100%',
@@ -24,12 +25,36 @@ const CustomToolTipBarCharts  = React.createClass({
     payload: PropTypes.array,
     label: PropTypes.string,
   },
+  get_layer_id: function(layer){
+    switch (layer) {
+      case 'baseline':
+        return HUC12_MAP_FEATUREID
+        break;
+      case 'uplift':
+        return HUC12_MAP_FEATUREID
+        break;
+      case 'tra':
+        return TRA_MAP_FEATUREID
+        break;
+      default:
+        return HUC12_MAP_FEATUREID
+    }
+  },
+  componentDidMount(){
+    $('.recharts-bar-cursor').on("click",function(){console.log('clicked')})
+  },
   render() {
 
     const { active } = this.props;
     let html_hov = '';
     if (active) {
       const { payload, label } = this.props;
+
+
+      const layer_id = this.get_layer_id(this.props.chart_type)
+
+      // this.props.get_LayerGeom_ByValue(label,this.props.chart_type)
+      console.log({value:label,chart_type: this.props.chart_type, layer_id: layer_id})
 
       const reversed_payload = [ ...payload ].reverse()
 
