@@ -14,7 +14,8 @@ import {
   BOX_BORDER,
   SPACING,
   BACKGROUND_COLOR_BG,
-  BACKGROUND_COLOR_FG
+  BACKGROUND_COLOR_FG,
+  BOX_BORDER_RADUIS
 } from '../constants/appConstants'
 
 
@@ -643,7 +644,7 @@ var ChartRow = React.createClass({
             <div className="ui loader"></div>
         </div>
 
-        <div className="ui sticky" style={{border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG  }}>
+        <div className="ui sticky" style={{border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
           <div className="content" style={{marginTop: SPACING}}>
           <div className="ui header">
             {chart_cataloging_unit}

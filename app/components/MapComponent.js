@@ -8,7 +8,7 @@ import MapLayerToggleWrapper from '../components/MapLayerToggleWrapper'
 //app constants
 import {
   MAP_HEIGHT,
-  DEF_PAD,
+  DEF_PAD,  
 } from '../constants/appConstants';
 
 import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
@@ -153,6 +153,19 @@ var MapContainer = React.createClass({
     //return renderer symbology
     return renderer;
   },
+
+  //remove the geosjon layer from GeoJSON_Layers object.
+  //  this will update the layer toggle
+  remove_GeoJSON_Layer_from_object: function(layer_name){
+
+    Object.keys(GeoJSON_Layers).forEach(key => {
+      if(key.toUpperCase() === layer_name.toUpperCase()){
+        GeoJSON_Layers[key] = null
+        console.log( key + ': ' + GeoJSON_Layers[key])
+      }
+    })
+
+  },
   //remove geojson layer
   remove_GeoJSON_Layer: function(layer_name){
 
@@ -173,6 +186,7 @@ var MapContainer = React.createClass({
       //  eventually we want to only remove when user elects too.
       if (isLayerVis){
         leafletMap.removeLayer(map_layer)
+        this.remove_GeoJSON_Layer_from_object(layer_name)
       }
     }
 
@@ -329,6 +343,7 @@ var MapContainer = React.createClass({
       this.remove_GeoJSON_Layer('point');
       this.remove_GeoJSON_Layer('catchment');
       this.remove_GeoJSON_Layer('huc8');
+      this.remove_GeoJSON_Layer('huc12');
     }
 
     //remove the menu selection when the geography layer does not match
@@ -746,21 +761,21 @@ var MapContainer = React.createClass({
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/Catchments/MapServer"
        setMapLayers={this.props.set_MapLayers}
-       name="Catchments"
+       name="Catchments Base Map"
        min_zoom="12"
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc12/MapServer"
        setMapLayers={this.props.set_MapLayers}
-       name="HUC 12"
+       name="HUC 12 Base Map"
        min_zoom="9"
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc8/MapServer"
        setMapLayers={this.props.set_MapLayers}
-       name="Cataloging Units"
+       name="Cataloging Units Base Map"
        min_zoom="8"
        onLeafletClick={this.handleMapClick.bind(null,this)}
        />
@@ -768,14 +783,14 @@ var MapContainer = React.createClass({
         url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc6_outline/MapServer"
         setMapLayers={this.props.set_MapLayers}
         tileOpacity="0.5"
-        name="River Basins"
+        name="River Basins Base Map"
         onLeafletClick={this.handleMapClick.bind(null,this)}
         />
         <ESRITileMapLayer
          url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/TRAS/MapServer"
          setMapLayers={this.props.set_MapLayers}
          tileOpacity="0.5"
-         name="Targeted Resource Areas (TRA)"
+         name="Targeted Resource Areas (TRA) Base Map"
          onLeafletClick={this.handleMapClick.bind(null,this)}
          />
 

@@ -5,7 +5,8 @@ var ChartBars = require('../components/ChartBars');
 import {
   BOX_BORDER,
   SPACING,
-  BACKGROUND_COLOR_FG
+  BACKGROUND_COLOR_FG,
+  BOX_BORDER_RADUIS
 } from '../constants/appConstants'
 
 var ChartRowWrapper = React.createClass({
@@ -133,7 +134,7 @@ var ChartRowWrapper = React.createClass({
     const space = (<span>&nbsp;</span>)
     return (
 
-      <div className="item" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border: BOX_BORDER,paddingTop:"0px"}}>
+      <div className="item" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border: BOX_BORDER,paddingTop:"0px", borderRadius: BOX_BORDER_RADUIS}}>
         <div className="content" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingTop: SPACING,paddingBottom: SPACING}}>
           <div className="header left floated"  >
             <i className="left floated dropdown icon"></i>

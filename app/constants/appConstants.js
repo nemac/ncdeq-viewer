@@ -39,6 +39,7 @@ export const CHART_WIDTH_INT= 7;
 
 //style
 export const BOX_BORDER = "1px solid rgba(0,0,0,.09)"
+export const BOX_BORDER_RADUIS = ".28571429rem"
 export const SPACING = "14px"
 export const BACKGROUND_COLOR_BG = "#fafafa"
 export const BACKGROUND_COLOR_FG = "#ffffff"
