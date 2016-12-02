@@ -22,7 +22,7 @@ var MapLayerToggleName = React.createClass({
   },
   render: function() {
     return (
-      <h4 className="ui header" >{this.state.title}</h4>
+      <h5 className="ui inverted header" style={{marginTop:"0px"}} >{this.state.title}    </h5>
     );
   }
 

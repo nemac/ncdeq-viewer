@@ -37,5 +37,8 @@ export const MAP_FULL_WIDTH_INT = 16;
 export const MAP_CHART_WIDTH_INT = 9; // these two need to add up to sixteen
 export const CHART_WIDTH_INT= 7;
 
+//style
 export const BOX_BORDER = "1px solid rgba(0,0,0,.09)"
 export const SPACING = "14px"
+export const BACKGROUND_COLOR_BG = "#fafafa"
+export const BACKGROUND_COLOR_FG = "#ffffff"

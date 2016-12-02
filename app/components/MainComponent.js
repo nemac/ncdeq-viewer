@@ -21,7 +21,8 @@ import {HEADER_HEIGHT ,
   MAX_SEARCH_ZOOM,
   MAP_FULL_WIDTH,
   MAP_CHART_WIDTH,
-  BOX_BORDER
+  BOX_BORDER,
+  BACKGROUND_COLOR_BG
 } from '../constants/appConstants'
 
 var MainComponent = React.createClass({
@@ -88,7 +89,7 @@ var MainComponent = React.createClass({
                       "  To get started click a River Basin on the map, " +
                       "or search for a location to zoom to."
       return (
-        <div className="ui stackable one column padded grid" style={{backgroundColor: "#fafafa"}}>
+        <div className="ui stackable one column padded grid" style={{backgroundColor: BACKGROUND_COLOR_BG}}>
           <HeaderComponent content={HeaderContent}  header_description_visibility={header_description_visibility} />
           <MenuContainer />
 

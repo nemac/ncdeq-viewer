@@ -12,7 +12,9 @@ import {
   MAP_HEIGHT,
   CHART_HEIGHT_ADJUSTMENT,
   BOX_BORDER,
-  SPACING
+  SPACING,
+  BACKGROUND_COLOR_BG,
+  BACKGROUND_COLOR_FG
 } from '../constants/appConstants'
 
 
@@ -641,7 +643,7 @@ var ChartRow = React.createClass({
             <div className="ui loader"></div>
         </div>
 
-        <div className="ui sticky" style={{width:"50px!important",border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:"#ffffff"  }}>
+        <div className="ui sticky" style={{border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG  }}>
           <div className="content" style={{marginTop: SPACING}}>
           <div className="ui header">
             {chart_cataloging_unit}
@@ -649,13 +651,13 @@ var ChartRow = React.createClass({
         </div>
         </div>
 
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,backgroundColor: "#fafafa",height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
+      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
 
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
       { chart_filter &&
-          <div className="ui item" style={{backgroundColor: "#ffffff",marginBottom: SPACING+"!important",marginTop: SPACING+"!important",padding:SPACING,border: BOX_BORDER}}>
+          <div className="ui item" style={{backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING+"!important",marginTop: SPACING+"!important",padding:SPACING,border: BOX_BORDER}}>
             <div className="content" style={{marginTop: SPACING}}>
               {tra_message_point}
             </div>

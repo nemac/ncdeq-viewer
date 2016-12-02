@@ -37,8 +37,11 @@ var MapLayerToggle = React.createClass({
     return (
       <div>
         <div className="ui checked checkbox">
-          <input type="checkbox"  defaultChecked  onClick={this.handleLayerClick} />
-          <label>{this.state.toggleText}</label>
+          <input type="checkbox" defaultChecked onClick={this.handleLayerClick} />
+          <label className="ui black label"
+                 style={{paddingTop: "0px",paddingBottom: "0px",marginBottom: "7px"}}>
+              {this.state.toggleText}
+          </label>
         </div>
       </div>
     );
