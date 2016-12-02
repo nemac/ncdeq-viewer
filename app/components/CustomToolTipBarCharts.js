@@ -40,8 +40,37 @@ const CustomToolTipBarCharts  = React.createClass({
         return HUC12_MAP_FEATUREID
     }
   },
-  componentDidMount(){
-    $('.recharts-bar-cursor').on("click",function(){console.log('clicked')})
+  // componentDidMount(){
+  //   const { active } = this.props;
+  //   console.log(this.props)
+  //   if (active) {
+  //     const { payload, label } = this.props;
+  //
+  //     const layer_id = this.get_layer_id(this.props.chart_type)
+  //
+  //     $('.recharts-bar-cursor').on("click",function(){console.log('clicked' + JSON.stringify({value:label,chart_type: this.props.chart_type, layer_id: layer_id}))})
+  //   }
+  // },
+  componentWillUpdate: function(nextProps, nextState) {
+    // const { payload, labe l } = nextProps.props;
+
+    // console.log(nextProps.payload)
+    const layer_id = this.get_layer_id(nextProps.chart_type)
+
+    $('.recharts-bar-cursor').unbind('click');
+    $('.recharts-bar-rectangles').unbind('click');
+    $('.recharts-bar-cursor').unbind('mouseenter');
+    $('.recharts-bar-cursor').unbind('mouseleave');
+
+    $('.recharts-bar-cursor').on("click",function(){console.log('clicked' + JSON.stringify({value:nextProps.label,chart_type: nextProps.chart_type, layer_id}))})
+    $('.recharts-bar-rectangles').on("click",function(){console.log('clicked' + JSON.stringify({value:nextProps.label,chart_type: nextProps.chart_type, layer_id}))})
+
+    $('.recharts-bar-cursor').on("mouseenter",function(){console.log('mouseenter' + JSON.stringify({value:nextProps.label,chart_type: nextProps.chart_type, layer_id}))})
+    $('.recharts-bar-rectangles').on("mouseenter",function(){console.log('clicked' + JSON.stringify({value:nextProps.label,chart_type: nextProps.chart_type, layer_id}))})
+
+    $('.recharts-bar-cursor').on("mouseleave",function(){console.log('mouseleave' + JSON.stringify({value:null,chart_type: null, layer_id: null}))})
+    $('.recharts-bar-rectangles').on("mouseleave",function(){console.log('mouseleave' + JSON.stringify({value:null,chart_type: null, layer_id: null}))})
+
   },
   render() {
 
@@ -54,7 +83,7 @@ const CustomToolTipBarCharts  = React.createClass({
       const layer_id = this.get_layer_id(this.props.chart_type)
 
       // this.props.get_LayerGeom_ByValue(label,this.props.chart_type)
-      console.log({value:label,chart_type: this.props.chart_type, layer_id: layer_id})
+      // console.log({value:label,chart_type: this.props.chart_type, layer_id: layer_id})
 
       const reversed_payload = [ ...payload ].reverse()
 
