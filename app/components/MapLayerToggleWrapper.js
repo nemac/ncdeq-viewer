@@ -39,6 +39,19 @@ var MapLayerToggleWrapper = React.createClass({
         display_name = "Highlighted HUC 12"
         break;
 
+      case 'huc12':
+        display_name = "Highlighted HUC 12"
+        break;
+
+      case 'Cataloging Units':
+        display_name = "Highlighted Cataloging Unit (HUC 8)"
+        break;
+
+      case 'River Basins':
+        display_name = "Highlighted River Basin (HUC 6)"
+        break;
+
+
       default:
         display_name = layer_name
         break;
