@@ -134,18 +134,20 @@ var ChartRowWrapper = React.createClass({
     const space = (<span>&nbsp;</span>)
     return (
 
-      <div className="item" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border: BOX_BORDER,paddingTop:"0px", borderRadius: BOX_BORDER_RADUIS}}>
-        <div className="content" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingTop: SPACING,paddingBottom: SPACING}}>
-          <div className="header left floated"  >
-            <i className="left floated dropdown icon"></i>
-            {this.props.title} ({this.props.level_label})
+        <div className="ui fluid accordion" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border:BOX_BORDER,paddingTop:"0px", borderRadius: BOX_BORDER_RADUIS}}>
+          <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: "3em"}}>
+            <div className="header" style={{fontSize: "1.28571429em",fontWeight: "700"}}>
+              <i className="dropdown left floated icon" style={{float:"left"}}></i>
+              <span style={{float:"left"}}>{this.props.title} ({this.props.level_label})</span>
+              <span style={{float:"left",fontSize:".75em!important",fontWeight: "500!important",color: "rgba(0,0,0,.6)"}}>
+                <span className="description">{this.props.title_description}</span>
+                <span className="note">{space}- {this.props.note}</span>
+              </span>
+            </div>
           </div>
-          <div className="meta left floated" style={{margin:"0px"}}>
-            <span className="note">{space}- {this.props.note}</span>
-          </div>
-        </div>
 
-          <div className="content">
+
+          <div className="active content">
             <div className="meta">
               <span className="description">{this.props.title_description}</span>
             </div>

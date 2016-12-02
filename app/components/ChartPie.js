@@ -139,12 +139,14 @@ const renderLegendTotal = (props) => {
 }
 const ChartPie = React.createClass({
 
-
+  componentDidMount: function() {
+    $('.ui.accordion').accordion();
+  },
 
 	render () {
 
     const data = this.props.chart_data
-    const note = data.length < 1 ? 'No ' + this.props.title + ' found at this location!' : this.props.note ;
+    const note = data.length < 1 ? 'No ' + this.props.title + ' found at this location!' : this.props.note  ;
     const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
 
     const self = this;
@@ -153,22 +155,21 @@ const ChartPie = React.createClass({
     const space = (<span>&nbsp;</span>)
 
   	return (
-
-      <div className="item" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border:BOX_BORDER,paddingTop:"0px", borderRadius: BOX_BORDER_RADUIS}}>
-        <div className="content" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingTop: SPACING,paddingBottom: SPACING}}>
-          <div className="header left floated">
-            <i className="left floated dropdown icon"></i>
-            {this.props.title}
-          </div>
-          <div className="content">
-            <div className="meta left floated" style={{margin:"0px"}}>
+      <div className="ui fluid accordion" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border:BOX_BORDER,paddingTop:"0px", borderRadius: BOX_BORDER_RADUIS}}>
+        <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: "3em"}}>
+          <div className="header" style={{fontSize: "1.28571429em",fontWeight: "700"}}>
+            <i className="dropdown left floated icon" style={{float:"left"}}></i>
+            <span style={{float:"left"}}>{this.props.title}</span>
+            <span style={{float:"left",fontSize:".75em!important",fontWeight: "500!important",color: "rgba(0,0,0,.6)"}}>
               <span className="description">{this.props.title_description}</span>
               <span className="note">{space}- {note}</span>
-            </div>
+            </span>
           </div>
         </div>
-        <div className="content">
-          <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
+
+
+        <div className="active content">
+          <div className="description" style={{padding: SPACING,width:this.props.chart_width}}>
             { data.length < 1 &&
               <div className='ui icon negative message' >
                 <i className="remove circle icon"></i>
@@ -206,7 +207,7 @@ const ChartPie = React.createClass({
             }
           </div>
         </div>
-      </div>
+  </div>
 
     );
   }

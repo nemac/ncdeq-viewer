@@ -190,7 +190,7 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
                    '&f=pgeojson' +
                    '&token='
 
-  console.log(query_URL)
+  // console.log(query_URL)
 
   //send the ajax request via axios
   return axios.get(query_URL);

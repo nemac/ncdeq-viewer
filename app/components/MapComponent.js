@@ -8,7 +8,7 @@ import MapLayerToggleWrapper from '../components/MapLayerToggleWrapper'
 //app constants
 import {
   MAP_HEIGHT,
-  DEF_PAD,  
+  DEF_PAD,
 } from '../constants/appConstants';
 
 import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
@@ -161,7 +161,6 @@ var MapContainer = React.createClass({
     Object.keys(GeoJSON_Layers).forEach(key => {
       if(key.toUpperCase() === layer_name.toUpperCase()){
         GeoJSON_Layers[key] = null
-        console.log( key + ': ' + GeoJSON_Layers[key])
       }
     })
 
