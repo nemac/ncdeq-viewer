@@ -25,7 +25,6 @@ const mapStateToProps = (state,props) => {
     ncld_chart_data_huc12: state.NLCDDATA.ncld_chart_data_huc12,
     CATCHMENTData: state.CATCHMENTDATA.CATCHMENTData,
     catchment_chart_ar: state.CATCHMENTDATA.catchment_chart_ar,
-    hoverInfo: state.mapConfig.hoverInfo,
   }
 }
 

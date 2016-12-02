@@ -130,7 +130,7 @@ export function get_LayerGeom_ByValue(value, layer_id){
   return (dispatch, getState) => {
 
     //start fetching state (set to true)
-    dispatch(fetching_start())
+    // dispatch(fetching_start())
 
     axios.all([AGO_get_LayerInfo_ByValue(value, layer_id)])
     .then(axios.spread(function (huc_response) {
@@ -149,12 +149,12 @@ export function get_LayerGeom_ByValue(value, layer_id){
         dispatch(mapSate('MAP_GET_HOVER_INFO',mapConfig));
 
         //end fetching set fetching state to false
-        dispatch(fetching_end())
+        // dispatch(fetching_end())
 
     }))
     .catch(error => {
       //end fetching set fetching state to false
-      dispatch(fetching_end())
+      // dispatch(fetching_end())
 
       console.log('request failed', error);
     });

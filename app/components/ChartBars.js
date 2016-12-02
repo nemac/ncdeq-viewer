@@ -191,7 +191,7 @@ var ChartBars = React.createClass({
                     margin={{top: 20, right: 30, left: 20, bottom: 5}}  >
             <XAxis  dataKey="name" hide={false} tick={false} label={<CustomizedLabelX level_label={this.props.level_label}/>} tickLine={false} axisLine={false} />
             <YAxis width={50} hide={false} label={<CustomizedLabelY top_label={this.props.top_label} bottom_label={this.props.bottom_label} />} tick={false} tickLine={false} axisLine={false} />
-            <Tooltip content={<CustomToolTipBarCharts get_LayerGeom_ByValue={this.props.get_LayerGeom_ByValue} get_keyColors={this.props.get_keyColors} chart_type={this.props.chart_type} level_label={this.props.level_label}/>}/>
+            <Tooltip content={<CustomToolTipBarCharts set_search_method={this.props.set_search_method } get_LayerGeom_ByValue={this.props.get_LayerGeom_ByValue} get_keyColors={this.props.get_keyColors} chart_type={this.props.chart_type} level_label={this.props.level_label}/>}/>
             {this.get_bars()}
            </BarChart>
         </div>

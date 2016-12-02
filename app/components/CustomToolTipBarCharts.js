@@ -40,10 +40,21 @@ const CustomToolTipBarCharts  = React.createClass({
         return HUC12_MAP_FEATUREID
     }
   },
+  handleClick: function (data){
+    this.props.get_LayerGeom_ByValue(data.value,data.layer_id)
+    this.props.set_search_method('chart clicked')
+
+  },
+  handleMouse: function (data){
+    this.props.get_LayerGeom_ByValue(data.value,data.layer_id)
+    this.props.set_search_method('chart hover')
+
+  },
   componentWillUpdate: function(nextProps, nextState) {
-
+    const self = this;
     const layer_id = this.get_layer_id(nextProps.chart_type)
-
+    const data = {value:nextProps.label,chart_type: nextProps.chart_type, layer_id};
+    const nodata = {value:null,chart_type: null, layer_id: null}
     //yes jquery but I cannot hook to the elements in d3 svg.
     //  so i need to bind to them...
     $('.recharts-bar-cursor').unbind('click');
@@ -54,14 +65,32 @@ const CustomToolTipBarCharts  = React.createClass({
     $('.recharts-bar-rectangles').unbind('mouseenter');
     $('.recharts-bar-rectangles').unbind('mouseleave');
 
-    $('.recharts-bar-cursor').on("click",function(){console.log('clicked' + JSON.stringify({value:nextProps.label,chart_type: nextProps.chart_type, layer_id}))})
-    $('.recharts-bar-rectangles').on("click",function(){console.log('clicked' + JSON.stringify({value:nextProps.label,chart_type: nextProps.chart_type, layer_id}))})
+    $('.recharts-bar-cursor').on("click",function(){
+      self.handleClick(data);
+      // console.log('clicked' + JSON.stringify(data))
+    })
+    $('.recharts-bar-rectangles').on("click",function(){
+      self.handleClick(data);
+      // console.log('clicked' + JSON.stringify(data))
+    })
 
-    $('.recharts-bar-cursor').on("mouseenter",function(){console.log('mouseenter' + JSON.stringify({value:nextProps.label,chart_type: nextProps.chart_type, layer_id}))})
-    $('.recharts-rectangle .recharts-bar-rectangles').on("mouseenter",function(){console.log('mouseenter' + JSON.stringify({value:nextProps.label,chart_type: nextProps.chart_type, layer_id}))})
+    $('.recharts-bar-cursor').on("mouseenter",function(){
+      self.handleMouse(data);
+      // console.log('mouseenter' + JSON.stringify(data))
+    })
+    $('.recharts-rectangle .recharts-bar-rectangles').on("mouseenter",function(){
+      self.handleMouse(data);
+      // console.log('mouseenter' + JSON.stringify(data))
+    })
 
-    $('.recharts-bar-cursor').on("mouseleave",function(){console.log('mouseleave' + JSON.stringify({value:null,chart_type: null, layer_id: null}))})
-    $('.recharts-bar-rectangles').on("mouseleave",function(){console.log('mouseleave' + JSON.stringify({value:null,chart_type: null, layer_id: null}))})
+    $('.recharts-bar-cursor').on("mouseleave",function(){
+      self.handleMouse(data);
+      // console.log('mouseleave' + JSON.stringify(nodata))
+    })
+    $('.recharts-bar-rectangles').on("mouseleave",function(){
+      self.handleMouse(data);
+      // console.log('mouseleave' + JSON.stringify(nodata))
+    })
 
   },
   render() {

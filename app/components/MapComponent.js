@@ -344,6 +344,9 @@ var MapContainer = React.createClass({
       this.remove_GeoJSON_Layer('huc8');
       this.remove_GeoJSON_Layer('huc12');
     }
+    if( method != 'chart hover' ){
+      this.remove_GeoJSON_Layer('hover');
+    }
 
     //remove the menu selection when the geography layer does not match
     if(level != 'Cataloging Units'){
@@ -364,6 +367,16 @@ var MapContainer = React.createClass({
 
       let level = this.getLevel();
       const method = this.props.searchMethod;
+
+      if( method === 'chart hover'){
+        if(this.props.hoverInfo){
+          let has_features = this.has_features(this.props.hoverInfo)
+          if(has_features){
+            const current_mappoint_features = this.props.hoverInfo.features;
+            this.add_GeoJSON_Layer(current_mappoint_features, 'hover', false)
+          }
+        }
+      }
 
       //map point (location search or map click)
       // add a marker to the map click or map search
@@ -386,6 +399,7 @@ var MapContainer = React.createClass({
         }
       }
       //end map point (location search or map click)
+
 
 
       //start catchments and NLCD
