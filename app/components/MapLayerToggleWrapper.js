@@ -121,7 +121,7 @@ var MapLayerToggleWrapper = React.createClass({
     const space = (<span>&nbsp;</span>)
 
     return (
-      <div className="ui inverted segment" style={{padding:"0px 5px 0px 5px;"}}>
+      <div className="ui inverted segment" style={{padding:"0px 5px 0px 5px;",marginRight:"4px"}}>
         <div className="ui vertical inverted fluid accordion">
           <div className="item">
             <div className="title" style={{fontWeight: "700",fontSize: "1rem"}}>

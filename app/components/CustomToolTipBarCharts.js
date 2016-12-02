@@ -70,7 +70,6 @@ const CustomToolTipBarCharts  = React.createClass({
         return (<div key={labelstr+'blanktip'} />)
       }
 
-
       //return tooltip
       return (
         <div key={labelstr+'tooltip'} style={tooltipstyle}>
