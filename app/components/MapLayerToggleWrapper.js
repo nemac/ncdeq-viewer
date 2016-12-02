@@ -19,36 +19,44 @@ var MapLayerToggleWrapper = React.createClass({
 
     switch (layer_name) {
       case 'catchment':
-        display_name = "Highlighted Catchment"
+        display_name = "Catchment"
         break;
 
       case 'tra':
-        display_name = "Highlighted Targeted Resource Area (TRA)"
+        display_name = "Targeted Resource Area (TRA)"
         break;
 
       case 'point':
 
-        display_name = "Highlighted Point"
+        display_name = "Point Marker"
+        break;
+
+      case 'huc6':
+        display_name = "Cataloging Unit (HUC 8)"
         break;
 
       case 'huc8':
-        display_name = "Highlighted Cataloging Unit"
+        display_name = "Cataloging Unit (HUC 8)"
+        break;
+
+      case 'HUC 12':
+        display_name = "HUC 12"
         break;
 
       case 'HUC12':
-        display_name = "Highlighted HUC 12"
+        display_name = "HUC 12"
         break;
 
       case 'huc12':
-        display_name = "Highlighted HUC 12"
+        display_name = "HUC 12"
         break;
 
       case 'Cataloging Units':
-        display_name = "Highlighted Cataloging Unit (HUC 8)"
+        display_name = "Cataloging Units (HUC 8)"
         break;
 
       case 'River Basins':
-        display_name = "Highlighted River Basin (HUC 6)"
+        display_name = "River Basin (HUC 6)"
         break;
 
 
@@ -123,13 +131,11 @@ var MapLayerToggleWrapper = React.createClass({
             <div className="content">
               <Divider />
               <MapLayerToggleName text='Map Layers'/>
-              <Divider />
               {tilelayer_component}
               {gj_valid &&
                 <div>
                   <Divider />
                   <MapLayerToggleName text='Highlighted Layers'/>
-                  <Divider />
                   {geojson_component}
                 </div>
               }
