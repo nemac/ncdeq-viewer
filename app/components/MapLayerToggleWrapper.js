@@ -13,6 +13,38 @@ var MapLayerToggleWrapper = React.createClass({
   componentDidMount: function() {
     $('.ui.accordion').accordion();
   },
+  get_display_names: function(layer_name){
+
+    let display_name = "";
+
+    switch (layer_name) {
+      case 'catchment':
+        display_name = "Highlighted Catchment"
+        break;
+
+      case 'tra':
+        display_name = "Highlighted Targeted Resource Area (TRA)"
+        break;
+
+      case 'point':
+
+        display_name = "Highlighted Point"
+        break;
+
+      case 'huc8':
+        display_name = "Highlighted Cataloging Unit"
+        break;
+
+      case 'HUC12':
+        display_name = "Highlighted HUC 12"
+        break;
+
+      default:
+        display_name = layer_name
+        break;
+    };
+    return display_name;
+  },
   create_toggles: function(layers){
     //create geojson layer toggles
     return layers.map( item => {
@@ -21,6 +53,7 @@ var MapLayerToggleWrapper = React.createClass({
           key={item.name}
           toggleText={item.name}
           layer={item.layer}
+          get_display_names={this.get_display_names}
           leafletMap={this.props.leafletMap.leafletMap}
           />)
         }
@@ -82,7 +115,7 @@ var MapLayerToggleWrapper = React.createClass({
               {gj_valid &&
                 <div>
                   <Divider />
-                  <MapLayerToggleName text='Data Layers'/>
+                  <MapLayerToggleName text='Highlighted Layers'/>
                   <Divider />
                   {geojson_component}
                 </div>

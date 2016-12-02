@@ -28,7 +28,7 @@ var MapLayerToggle = React.createClass({
     };
   },
   getInitialState: function() {
-    this.toggleText = this.props.toggleText;
+    this.toggleText = this.props.get_display_names(this.props.toggleText);
     return {
       toggleText: this.toggleText
     };
