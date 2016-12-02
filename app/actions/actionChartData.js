@@ -150,7 +150,6 @@ function ago_get_tra_by_ids( id_list){
                     '&sqlFormat=none' +
                     '&f=pgeojson' +
                     '&token='
-
  //send the ajax request via axios
  return axios.get(query_URL);
 }
@@ -190,6 +189,8 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
                    '&sqlFormat=none' +
                    '&f=pgeojson' +
                    '&token='
+
+  console.log(query_URL)
 
   //send the ajax request via axios
   return axios.get(query_URL);
