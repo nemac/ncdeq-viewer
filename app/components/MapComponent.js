@@ -372,9 +372,8 @@ var MapContainer = React.createClass({
       this.remove_GeoJSON_Layer('huc8');
       this.remove_GeoJSON_Layer('huc12');
     }
-    if( method.substring(0,11) != 'chart hover' ){
+
       this.remove_GeoJSON_Layer('hover');
-    }
 
     //remove the menu selection when the geography layer does not match
     if(level != 'Cataloging Units'){
