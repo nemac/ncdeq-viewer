@@ -458,7 +458,7 @@ var ChartRow = React.createClass({
     //  the point in a tra message
     if(this.props.searchMethod){
         searchMethod = this.props.searchMethod;
-        show_point =  (searchMethod === "location searched" || searchMethod === "clicked" || searchMethod === "tra clicked" || searchMethod === "chart clicked");
+        show_point =  (searchMethod === "location searched" || searchMethod === "clicked" || searchMethod === "tra clicked" || searchMethod === "chart clicked" ||  searchMethod.substring(0,11) === 'chart hover');
     }
 
     //get the chart width and chart height settings from the redux store
