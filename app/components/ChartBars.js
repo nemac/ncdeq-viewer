@@ -1,6 +1,9 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 var CustomToolTipBarCharts = require('./CustomToolTipBarCharts')
+var CustomizedLabelX = require('./CustomizedLabelX');
+var CustomizedLabelY = require('./CustomizedLabelY');
+
 
 import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { HUC12_MAP_FEATUREID, CATALOGING_MAP_FEATUREID } from '../constants/actionConstants';
@@ -126,41 +129,6 @@ var ChartBars = React.createClass({
     //  Tell user no chart data Available
     let title;
     const self = this;
-
-
-    const CustomizedLabelX = React.createClass({
-      render () {
-        const {x, y, stroke, payload, height, width} = this.props;
-        const newx = (this.props.viewBox.width)/2;
-        const message = this.props.level_label + "'s"
-        const y_offset = 15
-       	return (
-          <text x={width/2} y={y} dy={y_offset} fill={stroke} fontSize={10} textAnchor="middle">{message}</text>
-        )
-      }
-    });
-    const CustomizedLabelY = React.createClass({
-      render () {
-        const {x, y, stroke, payload, width, height} = this.props;
-
-        const message = this.props.level_label + "'s"
-        const x_offset = 45
-        const y_offset = 20
-        const top_label_array = this.props.top_label.toString().split(" ")
-
-        return (
-          <g>
-            <text x={x} y={y-10} dy={y_offset} dx={x_offset} fill={stroke} fontSize={10} textAnchor="end">
-              <tspan>{this.props.top_label}</tspan>
-              </text>
-            <text x={x} y={height} dy={y_offset} dx={x_offset} fill={stroke} fontSize={10} textAnchor="end">
-              <tspan>{this.props.bottom_label}</tspan>
-            </text>
-          </g>
-        )
-      }
-    });
-
 
     if (this.props.chart_filter){
       if(this.props.chart_data.length === 0){
