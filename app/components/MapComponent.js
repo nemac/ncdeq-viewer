@@ -61,12 +61,12 @@ var MapContainer = React.createClass({
         break;
 
       case 'hover':
-        if(method = 'chart hover tra'){
+        if(method === 'chart hover tra'){
           renderer = {
             fillColor :'#FF0000',
             stroke: true,
             weight: 8,
-            opacity: 0.4,
+            opacity: 0.2,
             color: '#FF0000',
             fillOpacity: 0.0,
             zIndex: 50
@@ -76,7 +76,7 @@ var MapContainer = React.createClass({
             fillColor :'#1F618D',
             stroke: true,
             weight: 8,
-            opacity: 0.6,
+            opacity: 0.2,
             color: '#1F618D',
             fillOpacity: 0.25,
             zIndex: 0

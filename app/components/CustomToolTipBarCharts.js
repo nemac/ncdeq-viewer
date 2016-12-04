@@ -60,9 +60,6 @@ const CustomToolTipBarCharts  = React.createClass({
     } else {
       this.props.get_LayerInfo_ByValue(data.value, HUC12_MAP_FEATUREID)
     }
-    console.log('clicked')
-    // this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
-    // this.props.set_search_method('chart clicked')
 
   },
   handleMouse: function (data){
