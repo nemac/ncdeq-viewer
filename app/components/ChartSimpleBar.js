@@ -12,6 +12,9 @@ import {
 } from '../constants/appConstants'
 
 const ChartSimpleBar = React.createClass({
+  componentDidMount: function() {
+    $('.ui.accordion').accordion();
+  },
   //keys for landuse landcover
    get_keyColors: function(key){
     let color = '#5475A8';
