@@ -114,16 +114,6 @@ var ChartBars = React.createClass({
     return null;
 
   },
-  get_title: function(){
-    if(this.props.chart_data.length > 0){
-      return (
-        <div key={this.props.chart_type + 'header1'} className='header' >
-            <h2 key={this.props.chart_type + 'header2'} className="ui header">{this.props.chart_type} </h2>
-        </div>
-      )
-    }
-    return null
-  },
   render: function() {
     //build chart data component and when there is no data returned
     //  Tell user no chart data Available

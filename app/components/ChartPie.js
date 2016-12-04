@@ -142,7 +142,6 @@ const ChartPie = React.createClass({
   componentDidMount: function() {
     $('.ui.accordion').accordion();
   },
-
 	render () {
 
     const data = this.props.chart_data

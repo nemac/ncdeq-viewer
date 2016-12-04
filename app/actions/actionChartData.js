@@ -316,7 +316,7 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
         const chart_type_limits = state.chartData.chart_levels.chart_limits;
         let new_level_chk = new_level-1
 
-        ago_getPreviousChart(new_level_chk, new_matchid)
+        ago_getPreviousChart(new_level_chk, new_matchid) //ago_getNextChart_isvalid(chart_type, match_id, chart_id)
           .then( previous_chart_response => {
             const previous_data = CheckReponse(previous_chart_response,'AGO_API_ERROR');
 

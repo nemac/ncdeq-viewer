@@ -516,6 +516,13 @@ function fetching_end(){
   return {type: "FETCHING_MAP", fetching: false}
 }
 
+function hover(type,data){
+  return {
+    type: type,
+    mapconfig: data,
+    receivedAt: Date.now()
+  }
+}
 //new map state object to pass to reducer
 function mapSate(type,data) {
   return {
