@@ -132,6 +132,18 @@ export function get_LayerGeom_ByValue(value, layer_id){
     //start fetching state (set to true)
     // dispatch(fetching_start())
 
+    if(!value){
+      //get redux state
+      const state = getState()
+
+      const hoverInfo = [];
+
+      //create map config object
+      const mapConfig = {...state.mapConfig.mapconfig, hoverInfo};
+
+      dispatch(mapSate('MAP_GET_HOVER_INFO',mapConfig));
+    }
+
     axios.all([AGO_get_LayerInfo_ByValue(value, layer_id)])
     .then(axios.spread(function (huc_response) {
 

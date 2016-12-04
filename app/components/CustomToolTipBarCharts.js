@@ -103,11 +103,11 @@ const CustomToolTipBarCharts  = React.createClass({
     })
 
     $('.recharts-bar-cursor').on("mouseleave",function(){
-      self.handleMouse(data);
+      self.handleMouse(nodata);
       // console.log('mouseleave' + JSON.stringify(nodata))
     })
     $('.recharts-bar-rectangles').on("mouseleave",function(){
-      self.handleMouse(data);
+      self.handleMouse(nodata);
       // console.log('mouseleave' + JSON.stringify(nodata))
     })
 
