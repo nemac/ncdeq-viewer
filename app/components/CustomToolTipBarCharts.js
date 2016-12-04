@@ -41,20 +41,42 @@ const CustomToolTipBarCharts  = React.createClass({
     }
   },
   handleClick: function (data){
-    this.props.get_LayerGeom_ByValue(data.value,data.layer_id)
+
+    const chart_type = this.props.chart_type
+
     this.props.set_search_method('chart clicked')
+
+    //set current geography level in redux state store
+    this.props.change_geographyLevelActive(data.value);
+
+    //only do this if the id is tra.  tra id's start with TP
+    if(chart_type.toUpperCase() === "TRA"){
+      this.setState({
+        tra_filter: data.value
+      })
+      this.props.get_tra_info(data.value)
+
+    //not tra so should be a huc. assume huc12...
+    } else {
+      this.props.get_LayerInfo_ByValue(data.value, HUC12_MAP_FEATUREID)
+    }
+    console.log('clicked')
+    // this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
+    // this.props.set_search_method('chart clicked')
 
   },
   handleMouse: function (data){
-    this.props.get_LayerGeom_ByValue(data.value,data.layer_id)
-    this.props.set_search_method('chart hover')
+    const chart_type = this.props.chart_type
+
+    this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
+    this.props.set_search_method('chart hover ' + chart_type)
 
   },
   componentWillUpdate: function(nextProps, nextState) {
     const self = this;
     const layer_id = this.get_layer_id(nextProps.chart_type)
-    const data = {value:nextProps.label,chart_type: nextProps.chart_type, layer_id};
-    const nodata = {value:null,chart_type: null, layer_id: null}
+    const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
+    const nodata = {value:null, chart_type: null, layer_id: null}
     //yes jquery but I cannot hook to the elements in d3 svg.
     //  so i need to bind to them...
     $('.recharts-bar-cursor').unbind('click');

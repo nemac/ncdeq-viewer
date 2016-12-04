@@ -60,6 +60,32 @@ var MapContainer = React.createClass({
         }
         break;
 
+      case 'hover':
+        if(method = 'chart hover tra'){
+          renderer = {
+            fillColor :'#FF0000',
+            stroke: true,
+            weight: 8,
+            opacity: 0.4,
+            color: '#FF0000',
+            fillOpacity: 0.0,
+            zIndex: 50
+          }
+        }  else {
+          renderer = {
+            fillColor :'#1F618D',
+            stroke: true,
+            weight: 8,
+            opacity: 0.6,
+            color: '#1F618D',
+            fillOpacity: 0.25,
+            zIndex: 0
+          }
+        }
+
+        break;
+
+
       case 'tra':
         renderer = {
           fillColor :'#FF0000',
@@ -194,6 +220,8 @@ var MapContainer = React.createClass({
   //draw geojson layer
   add_GeoJSON_Layer: function(features, layer_name, do_zoom){
 
+    const method = this.props.searchMethod;
+
     //get the leaflet Map object
     const leafletMap = this.props.leafletMap.leafletMap;
 
@@ -219,7 +247,7 @@ var MapContainer = React.createClass({
     map_layer.addData(features);
 
     //get render
-    const renderer = this.geoJSON_renderer(layer_name);
+    const renderer = this.geoJSON_renderer(layer_name, method);
 
     //zoom highlights need to move this to varriable
     map_layer.setStyle(renderer);
@@ -344,7 +372,7 @@ var MapContainer = React.createClass({
       this.remove_GeoJSON_Layer('huc8');
       this.remove_GeoJSON_Layer('huc12');
     }
-    if( method != 'chart hover' ){
+    if( method.substring(0,11) != 'chart hover' ){
       this.remove_GeoJSON_Layer('hover');
     }
 
@@ -368,7 +396,8 @@ var MapContainer = React.createClass({
       let level = this.getLevel();
       const method = this.props.searchMethod;
 
-      if( method === 'chart hover'){
+      console.log()
+      if( method.substring(0,11) === 'chart hover'){
         if(this.props.hoverInfo){
           let has_features = this.has_features(this.props.hoverInfo)
           if(has_features){

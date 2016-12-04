@@ -13,8 +13,6 @@ const mapStateToProps = (state,props) => {
     tra_data: state.traData.tra_data,
     traPointInfo: state.mapConfig.traPointInfo,
     NLCDPointInfo: state.mapConfig.NLCDPointInfo,
-    traInfo: state.mapConfig.traInfo,
-    huc8Info: state.mapConfig.huc8Info,
     searchMethod: state.mapConfig.searchMethod,
     fetching_chart: state.fetching_chart.fetching_chart,
     fetching_map: state.fetching_map.fetching_map,
@@ -23,7 +21,6 @@ const mapStateToProps = (state,props) => {
     fetching_menu: state.fetching_menu.fetching_menu,
     ncld_chart_data: state.NLCDDATA.ncld_chart_data,
     ncld_chart_data_huc12: state.NLCDDATA.ncld_chart_data_huc12,
-    CATCHMENTData: state.CATCHMENTDATA.CATCHMENTData,
     catchment_chart_ar: state.CATCHMENTDATA.catchment_chart_ar,
   }
 }
