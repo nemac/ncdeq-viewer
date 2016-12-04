@@ -22,7 +22,8 @@ import {HEADER_HEIGHT ,
   MAP_FULL_WIDTH,
   MAP_CHART_WIDTH,
   BOX_BORDER,
-  BACKGROUND_COLOR_BG
+  BACKGROUND_COLOR_BG,
+  OVERIDE_WIDTH,
 } from '../constants/appConstants'
 
 var MainComponent = React.createClass({
@@ -93,11 +94,15 @@ var MainComponent = React.createClass({
           <HeaderComponent content={HeaderContent}  header_description_visibility={header_description_visibility} />
           <MenuContainer />
 
+            <div className="doubling two column row">
+
               {/* only render the charts section when the user has made the charts visibility true */}
               { is_chart_vis &&
                 <ChartRowContainer />
               }
               <MapRowComponent columnWidth={columnWidth} />
+              </div>
+
               <ModalAbout />
 
         </div>

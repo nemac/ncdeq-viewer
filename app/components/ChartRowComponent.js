@@ -15,7 +15,8 @@ import {
   SPACING,
   BACKGROUND_COLOR_BG,
   BACKGROUND_COLOR_FG,
-  BOX_BORDER_RADUIS
+  BOX_BORDER_RADUIS,
+  OVERIDE_WIDTH,
 } from '../constants/appConstants'
 
 
@@ -628,8 +629,10 @@ var ChartRow = React.createClass({
         tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
       }
 
+      const ADJUSTED_CHART_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : CHART_WIDTH;
+
     return (
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
+      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
         <div className={working_class}>
             <div className="ui loader"></div>
         </div>
@@ -642,7 +645,7 @@ var ChartRow = React.createClass({
         </div>
         </div>
 
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
+      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
 
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
