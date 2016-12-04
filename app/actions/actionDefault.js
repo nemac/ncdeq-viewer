@@ -16,6 +16,8 @@ import {HEADER_HEIGHT,
         MAP_CHART_WIDTH_INT,
         CHART_WIDTH_INT,
         CHART_BORDER,
+        OVERIDE_WIDTH,
+        OVERIDE_WIDTH_NORMAL,
         HEADER_PADDING} from '../constants/appConstants'
 
 
@@ -44,9 +46,10 @@ function calculate_NewHeights(state, header_overide){
                     )- (headerPadding*2);
 
 
+
   let chart_px_width = (window.innerWidth * (CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (CHART_BORDER)
 
-  if (window.innerWidth < 765){
+  if (window.innerWidth < OVERIDE_WIDTH){
     chart_px_width = (window.innerWidth  - (CHART_BORDER));
   }
 
