@@ -102,9 +102,6 @@ var ChartRowWrapper = React.createClass({
     return is_valid
 
   },
-  componentWillUpdate: function(nextProps, nextState) {
-
-  },
   render: function() {
 
     //get the chart levels

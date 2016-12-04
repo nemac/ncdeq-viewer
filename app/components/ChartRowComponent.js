@@ -294,7 +294,7 @@ var ChartRow = React.createClass({
           var blank_chart_object = new Object;
           var blank_chart_object_two = new Object;
 
-          //loop through the sorted huvs and prepare the data for the chart.
+          //loop through the sorted hucs and prepare the data for the chart.
           sorted_hucs.map(huc => {
 
             const underscore = "_"
@@ -356,7 +356,6 @@ var ChartRow = React.createClass({
 
       }
 
-
     return chart_data_array
   },
   getLevel: function(){
@@ -414,16 +413,6 @@ var ChartRow = React.createClass({
 
     //return should update.
     return should_update
-
-  },
-  componentWillReceiveProps: function(nextProps) {
-
-    // console.log('true')
-
-  },
-  componentDidUpdate: function(prevProps, prevState) {
-
-    // console.log('false')
 
   },
   render: function() {
