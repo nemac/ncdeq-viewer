@@ -142,6 +142,7 @@ export function get_LayerGeom_ByValue(value, layer_id){
       const mapConfig = {...state.mapConfig.mapconfig, hoverInfo};
 
       dispatch(mapSate('MAP_GET_HOVER_INFO',mapConfig));
+      return
     }
 
     axios.all([AGO_get_LayerInfo_ByValue(value, layer_id)])
