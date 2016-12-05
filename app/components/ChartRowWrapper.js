@@ -2,6 +2,13 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var ChartBars = require('../components/ChartBars');
 
+import {
+  BOX_BORDER,
+  SPACING,
+  BACKGROUND_COLOR_FG,
+  BOX_BORDER_RADUIS
+} from '../constants/appConstants'
+
 var ChartRowWrapper = React.createClass({
   propTypes: {
     title: PropTypes.string,
@@ -95,9 +102,6 @@ var ChartRowWrapper = React.createClass({
     return is_valid
 
   },
-  componentWillUpdate: function(nextProps, nextState) {
-
-  },
   render: function() {
 
     //get the chart levels
@@ -123,29 +127,32 @@ var ChartRowWrapper = React.createClass({
     const no_next_level = "There is nothing else to drill into"
     //get the previous labels
     const previous_label = last_chart.last_chart_label.trim() === "" ?  "Total" : last_chart.last_chart_label;
+    const ADJUSTED_TITLE_HEIGHT = window.innerWidth < 1260 ? "3.5em" : "3em";
 
     const space = (<span>&nbsp;</span>)
     return (
 
-      <div className="item" style={{display: "block"}}>
-        <div className="content">
-          <div className="header left floated">
-            <i className="left floated dropdown icon"></i>
-            {this.props.title} ({this.props.level_label})
+        <div className="ui fluid accordion" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border:BOX_BORDER,paddingTop:"0px", borderRadius: BOX_BORDER_RADUIS}}>
+          <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: ADJUSTED_TITLE_HEIGHT}}>
+            <div className="header" style={{fontSize: "1.28571429em",fontWeight: "700"}}>
+              <i className="dropdown left floated icon" style={{float:"left"}}></i>
+              <span style={{float:"left"}}>{this.props.title} ({this.props.level_label})</span>
+              <span style={{float:"left",fontSize:".75em!important",fontWeight: "500!important",color: "rgba(0,0,0,.6)"}}>
+                <span className="description">{this.props.title_description}</span>
+                <span className="note">{space}- {this.props.note}</span>
+              </span>
+            </div>
           </div>
-          <div className="meta">
-            <span className="note">{space}- {this.props.note}</span>
-          </div>
-        </div>
 
-          <div className="content">
+
+          <div className="active content">
             <div className="meta">
               <span className="description">{this.props.title_description}</span>
             </div>
 
           <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
 
-            <div >
+          <div >
             <span className="note">
               {drilldown_note}
             </span>
@@ -193,6 +200,7 @@ var ChartRowWrapper = React.createClass({
                         chart_data={this.props.chart_data}
                         chart_filter={this.props.chart_filter}
                         get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
+                        get_LayerGeom_ByValue={this.props.get_LayerGeom_ByValue}
                         change_geographyLevelActive={this.props.change_geographyLevelActive}
                         set_search_method={this.props.set_search_method }
                         tra_data={this.props.tra_data}

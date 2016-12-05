@@ -2,6 +2,16 @@ import { PieChart, Pie, Sector, Cell, Tooltip, Legend, ResponsiveContainer } fro
 var React = require('react');
 var PropTypes = React.PropTypes;
 
+import CustomToolTipPieChart from './CustomToolTipPieChart'
+
+import {
+  BOX_BORDER,
+  SPACING,
+  BACKGROUND_COLOR_FG,
+  BOX_BORDER_RADUIS
+} from '../constants/appConstants'
+
+
 //keys for landuse landcover
  function get_keyColors(key){
   let color = '#5475A8';
@@ -44,7 +54,7 @@ var PropTypes = React.PropTypes;
       break;
 
     case 'Hydrology':
-      color = '#6eb3dd'
+      color = '#759ac1'
       break;
 
     case 'Habitat':
@@ -58,83 +68,6 @@ var PropTypes = React.PropTypes;
   }
   return color;
 }
-
-const tooltipstyle = {
-  width: '100%',
-  margin: 0,
-  lineHeight: 24,
-  border: '1px solid #f5f5f5',
-  backgroundColor: 'rgba(255, 255, 255, 0.95)',
-  padding: 10,
-};
-
-const toolTipLabel = {
-  margin: '0',
-  color: '#666',
-  fontWeight: '700',
-};
-
-const CustomTooltip  = React.createClass({
-  propTypes: {
-    type: PropTypes.string,
-    payload: PropTypes.array,
-    label: PropTypes.string,
-  },
-
-  render() {
-    const { active } = this.props;
-    let html_hov = '';
-    if (active) {
-      const { payload, label } = this.props;
-
-
-      const values = this.props.data.map( val => {
-        return val.value
-      })
-      //get the total of the values
-      var total = values.reduce(function(a, b) {
-        return a + b;
-      }, 0);
-
-      const thedata = payload.map( bar_segment => {
-
-       const colors = get_keyColors(bar_segment.name)
-        const toolTipName = {
-          margin: '0',
-          color: '#000',
-        }
-
-        const toolTipValue = {
-          fontWeight: '800',
-        }
-
-
-        const value = bar_segment.value ? ((bar_segment.value/total) * 100).toFixed(1).toString() + '%' : '';
-        const name = bar_segment.name + ": "
-
-        return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
-      })
-
-      let tooltip = (<div />)
-      if (label === '1' || label === '2' ){
-        return (<div key={label+'blanktip'}/>)
-      }
-
-      const labelstr = label.toString();
-
-      return (
-
-        <div key={labelstr+'tooltip'} style={tooltipstyle}>
-          {thedata}
-      </div>
-
-      );
-    }
-
-    return null;
-  }
-});
-
 
 //custom legend. to display landuse landcover category with correct fill
 const renderLegendPercent = (props) => {
@@ -157,14 +90,12 @@ const renderLegendPercent = (props) => {
     <div className="ui list">
       {
         payload.map((entry, index) => (
-
           <div className="item"  key={`item-${index}`}>
-
-          <svg  width="14" height="14" >
-            <path stroke-strokeWidth="4" fill={entry.fill} stroke={entry.stroke} d="M0,0h32v32h-32z" >
-            </path>
-          </svg>
-          {`  ${entry.name}  (${((entry.value/total) * 100).toFixed(1)}%)` }
+            <svg  width="14" height="14" >
+              <path stroke-strokeWidth="4" fill={entry.fill} stroke={entry.stroke} d="M0,0h32v32h-32z" >
+              </path>
+            </svg>
+            {`  ${entry.name}  (${((entry.value/total) * 100).toFixed(1)}%)` }
           </div>
         ))
       }
@@ -208,31 +139,36 @@ const renderLegendTotal = (props) => {
 }
 const ChartPie = React.createClass({
 
-
-
+  componentDidMount: function() {
+    $('.ui.accordion').accordion();
+  },
 	render () {
 
     const data = this.props.chart_data
-    const note = data.length < 1 ? 'No ' + this.props.title + ' found at this location!' : this.props.note ;
+    const note = data.length < 1 ? 'No ' + this.props.title + ' found at this location!' : this.props.note  ;
     const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
 
     const self = this;
     const chart_width = this.props.chart_width < 500 ? this.props.chart_width/2.5 : this.props.chart_width/2;
-  	return (
 
-      <div className="item" style={{display: "block"}}>
-        <div className="content">
-          <div className="header">
-            <i className="left floated dropdown icon"></i>
-            {this.props.title}
-          </div>
-          <div className="content center aligned">
-            <div className="meta">
+    const space = (<span>&nbsp;</span>)
+
+  	return (
+      <div className="ui fluid accordion" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border:BOX_BORDER,paddingTop:"0px", borderRadius: BOX_BORDER_RADUIS}}>
+        <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: "3em"}}>
+          <div className="header" style={{fontSize: "1.28571429em",fontWeight: "700"}}>
+            <i className="dropdown left floated icon" style={{float:"left"}}></i>
+            <span style={{float:"left"}}>{this.props.title}</span>
+            <span style={{float:"left",fontSize:".75em!important",fontWeight: "500!important",color: "rgba(0,0,0,.6)"}}>
               <span className="description">{this.props.title_description}</span>
-              <span className="note">{note}</span>
-            </div>
+              <span className="note">{space}- {note}</span>
+            </span>
           </div>
-          <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
+        </div>
+
+
+        <div className="active content">
+          <div className="description" style={{padding: SPACING,width:this.props.chart_width}}>
             { data.length < 1 &&
               <div className='ui icon negative message' >
                 <i className="remove circle icon"></i>
@@ -264,17 +200,13 @@ const ChartPie = React.createClass({
                     data.map((entry, index) => <Cell key={index} fill={get_keyColors(entry.name)}/>)
                   }
                 </Pie>
-                <Tooltip content={<CustomTooltip data={data}/>}/>
+                <Tooltip content={<CustomToolTipPieChart get_keyColors={get_keyColors} data={data}/>}/>
               </PieChart>
 
             }
           </div>
         </div>
-      </div>
-
-
-
-
+  </div>
 
     );
   }

@@ -43,7 +43,7 @@ var ChartTRA = React.createClass({
         break;
 
       case 'Hydrology':
-        color = '#6eb3dd'
+        color = '#759ac1'
         break;
 
       case 'Habitat':

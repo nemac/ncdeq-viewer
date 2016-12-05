@@ -150,7 +150,6 @@ function ago_get_tra_by_ids( id_list){
                     '&sqlFormat=none' +
                     '&f=pgeojson' +
                     '&token='
-
  //send the ajax request via axios
  return axios.get(query_URL);
 }
@@ -190,6 +189,8 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
                    '&sqlFormat=none' +
                    '&f=pgeojson' +
                    '&token='
+
+  // console.log(query_URL)
 
   //send the ajax request via axios
   return axios.get(query_URL);
@@ -315,7 +316,7 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
         const chart_type_limits = state.chartData.chart_levels.chart_limits;
         let new_level_chk = new_level-1
 
-        ago_getPreviousChart(new_level_chk, new_matchid)
+        ago_getPreviousChart(new_level_chk, new_matchid) //ago_getNextChart_isvalid(chart_type, match_id, chart_id)
           .then( previous_chart_response => {
             const previous_data = CheckReponse(previous_chart_response,'AGO_API_ERROR');
 
@@ -774,6 +775,7 @@ export function get_ChartData(id,level){
               })
 
             }
+
 
           // //use TURF.JS to create geoJSON feature collections
           // var chartData_ID_fc = turf_FC(chart_id_base);

@@ -20,7 +20,10 @@ import {HEADER_HEIGHT ,
   CHART_VISIBILITY,
   MAX_SEARCH_ZOOM,
   MAP_FULL_WIDTH,
-  MAP_CHART_WIDTH
+  MAP_CHART_WIDTH,
+  BOX_BORDER,
+  BACKGROUND_COLOR_BG,
+  OVERIDE_WIDTH,
 } from '../constants/appConstants'
 
 var MainComponent = React.createClass({
@@ -87,21 +90,21 @@ var MainComponent = React.createClass({
                       "  To get started click a River Basin on the map, " +
                       "or search for a location to zoom to."
       return (
-        <div className="ui stackable one column padded grid">
-
+        <div className="ui stackable one column padded grid" style={{backgroundColor: BACKGROUND_COLOR_BG}}>
           <HeaderComponent content={HeaderContent}  header_description_visibility={header_description_visibility} />
+          <MenuContainer />
 
+            <div className="doubling two column row">
 
-            <MenuContainer />
+              {/* only render the charts section when the user has made the charts visibility true */}
+              { is_chart_vis &&
+                <ChartRowContainer />
+              }
+              <MapRowComponent columnWidth={columnWidth} />
+              </div>
 
+              <ModalAbout />
 
-            {/* only render the charts section when the user has made the charts visibility true */}
-            { is_chart_vis &&
-              <ChartRowContainer />
-            }
-            <MapRowComponent columnWidth={columnWidth} />
-
-          <ModalAbout />
         </div>
       );
 

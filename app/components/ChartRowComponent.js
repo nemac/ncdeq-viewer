@@ -9,7 +9,14 @@ var SectionWrapper = require('./SectionWrapper');
 import {
   CHART_WIDTH,
   CHART_WIDTH_PX,
-  MAP_HEIGHT
+  MAP_HEIGHT,
+  CHART_HEIGHT_ADJUSTMENT,
+  BOX_BORDER,
+  SPACING,
+  BACKGROUND_COLOR_BG,
+  BACKGROUND_COLOR_FG,
+  BOX_BORDER_RADUIS,
+  OVERIDE_WIDTH,
 } from '../constants/appConstants'
 
 
@@ -33,49 +40,49 @@ var ChartRow = React.createClass({
         break;
 
         case 'Phosphorus':
-          key_colors = ['#22c355' , '#67e48f']
+          key_colors = ['rgba(130, 224, 170, 1)' , 'rgba(130, 224, 170, .5)']
           break;
 
           case 'Phosphorus Agriculture':
-            key_colors = ['#22c355' , '#67e48f']
+            key_colors = ['rgba(130, 224, 170, 1)' , 'rgba(130, 224, 170, .5)']
             break;
           case 'Phosphorus Atmosphere':
-            key_colors = ['#2b83ba' , '#6eb3dd']
+            key_colors = ['rgba(46, 204, 113,1)' , 'rgba(46, 204, 113,.5)']
             break;
           case 'Phosphorus Urban':
-            key_colors = ['#fd9935' , '#fecc9a']
+            key_colors = ['rgba(35, 155, 86  ,1)' , 'rgba(35, 155, 86  ,.5)']
             break;
 
         case 'Nitrogen':
-          key_colors = ['#2b83ba' , '#6eb3dd']
+            key_colors = ['rgba(29, 131, 72 ,1)' , 'rgba(29, 131, 72,.5)']
           break;
 
           case 'Nitrogen Agriculture':
-            key_colors = ['#22c355' , '#67e48f']
+            key_colors = ['rgba(130, 224, 170, 1)' , 'rgba(130, 224, 170, .5)']
             break;
           case 'Nitrogen Atmosphere':
-            key_colors = ['#2b83ba' , '#6eb3dd']
+            key_colors = ['rgba(46, 204, 113,1)' , 'rgba(46, 204, 113,.5)']
             break;
           case 'Nitrogen Urban':
-            key_colors = ['#fd9935' , '#fecc9a']
+            key_colors = ['rgba(35, 155, 86  ,1)' , 'rgba(35, 155, 86  ,.5)']
             break;
 
 
       case 'Hydrology':
-        key_colors = ['#2b83ba' , '#6eb3dd']
+        key_colors = ['#456fa2' , '#759ac1']
         break;
 
-        case '2 year peak':
-          key_colors = ['#22c355' , '#67e48f']
-          break;
         case '10 year peak':
-          key_colors = ['#2b83ba' , '#6eb3dd']
-          break;
-        case '50 year peak':
-          key_colors = ['#fd9935' , '#fecc9a']
+          key_colors = ['rgba(133, 193, 233  ,1)' , 'rgba(133, 193, 233  ,.5)'] //133, 193, 233
           break;
         case '100 year peak':
-          key_colors = ['#aa64b4' , '#aa64b4']
+          key_colors = ['rgba(52, 152, 219 ,1)' , 'rgba(52, 152, 219  ,.5)'] //52, 152, 219
+          break;
+        case '2 year peak':
+          key_colors = ['rgba(46, 134, 193  ,1)' , 'rgba(46, 134, 193 ,.5)'] //46, 134, 193
+          break;
+        case '50 year peak':
+          key_colors = ['rgba(33, 97, 140  ,1)' , 'rgba(33, 97, 140 ,.5)'] //33, 97, 140
           break;
 
       case 'Habitat':
@@ -84,20 +91,24 @@ var ChartRow = React.createClass({
 
 
         case 'Habitat Likelhood':
-          key_colors = ['#22c355' , '#67e48f']
-          break;
-
-        case 'Aquatic Connectivity':
-          key_colors = ['#22c355' , '#67e48f']
-          break;
-        case 'Streams Restoration':
-          key_colors = ['#2b83ba' , '#6eb3dd']
-          break;
-        case 'Wetlands and BMPs':
           key_colors = ['#fd9935' , '#fecc9a']
           break;
+
+
         case 'Avoided Conversion':
-          key_colors = ['#aa64b4' , '#d0a9d6' ]
+          key_colors = ['rgba(250, 215, 160 ,1)' , 'rgba(250, 215, 160 ,.5)']  //250, 215, 160
+          break;
+        case 'Aquatic Connectivity':
+          key_colors = ['rgba(245, 176, 65 ,1)' , 'rgba(245, 176, 65 ,.5)']   //245, 176, 65
+          break;
+        case 'Stream Restoration':
+          key_colors = ['rgba(214, 137, 16  ,1)' , 'rgba(214, 137, 16  ,.5)']  //214, 137, 16
+          break;
+        case 'Streams Restoration':
+          key_colors = ['rgba(214, 137, 16  ,1)' , 'rgba(214, 137, 16  ,.5)']  //214, 137, 16
+          break;
+        case 'Wetlands and BMPs':
+          key_colors = ['rgba(211, 84, 0 ,1)' , 'rgba(211, 84, 0 ,.5)']  //211, 84, 0
           break;
 
 
@@ -284,7 +295,7 @@ var ChartRow = React.createClass({
           var blank_chart_object = new Object;
           var blank_chart_object_two = new Object;
 
-          //loop through the sorted huvs and prepare the data for the chart.
+          //loop through the sorted hucs and prepare the data for the chart.
           sorted_hucs.map(huc => {
 
             const underscore = "_"
@@ -346,7 +357,6 @@ var ChartRow = React.createClass({
 
       }
 
-
     return chart_data_array
   },
   getLevel: function(){
@@ -406,16 +416,6 @@ var ChartRow = React.createClass({
     return should_update
 
   },
-  componentWillReceiveProps: function(nextProps) {
-
-    // console.log('true')
-
-  },
-  componentDidUpdate: function(prevProps, prevState) {
-
-    // console.log('false')
-
-  },
   render: function() {
 
     let is_fetching = false;
@@ -450,8 +450,7 @@ var ChartRow = React.createClass({
     let chart_width_px = CHART_WIDTH_PX;
 
     //not sure yet ho to handle this but chartHeight needs to be adjusted by to px in the chart component
-    const chartHeight_adjustment = 125
-    let chart_grid_height =  MAP_HEIGHT-chartHeight_adjustment;
+    let chart_grid_height =  MAP_HEIGHT-CHART_HEIGHT_ADJUSTMENT;
 
     let searchMethod = ""
     let show_point = false;
@@ -460,14 +459,14 @@ var ChartRow = React.createClass({
     //  the point in a tra message
     if(this.props.searchMethod){
         searchMethod = this.props.searchMethod;
-        show_point =  (searchMethod === "location searched" || searchMethod === "clicked" || searchMethod === "tra clicked" || searchMethod === "chart clicked");
+        show_point =  (searchMethod === "location searched" || searchMethod === "clicked" || searchMethod === "tra clicked" || searchMethod === "chart clicked" ||  searchMethod.substring(0,11) === 'chart hover');
     }
 
     //get the chart width and chart height settings from the redux store
     //  so we can pass it as a prop to the chart components
     if(this.props.default_settings){
       chart_width_px = this.props.default_settings.chartWidth;
-      chart_grid_height = this.props.default_settings.mapHeight-chartHeight_adjustment;
+      chart_grid_height = this.props.default_settings.mapHeight-CHART_HEIGHT_ADJUSTMENT;
     }
 
     let is_chart_vis = true
@@ -502,6 +501,7 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
     chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
+    // console.log(tra_data[0])
 
     //probably need to rename this to describe it better I already got confused
     const tra_point_info = this.props.traPointInfo
@@ -565,7 +565,6 @@ var ChartRow = React.createClass({
       }
     }
 
-
   //if the method to get a huc was not a map click or search for location we need
   //  show a message to indicate.  this should stop jumpy and give user
   //  a indication that something can happen
@@ -589,7 +588,7 @@ var ChartRow = React.createClass({
       </div>)
 
     //default text for chart is to give user a push to do an action...
-    let chart_cataloging_unit = 'Please Click on the Map, Search for a location, or Choose something to get started.'
+    let chart_cataloging_unit = 'Please Click on the Map, Search for a location, or Choose a HUC to get started.'
     let huc_message = "No HUC's Selected yet."
 
     //if there is filter text for charts and data should be about the data
@@ -630,26 +629,30 @@ var ChartRow = React.createClass({
         tra_note = "TRA's in the Cataloging Unit " + chart_filter.substring(0,8)
       }
 
+      const ADJUSTED_CHART_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : CHART_WIDTH;
+
     return (
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "}>
+      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
         <div className={working_class}>
             <div className="ui loader"></div>
         </div>
 
-        <div className="ui sticky" style={{borderBottom:"1px solid rgba(34,36,38,.15)"}}>
+        <div className="ui sticky" style={{border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
+          <div className="content" style={{marginTop: SPACING}}>
           <div className="ui header">
             {chart_cataloging_unit}
           </div>
         </div>
+        </div>
 
-      <div className={"ui stackable internally celled " + CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
+      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
 
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
       { chart_filter &&
-          <div className="ui item" >
-            <div className="content">
+          <div className="ui item" style={{backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING+"!important",marginTop: SPACING+"!important",padding:SPACING,border: BOX_BORDER}}>
+            <div className="content" style={{marginTop: SPACING}}>
               {tra_message_point}
             </div>
           </div>
@@ -665,6 +668,7 @@ var ChartRow = React.createClass({
           chart_data={chart_tar_bar}
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
+          get_LayerGeom_ByValue={this.props.get_LayerGeom_ByValue}
           change_geographyLevelActive={this.props.change_geographyLevelActive}
           set_search_method={this.props.set_search_method }
           tra_data={this.props.tra_data}
@@ -688,6 +692,7 @@ var ChartRow = React.createClass({
           chart_data={chart_baseline_bar}
           chart_filter={chart_filter}
           get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
+          get_LayerGeom_ByValue={this.props.get_LayerGeom_ByValue}
           change_geographyLevelActive={this.props.change_geographyLevelActive}
           set_search_method={this.props.set_search_method }
           tra_data={this.props.tra_data}
@@ -711,6 +716,7 @@ var ChartRow = React.createClass({
           chart_data={chart_upflift_bar}
           chart_filter={chart_filter}
            get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue}
+           get_LayerGeom_ByValue={this.props.get_LayerGeom_ByValue}
            change_geographyLevelActive={this.props.change_geographyLevelActive}
            set_search_method={this.props.set_search_method }
            tra_data={this.props.tra_data}

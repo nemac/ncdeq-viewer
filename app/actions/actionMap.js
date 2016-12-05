@@ -126,6 +126,53 @@ export function set_search_method(method){
   }
 }
 
+export function get_LayerGeom_ByValue(value, layer_id){
+  return (dispatch, getState) => {
+
+    //start fetching state (set to true)
+    // dispatch(fetching_start())
+
+    if(!value){
+      //get redux state
+      const state = getState()
+
+      const hoverInfo = [];
+
+      //create map config object
+      const mapConfig = {...state.mapConfig.mapconfig, hoverInfo};
+
+      dispatch(mapSate('MAP_GET_HOVER_INFO',mapConfig));
+      return
+    }
+
+    axios.all([AGO_get_LayerInfo_ByValue(value, layer_id)])
+    .then(axios.spread(function (huc_response) {
+
+        //check repsonses for errors
+        const theHoverInfo = CheckReponse(huc_response,'AGO_API_ERROR');
+
+        //get redux state
+        const state = getState()
+
+        const hoverInfo = theHoverInfo;
+
+        //create map config object
+        const mapConfig = {...state.mapConfig.mapconfig, hoverInfo};
+
+        dispatch(mapSate('MAP_GET_HOVER_INFO',mapConfig));
+
+        //end fetching set fetching state to false
+        // dispatch(fetching_end())
+
+    }))
+    .catch(error => {
+      //end fetching set fetching state to false
+      // dispatch(fetching_end())
+
+      console.log('request failed', error);
+    });
+  }
+}
 export function get_LayerInfo_ByValue(value, layer_id){
   return (dispatch, getState) => {
 
@@ -323,9 +370,10 @@ export function get_defaultMapData(zoom){
     const searchMethod = "none"
     const traInfo =  {};
     const map_point = {};
+    const hoverInfo = {};
 
     //create new map config
-    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod, map_point};
+    const mapConfig = {latitude, longitude, zoom, layers, minZoom, maxZoom, maxBounds, layerInfo, traPointInfo, NLCDPointInfo, traInfo, huc8Info, searchMethod, map_point, hoverInfo};
 
     //send map config data on to store
     dispatch(mapSate('MAP_DATA',mapConfig));
@@ -469,6 +517,13 @@ function fetching_end(){
   return {type: "FETCHING_MAP", fetching: false}
 }
 
+function hover(type,data){
+  return {
+    type: type,
+    mapconfig: data,
+    receivedAt: Date.now()
+  }
+}
 //new map state object to pass to reducer
 function mapSate(type,data) {
   return {

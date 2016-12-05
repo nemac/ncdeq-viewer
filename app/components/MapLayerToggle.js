@@ -28,7 +28,7 @@ var MapLayerToggle = React.createClass({
     };
   },
   getInitialState: function() {
-    this.toggleText = this.props.toggleText;
+    this.toggleText = this.props.get_display_names(this.props.toggleText);
     return {
       toggleText: this.toggleText
     };
@@ -37,8 +37,10 @@ var MapLayerToggle = React.createClass({
     return (
       <div>
         <div className="ui checked checkbox">
-          <input type="checkbox"  defaultChecked  onClick={this.handleLayerClick} />
-          <label>{this.state.toggleText}</label>
+          <input type="checkbox" defaultChecked onClick={this.handleLayerClick} />
+          <label className="ui black label"style={{paddingTop: "2px",paddingBottom: "0px",marginBottom: "0px", fontSize:".9em",paddingLeft:"2.25em"}}>
+              {this.state.toggleText}
+          </label>
         </div>
       </div>
     );

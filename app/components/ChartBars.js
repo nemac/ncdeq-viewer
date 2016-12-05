@@ -1,6 +1,9 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 var CustomToolTipBarCharts = require('./CustomToolTipBarCharts')
+var CustomizedLabelX = require('./CustomizedLabelX');
+var CustomizedLabelY = require('./CustomizedLabelY');
+
 
 import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { HUC12_MAP_FEATUREID, CATALOGING_MAP_FEATUREID } from '../constants/actionConstants';
@@ -14,12 +17,6 @@ var ChartBars = React.createClass({
     return {
       title:'Title'
     };
-  },
-  handleClickTest(){
-      console.log('test click')
-  },
-  handleClickBar(constructor, entry, data, index, test){
-      console.log(entry)
   },
   handleClick(constructor, entry, data, index, test) {
 
@@ -117,56 +114,11 @@ var ChartBars = React.createClass({
     return null;
 
   },
-  get_title: function(){
-    if(this.props.chart_data.length > 0){
-      return (
-        <div key={this.props.chart_type + 'header1'} className='header' >
-            <h2 key={this.props.chart_type + 'header2'} className="ui header">{this.props.chart_type} </h2>
-        </div>
-      )
-    }
-    return null
-  },
   render: function() {
     //build chart data component and when there is no data returned
     //  Tell user no chart data Available
     let title;
     const self = this;
-
-
-    const CustomizedLabelX = React.createClass({
-      render () {
-        const {x, y, stroke, payload, height, width} = this.props;
-        const newx = (this.props.viewBox.width)/2;
-        const message = this.props.level_label + "'s"
-        const y_offset = 15
-       	return (
-          <text x={width/2} y={y} dy={y_offset} fill={stroke} fontSize={10} textAnchor="middle">{message}</text>
-        )
-      }
-    });
-    const CustomizedLabelY = React.createClass({
-      render () {
-        const {x, y, stroke, payload, width, height} = this.props;
-
-        const message = this.props.level_label + "'s"
-        const x_offset = 45
-        const y_offset = 20
-        const top_label_array = this.props.top_label.toString().split(" ")
-
-        return (
-          <g>
-            <text x={x} y={y-10} dy={y_offset} dx={x_offset} fill={stroke} fontSize={10} textAnchor="end">
-              <tspan>{this.props.top_label}</tspan>
-              </text>
-            <text x={x} y={height} dy={y_offset} dx={x_offset} fill={stroke} fontSize={10} textAnchor="end">
-              <tspan>{this.props.bottom_label}</tspan>
-            </text>
-          </g>
-        )
-      }
-    });
-
 
     if (this.props.chart_filter){
       if(this.props.chart_data.length === 0){
@@ -191,7 +143,15 @@ var ChartBars = React.createClass({
                     margin={{top: 20, right: 30, left: 20, bottom: 5}}  >
             <XAxis  dataKey="name" hide={false} tick={false} label={<CustomizedLabelX level_label={this.props.level_label}/>} tickLine={false} axisLine={false} />
             <YAxis width={50} hide={false} label={<CustomizedLabelY top_label={this.props.top_label} bottom_label={this.props.bottom_label} />} tick={false} tickLine={false} axisLine={false} />
-            <Tooltip content={<CustomToolTipBarCharts  get_keyColors={this.props.get_keyColors} chart_type={this.props.chart_type} level_label={this.props.level_label}/>}/>
+            <Tooltip content={<CustomToolTipBarCharts
+                     set_search_method={this.props.set_search_method }
+                     get_LayerInfo_ByValue={this.props.get_LayerInfo_ByValue }
+                     get_LayerGeom_ByValue={this.props.get_LayerGeom_ByValue}
+                     change_geographyLevelActive={this.props.change_geographyLevelActive}
+                     get_tra_info={this.props.get_tra_info}
+                     get_keyColors={this.props.get_keyColors}
+                     chart_type={this.props.chart_type}
+                     level_label={this.props.level_label}/>}/>
             {this.get_bars()}
            </BarChart>
         </div>

@@ -2,6 +2,7 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 
 import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { HUC12_MAP_FEATUREID, TRA_MAP_FEATUREID, CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID } from '../constants/actionConstants';
 
 const tooltipstyle = {
   width: '100%',
@@ -24,12 +25,105 @@ const CustomToolTipBarCharts  = React.createClass({
     payload: PropTypes.array,
     label: PropTypes.string,
   },
+  get_layer_id: function(layer){
+    switch (layer) {
+      case 'baseline':
+        return HUC12_MAP_FEATUREID
+        break;
+      case 'uplift':
+        return HUC12_MAP_FEATUREID
+        break;
+      case 'tra':
+        return TRA_MAP_FEATUREID
+        break;
+      default:
+        return HUC12_MAP_FEATUREID
+    }
+  },
+  handleClick: function (data){
+
+    const chart_type = this.props.chart_type
+
+    this.props.set_search_method('chart clicked')
+
+    //set current geography level in redux state store
+    this.props.change_geographyLevelActive(data.value);
+
+    //only do this if the id is tra.  tra id's start with TP
+    if(chart_type.toUpperCase() === "TRA"){
+      this.setState({
+        tra_filter: data.value
+      })
+      this.props.get_tra_info(data.value)
+
+    //not tra so should be a huc. assume huc12...
+    } else {
+      this.props.get_LayerInfo_ByValue(data.value, HUC12_MAP_FEATUREID)
+    }
+
+  },
+  handleMouse: function (data){
+    const chart_type = this.props.chart_type
+
+    this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
+    this.props.set_search_method('chart hover ' + chart_type)
+
+  },
+  componentWillUpdate: function(nextProps, nextState) {
+    const self = this;
+    const layer_id = this.get_layer_id(nextProps.chart_type)
+    const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
+    const nodata = {value:null, chart_type: null, layer_id: null}
+    //yes jquery but I cannot hook to the elements in d3 svg.
+    //  so i need to bind to them...
+    $('.recharts-bar-cursor').unbind('click');
+    $('.recharts-bar-cursor').unbind('mouseenter');
+    $('.recharts-bar-cursor').unbind('mouseleave');
+
+    $('.recharts-bar-rectangles').unbind('click');
+    $('.recharts-bar-rectangles').unbind('mouseenter');
+    $('.recharts-bar-rectangles').unbind('mouseleave');
+
+    $('.recharts-bar-cursor').on("click",function(){
+      self.handleClick(data);
+      // console.log('clicked' + JSON.stringify(data))
+    })
+    $('.recharts-bar-rectangles').on("click",function(){
+      self.handleClick(data);
+      // console.log('clicked' + JSON.stringify(data))
+    })
+
+    $('.recharts-bar-cursor').on("mouseenter",function(){
+      self.handleMouse(data);
+      // console.log('mouseenter' + JSON.stringify(data))
+    })
+    $('.recharts-rectangle .recharts-bar-rectangles').on("mouseenter",function(){
+      self.handleMouse(data);
+      // console.log('mouseenter' + JSON.stringify(data))
+    })
+
+    $('.recharts-bar-cursor').on("mouseleave",function(){
+      self.handleMouse(nodata);
+      // console.log('mouseleave' + JSON.stringify(nodata))
+    })
+    $('.recharts-bar-rectangles').on("mouseleave",function(){
+      self.handleMouse(nodata);
+      // console.log('mouseleave' + JSON.stringify(nodata))
+    })
+
+  },
   render() {
 
     const { active } = this.props;
     let html_hov = '';
     if (active) {
       const { payload, label } = this.props;
+
+
+      const layer_id = this.get_layer_id(this.props.chart_type)
+
+      // this.props.get_LayerGeom_ByValue(label,this.props.chart_type)
+      // console.log({value:label,chart_type: this.props.chart_type, layer_id: layer_id})
 
       const reversed_payload = [ ...payload ].reverse()
 
@@ -69,7 +163,6 @@ const CustomToolTipBarCharts  = React.createClass({
       if (!labelstr || !hasdata){
         return (<div key={labelstr+'blanktip'} />)
       }
-
 
       //return tooltip
       return (

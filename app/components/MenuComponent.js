@@ -1,12 +1,15 @@
 var React = require('react');
 var MenuItemComponent = require('../components/MenuItemComponent');
 var PropTypes = React.PropTypes;
+import Divider from '../components/Divider'
 
 //  general functions and  helpers.  reuse functions
 import { getNextLevelName, getCategoryName, getAGOGeographyLabel, getAGOFeatureId, get_matchEnd, zoomToGeoJson} from '../utils/helpers';
 import {
   START_LATITUDE,
   START_LONGITUDE,
+  OVERIDE_WIDTH,
+  OVERIDE_WIDTH_NORMAL,
   START_ZOOM, } from '../constants/appConstants'
 
 var MenuComponent = React.createClass({
@@ -30,9 +33,16 @@ var MenuComponent = React.createClass({
   },
   componentDidMount: function() {
     this.props.get_MenuList();
+    // $('.ui.left.icon.input .search.link.icon').on( "click", this.search_OnClick)
+  },
+  search_OnClick: function(e){
+
+    // const search_element = $('.mapSearch')
+    // console.log(search_element.val())
+    // //this.handleSearch(null, search_element, 'location researched' )
+
   },
   componentWillUpdate: function(nextProps, nextState) {
-
     this.props.update_MapHeight();
 
     //leaflet map dose not update size this forces the issue
@@ -42,6 +52,12 @@ var MenuComponent = React.createClass({
         leafletMap.invalidateSize(true)
       }
     };
+    const searchMethod = nextProps.searchMethod
+
+    //clear search box when menu clicked or mapped clicked
+    if(searchMethod === 'menu'|| searchMethod === "clicked" ){
+      $('.mapSearch').val("")
+    }
 
   },
   getDefaultMenu: function(level){
@@ -261,25 +277,34 @@ var MenuComponent = React.createClass({
   },
   //{this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
   render: function() {
+
+    const three_width_sub = window.innerWidth < OVERIDE_WIDTH_NORMAL ? "95%" : "100%";
+    const margin_left = window.innerWidth < OVERIDE_WIDTH_NORMAL ? "14px" : "";
+    const picker_columns = window.innerWidth < OVERIDE_WIDTH ? "sixteen wide" : "twelve wide";
+    const select_columns = window.innerWidth < OVERIDE_WIDTH ? "sixteen wide" : "four wide";
+
     return (
-      <div className="html ui top attached  segment">
+      <div className="html ui top attached segment" style={{marginLeft:"10px",marginRight:"10px"}}>
         <div className="ui relaxed stackable divided grid" >
           <div className="row">
-            <div className="four wide column" >
+            <div className={select_columns + " wide column"} >
               <div className="ui form" >
                 <div className="field" >
-                  <label>
+                  <label style={{width:three_width_sub, marginLeft:margin_left}}>
                     <i className="search link icon" ></i>
                     Search for a Location
                   </label>
-                  <div className="ui left icon input"  style={{height: "50px"}}>
+                  <div className="ui left icon input"  style={{height: "50px", width:three_width_sub, marginLeft:margin_left}}>
                     <input className="mapSearch" type="text" placeholder="Search for a Location..." onChange={this.handleSearch.bind(null,this)}/>
                     <i className="search link icon" ></i>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="twelve wide column geography_levels_holder" >
+            {window.innerWidth < OVERIDE_WIDTH && window.innerWidth > (OVERIDE_WIDTH_NORMAL-1) &&
+              <Divider />
+            }
+            <div className={picker_columns +" column geography_levels_holder" }>
               <div className="ui three wide column stackable grid" >
                 { this.props.geography_levels &&
                   this.props.geography_levels.map(function(item) {
