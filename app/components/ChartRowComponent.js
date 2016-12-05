@@ -501,7 +501,6 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
     chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
-    // console.log(tra_data[0])
 
     //probably need to rename this to describe it better I already got confused
     const tra_point_info = this.props.traPointInfo
@@ -680,6 +679,7 @@ var ChartRow = React.createClass({
           top_label=""
           bottom_label=""
           level_label={"TRA"}
+          set_active_function={this.props.set_active_function}
           />
         }
         { chart_filter &&
@@ -704,6 +704,7 @@ var ChartRow = React.createClass({
           top_label="Most Impaired"
           bottom_label="Least Impaired"
           level_label={this.getLevel()}
+          set_active_function={this.props.set_active_function}
           />
         }
         { chart_filter &&
@@ -728,6 +729,7 @@ var ChartRow = React.createClass({
            top_label="More Potential"
            bottom_label="Less Potential"
            level_label={this.getLevel()}
+           set_active_function={this.props.set_active_function}
            />
          }
          { chart_filter &&

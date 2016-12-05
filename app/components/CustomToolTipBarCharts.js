@@ -80,35 +80,29 @@ const CustomToolTipBarCharts  = React.createClass({
     $('.recharts-bar-cursor').unbind('mouseenter');
     $('.recharts-bar-cursor').unbind('mouseleave');
 
-    $('.recharts-bar-rectangles').unbind('click');
-    $('.recharts-bar-rectangles').unbind('mouseenter');
-    $('.recharts-bar-rectangles').unbind('mouseleave');
+    $('.recharts-rectangle .recharts-bar-rectangle').unbind('click');
+    $('.recharts-rectangle .recharts-bar-rectangle').unbind('mouseenter');
+    $('.recharts-rectangle .recharts-bar-rectangle').unbind('mouseleave');
 
     $('.recharts-bar-cursor').on("click",function(){
       self.handleClick(data);
-      // console.log('clicked' + JSON.stringify(data))
     })
-    $('.recharts-bar-rectangles').on("click",function(){
+    $('.recharts-rectangle .recharts-bar-rectangle').on("click",function(){
       self.handleClick(data);
-      // console.log('clicked' + JSON.stringify(data))
     })
 
     $('.recharts-bar-cursor').on("mouseenter",function(){
       self.handleMouse(data);
-      // console.log('mouseenter' + JSON.stringify(data))
     })
-    $('.recharts-rectangle .recharts-bar-rectangles').on("mouseenter",function(){
+    $('.recharts-rectangle .recharts-bar-rectangle').on("mouseenter",function(){
       self.handleMouse(data);
-      // console.log('mouseenter' + JSON.stringify(data))
     })
 
     $('.recharts-bar-cursor').on("mouseleave",function(){
       self.handleMouse(nodata);
-      // console.log('mouseleave' + JSON.stringify(nodata))
     })
-    $('.recharts-bar-rectangles').on("mouseleave",function(){
+    $('recharts-rectangle .recharts-bar-rectangle').on("mouseleave",function(){
       self.handleMouse(nodata);
-      // console.log('mouseleave' + JSON.stringify(nodata))
     })
 
   },
@@ -121,9 +115,6 @@ const CustomToolTipBarCharts  = React.createClass({
 
 
       const layer_id = this.get_layer_id(this.props.chart_type)
-
-      // this.props.get_LayerGeom_ByValue(label,this.props.chart_type)
-      // console.log({value:label,chart_type: this.props.chart_type, layer_id: layer_id})
 
       const reversed_payload = [ ...payload ].reverse()
 

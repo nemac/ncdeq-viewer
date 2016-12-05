@@ -33,6 +33,15 @@ export function NLCDDATA(state = [], action){
   }
 }
 
+export function active_function(state = [], action){
+  switch (action.type) {
+    case 'SET_ACTIVE_FUNCTION':
+      return {...state, active_function: action.active_function}
+    default:
+      return state
+  }
+}
+
 
 export function fetching_chart(state = [], action){
   switch (action.type) {

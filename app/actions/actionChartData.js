@@ -190,8 +190,6 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
                    '&f=pgeojson' +
                    '&token='
 
-  // console.log(query_URL)
-
   //send the ajax request via axios
   return axios.get(query_URL);
 
@@ -857,6 +855,32 @@ export function update_ChartVisiblity (visibility){
     }
 }
 
+export function get_active_function (chart_id, chart_type, active_name){
+    return (dispatch, getState) => {
+
+      //start fetching state (set to true)
+      dispatch(fetching_start())
+
+      const state = getState()
+
+      const active_function_data = {chart_id, active_name, chart_type}
+
+      const types =  {...state.active_function, active_function_data} ;
+
+
+      //send active_function setting on
+      dispatch(active_function('SET_ACTIVE_FUNCTION', types ))
+
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
+
+    }
+}
+
+function active_function(type, data){
+  return {type: type, active_function: data}
+}
+
 //function to handle sending to reducer and store
 function ChartLevels(type, levels, chart_limits) {
   // return {
@@ -874,6 +898,7 @@ function ChartLevels(type, levels, chart_limits) {
    receivedAt: Date.now()
  }
 }
+
 
 function CATCHMENTData(type, data, catchment_chart_ar){
   return {type: type, CATCHMENTData: data, catchment_chart_ar: catchment_chart_ar}

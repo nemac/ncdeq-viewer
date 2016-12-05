@@ -28,7 +28,7 @@ var ResourcesComponent = React.createClass({
     //  yes hacky but it works for this case.
     $.ajax({
       isLocal: true,
-      url: 'data/links.csv',
+      url: 'config/links.csv',
       dataType: 'text',
       contentType: 'application/CSV',
     })
