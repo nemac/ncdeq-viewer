@@ -865,7 +865,7 @@ export function get_active_function (chart_id, chart_type, active_name){
 
       const active_function_data = {chart_id, active_name, chart_type}
 
-      const types =  {...state.active_function, active_function_data} ;
+      const types =  {...state.active_function, active_function: active_function_data} ;
 
 
       //send active_function setting on
