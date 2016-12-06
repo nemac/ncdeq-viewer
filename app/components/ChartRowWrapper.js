@@ -162,6 +162,7 @@ var ChartRowWrapper = React.createClass({
       }
       //set initial active function picker
       if(has_dupes && keycnt===1){
+        this.set_initial(item.chart_level_label)
         const data = {chart_id:item.chart_id, active_name:item.chart_level_label, chart_type:this.props.chart_type}
         this.props.set_active_function(item.chart_id, item.chart_level_label, this.props.chart_type)
         return (data)
@@ -192,14 +193,27 @@ var ChartRowWrapper = React.createClass({
     return new_chart_levels
   },
   handleChange: function(chart_id, label, e){
+
     this.props.set_active_function(chart_id, label, this.props.chart_type)
   },
   componentDidMount: function() {
-    $('.category.example .ui.dropdown').dropdown({allowCategorySelection: true});
+    $('.ui.dropdown.button.function').dropdown({allowCategorySelection: true});
     if(this.props.chart_type === 'tra'){
       this.get_initial_dupe()
     }
+
   },
+  componentDidUpdate: function(prevProps, prevState) {
+    const label =  $('.ui.dropdown.button.function').dropdown('get text');
+    const colors = this.props.get_keyColors(label)
+    $('.ui.dropdown.button.function').css("background-color",colors[1])
+
+  },
+  set_initial: function(value){
+    $('.ui.dropdown.button.function').dropdown('set text',value);
+    $('.ui.dropdown.button.function').dropdown('set value',value);
+  },
+
   render: function() {
 
     //get the chart levels
@@ -307,8 +321,8 @@ var ChartRowWrapper = React.createClass({
                 if(start){
                   const testobj = this.get_dupes(new_chart_levels,item.chart_id);
                   return (
-                    <div key={label + '-' + keycnta++} className="ui dropdown button" >
-                      <span className="text" key={"start-" + keycnta++} >{item.chart_level_label}</span>
+                    <div key={label + '-' + keycnta++} className="ui dropdown compact button function" >
+                      <span className="text" key="start" ></span>
                       <i className="dropdown icon"></i>
                       <div className="menu">
                         {testobj}

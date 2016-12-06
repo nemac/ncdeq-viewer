@@ -216,7 +216,9 @@ var ChartRow = React.createClass({
         if(chart_data.chart_features){
           chart_data_limited =  chart_data.chart_features.filter ( chart_objects => {
             if(function_limit){
-              return chart_objects.properties.chart_id === filter_value && chart_objects.properties.chart_level_label === function_limit_name ;
+              return chart_objects.properties.chart_id === filter_value &&
+              (chart_objects.properties.chart_level_label === function_limit_name &&
+               chart_objects.properties.chart_id === function_limit_id || chart_objects.properties.chart_id != function_limit_id);
             } else {
               return chart_objects.properties.chart_id === filter_value;
             }
@@ -224,7 +226,9 @@ var ChartRow = React.createClass({
         } else {
           chart_data_limited =  chart_data.filter ( chart_objects => {
             if(function_limit_name){
-              return chart_objects.properties.chart_id === filter_value && chart_objects.properties.chart_level_label === function_limit_name ;
+              return chart_objects.properties.chart_id === filter_value  &&
+              (chart_objects.properties.chart_level_label === function_limit_name &&
+               chart_objects.properties.chart_id === function_limit_id || chart_objects.properties.chart_id != function_limit_id);
             } else {
               return chart_objects.properties.chart_id === filter_value;
             }
