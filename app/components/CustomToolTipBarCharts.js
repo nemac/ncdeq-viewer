@@ -62,11 +62,37 @@ const CustomToolTipBarCharts  = React.createClass({
     }
 
   },
-  handleMouse: function (data){
+  handleMouse: function (data, test, e){
     const chart_type = this.props.chart_type
-
+    console.log('mouse enter,leave')
+    console.log(e)
     this.props.set_search_method('chart hover ' + chart_type)
     this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
+
+  },
+  componentWillUpdate: function(nextProps, nextState) {
+    const background_bar = '.recharts-bar-cursor'
+    const foreground_bar = '.recharts-rectangle.recharts-bar-rectangle'
+    const bartest = '.recharts-layer.recharts-bar-graphical'
+
+    //yes jquery but I cannot hook to the elements in d3 svg.
+    //  so i need to bind to them...
+    //yes jquery but I cannot hook to the elements in d3 svg.
+    //  so i need to bind to them...
+    $(background_bar).unbind('click');
+    $(background_bar).unbind('mouseenter');
+    $(background_bar).unbind('mouseleave');
+    // $(background_bar).unbind('mousemove');
+
+    $(foreground_bar).unbind('click');
+    $(foreground_bar).unbind('mouseenter');
+    $(foreground_bar).unbind('mouseleave');
+    // $(foreground_bar).unbind('mousemove');
+
+    $(bartest).unbind('click');
+    $(bartest).unbind('mouseenter');
+    $(bartest).unbind('mouseleave');
+    // $(bartest).unbind('mousemove');
 
   },
   componentDidUpdate: function(prevProps, prevState) {
@@ -76,58 +102,26 @@ const CustomToolTipBarCharts  = React.createClass({
     const data = {value:this.props.label, chart_type: this.props.chart_type, layer_id};
     const nodata = {value:null, chart_type: null, layer_id: null}
 
-    const background_bar = '.recharts-bar-cursor'
+    console.log(JSON.stringify(data))
+    const ele = $('#bar-chart').children('div').children('svg').children('g').children('g').children('g').children('g')
+
     const foreground_bar = '.recharts-rectangle.recharts-bar-rectangle'
+    const background_bar = '.recharts-bar-cursor'
     const bartest = '.recharts-layer.recharts-bar-graphical'
+
+    const fg = ele.children(foreground_bar)
+    const bg = ele.children(background_bar)
+    const bt = ele.children(bartest)
 
     //yes jquery but I cannot hook to the elements in d3 svg.
     //  so i need to bind to them...
-    $(bartest).unbind('click');
-    $(bartest).unbind('mouseenter');
-    $(bartest).unbind('mouseleave');
-    //
-    // $(foreground_bar).unbind('click');
-    // $(foreground_bar).unbind('mouseenter');
-    // $(foreground_bar).unbind('mouseleave');
+    bg.mouseenter( self.handleMouse.bind(null,this,data) ).mouseleave( self.handleMouse.bind(null,this,nodata) );
+    bt.mouseenter( self.handleMouse.bind(null,this,data) ).mouseleave( self.handleMouse.bind(null,this,nodata) );
 
-    // $(bartest).on("mouseenter",function(){
-    //   self.handleMouse(data);
-    // })
-    // // $(foreground_bar).on("mouseenter",function(){
-    // //   self.handleMouse(data);
-    // // })
-    //
-    // $(bartest).on("click",function(){
-    //   self.handleClick(data);
-    // })
-    // // $(foreground_bar).on("click",function(){
-    // //   self.handleClick(data);
-    // // })
-    //
-    // $(bartest).on("mouseleave",function(){
-    //   self.handleMouse(nodata);
-    // })
-    // $(foreground_bar).on("mouseleave",function(){
-    //   self.handleMouse(nodata);
-    // })
+    fg.click( self.handleClick(data) );
+    bg.click( self.handleClick(data) );
+    bt.click( self.handleClick(data) );
 
-
-
-
-    // $(bartest).unbind('click');
-    // $(bartest).unbind('mouseenter');
-    // $(bartest).unbind('mouseleave');
-
-
-    // $(bartest).on("click",function(){
-    //   self.handleClick(data);
-    // })
-    // $(bartest).on("mouseenter",function(){
-    //   self.handleMouse(data);
-    // })
-    // $(bartest).on("mouseleave",function(){
-    //   self.handleMouse(nodata);
-    // })
 
   },
   shouldComponentUpdate: function(nextProps, nextState) {
@@ -137,75 +131,7 @@ const CustomToolTipBarCharts  = React.createClass({
       return true
     }
   },
-  componentWillUpdate: function(nextProps, nextState) {
-    nextProps.label
-    const self = this;
-    const layer_id = this.get_layer_id(nextProps.chart_type)
-    const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
-    const nodata = {value:null, chart_type: null, layer_id: null}
 
-    const background_bar = '.recharts-bar-cursor'
-    const foreground_bar = '.recharts-rectangle.recharts-bar-rectangle'
-    const bartest = '.recharts-layer.recharts-bar-graphical'
-
-    // $(bartest).on("mouseenter",function(){
-    //   self.handleMouse(data);
-    // })
-    // // $(foreground_bar).on("mouseenter",function(){
-    // //   self.handleMouse(data);
-    // // })
-    //
-    // $(bartest).on("click",function(){
-    //   self.handleClick(data);
-    // })
-    // // $(foreground_bar).on("click",function(){
-    // //   self.handleClick(data);
-    // // })
-    //
-    // $(bartest).on("mouseleave",function(){
-    //   self.handleMouse(nodata);
-    // })
-
-    //yes jquery but I cannot hook to the elements in d3 svg.
-    //  so i need to bind to them...
-    $(background_bar).unbind('click');
-    $(background_bar).unbind('mouseenter');
-    $(background_bar).unbind('mouseleave');
-
-    $(bartest).unbind('click');
-    $(bartest).unbind('mouseenter');
-    $(bartest).unbind('mouseleave');
-
-
-    $(foreground_bar).unbind('click');
-    $(foreground_bar).unbind('mouseenter');
-    $(foreground_bar).unbind('mouseleave');
-
-    $(background_bar).on("mouseleave",function(){
-      self.handleMouse(nodata);
-    })
-    $(foreground_bar).on("mouseleave",function(){
-      self.handleMouse(nodata);
-    })
-
-    $(background_bar).on("click",function(){
-      self.handleClick(data);
-    })
-    $(foreground_bar).on("click",function(){
-      self.handleClick(data);
-    })
-
-
-    $(background_bar).on("mouseenter",function(){
-      self.handleMouse(data);
-    })
-    $(foreground_bar).on("mouseenter",function(){
-      self.handleMouse(data);
-    })
-
-
-
-  },
   render() {
 
     const { active } = this.props;

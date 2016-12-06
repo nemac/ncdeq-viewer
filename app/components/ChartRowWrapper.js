@@ -133,9 +133,41 @@ var ChartRowWrapper = React.createClass({
           has_dupes = true
         }
       }
-      last_id  = Number(item.properties.chart_id)
+      if(item.properties){
+        last_id  = Number(item.properties.chart_id)
+      } else {
+        last_id  = Number(item.chart_id)
+      }
     })
     return has_dupes
+  },
+  get_initial_dupe: function() {
+
+    const chart_levels = this.get_chart_levels()
+    const last_chart = this.get_chart_Previous()
+    const is_next_valid = this.check_next_level_valid()
+    const chart_type =  this.props.chart_type;
+    const sort_id = this.sort_byid(chart_levels);
+
+    const new_chart_levels = this.update_ChartLevels(sort_id)
+    let keycnt=0
+
+    const dup = new_chart_levels.map( item => {
+
+      const has_dupes = this.check_dupes(new_chart_levels,item.chart_id)
+      if(has_dupes){
+        keycnt += 1
+      } else {
+        keycnt = 0
+      }
+      //set initial active function picker
+      if(has_dupes && keycnt===1){
+        const data = {chart_id:item.chart_id, active_name:item.chart_level_label, chart_type:this.props.chart_type}
+        this.props.set_active_function(item.chart_id, item.chart_level_label, this.props.chart_type)
+        return (data)
+      }
+    })
+
   },
   get_dupes: function(chart_levels, chart_id){
     let keycnt=0
@@ -164,6 +196,9 @@ var ChartRowWrapper = React.createClass({
   },
   componentDidMount: function() {
     $('.category.example .ui.dropdown').dropdown({allowCategorySelection: true});
+    if(this.props.chart_type === 'tra'){
+      this.get_initial_dupe()
+    }
   },
   render: function() {
 
@@ -273,7 +308,7 @@ var ChartRowWrapper = React.createClass({
                   const testobj = this.get_dupes(new_chart_levels,item.chart_id);
                   return (
                     <div key={label + '-' + keycnta++} className="ui dropdown button" >
-                      <span className="text">{item.chart_level_label}</span>
+                      <span className="text" key={"start-" + keycnta++} >{item.chart_level_label}</span>
                       <i className="dropdown icon"></i>
                       <div className="menu">
                         {testobj}

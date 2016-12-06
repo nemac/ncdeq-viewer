@@ -24,23 +24,6 @@ const CustomToolTipSimpleBarCharts  = React.createClass({
     payload: PropTypes.array,
     label: PropTypes.string,
   },
-  componentWillUpdate: function(nextProps, nextState) {
-    const background_bar = '.recharts-bar-cursor'
-    const foreground_bar = '.recharts-rectangle.recharts-bar-rectangle'
-    const bartest = '.recharts-layer.recharts-bar-graphical'
-
-    $(background_bar).unbind('click');
-    $(foreground_bar).unbind('mouseenter');
-    $(foreground_bar).unbind('mouseleave');
-
-    $(foreground_bar).unbind('click');
-    $(foreground_bar).unbind('mouseenter');
-    $(foreground_bar).unbind('mouseleave');
-
-    $(bartest).unbind('click');
-    $(bartest).unbind('mouseenter');
-    $(bartest).unbind('mouseleave');
-  },
   render() {
     const { active } = this.props;
     let html_hov = '';

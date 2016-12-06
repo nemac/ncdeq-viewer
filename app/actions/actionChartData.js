@@ -855,18 +855,26 @@ export function update_ChartVisiblity (visibility){
     }
 }
 
-export function get_active_function (chart_id, chart_type, active_name){
+export function get_active_function (chart_id, active_name, chart_type){
     return (dispatch, getState) => {
-
+      const charts = ['tra','baseline','uplift']
       //start fetching state (set to true)
       dispatch(fetching_start())
 
       const state = getState()
 
-      const active_function_data = {chart_id, active_name, chart_type}
+      //walk the charts array and get chart types that will have switcher for baseline
+      //  and write the current active function
+      const active_function_data = charts.map( charts_type => {
+        if(charts_type === chart_type){
+          return({chart_id, active_name, chart_type})
+        } else {
+          return({chart_id: null, active_name: null, chart_type: charts_type})
+        }
+      })
 
+      //update the array for the active function for the chart type
       const types =  {...state.active_function, active_function: active_function_data} ;
-
 
       //send active_function setting on
       dispatch(active_function('SET_ACTIVE_FUNCTION', types ))

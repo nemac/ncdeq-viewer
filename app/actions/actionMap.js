@@ -110,7 +110,7 @@ export function set_search_method(method){
   return (dispatch, getState) => {
 
     //start fetching state (set to true)
-    dispatch(fetching_start())
+    // dispatch(fetching_start())
 
     const state = getState()
 
@@ -122,7 +122,7 @@ export function set_search_method(method){
     dispatch(mapSate('SET_SEARCH_METHOD',mapConfig));
 
     //end fetching set fetching state to false
-    dispatch(fetching_end())
+    // dispatch(fetching_end())
   }
 }
 
