@@ -65,45 +65,145 @@ const CustomToolTipBarCharts  = React.createClass({
   handleMouse: function (data){
     const chart_type = this.props.chart_type
 
-    this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
     this.props.set_search_method('chart hover ' + chart_type)
+    this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
 
   },
+  componentDidUpdate: function(prevProps, prevState) {
+    const self = this;
+
+    const layer_id = this.get_layer_id(this.props.chart_type)
+    const data = {value:this.props.label, chart_type: this.props.chart_type, layer_id};
+    const nodata = {value:null, chart_type: null, layer_id: null}
+
+    const background_bar = '.recharts-bar-cursor'
+    const foreground_bar = '.recharts-rectangle.recharts-bar-rectangle'
+    const bartest = '.recharts-layer.recharts-bar-graphical'
+
+    //yes jquery but I cannot hook to the elements in d3 svg.
+    //  so i need to bind to them...
+    $(bartest).unbind('click');
+    $(bartest).unbind('mouseenter');
+    $(bartest).unbind('mouseleave');
+    //
+    // $(foreground_bar).unbind('click');
+    // $(foreground_bar).unbind('mouseenter');
+    // $(foreground_bar).unbind('mouseleave');
+
+    // $(bartest).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    // // $(foreground_bar).on("mouseenter",function(){
+    // //   self.handleMouse(data);
+    // // })
+    //
+    // $(bartest).on("click",function(){
+    //   self.handleClick(data);
+    // })
+    // // $(foreground_bar).on("click",function(){
+    // //   self.handleClick(data);
+    // // })
+    //
+    // $(bartest).on("mouseleave",function(){
+    //   self.handleMouse(nodata);
+    // })
+    // $(foreground_bar).on("mouseleave",function(){
+    //   self.handleMouse(nodata);
+    // })
+
+
+
+
+    // $(bartest).unbind('click');
+    // $(bartest).unbind('mouseenter');
+    // $(bartest).unbind('mouseleave');
+
+
+    // $(bartest).on("click",function(){
+    //   self.handleClick(data);
+    // })
+    // $(bartest).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    // $(bartest).on("mouseleave",function(){
+    //   self.handleMouse(nodata);
+    // })
+
+  },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    if(nextProps.label === this.props.label){
+      return false
+    } else {
+      return true
+    }
+  },
   componentWillUpdate: function(nextProps, nextState) {
+    nextProps.label
     const self = this;
     const layer_id = this.get_layer_id(nextProps.chart_type)
     const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
     const nodata = {value:null, chart_type: null, layer_id: null}
+
+    const background_bar = '.recharts-bar-cursor'
+    const foreground_bar = '.recharts-rectangle.recharts-bar-rectangle'
+    const bartest = '.recharts-layer.recharts-bar-graphical'
+
+    // $(bartest).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    // // $(foreground_bar).on("mouseenter",function(){
+    // //   self.handleMouse(data);
+    // // })
+    //
+    // $(bartest).on("click",function(){
+    //   self.handleClick(data);
+    // })
+    // // $(foreground_bar).on("click",function(){
+    // //   self.handleClick(data);
+    // // })
+    //
+    // $(bartest).on("mouseleave",function(){
+    //   self.handleMouse(nodata);
+    // })
+
     //yes jquery but I cannot hook to the elements in d3 svg.
     //  so i need to bind to them...
-    $('.recharts-bar-cursor').unbind('click');
-    $('.recharts-bar-cursor').unbind('mouseenter');
-    $('.recharts-bar-cursor').unbind('mouseleave');
+    $(background_bar).unbind('click');
+    $(background_bar).unbind('mouseenter');
+    $(background_bar).unbind('mouseleave');
 
-    $('.recharts-rectangle .recharts-bar-rectangle').unbind('click');
-    $('.recharts-rectangle .recharts-bar-rectangle').unbind('mouseenter');
-    $('.recharts-rectangle .recharts-bar-rectangle').unbind('mouseleave');
+    $(bartest).unbind('click');
+    $(bartest).unbind('mouseenter');
+    $(bartest).unbind('mouseleave');
 
-    $('.recharts-bar-cursor').on("click",function(){
-      self.handleClick(data);
-    })
-    $('.recharts-rectangle .recharts-bar-rectangle').on("click",function(){
-      self.handleClick(data);
-    })
 
-    $('.recharts-bar-cursor').on("mouseenter",function(){
-      self.handleMouse(data);
-    })
-    $('.recharts-rectangle .recharts-bar-rectangle').on("mouseenter",function(){
-      self.handleMouse(data);
-    })
+    $(foreground_bar).unbind('click');
+    $(foreground_bar).unbind('mouseenter');
+    $(foreground_bar).unbind('mouseleave');
 
-    $('.recharts-bar-cursor').on("mouseleave",function(){
+    $(background_bar).on("mouseleave",function(){
       self.handleMouse(nodata);
     })
-    $('recharts-rectangle .recharts-bar-rectangle').on("mouseleave",function(){
+    $(foreground_bar).on("mouseleave",function(){
       self.handleMouse(nodata);
     })
+
+    $(background_bar).on("click",function(){
+      self.handleClick(data);
+    })
+    $(foreground_bar).on("click",function(){
+      self.handleClick(data);
+    })
+
+
+    $(background_bar).on("mouseenter",function(){
+      self.handleMouse(data);
+    })
+    $(foreground_bar).on("mouseenter",function(){
+      self.handleMouse(data);
+    })
+
+
 
   },
   render() {
