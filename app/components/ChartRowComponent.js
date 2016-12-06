@@ -184,7 +184,7 @@ var ChartRow = React.createClass({
     //returned the filtered chart data
     return chart_data_limited
   },
-  getChart_FilteredByChartLevel: function(chart_data, filter_value, is_top){
+  getChart_FilteredByChartLevel: function(chart_data, filter_value, chart_type, is_top){
   //gets the chart data Filtered by the chart limit or HUC
 
     let use_top = true;
@@ -197,27 +197,55 @@ var ChartRow = React.createClass({
 
     let chart_data_limited =[];
 
+    let function_limit
+    let function_limits
+    if(this.props.active_function){
+      function_limits = this.props.active_function.active_function.filter( af => {
+        return af.chart_type.toUpperCase() === chart_type
+      })
+    }
+    if(function_limits){
+      function_limit = function_limits[0].active_name
+    }
+    console.log(function_limit)
+
     //make sure the data has been set
     if(chart_data){
       if(use_top){
         if(chart_data.chart_features){
           chart_data_limited =  chart_data.chart_features.filter ( chart_objects => {
-            return chart_objects.properties.chart_id === filter_value;
+            if(function_limit){
+              return chart_objects.properties.chart_id === filter_value && chart_objects.properties.chart_level_label === function_limit ;
+            } else {
+              return chart_objects.properties.chart_id === filter_value;
+            }
           })
         } else {
           chart_data_limited =  chart_data.filter ( chart_objects => {
-            return chart_objects.properties.chart_id === filter_value;
+            if(function_limit){
+              return chart_objects.properties.chart_id === filter_value && chart_objects.properties.chart_level_label === function_limit ;
+            } else {
+              return chart_objects.properties.chart_id === filter_value;
+            }
           })
         }
       } else {
         if(chart_data.chart_features){
           chart_data_limited =  chart_data.chart_features.filter ( chart_objects => {
-            return chart_objects.properties.chart_matchid === filter_value && chart_objects.properties.chart_id != filter_value
+            if(function_limit){
+              return chart_objects.properties.chart_matchid === filter_value && chart_objects.properties.chart_id != filter_value && chart_objects.properties.chart_level_label === function_limit ;
+            } else {
+              return chart_objects.properties.chart_matchid === filter_value && chart_objects.properties.chart_id != filter_value
+            }
           })
 
         } else {
           chart_data_limited =  chart_data.filter ( chart_objects => {
-            return chart_objects.properties.chart_matchid === filter_value && chart_objects.properties.chart_id != filter_value
+            if(function_limit){
+              return chart_objects.properties.chart_matchid === filter_value && chart_objects.properties.chart_id != filter_value && chart_objects.properties.chart_level_label === function_limit ;
+            } else {
+              return chart_objects.properties.chart_matchid === filter_value && chart_objects.properties.chart_id != filter_value
+            }
           })
         }
       }
@@ -286,7 +314,7 @@ var ChartRow = React.createClass({
           const current_chart_matchid = (chart_type_limt[0] ? chart_type_limt[0].current_chart_matchid : 2)
 
           //get the chart for the current chart hierarchical level
-          let levelone =  this.getChart_FilteredByChartLevel( chart_data, current_chart_matchid, false );
+          let levelone =  this.getChart_FilteredByChartLevel( chart_data, current_chart_matchid, chart_type, false );
 
           // sort by value
           let sorted_hucs = this.getChart_Sorted(levelone);
