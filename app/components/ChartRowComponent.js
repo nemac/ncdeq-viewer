@@ -311,7 +311,7 @@ var ChartRow = React.createClass({
     // builds chart data into proper format for rechart library (bar charts)
     let chart_data_array = [];
 
-    if(chart_data){
+    if(chart_data ){
 
       //get constants from redux
       const charts_limits = this.props.charts.chart_levels.chart_limits;
