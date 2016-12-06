@@ -203,11 +203,26 @@ var ChartRowWrapper = React.createClass({
     }
 
   },
-  componentDidUpdate: function(prevProps, prevState) {
-    const label =  $('.ui.dropdown.button.function').dropdown('get text');
-    const colors = this.props.get_keyColors(label)
-    $('.ui.dropdown.button.function').css("background-color",colors[1])
 
+  componentDidUpdate: function(prevProps, prevState) {
+    let label =  $('.ui.dropdown.button.function').dropdown('get text');
+    const chart_type = this.props.chart_type;
+    let function_limits;
+
+    if(chart_type === 'tra' && label === ''){
+        function_limits = this.props.active_function.active_function.filter( af => {
+          return af.chart_type === chart_type
+      })
+      label = function_limits[0].active_name
+    }
+
+    const colors = this.props.get_keyColors(label)
+
+    $('.ui.dropdown.button.function').css("background-color",colors[1])
+    $('.ui.dropdown.button.function').css("color","#fff")
+
+    $('.ui.dropdown.button.function').dropdown('set text',label);
+    $('.ui.dropdown.button.function').dropdown('set value',label);
   },
   set_initial: function(value){
     $('.ui.dropdown.button.function').dropdown('set text',value);
@@ -222,11 +237,8 @@ var ChartRowWrapper = React.createClass({
     const is_next_valid = this.check_next_level_valid()
     const chart_type =  this.props.chart_type;
     const sort_id = this.sort_byid(chart_levels);
-    // if(chart_type === 'tra'){
-      // console.log(chart_type + ': chart levels')
-      const new_chart_levels = this.update_ChartLevels(sort_id)
-      // console.log(new_chart_levels)
-    // }
+
+    const new_chart_levels = this.update_ChartLevels(sort_id)
 
     //check if at the charts top heirachy
     const at_top = (last_chart.current_chart_level === 2 && last_chart.current_chart_matchid === 1)
@@ -307,9 +319,9 @@ var ChartRowWrapper = React.createClass({
                 const chart_type  = item.chart_type;
                 const colors = this.props.get_keyColors(label)
                 const button_color = {"backgroundColor":  colors[1]+"!important"}
+                const button_color_pulldown = {"backgroundColor":  colors[1]+"!important",padding: "0px",backgroundColor: "rgba(245, 176, 65 ,.5)!important",paddingLeft: "0px!important",paddingRight:  "30px!important"}
 
-                let button_class = is_next_valid ? "ui tiny black button" : "ui tiny disabled black button";
-                // console.log(label + '-' + last_has_dupe)
+                let button_class = is_next_valid ? "ui tiny black right labeled icon button" : "ui tiny disabled right labeled icon black button";
 
                 const start = (has_dupes && !last_has_dupe)
 
@@ -321,14 +333,18 @@ var ChartRowWrapper = React.createClass({
                 if(start){
                   const testobj = this.get_dupes(new_chart_levels,item.chart_id);
                   return (
+
+
+                    <button className={button_class} key={label + '-' + keycntb++ } style={button_color_pulldown} >
                     <div key={label + '-' + keycnta++} className="ui dropdown compact button function" >
                       <span className="text" key="start" ></span>
-                      <i className="dropdown icon"></i>
+                        <i className="dropdown right floated icon"></i>
                       <div className="menu">
                         {testobj}
                       </div>
                     </div>
-
+                    <i className="level down right floated icon" onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}></i>
+                </button>
                   )
                 }
 
@@ -336,6 +352,7 @@ var ChartRowWrapper = React.createClass({
                   return (  <button className={button_class} key={label + '-' + keycntb++ } style={button_color}
                                       onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)} >
                              {label}
+                             <i className="level down icon"></i>
                             </button>)
                 }
 

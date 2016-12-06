@@ -719,6 +719,7 @@ var ChartRow = React.createClass({
           bottom_label=""
           level_label={"TRA"}
           set_active_function={this.props.set_active_function}
+          active_function={this.props.active_function}
           />
         }
         { chart_filter &&
@@ -744,6 +745,7 @@ var ChartRow = React.createClass({
           bottom_label="Least Impaired"
           level_label={this.getLevel()}
           set_active_function={this.props.set_active_function}
+          active_function={this.props.active_function}
           />
         }
         { chart_filter &&
@@ -769,6 +771,7 @@ var ChartRow = React.createClass({
            bottom_label="Less Potential"
            level_label={this.getLevel()}
            set_active_function={this.props.set_active_function}
+           active_function={this.props.active_function}
            />
          }
          { chart_filter &&
