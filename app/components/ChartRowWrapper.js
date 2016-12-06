@@ -218,8 +218,17 @@ var ChartRowWrapper = React.createClass({
 
     const colors = this.props.get_keyColors(label)
 
+    const csstext = 'background-color: ' + colors[1] + ' !important;padding: 0px !important;padding-left: 0px !important;padding-right: 30px !important;'
+
     $('.ui.dropdown.button.function').css("background-color",colors[1])
+    $('.ui.tiny.disabled.right.labeled.icon.black.button.function').css( "cssText", csstext )
+    $('ui.tiny.black.right.labeled.icon.button.function').css( "cssText", csstext )
+
     $('.ui.dropdown.button.function').css("color","#fff")
+    $('.ui.dropdown.button.function').css("font-size",".85714286rem")
+
+    $('.ui.tiny.disabled.right.labeled.icon.black.button.function').css( "cssText", csstext  )
+    $('.ui.tiny.black.right.labeled.icon.button.function').css( "cssText", csstext )
 
     $('.ui.dropdown.button.function').dropdown('set text',label);
     $('.ui.dropdown.button.function').dropdown('set value',label);
@@ -319,9 +328,10 @@ var ChartRowWrapper = React.createClass({
                 const chart_type  = item.chart_type;
                 const colors = this.props.get_keyColors(label)
                 const button_color = {"backgroundColor":  colors[1]+"!important"}
-                const button_color_pulldown = {"backgroundColor":  colors[1]+"!important",padding: "0px",backgroundColor: "rgba(245, 176, 65 ,.5)!important",paddingLeft: "0px!important",paddingRight:  "30px!important"}
+                const button_color_pulldown = {"backgroundColor":  colors[1]+"!important","padding": "0px!important","paddingLeft": "0px!important","paddingRight":  "30px!important"}
 
                 let button_class = is_next_valid ? "ui tiny black right labeled icon button" : "ui tiny disabled right labeled icon black button";
+                let button_class_pulldown = is_next_valid ? "ui tiny black right labeled icon button function" : "ui tiny disabled right labeled icon black button function";
 
                 const start = (has_dupes && !last_has_dupe)
 
@@ -335,8 +345,8 @@ var ChartRowWrapper = React.createClass({
                   return (
 
 
-                    <button className={button_class} key={label + '-' + keycntb++ } style={button_color_pulldown} >
-                    <div key={label + '-' + keycnta++} className="ui dropdown compact button function" >
+                    <button className={button_class_pulldown} key={label + '-' + keycntb++ } style={button_color_pulldown} >
+                    <div key={label + '-' + keycnta++} className="ui dropdown compact button function" style={{padding:"10px"}}>
                       <span className="text" key="start" ></span>
                         <i className="dropdown right floated icon"></i>
                       <div className="menu">
