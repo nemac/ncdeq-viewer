@@ -22,7 +22,7 @@ export const ENCODED_COMMAS = '%2C'
 //out fields for menu lists
 const MENU_OUT_FIELDS = 'id,NAME,VALUE,MAIN,SUB';
 
-export const SERVICE_NAME = "RDRBP_AGO5"
+export const SERVICE_NAME = "RDRBP_AGO6"
 //ArcGIS Online base URl
 export const AGO_URL = 'https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services'
 

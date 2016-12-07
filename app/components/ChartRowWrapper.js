@@ -197,7 +197,8 @@ var ChartRowWrapper = React.createClass({
     this.props.set_active_function(chart_id, label, this.props.chart_type)
   },
   componentDidMount: function() {
-    $('.ui.dropdown.button.function').dropdown({allowCategorySelection: true});
+    const chart_type = this.props.chart_type;
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown({allowCategorySelection: true});
     if(this.props.chart_type === 'tra'){
       this.get_initial_dupe()
     }
@@ -205,8 +206,10 @@ var ChartRowWrapper = React.createClass({
   },
 
   componentDidUpdate: function(prevProps, prevState) {
-    let label =  $('.ui.dropdown.button.function').dropdown('get text');
     const chart_type = this.props.chart_type;
+    console.log(chart_type)
+    console.log('.ui.dropdown.button.function.' + chart_type.toUpperCase())
+    let label =  $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('get text');
     let function_limits;
 
     if(chart_type === 'tra' && label === ''){
@@ -220,22 +223,24 @@ var ChartRowWrapper = React.createClass({
 
     const csstext = 'background-color: ' + colors[1] + ' !important;padding: 0px !important;padding-left: 0px !important;padding-right: 30px !important;'
 
-    $('.ui.dropdown.button.function').css("background-color",colors[1])
-    $('.ui.tiny.disabled.right.labeled.icon.black.button.function').css( "cssText", csstext )
-    $('ui.tiny.black.right.labeled.icon.button.function').css( "cssText", csstext )
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).css("background-color",colors[1])
+    $('.ui.tiny.disabled.right.labeled.icon.black.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext )
+    $('ui.tiny.black.right.labeled.icon.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext )
 
-    $('.ui.dropdown.button.function').css("color","#fff")
-    $('.ui.dropdown.button.function').css("font-size",".85714286rem")
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).css("color","#fff")
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).css("font-size",".85714286rem")
 
-    $('.ui.tiny.disabled.right.labeled.icon.black.button.function').css( "cssText", csstext  )
-    $('.ui.tiny.black.right.labeled.icon.button.function').css( "cssText", csstext )
+    $('.ui.tiny.disabled.right.labeled.icon.black.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext  )
+    $('.ui.tiny.black.right.labeled.icon.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext )
 
-    $('.ui.dropdown.button.function').dropdown('set text',label);
-    $('.ui.dropdown.button.function').dropdown('set value',label);
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set text',label);
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set value',label);
   },
   set_initial: function(value){
-    $('.ui.dropdown.button.function').dropdown('set text',value);
-    $('.ui.dropdown.button.function').dropdown('set value',value);
+    const chart_type = this.props.chart_type;
+
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set text',value);
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set value',value);
   },
 
   render: function() {
@@ -331,7 +336,7 @@ var ChartRowWrapper = React.createClass({
                 const button_color_pulldown = {"backgroundColor":  colors[1]+"!important","padding": "0px!important","paddingLeft": "0px!important","paddingRight":  "30px!important"}
 
                 let button_class = is_next_valid ? "ui tiny black right labeled icon button" : "ui tiny disabled right labeled icon black button";
-                let button_class_pulldown = is_next_valid ? "ui tiny black right labeled icon button function" : "ui tiny disabled right labeled icon black button function";
+                let button_class_pulldown = is_next_valid ? "ui tiny black right labeled icon button function " + chart_type : "ui tiny disabled right labeled icon black button function " + chart_type;
 
                 const start = (has_dupes && !last_has_dupe)
 
@@ -342,11 +347,12 @@ var ChartRowWrapper = React.createClass({
 
                 if(start){
                   const testobj = this.get_dupes(new_chart_levels,item.chart_id);
+                  console.log(testobj)
                   return (
 
 
                     <button className={button_class_pulldown} key={label + '-' + keycntb++ } style={button_color_pulldown} >
-                    <div key={label + '-' + keycnta++} className="ui dropdown compact button function" style={{padding:"10px"}}>
+                    <div key={label + '-' + keycnta++} className={"ui dropdown compact button function " + chart_type} style={{padding:"10px"}}>
                       <span className="text" key="start" ></span>
                         <i className="dropdown right floated icon"></i>
                       <div className="menu">

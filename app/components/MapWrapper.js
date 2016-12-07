@@ -12,7 +12,6 @@ var MapWrapper = React.createClass({
   propTypes: {
   },
   render: function() {
-    var pad = this.props.rowPadding ? ROW_PADDING : this.props.rowPadding;
     return (
         <MapContainer />
     );

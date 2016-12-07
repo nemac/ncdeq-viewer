@@ -1,7 +1,6 @@
 var React = require('react');
 
 var MapWrapper = require('./MapWrapper');
-import MapLayerToggleContainer from '../containers/MapLayerToggleContainer';
 
 var PropTypes = React.PropTypes;
 

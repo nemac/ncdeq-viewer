@@ -87,7 +87,7 @@ const CustomToolTipBarCharts  = React.createClass({
     })
     $(background_bar2).on("mouseenter",function(){
       self.handleMouse(data);
-    })
+     })
     $(foreground_bar).on("mouseenter",function(){
       self.handleMouse(data);
     })
