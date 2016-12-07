@@ -132,7 +132,7 @@ const CustomToolTipBarCharts  = React.createClass({
         const name = bar_segment.name + ": "
 
         const testname = this.props.function_limits[0].active_name
-        console.log(testname,bar_segment.name)
+
         //when tra's have a value of 0 do not display the tool tip...
         if((bar_segment.value === 0 || !bar_segment.value ) && this.props.chart_type.toUpperCase() === 'TRA' ){
           return null
