@@ -184,7 +184,7 @@ var ChartRow = React.createClass({
     //returned the filtered chart data
     return chart_data_limited
   },
-  getChart_FilteredByChartLevel: function(chart_data, filter_value, is_top){
+  getChart_FilteredByChartLevel: function(chart_data, filter_value, chart_type, is_top){
   //gets the chart data Filtered by the chart limit or HUC
 
     let use_top = true;
@@ -197,27 +197,66 @@ var ChartRow = React.createClass({
 
     let chart_data_limited =[];
 
+    let function_limit_name
+    let function_limit_id
+    let function_limits
+    if(this.props.active_function){
+      function_limits = this.props.active_function.filter( af => {
+        return af.chart_type.toUpperCase() === chart_type.toUpperCase()
+      })
+    }
+
+    if(function_limits){
+      function_limit_name = function_limits[0].active_name
+      function_limit_id = function_limits[0].chart_id
+    }
     //make sure the data has been set
     if(chart_data){
       if(use_top){
         if(chart_data.chart_features){
           chart_data_limited =  chart_data.chart_features.filter ( chart_objects => {
-            return chart_objects.properties.chart_id === filter_value;
+            if(function_limit){
+              return chart_objects.properties.chart_id === filter_value &&
+              (chart_objects.properties.chart_level_label === function_limit_name &&
+               chart_objects.properties.chart_id === function_limit_id || chart_objects.properties.chart_id != function_limit_id);
+            } else {
+              return chart_objects.properties.chart_id === filter_value;
+            }
           })
         } else {
           chart_data_limited =  chart_data.filter ( chart_objects => {
-            return chart_objects.properties.chart_id === filter_value;
+            if(function_limit_name){
+              return chart_objects.properties.chart_id === filter_value  &&
+              (chart_objects.properties.chart_level_label === function_limit_name &&
+               chart_objects.properties.chart_id === function_limit_id || chart_objects.properties.chart_id != function_limit_id);
+            } else {
+              return chart_objects.properties.chart_id === filter_value;
+            }
           })
         }
       } else {
         if(chart_data.chart_features){
           chart_data_limited =  chart_data.chart_features.filter ( chart_objects => {
-            return chart_objects.properties.chart_matchid === filter_value && chart_objects.properties.chart_id != filter_value
+            if(function_limit_name){
+              return chart_objects.properties.chart_matchid === filter_value &&
+                     chart_objects.properties.chart_id != filter_value &&
+                       (chart_objects.properties.chart_level_label === function_limit_name &&
+                        chart_objects.properties.chart_id === function_limit_id || chart_objects.properties.chart_id != function_limit_id);
+            } else {
+              return chart_objects.properties.chart_matchid === filter_value && chart_objects.properties.chart_id != filter_value
+            }
           })
 
         } else {
           chart_data_limited =  chart_data.filter ( chart_objects => {
-            return chart_objects.properties.chart_matchid === filter_value && chart_objects.properties.chart_id != filter_value
+            if(function_limit){
+              return chart_objects.properties.chart_matchid === filter_value &&
+                     chart_objects.properties.chart_id != filter_value &&
+                     (chart_objects.properties.chart_level_label === function_limit_name &&
+                      chart_objects.properties.chart_id === function_limit_id || chart_objects.properties.chart_id != function_limit_id);
+            } else {
+              return chart_objects.properties.chart_matchid === filter_value && chart_objects.properties.chart_id != filter_value
+            }
           })
         }
       }
@@ -272,7 +311,7 @@ var ChartRow = React.createClass({
     // builds chart data into proper format for rechart library (bar charts)
     let chart_data_array = [];
 
-    if(chart_data){
+    if(chart_data ){
 
       //get constants from redux
       const charts_limits = this.props.charts.chart_levels.chart_limits;
@@ -286,7 +325,7 @@ var ChartRow = React.createClass({
           const current_chart_matchid = (chart_type_limt[0] ? chart_type_limt[0].current_chart_matchid : 2)
 
           //get the chart for the current chart hierarchical level
-          let levelone =  this.getChart_FilteredByChartLevel( chart_data, current_chart_matchid, false );
+          let levelone =  this.getChart_FilteredByChartLevel( chart_data, current_chart_matchid, chart_type, false );
 
           // sort by value
           let sorted_hucs = this.getChart_Sorted(levelone);
@@ -501,7 +540,6 @@ var ChartRow = React.createClass({
     chart_baseline_bar = this.getChart_data(baseline_data[0], 'BASELINE');
     chart_upflift_bar = this.getChart_data(uplift_data[0], 'UPLIFT');
     chart_tar_bar = this.getChart_data(tra_data[0], 'TRA');
-    // console.log(tra_data[0])
 
     //probably need to rename this to describe it better I already got confused
     const tra_point_info = this.props.traPointInfo
@@ -548,7 +586,7 @@ var ChartRow = React.createClass({
           const extra_tra = TRA_OBJ.length > 1 ? "'s" : "";
           icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
           tra_text_message_point = "The point on the map is in a TRA. "
-          success_class_point = "ui icon success message"
+          success_class_point = "ui icon fluid success message"
           icon_point = (<i className="check circle icon"></i>)
           sub_header_point = (<p>This includes the TRA{extra_tra}: {tra_string}</p>)
 
@@ -556,7 +594,7 @@ var ChartRow = React.createClass({
           //  and that location or cliced point was NOT inside a tra format the message
         } else {
           icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
-          success_class_point = "ui icon negative message"
+          success_class_point = "ui icon fluid negative message"
           icon_point = (<i className="remove circle icon"></i>)
           tra_text_message_point = "The point on the map is NOT in a TRA"
           sub_header_point = ""
@@ -570,7 +608,7 @@ var ChartRow = React.createClass({
   //  a indication that something can happen
   if(!show_point){
     tra_text_message_point = "Please Click on the Map or Search for a location to discover if it is in a TRA"
-    success_class_point = "ui icon info message"
+    success_class_point = "ui icon fluid info message"
     icon_point = (<i className="info circle icon"></i>)
     sub_header_point = ""
   }
@@ -631,6 +669,7 @@ var ChartRow = React.createClass({
 
       const ADJUSTED_CHART_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : CHART_WIDTH;
 
+
     return (
       <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
         <div className={working_class}>
@@ -644,8 +683,8 @@ var ChartRow = React.createClass({
           </div>
         </div>
         </div>
-
-      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
+       <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
+      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{width:"99%",overflow:"visible"}}>
 
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
@@ -680,6 +719,8 @@ var ChartRow = React.createClass({
           top_label=""
           bottom_label=""
           level_label={"TRA"}
+          set_active_function={this.props.set_active_function}
+          active_function={this.props.active_function}
           />
         }
         { chart_filter &&
@@ -704,6 +745,8 @@ var ChartRow = React.createClass({
           top_label="Most Impaired"
           bottom_label="Least Impaired"
           level_label={this.getLevel()}
+          set_active_function={this.props.set_active_function}
+          active_function={this.props.active_function}
           />
         }
         { chart_filter &&
@@ -728,6 +771,8 @@ var ChartRow = React.createClass({
            top_label="More Potential"
            bottom_label="Less Potential"
            level_label={this.getLevel()}
+           set_active_function={this.props.set_active_function}
+           active_function={this.props.active_function}
            />
          }
          { chart_filter &&
@@ -763,7 +808,7 @@ var ChartRow = React.createClass({
 
          }
 
-
+        </div>
       </div>
     </div>
     );

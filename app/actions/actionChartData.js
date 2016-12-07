@@ -190,8 +190,6 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
                    '&f=pgeojson' +
                    '&token='
 
-  // console.log(query_URL)
-
   //send the ajax request via axios
   return axios.get(query_URL);
 
@@ -385,12 +383,12 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
 
             return
           })
-          .catch(error => {
-            //end fetching set fetching state to false
-            dispatch(fetching_end())
-
-            console.log('request failed', error);
-          });
+          // .catch(error => {
+          //   //end fetching set fetching state to false
+          //   dispatch(fetching_end())
+          //
+          //   console.log('request failed', error);
+          // });
 
       } else {
 
@@ -454,12 +452,12 @@ export function get_ChartLevels(id,level){
       dispatch(fetching_end())
 
     })
-    .catch(error => {
-      //end fetching set fetching state to false
-      dispatch(fetching_end())
-
-      console.log('request failed', error);
-    });
+    // .catch(error => {
+    //   //end fetching set fetching state to false
+    //   dispatch(fetching_end())
+    //
+    //   console.log('request failed', error);
+    // });
 
   }
 }
@@ -517,12 +515,12 @@ export function get_nlcd_data(id, level){
         dispatch(fetching_end())
 
       })
-      .catch(error => {
-        //end fetching set fetching state to false
-        dispatch(fetching_end())
-
-        console.log('request failed', error);
-      });
+      // .catch(error => {
+      //   //end fetching set fetching state to false
+      //   dispatch(fetching_end())
+      //
+      //   console.log('request failed', error);
+      // });
   }
 }
 
@@ -580,12 +578,12 @@ export function get_nlcd_data_huc12(id, level){
         dispatch(fetching_end())
 
       })
-      .catch(error => {
-        //end fetching set fetching state to false
-        dispatch(fetching_end())
-
-        console.log('request failed', error);
-      });
+      // .catch(error => {
+      //   //end fetching set fetching state to false
+      //   dispatch(fetching_end())
+      //
+      //   console.log('request failed', error);
+      // });
   }
 }
 
@@ -683,12 +681,12 @@ export function get_catchment_data(id, level){
         dispatch(fetching_end())
 
       })
-      .catch(error => {
-        //end fetching set fetching state to false
-        dispatch(fetching_end())
-
-        console.log('request failed', error);
-      });
+      // .catch(error => {
+      //   //end fetching set fetching state to false
+      //   dispatch(fetching_end())
+      //
+      //   console.log('request failed', error);
+      // });
   }
 }
 
@@ -799,30 +797,28 @@ export function get_ChartData(id,level){
                 ];
 
           //send the chart data on
-          dispatch(
-            ChartData('GET_CHART_DATA', visibility, types)
-          )
+          dispatch(ChartData('GET_CHART_DATA', visibility, types))
 
           //end fetching set fetching state to false
           dispatch(fetching_end())
 
         })
-        .catch(error => {
-          //end fetching set fetching state to false
-          dispatch(fetching_end())
-
-          console.log('request failed', error);
-        });
+        // .catch(error => {
+        //   //end fetching set fetching state to false
+        //   dispatch(fetching_end())
+        //
+        //   console.log('request failed', error);
+        // });
 
       })
 
     )
-    .catch(error => {
-      //end fetching set fetching state to false
-      dispatch(fetching_end())
-
-      console.log('request failed', error);
-    });
+    // .catch(error => {
+    //   //end fetching set fetching state to false
+    //   dispatch(fetching_end())
+    //
+    //   console.log('request failed', error);
+    // });
   }
 }
 
@@ -857,6 +853,50 @@ export function update_ChartVisiblity (visibility){
     }
 }
 
+export function get_active_function (chart_id, active_name, chart_type){
+    return (dispatch, getState) => {
+      const charts = ['tra','baseline','uplift']
+      //start fetching state (set to true)
+      dispatch(fetching_start())
+
+      const state = getState()
+      let active_functions
+      //walk the charts array and get chart types that will have switcher for baseline
+      //  and write the current active function
+      if(!state.active_function.active_function){
+        active_functions = charts.map( charts_type => {
+          if(charts_type === chart_type){
+            return({chart_id, active_name, chart_type})
+          } else {
+            return({chart_id: null, active_name: null, chart_type: charts_type})
+          }
+        })
+      } else {
+        active_functions = state.active_function.active_function.map( charts_type => {
+          if(charts_type.chart_type === chart_type){
+            return({chart_id, active_name, chart_type})
+          } else {
+            return({chart_id: charts_type.chart_id, active_name: charts_type.active_name, chart_type: charts_type.chart_type})
+          }
+        })
+      }
+
+      //update the array for the active function for the chart type
+      const types =  {active_functions};
+
+      //send active_function setting on
+      dispatch(active_function('SET_ACTIVE_FUNCTION', active_functions ))
+
+      //end fetching set fetching state to false
+      dispatch(fetching_end())
+
+    }
+}
+
+function active_function(type, data){
+  return {type: type, active_function: data}
+}
+
 //function to handle sending to reducer and store
 function ChartLevels(type, levels, chart_limits) {
   // return {
@@ -874,6 +914,7 @@ function ChartLevels(type, levels, chart_limits) {
    receivedAt: Date.now()
  }
 }
+
 
 function CATCHMENTData(type, data, catchment_chart_ar){
   return {type: type, CATCHMENTData: data, catchment_chart_ar: catchment_chart_ar}

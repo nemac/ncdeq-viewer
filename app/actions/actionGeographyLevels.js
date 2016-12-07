@@ -259,11 +259,11 @@ export function get_GeographyLevels(){
           dispatch(fetching_end())
 
         })
-        .catch(error => {
-          //end fetching set fetching state to false
-          dispatch(fetching_end())
-          console.log('request failed', error);
-        });
+        // .catch(error => {
+        //   //end fetching set fetching state to false
+        //   dispatch(fetching_end())
+        //   console.log('request failed', error);
+        // });
 
   }
 }

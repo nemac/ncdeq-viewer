@@ -29,6 +29,7 @@ export const update_ChartLevels = ChartData.update_ChartLevels;
 export const get_nlcd_data = ChartData.get_nlcd_data;
 export const get_nlcd_data_huc12 = ChartData.get_nlcd_data_huc12;
 export const get_catchment_data = ChartData.get_catchment_data;
+export const set_active_function = ChartData.get_active_function;
 
 //map data and state actions
 export const get_defaultMapData = MapConfig.get_defaultMapData;

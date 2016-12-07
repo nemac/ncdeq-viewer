@@ -102,12 +102,159 @@ var ChartRowWrapper = React.createClass({
     return is_valid
 
   },
+  sort_byid: function(chart_levels){
+
+    //sort by chart id Setting up to count #of ids if more than one
+    // we will make a selector and update the chart
+    const sorted_levels = chart_levels.sort(function (a, b) {
+      if (Number(a.properties.chart_id) > Number(b.properties.chart_id)) {
+        return -1;
+      }
+      if (Number(a.properties.chart_id) < Number(b.properties.chart_id)) {
+        return 1;
+      }
+
+      // a must be equal to b or must be a null value?
+      return 0;
+    });
+
+
+    return sorted_levels;
+
+  },
+  check_dupes: function(chart_levels, chart_id){
+    let has_dupes =  false;
+    let count = 0;
+    let last_id = 0
+    chart_levels.map( item => {
+      if(last_id === chart_id){
+        count = count + 1;
+        if(count > 1){
+          has_dupes = true
+        }
+      }
+      if(item.properties){
+        last_id  = Number(item.properties.chart_id)
+      } else {
+        last_id  = Number(item.chart_id)
+      }
+    })
+    return has_dupes
+  },
+  get_initial_dupe: function() {
+
+    const chart_levels = this.get_chart_levels()
+    const last_chart = this.get_chart_Previous()
+    const is_next_valid = this.check_next_level_valid()
+    const chart_type =  this.props.chart_type;
+    const sort_id = this.sort_byid(chart_levels);
+
+    const new_chart_levels = this.update_ChartLevels(sort_id)
+    let keycnt=0
+
+    const dup = new_chart_levels.map( item => {
+
+      const has_dupes = this.check_dupes(new_chart_levels,item.chart_id)
+      if(has_dupes){
+        keycnt += 1
+      } else {
+        keycnt = 0
+      }
+      //set initial active function picker
+      if(has_dupes && keycnt===1){
+        this.set_initial(item.chart_level_label)
+        const data = {chart_id:item.chart_id, active_name:item.chart_level_label, chart_type:this.props.chart_type}
+        this.props.set_active_function(item.chart_id, item.chart_level_label, this.props.chart_type)
+        return (data)
+      }
+    })
+
+  },
+  get_dupes: function(chart_levels, chart_id){
+    let keycnt=0
+    const chart_type = this.props.chart_type;
+    const dup = chart_levels.map( item => {
+      if(Number(item.chart_id) === Number(chart_id)){
+        const colors = this.props.get_keyColors(item.chart_level_label)
+        const button_color = {"backgroundColor": colors[1]+"!important"}
+        return (
+          <div  key={keycnt++} className={"item function " + chart_type.toUpperCase()} style={button_color}>
+            <span className="text" onClick={this.handleChange.bind(null,item.chart_id,item.chart_level_label)}>{item.chart_level_label}</span>
+          </div>)
+      }
+    })
+    return dup
+  },
+  update_ChartLevels: function(chart_levels){
+    let new_chart_levels = []
+    chart_levels.map( item => {
+      const has_dupes = this.check_dupes(chart_levels, Number(item.properties.chart_id));
+      new_chart_levels.push({...item.properties,has_dupes})
+    })
+    return new_chart_levels
+  },
+  handleChange: function(chart_id, label, e){
+    this.props.set_active_function(chart_id, label, this.props.chart_type)
+  },
+  componentDidMount: function() {
+    const chart_type = this.props.chart_type;
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown({allowCategorySelection: true});
+    $('.level.down.icon').popup();
+    this.get_initial_dupe()
+    $('.level.down.icon')
+      .popup({
+        position : 'top center',
+        content  : 'Drill Down into function'
+      })
+    ;
+  },
+
+  componentDidUpdate: function(prevProps, prevState) {
+    const chart_type = this.props.chart_type;
+    let label =  $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('get text');
+    let function_limits;
+
+    if(label === ''){
+        function_limits = this.props.active_function.filter( af => {
+          return af.chart_type === chart_type
+      })
+      label = function_limits[0].active_name
+    }
+
+    const colors = this.props.get_keyColors(label)
+
+    const csstext = 'background-color: ' + colors[1] + ' !important;padding: 0px !important;padding-left: 0px !important;padding-right: 30px !important;'
+
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).css("background-color",colors[1])
+    $('.ui.tiny.disabled.right.labeled.icon.black.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext )
+    $('ui.tiny.black.right.labeled.icon.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext )
+
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).css("color","#fff")
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).css("font-size",".85714286rem")
+
+    $('.ui.tiny.disabled.right.labeled.icon.black.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext  )
+    $('.ui.tiny.black.right.labeled.icon.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext )
+
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set text',label);
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set value',label);
+  },
+  set_initial: function(value){
+    const chart_type = this.props.chart_type;
+
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set text',value);
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set value',value);
+  },
+
   render: function() {
 
     //get the chart levels
     const chart_levels = this.get_chart_levels()
     const last_chart = this.get_chart_Previous()
     const is_next_valid = this.check_next_level_valid()
+    const chart_type =  this.props.chart_type;
+    const sort_id = this.sort_byid(chart_levels);
+
+    const new_chart_levels = this.update_ChartLevels(sort_id)
 
     //check if at the charts top heirachy
     const at_top = (last_chart.current_chart_level === 2 && last_chart.current_chart_matchid === 1)
@@ -130,6 +277,17 @@ var ChartRowWrapper = React.createClass({
     const ADJUSTED_TITLE_HEIGHT = window.innerWidth < 1260 ? "3.5em" : "3em";
 
     const space = (<span>&nbsp;</span>)
+
+    let last_chart_id = 0
+    let last_has_dupe = false
+
+    let function_limits;
+    if(this.props.active_function){
+      function_limits = this.props.active_function.filter( af => {
+        return af.chart_type === chart_type
+      })
+    }
+
     return (
 
         <div className="ui fluid accordion" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border:BOX_BORDER,paddingTop:"0px", borderRadius: BOX_BORDER_RADUIS}}>
@@ -171,25 +329,56 @@ var ChartRowWrapper = React.createClass({
             </button>
 
 
-            { chart_levels &&
+            { new_chart_levels &&
 
-              chart_levels.map(function(item) {
-                const label = item.properties.chart_level_label;
-                const next_chart_level = item.properties.chart_level+1;
+              new_chart_levels.map(function(item) {
+                const is_selector_done = Number(item.chart_id) === last_chart_id
+                const has_dupes  = item.has_dupes;
 
-                const next_matchid = item.properties.chart_id;
-                const chart_type  = item.properties.chart_type;
+                const label = item.chart_level_label;
+                const next_chart_level = item.chart_level+1;
 
+                const next_matchid = item.chart_id;
+                const chart_type  = item.chart_type;
                 const colors = this.props.get_keyColors(label)
-                const button_color = {"backgroundColor":  colors[1]}
+                const button_color = {"backgroundColor":  colors[1]+"!important"}
+                const button_color_pulldown = {"backgroundColor":  colors[1]+"!important","padding": "0px!important","paddingLeft": "0px!important","paddingRight":  "30px!important"}
 
-                let button_class = is_next_valid ? "ui tiny black button" : "ui tiny disabled black button";
+                let button_class = is_next_valid ? "ui tiny black right labeled icon button" : "ui tiny disabled right labeled icon black button";
+                let button_class_pulldown = is_next_valid ? "ui tiny black right labeled icon button function " + chart_type : "ui tiny disabled right labeled icon black button function " + chart_type;
 
-                return (  <button className={button_class} key={label} style={button_color}
-                                    onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)} >
-                           {label}
-                          </button>)
+                const start = (has_dupes && !last_has_dupe)
 
+                last_chart_id = Number(item.chart_id)
+                last_has_dupe = has_dupes
+                let keycnta = 0
+                let keycntb = 0
+
+                if(start){
+                  const testobj = this.get_dupes(new_chart_levels,item.chart_id);
+                  return (
+
+
+                    <button className={button_class_pulldown} key={label + '-' + keycntb++ } style={button_color_pulldown} >
+                    <div key={label + '-' + keycnta++} className={"ui dropdown compact button function " + chart_type} style={{padding:"10px"}} >
+                      <span className="text" key="start" ></span>
+                        <i className="dropdown right floated icon"></i>
+                      <div className="menu">
+                        {testobj}
+                      </div>
+                    </div>
+                    <i className="level down right floated icon"  onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}></i>
+                </button>
+                  )
+                }
+
+                if(!has_dupes){
+                  return (  <button className={button_class} key={label + '-' + keycntb++ } style={button_color}
+                                      onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)} >
+                             {label}
+                             <i className="level down icon"></i>
+                            </button>)
+                }
 
             }.bind(this))
           }
@@ -211,6 +400,7 @@ var ChartRowWrapper = React.createClass({
                         top_label={this.props.top_label}
                         bottom_label={this.props.bottom_label}
                         level_label={this.props.level_label}
+                        function_limits={function_limits}
                                       />
 
           </div>

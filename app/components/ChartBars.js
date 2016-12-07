@@ -19,9 +19,8 @@ var ChartBars = React.createClass({
     };
   },
   handleClick(constructor, entry, data, index, test) {
-
     const name = entry.name
-
+    
     const chart_type = this.props.chart_type
 
     this.props.set_search_method('chart clicked')
@@ -135,7 +134,7 @@ var ChartBars = React.createClass({
     return (
 
       <div >
-        <div id="bar-chart" >
+        <div id={"bar-chart-"+this.props.chart_type} >
           <BarChart key={this.props.chart_type}
                     width={this.props.chart_width}
                     height={200}
@@ -151,7 +150,9 @@ var ChartBars = React.createClass({
                      get_tra_info={this.props.get_tra_info}
                      get_keyColors={this.props.get_keyColors}
                      chart_type={this.props.chart_type}
-                     level_label={this.props.level_label}/>}/>
+                     level_label={this.props.level_label}
+                     handleClick={this.handleClick}
+                     function_limits={this.props.function_limits}/>}/>
             {this.get_bars()}
            </BarChart>
         </div>

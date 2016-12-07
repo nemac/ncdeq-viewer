@@ -395,7 +395,6 @@ var MapContainer = React.createClass({
       let level = this.getLevel();
       const method = this.props.searchMethod;
 
-      console.log()
       if( method.substring(0,11) === 'chart hover'){
         if(this.props.hoverInfo){
           let has_features = this.has_features(this.props.hoverInfo)

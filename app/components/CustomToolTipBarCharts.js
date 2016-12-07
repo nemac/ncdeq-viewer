@@ -40,33 +40,11 @@ const CustomToolTipBarCharts  = React.createClass({
         return HUC12_MAP_FEATUREID
     }
   },
-  handleClick: function (data){
-
+  handleMouse: function (data, e){
     const chart_type = this.props.chart_type
 
-    this.props.set_search_method('chart clicked')
-
-    //set current geography level in redux state store
-    this.props.change_geographyLevelActive(data.value);
-
-    //only do this if the id is tra.  tra id's start with TP
-    if(chart_type.toUpperCase() === "TRA"){
-      this.setState({
-        tra_filter: data.value
-      })
-      this.props.get_tra_info(data.value)
-
-    //not tra so should be a huc. assume huc12...
-    } else {
-      this.props.get_LayerInfo_ByValue(data.value, HUC12_MAP_FEATUREID)
-    }
-
-  },
-  handleMouse: function (data){
-    const chart_type = this.props.chart_type
-
-    this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
     this.props.set_search_method('chart hover ' + chart_type)
+    this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
 
   },
   componentWillUpdate: function(nextProps, nextState) {
@@ -74,44 +52,58 @@ const CustomToolTipBarCharts  = React.createClass({
     const layer_id = this.get_layer_id(nextProps.chart_type)
     const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
     const nodata = {value:null, chart_type: null, layer_id: null}
+    const chart_type = nextProps.chart_type
+
+    const foreground_bar = $('#bar-chart-'+chart_type).find('.recharts-rectangle.recharts-bar-rectangle')
+    const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
+    const background_bar2 = $('#bar-chart-'+chart_type).find('.recharts-wrapper')
+
     //yes jquery but I cannot hook to the elements in d3 svg.
     //  so i need to bind to them...
-    $('.recharts-bar-cursor').unbind('click');
-    $('.recharts-bar-cursor').unbind('mouseenter');
-    $('.recharts-bar-cursor').unbind('mouseleave');
+    $(foreground_bar).unbind('click');
+    $(foreground_bar).unbind('mouseenter');
+    $(foreground_bar).unbind('mouseleave');
 
-    $('.recharts-bar-rectangles').unbind('click');
-    $('.recharts-bar-rectangles').unbind('mouseenter');
-    $('.recharts-bar-rectangles').unbind('mouseleave');
+    $(background_bar).unbind('click');
+    $(background_bar).unbind('mouseenter');
+    $(background_bar).unbind('mouseleave');
 
-    $('.recharts-bar-cursor').on("click",function(){
-      self.handleClick(data);
-      // console.log('clicked' + JSON.stringify(data))
-    })
-    $('.recharts-bar-rectangles').on("click",function(){
-      self.handleClick(data);
-      // console.log('clicked' + JSON.stringify(data))
-    })
+    $(background_bar2).unbind('click');
+    $(background_bar2).unbind('mouseenter');
+    $(background_bar2).unbind('mouseleave');
 
-    $('.recharts-bar-cursor').on("mouseenter",function(){
-      self.handleMouse(data);
-      // console.log('mouseenter' + JSON.stringify(data))
+    $(background_bar).on("click",function(){
+      self.props.handleClick(self,{name:data.value});
     })
-    $('.recharts-rectangle .recharts-bar-rectangles').on("mouseenter",function(){
-      self.handleMouse(data);
-      // console.log('mouseenter' + JSON.stringify(data))
+    $(background_bar2).on("click",function(){
+      self.props.handleClick(self,{name:data.value});
+    })
+    $(foreground_bar).on("click",function(){
+      self.props.handleClick(self,{name:data.value});
     })
 
-    $('.recharts-bar-cursor').on("mouseleave",function(){
-      self.handleMouse(nodata);
-      // console.log('mouseleave' + JSON.stringify(nodata))
-    })
-    $('.recharts-bar-rectangles').on("mouseleave",function(){
-      self.handleMouse(nodata);
-      // console.log('mouseleave' + JSON.stringify(nodata))
-    })
+    // $(background_bar).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    // $(background_bar2).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    // $(foreground_bar).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    //
+    // $(background_bar).on("mouseleave",function(){
+    //   self.handleMouse(nodata);
+    // })
+    // $(background_bar2).on("mouseleave",function(){
+    //   self.handleMouse(nodata);
+    // })
+    // $(foreground_bar).on("mouseleave",function(){
+    //   self.handleMouse(nodata);
+    // })
 
   },
+
   render() {
 
     const { active } = this.props;
@@ -121,9 +113,6 @@ const CustomToolTipBarCharts  = React.createClass({
 
 
       const layer_id = this.get_layer_id(this.props.chart_type)
-
-      // this.props.get_LayerGeom_ByValue(label,this.props.chart_type)
-      // console.log({value:label,chart_type: this.props.chart_type, layer_id: layer_id})
 
       const reversed_payload = [ ...payload ].reverse()
 
@@ -139,14 +128,20 @@ const CustomToolTipBarCharts  = React.createClass({
           fontWeight: '800',
         }
 
-        const value = bar_segment.value ?  bar_segment.value.toString().substring(0,5) : 'N/A';
+        const value = bar_segment.value ?  bar_segment.value.toString().substring(0,5) : '0';
         const name = bar_segment.name + ": "
 
+        const testname = this.props.function_limits[0].active_name
+
         //when tra's have a value of 0 do not display the tool tip...
-        if((bar_segment.value === 0 || !bar_segment.value ) && this.props.chart_type.toUpperCase() === 'TRA'){
+        if((bar_segment.value === 0 || !bar_segment.value ) && this.props.chart_type.toUpperCase() === 'TRA' ){
           return null
         } else {
-          return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
+          if(bar_segment.value === 0 || !bar_segment.value ){
+            return null
+          } else {
+            return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
+          }
         }
       })
 

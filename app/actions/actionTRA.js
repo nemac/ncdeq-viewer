@@ -138,7 +138,6 @@ export function get_TRAData(hucid, current_geography_level){
       tra_datas = CheckReponse(tra_xwalk_response,'AGO_API_ERROR');
 
       if(tra_datas.features){
-        // console.log(tra_datas)
 
         let group = []
         let tra_id_list = ""
@@ -178,20 +177,20 @@ export function get_TRAData(hucid, current_geography_level){
               }
 
             })
-            .catch(error => {
-              //end fetching set fetching state to false
-              dispatch(fetching_end())
-              console.log('request failed', error);
-            });
+            // .catch(error => {
+            //   //end fetching set fetching state to false
+            //   dispatch(fetching_end())
+            //   console.log('request failed', error);
+            // });
 
         })
       }
     })
-    .catch(error => {
-      //end fetching set fetching state to false
-      dispatch(fetching_end())
-      console.log('request failed', error);
-    });
+    // .catch(error => {
+    //   //end fetching set fetching state to false
+    //   dispatch(fetching_end())
+    //   console.log('request failed', error);
+    // });
 
     let group = [];
 
