@@ -199,10 +199,14 @@ var ChartRowWrapper = React.createClass({
   componentDidMount: function() {
     const chart_type = this.props.chart_type;
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown({allowCategorySelection: true});
-    // if(this.props.chart_type === 'tra'){
-      this.get_initial_dupe()
-    // }
-
+    $('.level.down.icon').popup();
+    this.get_initial_dupe()
+    $('.level.down.icon')
+      .popup({
+        position : 'top center',
+        content  : 'Drill Down into function'
+      })
+    ;
   },
 
   componentDidUpdate: function(prevProps, prevState) {
@@ -356,14 +360,14 @@ var ChartRowWrapper = React.createClass({
 
 
                     <button className={button_class_pulldown} key={label + '-' + keycntb++ } style={button_color_pulldown} >
-                    <div key={label + '-' + keycnta++} className={"ui dropdown compact button function " + chart_type} style={{padding:"10px"}}>
+                    <div key={label + '-' + keycnta++} className={"ui dropdown compact button function " + chart_type} style={{padding:"10px"}} >
                       <span className="text" key="start" ></span>
                         <i className="dropdown right floated icon"></i>
                       <div className="menu">
                         {testobj}
                       </div>
                     </div>
-                    <i className="level down right floated icon" onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}></i>
+                    <i className="level down right floated icon"  onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}></i>
                 </button>
                   )
                 }
