@@ -40,29 +40,29 @@ const CustomToolTipBarCharts  = React.createClass({
         return HUC12_MAP_FEATUREID
     }
   },
-  handleClick: function (data){
-    console.log('click')
-    const chart_type = this.props.chart_type
-
-    this.props.set_search_method('chart clicked')
-
-    //set current geography level in redux state store
-    this.props.change_geographyLevelActive(data.value);
-
-    //only do this if the id is tra.  tra id's start with TP
-    if(chart_type.toUpperCase() === "TRA"){
-      this.props.get_tra_info(data.value)
-    //not tra so should be a huc. assume huc12...
-    } else {
-      this.props.get_LayerInfo_ByValue(data.value, HUC12_MAP_FEATUREID)
-    }
-
-  },
+  // handleClick: function (data){
+  //   console.log('click')
+  //   const chart_type = this.props.chart_type
+  //
+  //   this.props.set_search_method('chart clicked')
+  //
+  //   //set current geography level in redux state store
+  //   this.props.change_geographyLevelActive(data.value);
+  //
+  //   //only do this if the id is tra.  tra id's start with TP
+  //   if(chart_type.toUpperCase() === "TRA"){
+  //     this.props.get_tra_info(data.value)
+  //   //not tra so should be a huc. assume huc12...
+  //   } else {
+  //     this.props.get_LayerInfo_ByValue(data.value, HUC12_MAP_FEATUREID)
+  //   }
+  //
+  // },
   handleMouse: function (data, e){
     const chart_type = this.props.chart_type
-    console.log('mouse enter,leave')
-    console.log(data)
-    console.log(e)
+    // console.log('mouse enter,leave')
+    // console.log(data)
+    // console.log(e)
 
     this.props.set_search_method('chart hover ' + chart_type)
     this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
@@ -94,15 +94,15 @@ const CustomToolTipBarCharts  = React.createClass({
     $(background_bar2).unbind('mouseleave');
 
     $(background_bar).on("click",function(){
-      self.handleClick(data);
+      self.props.handleClick(self,{name:data.value});
       // console.log('clicked' + JSON.stringify(data))
     })
     $(background_bar2).on("click",function(){
-      self.handleClick(data);
+      self.props.handleClick(self,{name:data.value});
       // console.log('clicked' + JSON.stringify(data))
     })
     $(foreground_bar).on("click",function(){
-      self.handleClick(data);
+      self.props.handleClick(self,{name:data.value});
       // console.log('clicked' + JSON.stringify(data))
     })
 
