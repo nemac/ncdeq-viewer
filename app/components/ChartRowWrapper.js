@@ -193,27 +193,24 @@ var ChartRowWrapper = React.createClass({
     return new_chart_levels
   },
   handleChange: function(chart_id, label, e){
-
     this.props.set_active_function(chart_id, label, this.props.chart_type)
   },
   componentDidMount: function() {
     const chart_type = this.props.chart_type;
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown({allowCategorySelection: true});
-    if(this.props.chart_type === 'tra'){
+    // if(this.props.chart_type === 'tra'){
       this.get_initial_dupe()
-    }
+    // }
 
   },
 
   componentDidUpdate: function(prevProps, prevState) {
     const chart_type = this.props.chart_type;
-    console.log(chart_type)
-    console.log('.ui.dropdown.button.function.' + chart_type.toUpperCase())
     let label =  $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('get text');
     let function_limits;
 
-    if(chart_type === 'tra' && label === ''){
-        function_limits = this.props.active_function.active_function.filter( af => {
+    if(label === ''){
+        function_limits = this.props.active_function.filter( af => {
           return af.chart_type === chart_type
       })
       label = function_limits[0].active_name
@@ -347,7 +344,6 @@ var ChartRowWrapper = React.createClass({
 
                 if(start){
                   const testobj = this.get_dupes(new_chart_levels,item.chart_id);
-                  console.log(testobj)
                   return (
 
 

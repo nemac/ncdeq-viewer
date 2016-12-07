@@ -860,22 +860,32 @@ export function get_active_function (chart_id, active_name, chart_type){
       dispatch(fetching_start())
 
       const state = getState()
-
+      let active_functions
       //walk the charts array and get chart types that will have switcher for baseline
       //  and write the current active function
-      const active_function_data = charts.map( charts_type => {
-        if(charts_type === chart_type){
-          return({chart_id, active_name, chart_type})
-        } else {
-          return({chart_id: null, active_name: null, chart_type: charts_type})
-        }
-      })
+      if(!state.active_function.active_function){
+        active_functions = charts.map( charts_type => {
+          if(charts_type === chart_type){
+            return({chart_id, active_name, chart_type})
+          } else {
+            return({chart_id: null, active_name: null, chart_type: charts_type})
+          }
+        })
+      } else {
+        active_functions = state.active_function.active_function.map( charts_type => {
+          if(charts_type.chart_type === chart_type){
+            return({chart_id, active_name, chart_type})
+          } else {
+            return({chart_id: charts_type.chart_id, active_name: charts_type.active_name, chart_type: charts_type.chart_type})
+          }
+        })
+      }
 
       //update the array for the active function for the chart type
-      const types =  {...state.active_function, active_function: active_function_data} ;
+      const types =  {active_functions};
 
       //send active_function setting on
-      dispatch(active_function('SET_ACTIVE_FUNCTION', types ))
+      dispatch(active_function('SET_ACTIVE_FUNCTION', active_functions ))
 
       //end fetching set fetching state to false
       dispatch(fetching_end())

@@ -201,15 +201,16 @@ var ChartRow = React.createClass({
     let function_limit_id
     let function_limits
     if(this.props.active_function){
-      function_limits = this.props.active_function.active_function.filter( af => {
-        return af.chart_type.toUpperCase() === chart_type
+      function_limits = this.props.active_function.filter( af => {
+        return af.chart_type.toUpperCase() === chart_type.toUpperCase()
       })
     }
+    console.log(chart_type)
+    console.log(function_limits)
     if(function_limits){
       function_limit_name = function_limits[0].active_name
       function_limit_id = function_limits[0].chart_id
     }
-
     //make sure the data has been set
     if(chart_data){
       if(use_top){
@@ -586,7 +587,7 @@ var ChartRow = React.createClass({
           const extra_tra = TRA_OBJ.length > 1 ? "'s" : "";
           icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
           tra_text_message_point = "The point on the map is in a TRA. "
-          success_class_point = "ui icon success message"
+          success_class_point = "ui icon fluid success message"
           icon_point = (<i className="check circle icon"></i>)
           sub_header_point = (<p>This includes the TRA{extra_tra}: {tra_string}</p>)
 
@@ -594,7 +595,7 @@ var ChartRow = React.createClass({
           //  and that location or cliced point was NOT inside a tra format the message
         } else {
           icon_map = (<i className="big marker icon" style={{color:"#3388cc"}}></i>)
-          success_class_point = "ui icon negative message"
+          success_class_point = "ui icon fluid negative message"
           icon_point = (<i className="remove circle icon"></i>)
           tra_text_message_point = "The point on the map is NOT in a TRA"
           sub_header_point = ""
@@ -608,7 +609,7 @@ var ChartRow = React.createClass({
   //  a indication that something can happen
   if(!show_point){
     tra_text_message_point = "Please Click on the Map or Search for a location to discover if it is in a TRA"
-    success_class_point = "ui icon info message"
+    success_class_point = "ui icon fluid info message"
     icon_point = (<i className="info circle icon"></i>)
     sub_header_point = ""
   }
@@ -669,6 +670,7 @@ var ChartRow = React.createClass({
 
       const ADJUSTED_CHART_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : CHART_WIDTH;
 
+
     return (
       <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
         <div className={working_class}>
@@ -682,8 +684,8 @@ var ChartRow = React.createClass({
           </div>
         </div>
         </div>
-
-      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
+       <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
+      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{width:"99%",overflow:"visible"}}>
 
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
@@ -807,7 +809,7 @@ var ChartRow = React.createClass({
 
          }
 
-
+        </div>
       </div>
     </div>
     );

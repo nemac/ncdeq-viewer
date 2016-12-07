@@ -82,25 +82,25 @@ const CustomToolTipBarCharts  = React.createClass({
       self.props.handleClick(self,{name:data.value});
     })
 
-    $(background_bar).on("mouseenter",function(){
-      self.handleMouse(data);
-    })
-    $(background_bar2).on("mouseenter",function(){
-      self.handleMouse(data);
-     })
-    $(foreground_bar).on("mouseenter",function(){
-      self.handleMouse(data);
-    })
-
-    $(background_bar).on("mouseleave",function(){
-      self.handleMouse(nodata);
-    })
-    $(background_bar2).on("mouseleave",function(){
-      self.handleMouse(nodata);
-    })
-    $(foreground_bar).on("mouseleave",function(){
-      self.handleMouse(nodata);
-    })
+    // $(background_bar).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    // $(background_bar2).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    // $(foreground_bar).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    //
+    // $(background_bar).on("mouseleave",function(){
+    //   self.handleMouse(nodata);
+    // })
+    // $(background_bar2).on("mouseleave",function(){
+    //   self.handleMouse(nodata);
+    // })
+    // $(foreground_bar).on("mouseleave",function(){
+    //   self.handleMouse(nodata);
+    // })
 
   },
 
