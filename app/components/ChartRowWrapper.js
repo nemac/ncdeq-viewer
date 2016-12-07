@@ -276,6 +276,13 @@ var ChartRowWrapper = React.createClass({
     let last_chart_id = 0
     let last_has_dupe = false
 
+    let function_limits;
+    if(this.props.active_function){
+      function_limits = this.props.active_function.filter( af => {
+        return af.chart_type === chart_type
+      })      
+    }
+
     return (
 
         <div className="ui fluid accordion" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border:BOX_BORDER,paddingTop:"0px", borderRadius: BOX_BORDER_RADUIS}}>
@@ -388,6 +395,7 @@ var ChartRowWrapper = React.createClass({
                         top_label={this.props.top_label}
                         bottom_label={this.props.bottom_label}
                         level_label={this.props.level_label}
+                        function_limits={function_limits}
                                       />
 
           </div>

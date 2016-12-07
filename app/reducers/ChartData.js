@@ -36,8 +36,6 @@ export function NLCDDATA(state = [], action){
 export function active_function(state = [], action){
   switch (action.type) {
     case 'SET_ACTIVE_FUNCTION':
-      console.log('reducer action.active_function')
-      console.log(action.active_function)
       return {...state, active_function: action.active_function}
     default:
       return state

@@ -152,7 +152,8 @@ var ChartBars = React.createClass({
                      get_keyColors={this.props.get_keyColors}
                      chart_type={this.props.chart_type}
                      level_label={this.props.level_label}
-                     handleClick={this.handleClick}/>}/>
+                     handleClick={this.handleClick}
+                     function_limits={this.props.function_limits}/>}/>
             {this.get_bars()}
            </BarChart>
         </div>

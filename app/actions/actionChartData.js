@@ -515,12 +515,12 @@ export function get_nlcd_data(id, level){
         dispatch(fetching_end())
 
       })
-      .catch(error => {
-        //end fetching set fetching state to false
-        dispatch(fetching_end())
-
-        console.log('request failed', error);
-      });
+      // .catch(error => {
+      //   //end fetching set fetching state to false
+      //   dispatch(fetching_end())
+      //
+      //   console.log('request failed', error);
+      // });
   }
 }
 
@@ -578,12 +578,12 @@ export function get_nlcd_data_huc12(id, level){
         dispatch(fetching_end())
 
       })
-      .catch(error => {
-        //end fetching set fetching state to false
-        dispatch(fetching_end())
-
-        console.log('request failed', error);
-      });
+      // .catch(error => {
+      //   //end fetching set fetching state to false
+      //   dispatch(fetching_end())
+      //
+      //   console.log('request failed', error);
+      // });
   }
 }
 

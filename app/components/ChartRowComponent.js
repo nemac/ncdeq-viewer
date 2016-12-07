@@ -205,8 +205,7 @@ var ChartRow = React.createClass({
         return af.chart_type.toUpperCase() === chart_type.toUpperCase()
       })
     }
-    console.log(chart_type)
-    console.log(function_limits)
+
     if(function_limits){
       function_limit_name = function_limits[0].active_name
       function_limit_id = function_limits[0].chart_id
