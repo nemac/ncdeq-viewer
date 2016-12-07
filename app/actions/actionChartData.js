@@ -383,12 +383,12 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
 
             return
           })
-          .catch(error => {
-            //end fetching set fetching state to false
-            dispatch(fetching_end())
-
-            console.log('request failed', error);
-          });
+          // .catch(error => {
+          //   //end fetching set fetching state to false
+          //   dispatch(fetching_end())
+          //
+          //   console.log('request failed', error);
+          // });
 
       } else {
 
@@ -452,12 +452,12 @@ export function get_ChartLevels(id,level){
       dispatch(fetching_end())
 
     })
-    .catch(error => {
-      //end fetching set fetching state to false
-      dispatch(fetching_end())
-
-      console.log('request failed', error);
-    });
+    // .catch(error => {
+    //   //end fetching set fetching state to false
+    //   dispatch(fetching_end())
+    //
+    //   console.log('request failed', error);
+    // });
 
   }
 }
@@ -681,12 +681,12 @@ export function get_catchment_data(id, level){
         dispatch(fetching_end())
 
       })
-      .catch(error => {
-        //end fetching set fetching state to false
-        dispatch(fetching_end())
-
-        console.log('request failed', error);
-      });
+      // .catch(error => {
+      //   //end fetching set fetching state to false
+      //   dispatch(fetching_end())
+      //
+      //   console.log('request failed', error);
+      // });
   }
 }
 
@@ -813,12 +813,12 @@ export function get_ChartData(id,level){
       })
 
     )
-    .catch(error => {
-      //end fetching set fetching state to false
-      dispatch(fetching_end())
-
-      console.log('request failed', error);
-    });
+    // .catch(error => {
+    //   //end fetching set fetching state to false
+    //   dispatch(fetching_end())
+    //
+    //   console.log('request failed', error);
+    // });
   }
 }
 

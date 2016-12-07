@@ -172,12 +172,13 @@ var ChartRowWrapper = React.createClass({
   },
   get_dupes: function(chart_levels, chart_id){
     let keycnt=0
+    const chart_type = this.props.chart_type;
     const dup = chart_levels.map( item => {
       if(Number(item.chart_id) === Number(chart_id)){
         const colors = this.props.get_keyColors(item.chart_level_label)
         const button_color = {"backgroundColor": colors[1]+"!important"}
         return (
-          <div  key={keycnt++} className="item">
+          <div  key={keycnt++} className={"item function " + chart_type.toUpperCase()} style={button_color}>
             <span className="text" onClick={this.handleChange.bind(null,item.chart_id,item.chart_level_label)}>{item.chart_level_label}</span>
           </div>)
       }
@@ -280,7 +281,7 @@ var ChartRowWrapper = React.createClass({
     if(this.props.active_function){
       function_limits = this.props.active_function.filter( af => {
         return af.chart_type === chart_type
-      })      
+      })
     }
 
     return (

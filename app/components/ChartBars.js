@@ -20,8 +20,7 @@ var ChartBars = React.createClass({
   },
   handleClick(constructor, entry, data, index, test) {
     const name = entry.name
-    console.log(entry)
-
+    
     const chart_type = this.props.chart_type
 
     this.props.set_search_method('chart clicked')
