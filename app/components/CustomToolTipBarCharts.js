@@ -73,39 +73,61 @@ const CustomToolTipBarCharts  = React.createClass({
     const layer_id = this.get_layer_id(nextProps.chart_type)
     const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
     const nodata = {value:null, chart_type: null, layer_id: null}
+    const chart_type = nextProps.chart_type
+    const foreground_bar = $('#bar-chart-'+chart_type).find('.recharts-rectangle.recharts-bar-rectangle')
+    // const  bartest = $('#bar-chart').children('div').children('svg').children('g').children('g').children('g').children('g').children('.recharts-layer.recharts-bar-graphical')
+    const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
+    const background_bar2 = $('#bar-chart-'+chart_type).find('.recharts-wrapper')
+
     //yes jquery but I cannot hook to the elements in d3 svg.
     //  so i need to bind to them...
-    $('.recharts-bar-cursor').unbind('click');
-    $('.recharts-bar-cursor').unbind('mouseenter');
-    $('.recharts-bar-cursor').unbind('mouseleave');
+    $(foreground_bar).unbind('click');
+    $(foreground_bar).unbind('mouseenter');
+    $(foreground_bar).unbind('mouseleave');
 
-    $('.recharts-bar-rectangles').unbind('click');
-    $('.recharts-bar-rectangles').unbind('mouseenter');
-    $('.recharts-bar-rectangles').unbind('mouseleave');
+    $(background_bar).unbind('click');
+    $(background_bar).unbind('mouseenter');
+    $(background_bar).unbind('mouseleave');
 
-    $('.recharts-bar-cursor').on("click",function(){
+    $(background_bar2).unbind('click');
+    $(background_bar2).unbind('mouseenter');
+    $(background_bar2).unbind('mouseleave');
+
+    $(background_bar).on("click",function(){
       self.handleClick(data);
       // console.log('clicked' + JSON.stringify(data))
     })
-    $('.recharts-bar-rectangles').on("click",function(){
+    $(background_bar2).on("click",function(){
+      self.handleClick(data);
+      // console.log('clicked' + JSON.stringify(data))
+    })
+    $(foreground_bar).on("click",function(){
       self.handleClick(data);
       // console.log('clicked' + JSON.stringify(data))
     })
 
-    $('.recharts-bar-cursor').on("mouseenter",function(){
+    $(background_bar).on("mouseenter",function(){
       self.handleMouse(data);
       // console.log('mouseenter' + JSON.stringify(data))
     })
-    $('.recharts-rectangle .recharts-bar-rectangles').on("mouseenter",function(){
+    $(background_bar2).on("mouseenter",function(){
+      self.handleMouse(data);
+      // console.log('mouseenter' + JSON.stringify(data))
+    })
+    $(foreground_bar).on("mouseenter",function(){
       self.handleMouse(data);
       // console.log('mouseenter' + JSON.stringify(data))
     })
 
-    $('.recharts-bar-cursor').on("mouseleave",function(){
+    $(background_bar).on("mouseleave",function(){
       self.handleMouse(nodata);
       // console.log('mouseleave' + JSON.stringify(nodata))
     })
-    $('.recharts-bar-rectangles').on("mouseleave",function(){
+    $(background_bar2).on("mouseleave",function(){
+      self.handleMouse(nodata);
+      // console.log('mouseleave' + JSON.stringify(nodata))
+    })
+    $(foreground_bar).on("mouseleave",function(){
       self.handleMouse(nodata);
       // console.log('mouseleave' + JSON.stringify(nodata))
     })

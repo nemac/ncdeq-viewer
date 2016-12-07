@@ -135,7 +135,7 @@ var ChartBars = React.createClass({
     return (
 
       <div >
-        <div id="bar-chart" >
+        <div id={"bar-chart-"+this.props.chart_type} >
           <BarChart key={this.props.chart_type}
                     width={this.props.chart_width}
                     height={200}
