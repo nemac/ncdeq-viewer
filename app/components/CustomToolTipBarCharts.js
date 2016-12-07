@@ -40,29 +40,8 @@ const CustomToolTipBarCharts  = React.createClass({
         return HUC12_MAP_FEATUREID
     }
   },
-  // handleClick: function (data){
-  //   console.log('click')
-  //   const chart_type = this.props.chart_type
-  //
-  //   this.props.set_search_method('chart clicked')
-  //
-  //   //set current geography level in redux state store
-  //   this.props.change_geographyLevelActive(data.value);
-  //
-  //   //only do this if the id is tra.  tra id's start with TP
-  //   if(chart_type.toUpperCase() === "TRA"){
-  //     this.props.get_tra_info(data.value)
-  //   //not tra so should be a huc. assume huc12...
-  //   } else {
-  //     this.props.get_LayerInfo_ByValue(data.value, HUC12_MAP_FEATUREID)
-  //   }
-  //
-  // },
   handleMouse: function (data, e){
     const chart_type = this.props.chart_type
-    // console.log('mouse enter,leave')
-    // console.log(data)
-    // console.log(e)
 
     this.props.set_search_method('chart hover ' + chart_type)
     this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
@@ -74,8 +53,8 @@ const CustomToolTipBarCharts  = React.createClass({
     const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
     const nodata = {value:null, chart_type: null, layer_id: null}
     const chart_type = nextProps.chart_type
+
     const foreground_bar = $('#bar-chart-'+chart_type).find('.recharts-rectangle.recharts-bar-rectangle')
-    // const  bartest = $('#bar-chart').children('div').children('svg').children('g').children('g').children('g').children('g').children('.recharts-layer.recharts-bar-graphical')
     const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
     const background_bar2 = $('#bar-chart-'+chart_type).find('.recharts-wrapper')
 
@@ -95,103 +74,35 @@ const CustomToolTipBarCharts  = React.createClass({
 
     $(background_bar).on("click",function(){
       self.props.handleClick(self,{name:data.value});
-      // console.log('clicked' + JSON.stringify(data))
     })
     $(background_bar2).on("click",function(){
       self.props.handleClick(self,{name:data.value});
-      // console.log('clicked' + JSON.stringify(data))
     })
     $(foreground_bar).on("click",function(){
       self.props.handleClick(self,{name:data.value});
-      // console.log('clicked' + JSON.stringify(data))
     })
 
     $(background_bar).on("mouseenter",function(){
       self.handleMouse(data);
-      // console.log('mouseenter' + JSON.stringify(data))
     })
     $(background_bar2).on("mouseenter",function(){
       self.handleMouse(data);
-      // console.log('mouseenter' + JSON.stringify(data))
     })
     $(foreground_bar).on("mouseenter",function(){
       self.handleMouse(data);
-      // console.log('mouseenter' + JSON.stringify(data))
     })
 
     $(background_bar).on("mouseleave",function(){
       self.handleMouse(nodata);
-      // console.log('mouseleave' + JSON.stringify(nodata))
     })
     $(background_bar2).on("mouseleave",function(){
       self.handleMouse(nodata);
-      // console.log('mouseleave' + JSON.stringify(nodata))
     })
     $(foreground_bar).on("mouseleave",function(){
       self.handleMouse(nodata);
-      // console.log('mouseleave' + JSON.stringify(nodata))
     })
 
   },
-  componentDidUpdate: function(prevProps, prevState) {
-    // const self = this;
-    //
-    // const layer_id = this.get_layer_id(this.props.chart_type)
-    // const data = {value:this.props.label, chart_type: this.props.chart_type, layer_id};
-    // const nodata = {value:null, chart_type: null, layer_id: null}
-    //
-    // //console.log(JSON.stringify(data))
-    // const foreground_bar = $('#bar-chart').children('div').children('svg').children('g').children('g').children('g').children('g').children('.recharts-rectangle.recharts-bar-rectangle')
-    // const background_bar = $('#bar-chart').children('div').children('svg').children('g').children('g').children('g').children('g').children('.recharts-bar-cursor')
-    // const bartest = $('#bar-chart').children('div').children('svg').children('.recharts-layer.recharts-bar-graphical')
-    //
-    // //yes jquery but I cannot hook to the elements in d3 svg.
-    // //  so i need to bind to them...
-    // $(background_bar).unbind('click');
-    // $(background_bar).unbind('mouseenter');
-    // $(background_bar).unbind('mouseleave');
-    // // $(background_bar).unbind('mousemove');
-    //
-    // $(foreground_bar).unbind('click');
-    // $(foreground_bar).unbind('mouseenter');
-    // $(foreground_bar).unbind('mouseleave');
-    // // $(foreground_bar).unbind('mousemove');
-    //
-    // // $(bartest).unbind('click');
-    // // $(bartest).unbind('mouseenter');
-    // // $(bartest).unbind('mouseleave');
-    //
-    // // const foreground_bar = '.recharts-rectangle.recharts-bar-rectangle'
-    // // const background_bar = '.recharts-bar-cursor'
-    // // const bartest = '.recharts-layer.recharts-bar-graphical'
-    //
-    // // const fg = ele.children(foreground_bar)
-    // // const bg = ele.children(background_bar)
-    // // const bt = ele.children(bartest)
-    //
-    // //yes jquery but I cannot hook to the elements in d3 svg.
-    // //  so i need to bind to them...
-    // foreground_bar.on( 'mouseenter', self.handleMouse.bind(null,data) )
-    // foreground_bar.on( 'mouseleave', self.handleMouse.bind(null,nodata) );
-    //
-    // background_bar.on( 'mouseenter', self.handleMouse.bind(null,data) )
-    // background_bar.on( 'mouseleave', self.handleMouse.bind(null,nodata) );
-    //
-    // // bartest.on( 'mouseenter', self.handleMouse.bind(null,data) ).on( 'mouseleave',  self.handleMouse.bind(null,nodata) );
-    //
-    // // foreground_bar.on( 'click', self.handleClick(data) );
-    // // background_bar.click( self.handleClick(data) );
-    // // bartest.on('click',  self.handleClick(data) );
-
-
-  },
-  // shouldComponentUpdate: function(nextProps, nextState) {
-  //   if(nextProps.label === this.props.label){
-  //     return false
-  //   } else {
-  //     return true
-  //   }
-  // },
 
   render() {
 
