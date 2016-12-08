@@ -24,6 +24,11 @@ const CustomToolTipSimpleBarCharts  = React.createClass({
     payload: PropTypes.array,
     label: PropTypes.string,
   },
+  componentWillMount: function() {
+    const background_bar = $('#simple-bar').find('.recharts-bar-cursor')
+
+    $(background_bar).css({ fill: "none" })
+  },
   render() {
     const { active } = this.props;
     let html_hov = '';
@@ -50,6 +55,8 @@ const CustomToolTipSimpleBarCharts  = React.createClass({
       })
 
       const background_bar = $('#simple-bar').find('.recharts-bar-cursor')
+
+      $(background_bar).css({ fill: "none" })
 
       if (label === '1' || label === '2' ){
         $(background_bar).css({ fill: "none" })

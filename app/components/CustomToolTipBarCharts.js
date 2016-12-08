@@ -58,6 +58,8 @@ const CustomToolTipBarCharts  = React.createClass({
     const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
     const background_bar2 = $('#bar-chart-'+chart_type).find('.recharts-wrapper')
 
+    $(background_bar).css({ fill: "none" })
+
     //yes jquery but I cannot hook to the elements in d3 svg.
     //  so i need to bind to them...
     $(foreground_bar).unbind('click');

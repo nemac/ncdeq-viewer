@@ -683,7 +683,7 @@ var ChartRow = React.createClass({
           </div>
         </div>
         </div>
-       <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,width:chart_width_px+14,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
+       <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,width:chart_width_px+18,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
       <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{width:chart_width_px,overflow:"visible"}}>
 
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
