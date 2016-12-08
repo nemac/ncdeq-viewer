@@ -26,7 +26,11 @@ var HeaderComponent = React.createClass({
       <div className="ui items" style={{borderWidth:'1px', backgroundColor: "#2b4559", color: "#fff" ,padding:"10px", marginBottom: "0px", width: "100%"}}>
         <div className="item">
           <div className="left aligned content left floated">
+            <div className="ui left floated image">
+              <img src="./config/l_agency-ncdenr.svg" style={{height:"1.714em"}} />
+            </div>
             <div className="ui large header" style={{color: "#fff" }} >
+
               River Basin Restoration Priorities Web Application
             </div>
             <div className="ui right floated">
@@ -41,7 +45,7 @@ var HeaderComponent = React.createClass({
               </a>
             </div>
             { this.props.header_description_visibility &&
-              <div className="description">
+              <div className="left floated description">
                 <span style={{color: "#fff"}} >{ this.state.content}<br /><br /></span>
                 <span style={{color: "#fff"}} >From North Carolina Department of Environmental Quality (NCDEQ) -Division of Mitigation Services</span>
               </div>
