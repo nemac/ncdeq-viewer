@@ -671,7 +671,7 @@ var ChartRow = React.createClass({
 
 
     return (
-      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{paddingRight:"7px",paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
+      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{height:chart_grid_height,paddingLeft:"10px",paddingRight:"7px",paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
         <div className={working_class}>
             <div className="ui loader"></div>
         </div>
