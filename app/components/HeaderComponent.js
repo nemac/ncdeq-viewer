@@ -32,7 +32,7 @@ var HeaderComponent = React.createClass({
 
             <div className="ui middle aligned large header" style={{color: "#fff"}} >
               <a href="http://deq.nc.gov/" className="ui middle aligned image" style={{width: "225px",height:"auto",fontSize: "1rem",paddingLeft:SPACING,paddingRight:SPACING }}>
-                <img src="./config/l_agency-ncdenr.svg"  />
+                <img src="config/l_agency-ncdenr.svg"  />
               </a>
               River Basin Restoration Priorities Web Application
             </div>
