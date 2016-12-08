@@ -483,7 +483,7 @@ var ChartRow = React.createClass({
 
     //messages for working
     const working_message = working ? "loading..." : ""
-    const working_class = working ? "ui active inverted dimmer" : "ui disabled inverted dimmer"
+    const working_class = working ? "ui active inverted fluid dimmer" : "ui disabled inverted dimmer"
 
     //get chart width in pixels from redux should handle resize in actiion creators
     let chart_width_px = CHART_WIDTH_PX;
@@ -672,9 +672,7 @@ var ChartRow = React.createClass({
 
     return (
       <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{height:chart_grid_height,paddingLeft:"10px",paddingRight:"7px",paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
-        <div className={working_class}>
-            <div className="ui loader"></div>
-        </div>
+
 
         <div className="ui sticky" style={{border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
           <div className="content" style={{marginTop: SPACING}}>
@@ -685,7 +683,10 @@ var ChartRow = React.createClass({
         </div>
        <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,width:chart_width_px+21,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
       <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{width:chart_width_px,overflow:"visible"}}>
-
+        <div className={working_class} >
+            <div className="ui loader" ></div>
+        </div>
+        
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
