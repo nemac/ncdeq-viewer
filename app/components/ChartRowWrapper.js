@@ -176,7 +176,7 @@ var ChartRowWrapper = React.createClass({
     const dup = chart_levels.map( item => {
       if(Number(item.chart_id) === Number(chart_id)){
         const colors = this.props.get_keyColors(item.chart_level_label)
-        const button_color = {"backgroundColor": colors[1]+"!important"}
+        const button_color = {"backgroundColor": colors[1]+"!important","color": "#fff"}
         return (
           <div  key={keycnt++} className={"item function " + chart_type.toUpperCase()} style={button_color}>
             <span className="text" onClick={this.handleChange.bind(null,item.chart_id,item.chart_level_label)}>{item.chart_level_label}</span>

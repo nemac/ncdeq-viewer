@@ -108,6 +108,7 @@ const ChartSimpleBar = React.createClass({
               </div>
             }
             { datas_length > 1 &&
+              <div id="simple-bar">
               <BarChart
                 width={this.props.chart_width}
                 height={200}
@@ -119,6 +120,7 @@ const ChartSimpleBar = React.createClass({
                 <Legend />
                 {bars}
               </BarChart>
+              </div>
             }
           </div>
         </div>

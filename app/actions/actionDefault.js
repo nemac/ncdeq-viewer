@@ -47,13 +47,13 @@ function calculate_NewHeights(state, header_overide){
 
 
 
-  let chart_px_width = (window.innerWidth * (CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (CHART_BORDER)
+  let chart_px_width = (window.innerWidth * (CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (14*2)
 
   if (window.innerWidth < OVERIDE_WIDTH){
     chart_px_width = (window.innerWidth  - (CHART_BORDER));
   }
 
-  const map_px_width = (window.innerWidth * (MAP_CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (rowPadding*3)
+  const map_px_width = (window.innerWidth * (MAP_CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (14)
 
   if (vis){
     var mapHeight = leftover - MAP_HEIGHT_OFFSET;

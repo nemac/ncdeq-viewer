@@ -24,6 +24,11 @@ const CustomToolTipSimpleBarCharts  = React.createClass({
     payload: PropTypes.array,
     label: PropTypes.string,
   },
+  componentWillMount: function() {
+    const background_bar = $('#simple-bar').find('.recharts-bar-cursor')
+
+    $(background_bar).css({ fill: "none" })
+  },
   render() {
     const { active } = this.props;
     let html_hov = '';
@@ -49,8 +54,15 @@ const CustomToolTipSimpleBarCharts  = React.createClass({
         return ( <p key={bar_segment.name} style={toolTipName}>{name}<span style={toolTipValue}>{value}</span></p>)
       })
 
+      const background_bar = $('#simple-bar').find('.recharts-bar-cursor')
+
+      $(background_bar).css({ fill: "none" })
+
       if (label === '1' || label === '2' ){
+        $(background_bar).css({ fill: "none" })
         return (<div key={label+'blanktip'}/>)
+      } else {
+        $(background_bar).css({ fill: "#f1f1f1" })
       }
 
       const labelstr = label.toString();
