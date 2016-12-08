@@ -15,7 +15,7 @@ var MapRowComponent = React.createClass({
     const ADJUSTED_COLUMN_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : columnWidth;
 
     return (
-      <div className={"ui stackable internally celled " + ADJUSTED_COLUMN_WIDTH + " wide column grid"} style={{paddingTop:"0px"}}>
+      <div className={"ui stackable internally celled " + ADJUSTED_COLUMN_WIDTH + " wide column grid"} style={{paddingLeft:"7px",paddingTop:"0px"}}>
         <div className="stretched row" >
 
           <MapWrapper />

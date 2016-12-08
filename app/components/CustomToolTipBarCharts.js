@@ -111,6 +111,7 @@ const CustomToolTipBarCharts  = React.createClass({
     if (active) {
       const { payload, label } = this.props;
 
+      const chart_type = this.props.chart_type
 
       const layer_id = this.get_layer_id(this.props.chart_type)
 
@@ -153,10 +154,14 @@ const CustomToolTipBarCharts  = React.createClass({
       })
 
       const labelstr = label.toString().trim();
+      const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
 
       //null tip when there is no id
       if (!labelstr || !hasdata){
+        $(background_bar).css({ fill: "none" })
         return (<div key={labelstr+'blanktip'} />)
+      } else {
+        $(background_bar).css({ fill: "#f1f1f1" })
       }
 
       //return tooltip
