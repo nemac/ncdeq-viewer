@@ -507,9 +507,7 @@ export function get_nlcd_data(id, level){
 
 
         //send the chart data on
-        dispatch(
-          NLCDData('GET_NLCD_DATA', ncld_chart_data)
-        )
+        dispatch(NLCDData('GET_NLCD_DATA', ncld_chart_data))
 
         //end fetching set fetching state to false
         dispatch(fetching_end())
@@ -568,11 +566,8 @@ export function get_nlcd_data_huc12(id, level){
             return 0;
           });
 
-
         //send the chart data on
-        dispatch(
-          NLCDData('GET_NLCD_DATA_HUC12', ncld_chart_data)
-        )
+        dispatch(NLCDData('GET_NLCD_DATA_HUC12', ncld_chart_data))
 
         //end fetching set fetching state to false
         dispatch(fetching_end())
@@ -796,6 +791,9 @@ export function get_ChartData(id,level){
                   },
                 ];
 
+          //send chart limit to store
+          dispatch(chart_limit(id))
+
           //send the chart data on
           dispatch(ChartData('GET_CHART_DATA', visibility, types))
 
@@ -941,6 +939,10 @@ function ChartData(type, visibility, types) {
 
 function NLCDData(type, ncld_chart_data){
   return {type: type, ncld_chart_data: ncld_chart_data}
+}
+
+function chart_limit(limit_id){
+  return {type: "CHART_LIMIT", chart_limit: limit_id}
 }
 
 function fetching_start(){

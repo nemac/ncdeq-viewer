@@ -170,7 +170,7 @@ export function get_TRAData(hucid, current_geography_level){
                 tra_geom: tra_geom_obj,
               })
 
-              //only dispatch when have down all features
+              //only dispatch when have all features
               if(count === tra_datas.features.length){
                 dispatch(tra_data('GET_TRA_DATA', group));
                 dispatch(fetching_end())

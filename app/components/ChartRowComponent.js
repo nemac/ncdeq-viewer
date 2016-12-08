@@ -6,6 +6,9 @@ import ChartSimpleBar from '../components/ChartSimpleBar';
 import ChartTRA from '../components/ChartTRA';
 var SectionWrapper = require('./SectionWrapper');
 
+import ChartPieContainer from '../containers/ChartPieContainer';
+
+
 import {
   CHART_WIDTH,
   CHART_WIDTH_PX,
@@ -455,6 +458,42 @@ var ChartRow = React.createClass({
     return should_update
 
   },
+  set_chart_types: function(){
+    return [
+      // {"NAME":"TRA", "TYPE": "ChartBars"},
+      // {"NAME":"BASELINE", "TYPE": "ChartBars"},
+      // {"NAME":"UPLIFT", "TYPE": "ChartBars"},
+      { "NAME":"LANDUSE_LANDCOVER_HUC12",
+        "TYPE": "ChartPieComponent",
+        "TITLE": "Landuse-Landcover",
+        "DESCRIPTION": "",
+        "USE_PERCENT": "TRUE",
+        "GEOGRAPHY": "HUC12"
+      },
+      {"NAME":"LANDUSE_LANDCOVER_CATCHMENT",
+        "TYPE": "ChartPieComponent",
+        "TITLE": "Landuse-Landcover",
+        "DESCRIPTION": "",
+        "USE_PERCENT": "TRUE",
+        "GEOGRAPHY": "Catchment"
+      },
+      // {"NAME":"CATCHMENT_BASELINE", "TYPE": "ChartSimpleBar"}
+
+      // chart_type="LANDUSE_LANDCOVER_HUC12"
+      // chart_width={chart_width_px}
+      // geography="HUC12"
+      // title="Landuse-Landcover"
+      // description=""
+      // use_percent={true}
+
+      //   chart_width={chart_width_px}
+      //   title="Landuse-Landcover (HUC12)"
+      //   title_description=""
+      //   note={"For HUC12: " + chart_filter}
+      //   chart_data={ncld_chart_data_huc12}
+      //   use_percent={true}
+    ]
+  },
   render: function() {
 
     let is_fetching = false;
@@ -668,7 +707,10 @@ var ChartRow = React.createClass({
       }
 
       const ADJUSTED_CHART_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : CHART_WIDTH;
-
+      // const chart_typs_array = this.set_chart_types()
+      // chart_typs_array.map( ct => {
+      //   console.log(ct)
+      // })
 
     return (
       <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{height:chart_grid_height,paddingLeft:"10px",paddingRight:"7px",paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
@@ -686,7 +728,7 @@ var ChartRow = React.createClass({
         <div className={working_class} >
             <div className="ui loader" ></div>
         </div>
-        
+
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
@@ -777,14 +819,16 @@ var ChartRow = React.createClass({
            />
          }
          { chart_filter &&
-           <ChartPie
+           <ChartPieContainer
+             chart_type="LANDUSE_LANDCOVER_HUC12"
              chart_width={chart_width_px}
-             title="Landuse-Landcover (HUC12)"
-             title_description=""
-             note={"For HUC12: " + chart_filter}
-             chart_data={ncld_chart_data_huc12}
+             geography="HUC12"
+             title="Landuse-Landcover"
+             description=""
              use_percent={true}
              />
+
+
          }
          { chart_filter &&
            <ChartPie
@@ -819,3 +863,13 @@ var ChartRow = React.createClass({
 });
 
 module.exports = ChartRow;
+
+
+// <ChartPie
+//   chart_width={chart_width_px}
+//   title="Landuse-Landcover (HUC12)"
+//   title_description=""
+//   note={"For HUC12: " + chart_filter}
+//   chart_data={ncld_chart_data_huc12}
+//   use_percent={true}
+//   />

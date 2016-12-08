@@ -23,8 +23,69 @@ import {
 //basic map (leaflet state and functions)
 
 ///get feature attributes for a layer at lat & long
-function AGO_get_LayerInfo_ByValue(value, layer_id){
+function get_sub_length(length_of_id){
+    switch (length_of_id) {
+      case 12:
+        return 8
+        break;
+      case 8:
+        return 6
+        break;
+      case 8:
+        return 6
+        break;
+      default:
 
+    }
+}
+
+function AGO_get_geometry_for_all(value, layer_id){
+  const length_of_id = layer_id.length
+
+  // query?where=ID+%3D+%2703020101%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=ID&returnGeometry=true&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=html&token=
+
+  var value_field_name = 'VALUE';
+
+  //until I can change the TRA data to match the schemas of the huc files I need to change the field name from vaue to id.
+  if(layer_id === TRA_MAP_FEATUREID){
+    value_field_name = 'ID'
+  }
+
+  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + layer_id + '/query' +
+                    '?where=' + value_field_name + '+%3D+%27' + value + '%27' +
+                    '&objectIds=' +
+                    '&time=' +
+                    '&resultType=standard' +
+                    '&distance=' +
+                    '&units=esriSRUnit_Meter' +
+                    '&outFields=*' +
+                    '&returnGeometry=true' +
+                    '&returnCentroid=true' +
+                    '&multipatchOption=' +
+                    '&maxAllowableOffset=' +
+                    '&geometryPrecision=' +
+                    '&outSR=4326' +
+                    '&returnIdsOnly=false' +
+                    '&returnCountOnly=false' +
+                    '&returnExtentOnly=false' +
+                    '&returnDistinctValues=true' +
+                    '&orderByFields=' +
+                    '&groupByFieldsForStatistics=' +
+                    '&outStatistics=' +
+                    '&resultOffset=' +
+                    '&resultRecordCount=' +
+                    '&returnZ=false' +
+                    '&returnM=false' +
+                    '&quantizationParameters=' +
+                    '&sqlFormat=none' +
+                    '&f=pgeojson' +
+                    '&token='
+
+  return axios.get(query_URL);
+};
+
+///get feature attributes for a layer at lat & long
+function AGO_get_LayerInfo_ByValue(value, layer_id){
 
   var value_field_name = 'VALUE';
 
