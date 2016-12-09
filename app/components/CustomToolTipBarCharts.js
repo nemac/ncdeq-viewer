@@ -42,6 +42,7 @@ const CustomToolTipBarCharts  = React.createClass({
   },
   handleMouse: function (data, e){
     const chart_type = this.props.chart_type
+    this.props.set_search_method('chart hover ' + chart_type)
 
     let geography_level = 'huc_12'
     if(chart_type.toUpperCase() === 'TRA'){

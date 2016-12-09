@@ -89,7 +89,7 @@ function AGO_get_geometry_for_all(search_value, search_layer_id){
                     '&sqlFormat=none' +
                     '&f=pgeojson' +
                     '&token='
-  console.log(query_URL)
+
   return axios.get(query_URL);
 };
 

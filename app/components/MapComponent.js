@@ -396,13 +396,30 @@ var MapContainer = React.createClass({
       const method = this.props.searchMethod;
 
       if( method.substring(0,11) === 'chart hover'){
-        if(this.props.hoverInfo){
-          let has_features = this.has_features(this.props.hoverInfo)
-          if(has_features){
-            const current_mappoint_features = this.props.hoverInfo.features;
-            this.add_GeoJSON_Layer(current_mappoint_features, 'hover', false)
+        if(this.props.active_hover){
+          console.log(this.props.active_hover.ID)
+          const MAP_ID = this.props.active_hover.ID
+          if(this.props.geometries){
+            let has_features = this.has_features(this.props.geometries)
+            if(has_features){
+              const all_features = this.props.geometries.features;
+              const map_feature = all_features.filter( feature => {
+                return feature.properties.ID === MAP_ID
+              })
+              console.log(method)
+
+              this.add_GeoJSON_Layer(map_feature, 'hover', false)
+            }
           }
         }
+        // if(this.props.geometries){
+        //   let has_features = this.has_features(this.props.geometries)
+        //   if(has_features){
+        //     const all_features = this.props.geometries.features;
+        //
+        //     this.add_GeoJSON_Layer(current_mappoint_features, 'hover', false)
+        //   }
+        // }
       }
 
       //map point (location search or map click)
