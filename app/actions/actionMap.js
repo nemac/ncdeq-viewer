@@ -1,6 +1,7 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, HUC12_MAP_FEATUREID, SERVICE_NAME, TRA_MAP_FEATUREID, CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID } from '../constants/actionConstants';
+import { AGO_URL, HUC12_MAP_FEATUREID, SERVICE_NAME, TRA_MAP_FEATUREID,
+        CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID } from '../constants/actionConstants';
 var turf_point = require('turf-point');
 var turf_FC = require('turf-featurecollection');
 
@@ -39,20 +40,28 @@ function get_sub_length(length_of_id){
     }
 }
 
-function AGO_get_geometry_for_all(value, layer_id){
-  const length_of_id = layer_id.length
+///get feature attributes for a layer at lat & long
+function get_feature_layerid(length_of_id){
+    switch (length_of_id) {
+      case 12:
+        return HUC12_MAP_FEATUREID
+        break;
+      case 8:
+        return CATALOGING_MAP_FEATUREID
+        break;
+      case 8:
+        return CATALOGING_MAP_FEATUREID
+        break;
+      default:
+
+    }
+}
+function AGO_get_geometry_for_all(search_value, search_layer_id){
 
   // query?where=ID+%3D+%2703020101%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=ID&returnGeometry=true&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=html&token=
 
-  var value_field_name = 'VALUE';
-
-  //until I can change the TRA data to match the schemas of the huc files I need to change the field name from vaue to id.
-  if(layer_id === TRA_MAP_FEATUREID){
-    value_field_name = 'ID'
-  }
-
-  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + layer_id + '/query' +
-                    '?where=' + value_field_name + '+%3D+%27' + value + '%27' +
+  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + search_layer_id + '/query' +
+                    '?where=ID+like+%27' + search_value + '%25%27' +
                     '&objectIds=' +
                     '&time=' +
                     '&resultType=standard' +
@@ -80,7 +89,7 @@ function AGO_get_geometry_for_all(value, layer_id){
                     '&sqlFormat=none' +
                     '&f=pgeojson' +
                     '&token='
-
+  console.log(query_URL)
   return axios.get(query_URL);
 };
 
@@ -166,6 +175,44 @@ function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
 
   return axios.get(query_URL);
 };
+
+export function get_all_geometries(value){
+
+  return (dispatch, getState) => {
+
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
+    const length_of_id = value.length
+    const end_length = get_sub_length(length_of_id)
+    const search_layer_id = get_feature_layerid(length_of_id)
+
+    const search_value = value.substring(0, end_length)
+
+    AGO_get_geometry_for_all(search_value, search_layer_id)
+     .then( response => {
+
+       //check repsonses for errors
+       const current_geometries = CheckReponse(response,'AGO_API_ERROR');
+
+       //get redux state
+       const state = getState()
+
+      //
+      dispatch(geometries('GET_GEOMETRIES',current_geometries));
+
+     })
+     .catch(error => {
+       //end fetching set fetching state to false
+       dispatch(fetching_end())
+
+       console.log('request failed', error);
+     });
+
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
+  }
+}
 
 export function set_search_method(method){
   return (dispatch, getState) => {
@@ -600,10 +647,14 @@ export function handleSearchChange(comp,e){
 function fetching_start(){
   return {type: "FETCHING_MAP", fetching: true}
 }
+
 function fetching_end(){
   return {type: "FETCHING_MAP", fetching: false}
 }
 
+function geometries(type, data){
+  return {type: type, geometries: data, receivedAt: Date.now()}
+}
 
 function active_hover(type, data){
   return {type: type, active_hover: data, receivedAt: Date.now()}

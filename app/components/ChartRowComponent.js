@@ -670,7 +670,7 @@ var ChartRow = React.createClass({
 
     //if there is filter text for charts and data should be about the data
     if(chart_filter){
-      chart_cataloging_unit = "Charts and Data for the Cataloging Unit " + chart_filter.substring(0,8);
+      chart_cataloging_unit = "Charts and Data for the HUC " + chart_filter.substring(0,8);
       huc_message = "The " + this.getLevel() + " " +  chart_filter + " is currently highlighted."
     }
 

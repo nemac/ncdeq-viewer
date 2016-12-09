@@ -197,6 +197,8 @@ var MenuComponent = React.createClass({
     if (Number(valueLength) === Number(expectedLength)){
       //update the chartdata redux store
       this.props.get_ChartData(e.target.value, currentLevel)
+      this.props.get_all_geometries(e.target.value)
+
       this.props.get_TRAData(e.target.value, currentLevel)
 
       //get the ago layer id of the currentLevel

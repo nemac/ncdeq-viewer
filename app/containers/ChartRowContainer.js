@@ -2,7 +2,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import { get_ChartData, get_TRAData, update_ChartVisiblity, update_MapHeight, get_LayerInfo_ByValue,
         change_geographyLevelActive, set_search_method, get_tra_info, update_ChartLevels, update_HeaderVis,
-        get_nlcd_data, get_nlcd_data_huc12, get_catchment_data, get_LayerGeom_ByValue, set_active_function, set_active_hover} from '../actions/actionCreators'
+        get_nlcd_data, get_nlcd_data_huc12, get_catchment_data, get_LayerGeom_ByValue, set_active_function,
+        set_active_hover, get_all_geometries} from '../actions/actionCreators'
+
 import ChartRowComponent from '../components/ChartRowComponent'
 
 //either rename the properties or rename it also in main
@@ -45,6 +47,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     get_LayerGeom_ByValue: bindActionCreators(get_LayerGeom_ByValue, dispatch),
     set_active_function: bindActionCreators(set_active_function, dispatch),
     set_active_hover: bindActionCreators(set_active_hover, dispatch),
+    get_all_geometries: bindActionCreators(get_all_geometries, dispatch),
 
   }
 }
