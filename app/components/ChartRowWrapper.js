@@ -401,6 +401,8 @@ var ChartRowWrapper = React.createClass({
                         bottom_label={this.props.bottom_label}
                         level_label={this.props.level_label}
                         function_limits={function_limits}
+                        set_active_hover={this.props.set_active_hover}
+
                                       />
 
           </div>

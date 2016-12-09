@@ -43,8 +43,18 @@ const CustomToolTipBarCharts  = React.createClass({
   handleMouse: function (data, e){
     const chart_type = this.props.chart_type
 
-    this.props.set_search_method('chart hover ' + chart_type)
-    this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
+    let geography_level = 'huc_12'
+    if(chart_type.toUpperCase() === 'TRA'){
+      geography_level = 'tra'
+    }
+    const DATE_SENT = Date.now()
+
+    if(data.value){
+      this.props.set_active_hover(data.value, geography_level, DATE_SENT)
+    }
+
+    // this.props.set_search_method('chart hover ' + chart_type)
+    // this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
 
   },
   componentWillUpdate: function(nextProps, nextState) {
@@ -84,19 +94,19 @@ const CustomToolTipBarCharts  = React.createClass({
       self.props.handleClick(self,{name:data.value});
     })
 
-    // $(background_bar).on("mouseenter",function(){
-    //   self.handleMouse(data);
-    // })
-    // $(background_bar2).on("mouseenter",function(){
-    //   self.handleMouse(data);
-    // })
-    // $(foreground_bar).on("mouseenter",function(){
-    //   self.handleMouse(data);
-    // })
-    //
-    // $(background_bar).on("mouseleave",function(){
-    //   self.handleMouse(nodata);
-    // })
+    $(background_bar).on("mouseenter",function(){
+      self.handleMouse(data);
+    })
+    $(background_bar2).on("mouseenter",function(){
+      self.handleMouse(data);
+    })
+    $(foreground_bar).on("mouseenter",function(){
+      self.handleMouse(data);
+    })
+
+    $(background_bar).on("mouseleave",function(){
+      self.handleMouse(nodata);
+    })
     // $(background_bar2).on("mouseleave",function(){
     //   self.handleMouse(nodata);
     // })

@@ -143,13 +143,14 @@ const ChartPieComponent = React.createClass({
   },
   shouldComponentUpdate: function(nextProps, nextState) {
     if(!nextProps.chart_data){return false}
+    if(!nextProps){return false}
     return true
   },
 	render () {
-    console.log('ChartPieComponent')
-    console.log(this.props.chart_data)
-
-    const data = this.props.chart_data
+    const raw_data = this.props.chart_data
+    console.log(raw_data)
+    const data = raw_data === undefined ? [] : raw_data;
+    console.log(data)
     const note = data.length < 1 ? 'No ' + this.props.title + '(' + this.props.geography + ')' + ' found at this location!' : "For " + this.props.geography + ": " + this.props.chart_filter ;
     const sub_header =  data.length < 1 ? 'Click or search to try again' : '' ;
 

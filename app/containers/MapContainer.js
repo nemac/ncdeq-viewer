@@ -48,6 +48,7 @@ const mapStateToProps = (state,props) => {
     fetching_geo,
     fetching_menu,
     hoverInfo,
+    active_hover: state.active_hover.active_hover
   }
 }
 

@@ -5,7 +5,6 @@ import ChartPieComponent from '../components/ChartPieComponent'
 
 //either rename the properties or rename it also in main
 const mapStateToProps = (state, props) => {
-  console.log(state)
   return {
     chart_data: state.NLCDDATA.ncld_chart_data,
     chart_filter: state.chart_limit.chart_limit,

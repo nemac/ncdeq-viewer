@@ -186,6 +186,32 @@ export function set_search_method(method){
     // dispatch(fetching_end())
   }
 }
+export function set_active_hover (ID, GEOGRAPHY_LEVEL, DATE_SENT){
+    return (dispatch, getState) => {
+
+      //start fetching state (set to true)
+      // dispatch(fetching_start())
+
+      //get redux state
+      const state = getState()
+      let prev_date
+
+      if(state.current_active_hover){
+        prev_date = state.current_active_hover.DATE_SENT
+      }
+
+      if(DATE_SENT > prev_date){return null}
+
+      const current_active_hover = {ID,GEOGRAPHY_LEVEL,DATE_SENT}
+
+      //send active_function setting on
+      dispatch(active_hover('SET_ACTIVE_HOVER', current_active_hover ))
+
+      //end fetching set fetching state to false
+      // dispatch(fetching_end())
+
+    }
+}
 
 export function get_LayerGeom_ByValue(value, layer_id){
   return (dispatch, getState) => {
@@ -576,6 +602,11 @@ function fetching_start(){
 }
 function fetching_end(){
   return {type: "FETCHING_MAP", fetching: false}
+}
+
+
+function active_hover(type, data){
+  return {type: type, active_hover: data, receivedAt: Date.now()}
 }
 
 function hover(type,data){
