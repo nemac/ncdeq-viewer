@@ -847,7 +847,7 @@ var ChartRow = React.createClass({
 
            <ChartSimpleBar
              chart_width={chart_width_px}
-             title="Catchment Baseline (Catchment)"
+             title="Baseline (Catchment)"
              title_description=""
              note={"For Catchment: " + NLCD_ID}
              chart_data={catchment_chart_ar}

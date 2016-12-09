@@ -406,8 +406,7 @@ var MapContainer = React.createClass({
               const map_feature = all_features.filter( feature => {
                 return feature.properties.ID === MAP_ID
               })
-              console.log(method)
-
+              console.log(map_feature)
               this.add_GeoJSON_Layer(map_feature, 'hover', false)
             }
           }
