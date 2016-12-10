@@ -377,7 +377,7 @@ var MapContainer = React.createClass({
     let on_layer
     var tile_layers = nextProps.map_settings.layers
     if(!imageryVisibility){
-      console.log("not: " + imageryVisibility)
+
       if(leafletMap){
 
         on_layer = tile_layers.filter( tile_layer => {
@@ -385,7 +385,6 @@ var MapContainer = React.createClass({
         })
 
         leafletMap.removeLayer(on_layer[0].layer)
-
 
         on_layer = tile_layers.filter( tile_layer => {
           return tile_layer.name === 'base map labels'
@@ -409,10 +408,6 @@ var MapContainer = React.createClass({
 
       if(leafletMap){
         var tile_layers = nextProps.map_settings.layers
-
-        console.log("is: " + imageryVisibility)
-        console.log(tile_layers)
-        console.log(nextProps.map_settings.layers)
 
         on_layer = tile_layers.filter( tile_layer => {
           return tile_layer.name === 'base map labels'
@@ -873,11 +868,19 @@ var MapContainer = React.createClass({
           minZoom={this.props.map_settings.minZoom} >
 
           <Control position="topright" className="mapbutton" >
-              <button className="ui black button" onClick={this.handleChartButtonClick.bind(null,this)}>
-                <i className={!this.props.charts.chart_visibility ? "bar chart icon" : "bar chart icon" }></i>
-                {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
-              </button>
-        </Control>
+            <button className="ui black mini button" onClick={this.handleChartButtonClick.bind(null,this)} style={{width:"140px"}}>
+              <i className={!this.props.charts.chart_visibility ? "bar chart icon" : "bar chart icon" }></i>
+              {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
+            </button>
+          </Control>
+
+          <Control position="bottomleft" className="mapbutton" >
+            <button className="ui grey mini button" onClick={this.props.use_imagery} style={{width:"140px"}}>
+              <i className={imageryVisibility ? "map outline icon" : "file image outline icon" }></i>
+              {imageryVisibility ? "Show Map" : "Show Satellite" }
+            </button>
+          </Control>
+
 
         <Control position="topright" className="mapbutton" >
           <MapLayerToggleWrapper map_settings={this.props.map_settings} leafletMap={this.props.leafletMap} geojson_layers={GeoJSON_Layers}/>
