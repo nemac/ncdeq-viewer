@@ -322,7 +322,6 @@ export function set_search_method(method){
 }
 export function set_active_hover (ID, GEOGRAPHY_LEVEL, DATE_SENT){
     return (dispatch, getState) => {
-      console.log('set_active_hover')
       //start fetching state (set to true)
       // dispatch(fetching_start())
 
