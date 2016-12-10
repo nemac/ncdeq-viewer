@@ -285,9 +285,9 @@ export function get_all_geometries(value){
          console.log(feat2) //=
          feat1 = feat1.concat(feat2);
          console.log("feat1")
-         console.log(feat1) 
+         console.log(feat1)
         // //  const current_geometries = current_geometries_huc
-        //  const current_geometries = turf_FC(current_geometries_feat);
+         const current_geometries = turf_FC(feat1);
          console.log("current_geometries")
          console.log(current_geometries)
         //  console.log("current_geometries_huc")
