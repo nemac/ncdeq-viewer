@@ -356,7 +356,9 @@ var MapContainer = React.createClass({
     return should_update
 
   },
-
+  // componentWillMount: function() {
+  //     this.props.use_imagery()
+  // },
   componentWillUpdate: function(nextProps, nextState) {
     //leaflet map dose not update size this forces the issue
     if(nextProps.leafletMap){
@@ -786,6 +788,9 @@ var MapContainer = React.createClass({
     const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;
     const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight-mapHeight_adjustment : MAP_HEIGHT-mapHeight_adjustment;
     const chartVisibility = this.props.chart ? this.props.chart.chart_visibility : null;
+    console.log('this.props.imagery_visibility')
+    console.log(this.props.imagery_visibility)
+    const imageryVisibility = this.props.imagery_visibility ? this.props.imagery_visibility : false;
 
     return (
       <div className="sixteen wide stackable column" style={{paddingLeft: rowPadding + 'px',paddingRight: rowPadding + 'px',paddingTop: rowPadding + 'px',height: mapHght + 'px'}}>
@@ -801,7 +806,6 @@ var MapContainer = React.createClass({
           maxZoom={this.props.map_settings.maxZoom}
           minZoom={this.props.map_settings.minZoom} >
 
-
           <Control position="topright" className="mapbutton" >
               <button className="ui black button" onClick={this.handleChartButtonClick.bind(null,this)}>
                 <i className={!this.props.charts.chart_visibility ? "bar chart icon" : "bar chart icon" }></i>
@@ -814,24 +818,29 @@ var MapContainer = React.createClass({
         </Control>
 
 
-        <ReactLeaflet.TileLayer
-          attribution={this.state.attribution}
-          url={"https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"}
-          onLeafletLoad={this.handleMapLoad.bind(null,this)}
-        />
+        {imageryVisibility &&
+          <ReactLeaflet.TileLayer
+            attribution={this.state.attribution}
+            url={"https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"}
+            onLeafletLoad={this.handleMapLoad.bind(null,this)}
+          />
+        }
 
-
+        {!imageryVisibility &&
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
           url={"https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"}
           onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
+      }
+      {!imageryVisibility &&
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
           minZoom={"8"}
           url={"https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"}
           onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
+      }
 
       {/*
         <ReactLeaflet.TileLayer
