@@ -3,7 +3,7 @@ var PropTypes = React.PropTypes;
 
 import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { HUC12_MAP_FEATUREID, TRA_MAP_FEATUREID, CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID } from '../constants/actionConstants';
-import { getNextLevelName } from '../utils/helpers'
+import { getFriendlyName_NextLevel } from '../utils/helpers'
 
 const tooltipstyle = {
   width: '100%',
@@ -184,11 +184,12 @@ const CustomToolTipBarCharts  = React.createClass({
         $(background_bar).css({ fill: "#f1f1f1" })
       }
 
-      const next_level = getNextLevelName(this.props.level_label)
+      const level_label = getFriendlyName_NextLevel(this.props.level_label)
+
       //return tooltip
       return (
         <div key={labelstr+'tooltip'} style={tooltipstyle}>
-          <p style={toolTipLabel}>{next_level}: {`${labelstr}`}</p>
+          <p style={toolTipLabel}>{level_label}: {`${labelstr}`}</p>
           {thedata}
         </div>
       );

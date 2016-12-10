@@ -67,10 +67,35 @@ export function getNextLevelName(level){
     case 'HUC12':
       return '';
       break;
+    case 'TRA':
+      return 'TRA';
+      break;
     default:
       return '';
   }
 };
+
+export function getFriendlyName_NextLevel(level){
+  //next level is hardcoded need to make this data driven
+  //move this to a helper?
+  switch (level) {
+    case 'River Basins':
+      return 'Cataloging Unit';
+      break;
+    case 'Cataloging Units':
+      return 'HUC 12';
+      break;
+    case 'HUC12':
+      return 'HUC 12';
+      break;
+    case 'TRA':
+      return 'TRA';
+      break;
+    default:
+      return '';
+  }
+};
+
 
 export function getFriendlyName(level){
   //next level is hardcoded need to make this data driven
@@ -84,6 +109,9 @@ export function getFriendlyName(level){
       break;
     case 'HUC12':
       return 'HUC 12';
+      break;
+    case 'TRA':
+      return 'TRA';
       break;
     default:
       return '';

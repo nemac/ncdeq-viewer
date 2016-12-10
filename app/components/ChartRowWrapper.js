@@ -9,6 +9,8 @@ import {
   BOX_BORDER_RADUIS
 } from '../constants/appConstants'
 
+import { getFriendlyName_NextLevel } from '../utils/helpers'
+
 var ChartRowWrapper = React.createClass({
   propTypes: {
     title: PropTypes.string,
@@ -287,6 +289,7 @@ var ChartRowWrapper = React.createClass({
         return af.chart_type === chart_type
       })
     }
+    const level_label = getFriendlyName_NextLevel(this.props.level_label)
 
     return (
 
@@ -294,7 +297,7 @@ var ChartRowWrapper = React.createClass({
           <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: ADJUSTED_TITLE_HEIGHT}}>
             <div className="header" style={{fontSize: "1.28571429em",fontWeight: "700"}}>
               <i className="dropdown left floated icon" style={{float:"left"}}></i>
-              <span style={{float:"left"}}>{this.props.title} ({this.props.level_label})</span>
+              <span style={{float:"left"}}>{this.props.title} ({level_label})</span>
               <span style={{float:"left",fontSize:".75em!important",fontWeight: "500!important",color: "rgba(0,0,0,.6)"}}>
                 <span className="description">{this.props.title_description}</span>
                 <span className="note">{space}- {this.props.note}</span>
