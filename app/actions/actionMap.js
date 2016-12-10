@@ -8,33 +8,6 @@ var turf_FC = require('turf-featurecollection');
 import * as ActionTRA from './actionTRA'
 export const ago_get_traxwalk_by_id = ActionTRA.ago_get_traxwalk_by_id;
 export const ago_get_tra_geom_by_ids = ActionTRA.ago_get_tra_geom_by_ids;
-/**
- * Simple is object check.
- * @param item
- * @returns {boolean}
- */
- function isObject(item) {
-  return (item && typeof item === 'object' && !Array.isArray(item) && item !== null);
-}
-
-/**
- * Deep merge two objects.
- * @param target
- * @param source
- */
- function mergeDeep(target, source) {
-  if (isObject(target) && isObject(source)) {
-    for (const key in source) {
-      if (isObject(source[key])) {
-        if (!target[key]) Object.assign(target, { [key]: {} });
-        mergeDeep(target[key], source[key]);
-      } else {
-        Object.assign(target, { [key]: source[key] });
-      }
-    }
-  }
-  return target;
-}
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;

@@ -3,6 +3,7 @@ var PropTypes = React.PropTypes;
 
 import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { HUC12_MAP_FEATUREID, TRA_MAP_FEATUREID, CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID } from '../constants/actionConstants';
+import { getNextLevelName } from '../utils/helpers'
 
 const tooltipstyle = {
   width: '100%',
@@ -73,11 +74,7 @@ const CustomToolTipBarCharts  = React.createClass({
       geography_level = 'tra'
     }
     this.props.set_active_hover(null, geography_level)
-    // console.log('unmount')
-    // this.setState({start:1})
-
   },
-
   componentWillUpdate: function(nextProps, nextState) {
     const { active } = nextProps;
     let html_hov = '';
@@ -120,42 +117,6 @@ const CustomToolTipBarCharts  = React.createClass({
     $(foreground_bar).on("click",function(){
       self.props.handleClick(self,{name:nextProps.label});
     })
-    // if(background_bar4){
-    //     self.handleMouse();
-    // }
-
-    // $(background_bar).on("mouseleave",function(){
-    //   self.handleMouse(nodata);
-    // })
-
-    // //yes jquery but I cannot hook to the elements in d3 svg.
-    // //  so i need to bind to them...
-    // $(foreground_bar).unbind('click');
-    // $(background_bar).unbind('click');
-    // $(background_bar2).unbind('click');
-    // $(foreground_bar).unbind('mouseenter');
-    // $(background_bar).unbind('mouseenter');
-    // $(background_bar2).unbind('mouseenter');
-    //
-    // $(background_bar).on("click",function(){
-    //   self.props.handleClick(self,{name:nextProps.label});
-    // })
-    // $(background_bar2).on("click",function(){
-    //   self.props.handleClick(self,{name:nextProps.label});
-    // })
-    // $(foreground_bar).on("click",function(){
-    //   self.props.handleClick(self,{name:nextProps.label});
-    // })
-
-    // $(background_bar).on("mouseenter",function(){
-    //   self.handleMouse();
-    // })
-    // $(background_bar2).on("mouseenter",function(){
-    //   self.handleMouse();
-    // })
-    // $(foreground_bar).on("mouseenter",function(){
-    //   self.incrementCounter;
-    // })
 
     if(this.state.counter < 1){
       this.incrementCounter();
@@ -163,40 +124,6 @@ const CustomToolTipBarCharts  = React.createClass({
 
 
   },
-  // handleMouse: function(){
-  //   // console.log('test')
-  //   this.setState({start:1})
-  // },
-  // componentDidUpdate: function(prevProps, prevState) {
-  //   //yes jquery but I cannot hook to the elements in d3 svg.
-  //   //  so i need to bind to them...
-  //   const foreground_bar = $('#bar-chart-'+chart_type).find('.recharts-rectangle.recharts-bar-rectangle')
-  //   const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
-  //   const background_bar2 = $('#bar-chart-'+chart_type).find('.recharts-wrapper')
-  //
-  //   const layer_id = this.get_layer_id(this.props.chart_type)
-  //   const data = {value:this.props.label, chart_type: this.props.chart_type, layer_id};
-  //   const chart_type = this.props.chart_type
-  //
-  //   $(background_bar).unbind('click');
-  //   $(background_bar2).unbind('click');
-  //
-  //   $(background_bar).on("click",function(){
-  //     this.props.handleClick(this,{name:data.value});
-  //   })
-  //   $(background_bar2).on("click",function(){
-  //     this.props.handleClick(this,{name:data.value});
-  //   })
-  //   const self = this;
-  //
-  //   $(background_bar).on("mouseenter",function(){
-  //     self.handleMouse(data);
-  //   })
-  //   $(foreground_bar).on("mouseenter",function(){
-  //     self.handleMouse(data);
-  //   })
-  //
-  // },
   render() {
     const self = this;
     const { active } = this.props;
@@ -257,10 +184,11 @@ const CustomToolTipBarCharts  = React.createClass({
         $(background_bar).css({ fill: "#f1f1f1" })
       }
 
+      const next_level = getNextLevelName(this.props.level_label)
       //return tooltip
       return (
         <div key={labelstr+'tooltip'} style={tooltipstyle}>
-          <p style={toolTipLabel}>{this.props.level_label}: {`${labelstr}`}</p>
+          <p style={toolTipLabel}>{next_level}: {`${labelstr}`}</p>
           {thedata}
         </div>
       );
