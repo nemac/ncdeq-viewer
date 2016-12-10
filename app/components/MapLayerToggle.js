@@ -19,7 +19,11 @@ var MapLayerToggle = React.createClass({
 
     //if visible remove (turn off) layer otherwise add (turn on)
     isLayerVis ? leafletMap.removeLayer(leafletLayer) : leafletMap.addLayer(leafletLayer);
+    console.log(leafletLayer)
 
+    if(leafletLayer.options.url === "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/"){
+      leafletLayer.bringToBack()
+    }
 
   },
   getDefaultProps: function() {

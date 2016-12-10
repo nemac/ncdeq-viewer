@@ -38,8 +38,10 @@ export default class ESRITileMapLayer extends BaseTileLayer {
 
     var name = this.props.name
 
-    //this.leafletElement is the layer to map.addLayer(name) or map.removeLayer(name) - toggle layer
-    this.props.setMapLayers({name,layer:this.leafletElement})
+    // if(name != "BaseMap"){
+      //this.leafletElement is the layer to map.addLayer(name) or map.removeLayer(name) - toggle layer
+      this.props.setMapLayers({name,layer:this.leafletElement})
+    // }
 
   }
 }

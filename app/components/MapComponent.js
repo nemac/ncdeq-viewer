@@ -2,6 +2,7 @@ var React = require('react');
 var ReactLeaflet = require('react-leaflet')
 import ESRIFeatureLayer from '../components/ESRIFeatureLayer';
 import ESRITileMapLayer from '../components/ESRITiledMapLayer'
+import ESRIBaseMap from '../components/ESRIBaseMap'
 import Control from '../components/control';
 import MapLayerToggleWrapper from '../components/MapLayerToggleWrapper'
 
@@ -225,50 +226,53 @@ var MapContainer = React.createClass({
     //get the leaflet Map object
     const leafletMap = this.props.leafletMap.leafletMap;
 
-    // //get the  geojson_layers object from the current state
-    const temp_geojson_layers = GeoJSON_Layers
+    // if(leafletMap){
+      //get the  geojson_layers object from the current state
+      const temp_geojson_layers = GeoJSON_Layers
 
-    //get layer from state
-    let map_layer = temp_geojson_layers[layer_name]
+      //get layer from state
+      let map_layer = temp_geojson_layers[layer_name]
 
-    //check if the layer has been added yes it is global varriable :)
-    const isLayerVis = leafletMap.hasLayer(map_layer);
+      //check if the layer has been added yes it is global varriable :)
+      const isLayerVis = leafletMap.hasLayer(map_layer);
 
-    //if a geojson layer has been added remove it.
-    //  eventually we want to only remove when user elects too.
-    if (isLayerVis){
-      leafletMap.removeLayer(map_layer)
-    }
+      //if a geojson layer has been added remove it.
+      //  eventually we want to only remove when user elects too.
+      if (isLayerVis){
+        leafletMap.removeLayer(map_layer)
+      }
 
-    //add ta blank layer to leaflet
-    map_layer = L.geoJson().addTo(leafletMap);
+      //add ta blank layer to leaflet
+      map_layer = L.geoJson().addTo(leafletMap);
 
-    //add the GeoJSON data to the layer
-    map_layer.addData(features);
+      //add the GeoJSON data to the layer
+      map_layer.addData(features);
 
-    //get render
-    const renderer = this.geoJSON_renderer(layer_name, method);
+      //get render
+      const renderer = this.geoJSON_renderer(layer_name, method);
 
-    //zoom highlights need to move this to varriable
-    map_layer.setStyle(renderer);
+      //zoom highlights need to move this to varriable
+      map_layer.setStyle(renderer);
 
-    //pan and zoom to bounds of layers bounds
-    if(do_zoom){
-      leafletMap.fitBounds(map_layer.getBounds());
-    }
+      //pan and zoom to bounds of layers bounds
+      if(do_zoom){
+        leafletMap.fitBounds(map_layer.getBounds());
+      }
 
-    //when geojson is added on top of map.  it also needs a map click handler enabled.
-    this.add_GeoJSON_ClickEvent(map_layer);
+      //when geojson is added on top of map.  it also needs a map click handler enabled.
+      this.add_GeoJSON_ClickEvent(map_layer);
 
-    //update the geojson_layers object with new map layer
-    temp_geojson_layers[layer_name] = map_layer
+      //update the geojson_layers object with new map layer
+      temp_geojson_layers[layer_name] = map_layer
 
-    //update the state with new geojson_layers object
-    GeoJSON_Layers = {...GeoJSON_Layers, ...temp_geojson_layers}
+      //update the state with new geojson_layers object
+      GeoJSON_Layers = {...GeoJSON_Layers, ...temp_geojson_layers}
 
-    //return the layer
-    return map_layer
-
+      //return the layer
+      return map_layer
+    // }
+    //
+    // return null
   },
   add_GeoJSON_ClickEvent: function(layer){
     //add a click event to the new layer so the new layer does not steal the state...
@@ -809,11 +813,41 @@ var MapContainer = React.createClass({
           <MapLayerToggleWrapper map_settings={this.props.map_settings} leafletMap={this.props.leafletMap} geojson_layers={GeoJSON_Layers}/>
         </Control>
 
+
+        <ReactLeaflet.TileLayer
+          attribution={this.state.attribution}
+          url={"https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"}
+          onLeafletLoad={this.handleMapLoad.bind(null,this)}
+        />
+
+
+        <ReactLeaflet.TileLayer
+          attribution={this.state.attribution}
+          url={"https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"}
+          onLeafletLoad={this.handleMapLoad.bind(null,this)}
+        />
+        <ReactLeaflet.TileLayer
+          attribution={this.state.attribution}
+          minZoom={"8"}
+          url={"https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"}
+          onLeafletLoad={this.handleMapLoad.bind(null,this)}
+        />
+
+      {/*
         <ReactLeaflet.TileLayer
           attribution={this.state.attribution}
           url={this.state.tileUrl}
           onLeafletLoad={this.handleMapLoad.bind(null,this)}
         />
+     <ESRITileMapLayer
+      url="https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer"
+      setMapLayers={this.props.set_MapLayers}
+      tileOpacity="1"
+      name="Imagery"
+      onLeafletClick={this.handleMapClick.bind(null,this)}
+      onLeafletLoad={this.handleMapLoad.bind(null,this)}
+      />
+      */}
 
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/Catchments/MapServer"
@@ -851,7 +885,27 @@ var MapContainer = React.createClass({
          onLeafletClick={this.handleMapClick.bind(null,this)}
          />
 
+         {/*
 
+         <ESRITileMapLayer
+          url="https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer"
+          setMapLayers={this.props.set_MapLayers}
+          tileOpacity="1"
+          name="BaseMap"
+          onLeafletClick={this.handleMapClick.bind(null,this)}
+          onLeafletLoad={this.handleMapLoad.bind(null,this)}
+          />
+          <ESRITileMapLayer
+           url="https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer"
+           setMapLayers={this.props.set_MapLayers}
+           tileOpacity="1"
+           name="BaseMap ref"
+           min_zoom="8"
+           onLeafletClick={this.handleMapClick.bind(null,this)}
+           onLeafletLoad={this.handleMapLoad.bind(null,this)}
+           />
+
+           */}
     </ReactLeaflet.Map>
   }
 
