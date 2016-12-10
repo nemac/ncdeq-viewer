@@ -54,9 +54,16 @@ const CustomToolTipBarCharts  = React.createClass({
       this.props.set_active_hover(data.value, geography_level)
     }
 
-    // this.props.set_search_method('chart hover ' + chart_type)
-    // this.props.get_LayerGeom_ByValue(data.value, data.layer_id)
+  },
+  componentWillUnmount: function() {
+    const chart_type = this.props.chart_type
 
+    let geography_level = 'huc_12'
+    if(chart_type.toUpperCase() === 'TRA'){
+      geography_level = 'tra'
+    }
+    this.props.set_active_hover(null, geography_level)
+    console.log('unmount')
   },
   componentWillUpdate: function(nextProps, nextState) {
 
@@ -75,7 +82,6 @@ const CustomToolTipBarCharts  = React.createClass({
 
       }
     }
-
 
     //
     const self = this;
