@@ -8,6 +8,33 @@ var turf_FC = require('turf-featurecollection');
 import * as ActionTRA from './actionTRA'
 export const ago_get_traxwalk_by_id = ActionTRA.ago_get_traxwalk_by_id;
 export const ago_get_tra_geom_by_ids = ActionTRA.ago_get_tra_geom_by_ids;
+/**
+ * Simple is object check.
+ * @param item
+ * @returns {boolean}
+ */
+ function isObject(item) {
+  return (item && typeof item === 'object' && !Array.isArray(item) && item !== null);
+}
+
+/**
+ * Deep merge two objects.
+ * @param target
+ * @param source
+ */
+ function mergeDeep(target, source) {
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) Object.assign(target, { [key]: {} });
+        mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(target, { [key]: source[key] });
+      }
+    }
+  }
+  return target;
+}
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
@@ -243,25 +270,31 @@ export function get_all_geometries(value){
        .then(axios.spread( (tra_response) => {
 
          const current_geometries_tra= CheckReponse(tra_response,'AGO_API_ERROR');
-         console.log('current_geometries_tra')
-         console.log(current_geometries_tra)
+         let feat1 = current_geometries_huc.features
+         let feat2 = current_geometries_tra.features
 
+        //  var current_geometries_feat = Object.assign({}, feat1,feat2);
 
+        //  const current_geometries_feat = {...feat1, feat2}
+        //  var obj = Object.assign(feat1, feat2);
 
-          // const current_geometries_tra = turf_Combine(current_geometries_tra_single)
-          // console.log('current_geometries_tra')
-          // console.log(current_geometries_tra)
-
-
-                    //merge fc into one.
-          //  const current_geometries = turf_Union(current_geometries_huc, current_geometries_tra,'ID')
-           const current_geometries_feat = {...current_geometries_huc.features, ...current_geometries_tra.features}
-           const current_geometries = turf_FC(current_geometries_feat);
-
-           console.log('current_geometries')
-           console.log(current_geometries)
-
-          //
+        //  const current_geometries = mergeDeep(feat1, feat2)
+         console.log("feat1")
+         console.log(feat1)
+         console.log("feat2")
+         console.log(feat2) //=
+         feat1 = feat1.concat(feat2);
+         console.log("feat1")
+         console.log(feat1) 
+        // //  const current_geometries = current_geometries_huc
+        //  const current_geometries = turf_FC(current_geometries_feat);
+         console.log("current_geometries")
+         console.log(current_geometries)
+        //  console.log("current_geometries_huc")
+        //  console.log(current_geometries_huc)
+        //  console.log("current_geometries_tra")
+        //  console.log(current_geometries_tra)
+        //   //
           dispatch(geometries('GET_GEOMETRIES', current_geometries));
 
        }))

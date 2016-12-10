@@ -400,12 +400,17 @@ var MapContainer = React.createClass({
           console.log(this.props.active_hover.ID)
           const MAP_ID = this.props.active_hover.ID
           if(this.props.geometries){
+            console.log('geometries')
+            console.log(this.props.geometries)
             let has_features = this.has_features(this.props.geometries)
             if(has_features){
               const all_features = this.props.geometries.features;
+              console.log('all_features')
+              console.log(all_features)
               const map_feature = all_features.filter( feature => {
-                return feature.properties.ID === MAP_ID
+                return feature.properties.ID = MAP_ID
               })
+              console.log('map_feature')
               console.log(map_feature)
               this.add_GeoJSON_Layer(map_feature, 'hover', false)
             }
