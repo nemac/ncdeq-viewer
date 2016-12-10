@@ -408,7 +408,7 @@ var MapContainer = React.createClass({
               console.log('all_features')
               console.log(all_features)
               const map_feature = all_features.filter( feature => {
-                return feature.properties.ID = MAP_ID
+                return feature.properties.ID === MAP_ID
               })
               console.log('map_feature')
               console.log(map_feature)

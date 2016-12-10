@@ -290,10 +290,10 @@ export function get_all_geometries(value){
          const current_geometries = turf_FC(feat1);
          console.log("current_geometries")
          console.log(current_geometries)
-        //  console.log("current_geometries_huc")
-        //  console.log(current_geometries_huc)
-        //  console.log("current_geometries_tra")
-        //  console.log(current_geometries_tra)
+         console.log("current_geometries_huc")
+         console.log(current_geometries_huc)
+         console.log("current_geometries_tra")
+         console.log(current_geometries_tra)
         //   //
           dispatch(geometries('GET_GEOMETRIES', current_geometries));
 
