@@ -32,8 +32,7 @@ const mapStateToProps = (state,props) => {
   let fetching_geo = state.fetching_geo.fetching_geo;
   let fetching_menu = state.fetching_geo.fetching_menu;
   let hoverInfo = state.mapConfig.hoverInfo;
-  console.log(state.imagery_visibility)
-
+  
   return {
     charts,
     geography_levels,

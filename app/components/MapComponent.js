@@ -361,8 +361,9 @@ var MapContainer = React.createClass({
   // },
   componentWillUpdate: function(nextProps, nextState) {
     //leaflet map dose not update size this forces the issue
+    let leafletMap
     if(nextProps.leafletMap){
-      const leafletMap = nextProps.leafletMap.leafletMap;
+      leafletMap = nextProps.leafletMap.leafletMap;
       if(leafletMap){
         leafletMap.invalidateSize(true)
       }
@@ -370,6 +371,72 @@ var MapContainer = React.createClass({
 
     let level = this.getLevel();
     const method = nextProps.searchMethod;
+
+    const imageryVisibility = nextProps.imagery_visibility ? nextProps.imagery_visibility : false;
+
+    let on_layer
+    var tile_layers = nextProps.map_settings.layers
+    if(!imageryVisibility){
+      console.log("not: " + imageryVisibility)
+      if(leafletMap){
+
+        on_layer = tile_layers.filter( tile_layer => {
+          return tile_layer.name === 'imagery'
+        })
+
+        leafletMap.removeLayer(on_layer[0].layer)
+
+
+        on_layer = tile_layers.filter( tile_layer => {
+          return tile_layer.name === 'base map labels'
+        })
+
+        if(on_layer){
+          leafletMap.addLayer(on_layer[0].layer)
+        }
+
+        on_layer = tile_layers.filter( tile_layer => {
+          return tile_layer.name === 'base map'
+        })
+
+        if(on_layer){
+          leafletMap.addLayer(on_layer[0].layer)
+        }
+
+      }
+
+    } else {
+
+      if(leafletMap){
+        var tile_layers = nextProps.map_settings.layers
+
+        console.log("is: " + imageryVisibility)
+        console.log(tile_layers)
+        console.log(nextProps.map_settings.layers)
+
+        on_layer = tile_layers.filter( tile_layer => {
+          return tile_layer.name === 'base map labels'
+        })
+
+        leafletMap.removeLayer(on_layer[0].layer)
+
+        on_layer = tile_layers.filter( tile_layer => {
+          return tile_layer.name === 'base map'
+        })
+
+        leafletMap.removeLayer(on_layer[0].layer)
+
+        const tile_layers = this.props.map_settings.layers
+        on_layer = tile_layers.filter( tile_layer => {
+          return tile_layer.name === 'imagery'
+        })
+
+        if(on_layer){
+          leafletMap.addLayer(on_layer[0].layer)
+        }
+
+      }
+    }
 
     //when menu change remove the point, catchment, and huc8
     if(method === 'menu'){
@@ -788,8 +855,7 @@ var MapContainer = React.createClass({
     const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;
     const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight-mapHeight_adjustment : MAP_HEIGHT-mapHeight_adjustment;
     const chartVisibility = this.props.chart ? this.props.chart.chart_visibility : null;
-    console.log('this.props.imagery_visibility')
-    console.log(this.props.imagery_visibility)
+
     const imageryVisibility = this.props.imagery_visibility ? this.props.imagery_visibility : false;
 
     return (
@@ -818,29 +884,34 @@ var MapContainer = React.createClass({
         </Control>
 
 
-        {imageryVisibility &&
-          <ReactLeaflet.TileLayer
-            attribution={this.state.attribution}
+          <ESRITileMapLayer
+            z_Index={0}
+            setMapLayers={this.props.set_MapLayers}
+            name="imagery"
             url={"https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"}
             onLeafletLoad={this.handleMapLoad.bind(null,this)}
-          />
-        }
+            onLeafletClick={this.handleMapClick.bind(null,this)}
+            />
 
-        {!imageryVisibility &&
-        <ReactLeaflet.TileLayer
-          attribution={this.state.attribution}
-          url={"https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"}
-          onLeafletLoad={this.handleMapLoad.bind(null,this)}
-        />
-      }
-      {!imageryVisibility &&
-        <ReactLeaflet.TileLayer
-          attribution={this.state.attribution}
-          minZoom={"8"}
-          url={"https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"}
-          onLeafletLoad={this.handleMapLoad.bind(null,this)}
-        />
-      }
+          <ESRITileMapLayer
+            z_Index={2}
+            setMapLayers={this.props.set_MapLayers}
+            name="base map labels"
+            min_zoom={"8"}
+            url={"https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"}
+            onLeafletLoad={this.handleMapLoad.bind(null,this)}
+            onLeafletClick={this.handleMapClick.bind(null,this)}
+            />
+
+          <ESRITileMapLayer
+            z_Index={1}
+            setMapLayers={this.props.set_MapLayers}
+            name="base map"
+            url={"https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"}
+            onLeafletLoad={this.handleMapLoad.bind(null,this)}
+            onLeafletClick={this.handleMapClick.bind(null,this)}
+            />
+
 
       {/*
         <ReactLeaflet.TileLayer
@@ -864,6 +935,7 @@ var MapContainer = React.createClass({
        name="Catchments Base Map"
        min_zoom="12"
        onLeafletClick={this.handleMapClick.bind(null,this)}
+       z_Index={3}
        />
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc12/MapServer"
@@ -871,6 +943,7 @@ var MapContainer = React.createClass({
        name="HUC 12 Base Map"
        min_zoom="9"
        onLeafletClick={this.handleMapClick.bind(null,this)}
+       z_Index={4}
        />
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc8/MapServer"
@@ -878,6 +951,7 @@ var MapContainer = React.createClass({
        name="Cataloging Units Base Map"
        min_zoom="8"
        onLeafletClick={this.handleMapClick.bind(null,this)}
+       z_Index={5}
        />
        <ESRITileMapLayer
         url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc6_outline/MapServer"
@@ -885,6 +959,7 @@ var MapContainer = React.createClass({
         tileOpacity="0.5"
         name="River Basins Base Map"
         onLeafletClick={this.handleMapClick.bind(null,this)}
+        z_Index={6}
         />
         <ESRITileMapLayer
          url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/TRAS/MapServer"
@@ -892,7 +967,11 @@ var MapContainer = React.createClass({
          tileOpacity="0.5"
          name="Targeted Resource Areas (TRA) Base Map"
          onLeafletClick={this.handleMapClick.bind(null,this)}
+         z_Index={7}
          />
+
+
+
 
          {/*
 

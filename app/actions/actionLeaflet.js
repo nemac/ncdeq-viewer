@@ -14,16 +14,10 @@ export function use_imagery(){
 
     let visibility = IMAGERY_VISIBILITY;
 
-    //get visibility state of charts
-    // visibility = ( state.imagery_visibility.visibility === undefined ? visibility : state.imagery_visibility.visibility);
-    console.log('state.imagery_visibility')
-    console.log(state.imagery_visibility)
     //set visibility state of charts
     if(state.imagery_visibility){
       visibility = (state.imagery_visibility.visibility ? false : true);
     }
-
-    console.log(visibility)
 
     //create map config object
     dispatch(imagery_visibility('USE_IMAGERY',visibility));
