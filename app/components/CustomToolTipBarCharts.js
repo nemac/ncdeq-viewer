@@ -51,7 +51,7 @@ const CustomToolTipBarCharts  = React.createClass({
     const DATE_SENT = Date.now()
 
     if(data.value){
-      this.props.set_active_hover(data.value, geography_level, DATE_SENT)
+      this.props.set_active_hover(data.value, geography_level)
     }
 
     // this.props.set_search_method('chart hover ' + chart_type)
@@ -59,55 +59,86 @@ const CustomToolTipBarCharts  = React.createClass({
 
   },
   componentWillUpdate: function(nextProps, nextState) {
-    const self = this;
-    const layer_id = this.get_layer_id(nextProps.chart_type)
-    const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
-    const nodata = {value:null, chart_type: null, layer_id: null}
-    const chart_type = nextProps.chart_type
 
+    const { active } = nextProps;
+    let html_hov = '';
+    if (active) {
+      const new_label = nextProps.label;
+      const last_label = this.props.label
+      if(new_label != last_label){
+        const self = this;
+        const layer_id = this.get_layer_id(nextProps.chart_type)
+        const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
+        const nodata = {value:null, chart_type: null, layer_id: null}
+        const chart_type = nextProps.chart_type
+        self.handleMouse(data)
+
+      }
+    }
+
+    // //yes jquery but I cannot hook to the elements in d3 svg.
+    // //  so i need to bind to them...
+    // const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
+    // const self = this;
+    // const layer_id = this.get_layer_id(nextProps.chart_type)
+    // const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
+    //
+    // $(background_bar).unbind('click');
+    //
+    // $(background_bar).on("click",function(){
+    //   self.props.handleClick(self,{name:data.value});
+    // })
+
+    //
+    const self = this;
+    // const layer_id = this.get_layer_id(nextProps.chart_type)
+    // const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
+    // const nodata = {value:null, chart_type: null, layer_id: null}
+    const chart_type = nextProps.chart_type
+    //
     const foreground_bar = $('#bar-chart-'+chart_type).find('.recharts-rectangle.recharts-bar-rectangle')
     const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
     const background_bar2 = $('#bar-chart-'+chart_type).find('.recharts-wrapper')
-
-    $(background_bar).css({ fill: "none" })
-
+    //
+    // $(background_bar).css({ fill: "none" })
+    //
     //yes jquery but I cannot hook to the elements in d3 svg.
     //  so i need to bind to them...
     $(foreground_bar).unbind('click');
-    $(foreground_bar).unbind('mouseenter');
-    $(foreground_bar).unbind('mouseleave');
-
+    // $(foreground_bar).unbind('mouseenter');
+    // $(foreground_bar).unbind('mouseleave');
+    //
     $(background_bar).unbind('click');
-    $(background_bar).unbind('mouseenter');
-    $(background_bar).unbind('mouseleave');
-
+    // $(background_bar).unbind('mouseenter');
+    // $(background_bar).unbind('mouseleave');
+    //
     $(background_bar2).unbind('click');
-    $(background_bar2).unbind('mouseenter');
-    $(background_bar2).unbind('mouseleave');
-
+    // $(background_bar2).unbind('mouseenter');
+    // $(background_bar2).unbind('mouseleave');
+    //
     $(background_bar).on("click",function(){
-      self.props.handleClick(self,{name:data.value});
+      self.props.handleClick(self,{name:nextProps.label});
     })
     $(background_bar2).on("click",function(){
-      self.props.handleClick(self,{name:data.value});
+      self.props.handleClick(self,{name:nextProps.label});
     })
     $(foreground_bar).on("click",function(){
-      self.props.handleClick(self,{name:data.value});
+      self.props.handleClick(self,{name:nextProps.label});
     })
 
-    $(background_bar).on("mouseenter",function(){
-      self.handleMouse(data);
-    })
-    $(background_bar2).on("mouseenter",function(){
-      self.handleMouse(data);
-    })
-    $(foreground_bar).on("mouseenter",function(){
-      self.handleMouse(data);
-    })
-
-    $(background_bar).on("mouseleave",function(){
-      self.handleMouse(nodata);
-    })
+    // $(background_bar).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    // $(background_bar2).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    // $(foreground_bar).on("mouseenter",function(){
+    //   self.handleMouse(data);
+    // })
+    //
+    // $(background_bar).on("mouseleave",function(){
+    //   self.handleMouse(nodata);
+    // })
     // $(background_bar2).on("mouseleave",function(){
     //   self.handleMouse(nodata);
     // })
@@ -116,9 +147,29 @@ const CustomToolTipBarCharts  = React.createClass({
     // })
 
   },
+  componentDidUpdate: function(prevProps, prevState) {
+    //yes jquery but I cannot hook to the elements in d3 svg.
+    //  so i need to bind to them...
+    const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
+    const background_bar2 = $('#bar-chart-'+chart_type).find('.recharts-wrapper')
 
+    const layer_id = this.get_layer_id(this.props.chart_type)
+    const data = {value:this.props.label, chart_type: this.props.chart_type, layer_id};
+    const chart_type = this.props.chart_type
+
+    $(background_bar).unbind('click');
+    $(background_bar2).unbind('click');
+
+    $(background_bar).on("click",function(){
+      this.props.handleClick(this,{name:data.value});
+    })
+    $(background_bar2).on("click",function(){
+      this.props.handleClick(this,{name:data.value});
+    })
+
+  },
   render() {
-
+    const self = this;
     const { active } = this.props;
     let html_hov = '';
     if (active) {

@@ -247,7 +247,7 @@ export function get_all_geometries(value){
     const search_layer_id = get_feature_layerid(length_of_id)
     const current_geography_level = get_feature_huc(length_of_id)
     const search_value = value.substring(0, end_length)
-    console.log(length_of_id,current_geography_level,search_value)
+
     axios.all([AGO_get_geometry_for_all(search_value, search_layer_id),ago_get_traxwalk_by_id(search_value, current_geography_level)])
       .then(axios.spread( (huc_response, tra_xwalk_response) => {
 
@@ -273,29 +273,11 @@ export function get_all_geometries(value){
          let feat1 = current_geometries_huc.features
          let feat2 = current_geometries_tra.features
 
-        //  var current_geometries_feat = Object.assign({}, feat1,feat2);
-
-        //  const current_geometries_feat = {...feat1, feat2}
-        //  var obj = Object.assign(feat1, feat2);
-
-        //  const current_geometries = mergeDeep(feat1, feat2)
-         console.log("feat1")
-         console.log(feat1)
-         console.log("feat2")
-         console.log(feat2) //=
+         //merge the features for tra's and hucs
          feat1 = feat1.concat(feat2);
-         console.log("feat1")
-         console.log(feat1)
-        // //  const current_geometries = current_geometries_huc
          const current_geometries = turf_FC(feat1);
-         console.log("current_geometries")
-         console.log(current_geometries)
-         console.log("current_geometries_huc")
-         console.log(current_geometries_huc)
-         console.log("current_geometries_tra")
-         console.log(current_geometries_tra)
-        //   //
-          dispatch(geometries('GET_GEOMETRIES', current_geometries));
+
+        dispatch(geometries('GET_GEOMETRIES', current_geometries));
 
        }))
       //  .catch(error => {
@@ -340,7 +322,7 @@ export function set_search_method(method){
 }
 export function set_active_hover (ID, GEOGRAPHY_LEVEL, DATE_SENT){
     return (dispatch, getState) => {
-
+      console.log('set_active_hover')
       //start fetching state (set to true)
       // dispatch(fetching_start())
 

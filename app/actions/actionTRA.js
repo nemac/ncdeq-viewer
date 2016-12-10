@@ -121,7 +121,6 @@ export function ago_get_tra_geom_by_ids( id_list ){
                     '&sqlFormat=none' +
                     '&f=pgeojson' +
                     '&token='
-                    console.log(query_URL)
 
  //send the ajax request via axios
  return axios.get(query_URL);
