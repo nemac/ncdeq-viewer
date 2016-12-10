@@ -3,7 +3,7 @@ var PropTypes = React.PropTypes;
 
 import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { HUC12_MAP_FEATUREID, TRA_MAP_FEATUREID, CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID } from '../constants/actionConstants';
-import { getFriendlyName_NextLevel } from '../utils/helpers'
+import { getFriendlyName_NextLevel, getAGOGeographyLabel_NextLevel } from '../utils/helpers'
 
 const tooltipstyle = {
   width: '100%',
@@ -55,21 +55,24 @@ const CustomToolTipBarCharts  = React.createClass({
     const chart_type = this.props.chart_type
     this.props.set_search_method('chart hover ' + chart_type)
 
-    let geography_level = 'huc_12'
+    let current_huc_level = 'huc_12'
+    let geography_level =  getAGOGeographyLabel_NextLevel(this.props.level_label)
+    console.log(geography_level)
     if(chart_type.toUpperCase() === 'TRA'){
       geography_level = 'tra'
     }
     const DATE_SENT = Date.now()
 
     if(data.value){
-      this.props.set_active_hover(data.value, geography_level)
+      this.props.set_active_hover(data.value, geography_level, DATE_SENT)
     }
 
   },
   componentWillUnmount: function() {
     const chart_type = this.props.chart_type
 
-    let geography_level = 'huc_12'
+    let current_huc_level = 'huc_12'
+    let geography_level =  getAGOGeographyLabel_NextLevel(this.props.level_label)
     if(chart_type.toUpperCase() === 'TRA'){
       geography_level = 'tra'
     }

@@ -52,10 +52,10 @@ function get_feature_layerid(length_of_id){
         return HUC12_MAP_FEATUREID
         break;
       case 8:
-        return CATALOGING_MAP_FEATUREID
+        return HUC12_MAP_FEATUREID
         break;
       case 6:
-        return BASIN_MAP_FEATUREID
+        return CATALOGING_MAP_FEATUREID
         break;
       default:
         return HUC12_MAP_FEATUREID
