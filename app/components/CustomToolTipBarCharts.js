@@ -25,6 +25,16 @@ const CustomToolTipBarCharts  = React.createClass({
     payload: PropTypes.array,
     label: PropTypes.string,
   },
+  getInitialState: function () {
+    return {
+      counter: 0,
+    };
+  },
+  incrementCounter: function () {
+    this.setState({
+      counter: this.state.counter + 1
+    });
+  },
   get_layer_id: function(layer){
     switch (layer) {
       case 'baseline':
@@ -40,7 +50,7 @@ const CustomToolTipBarCharts  = React.createClass({
         return HUC12_MAP_FEATUREID
     }
   },
-  handleMouse: function (data, e){
+  update_hover: function (data){
     const chart_type = this.props.chart_type
     this.props.set_search_method('chart hover ' + chart_type)
 
@@ -63,23 +73,25 @@ const CustomToolTipBarCharts  = React.createClass({
       geography_level = 'tra'
     }
     this.props.set_active_hover(null, geography_level)
-    console.log('unmount')
-  },
-  componentWillUpdate: function(nextProps, nextState) {
+    // console.log('unmount')
+    // this.setState({start:1})
 
+  },
+
+  componentWillUpdate: function(nextProps, nextState) {
     const { active } = nextProps;
     let html_hov = '';
     if (active) {
       const new_label = nextProps.label;
       const last_label = this.props.label
-      if(new_label != last_label){
+      if(new_label != last_label || this.state.counter < 1){
+        // console.log(this.state.counter)
+
         const self = this;
         const layer_id = this.get_layer_id(nextProps.chart_type)
         const data = {value:nextProps.label, chart_type: nextProps.chart_type, layer_id};
-        const nodata = {value:null, chart_type: null, layer_id: null}
         const chart_type = nextProps.chart_type
-        self.handleMouse(data)
-
+        self.update_hover(data)
       }
     }
 
@@ -91,6 +103,7 @@ const CustomToolTipBarCharts  = React.createClass({
     const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
     const background_bar2 = $('#bar-chart-'+chart_type).find('.recharts-wrapper')
     const background_bar3 = $('#bar-chart-'+chart_type).find('.recharts-layer.recharts-bar-graphical')
+    const background_bar4 = $('#bar-chart-'+chart_type).find('.recharts-tooltip-wrapper')
 
     //yes jquery but I cannot hook to the elements in d3 svg.
     //  so i need to bind to them...
@@ -107,50 +120,83 @@ const CustomToolTipBarCharts  = React.createClass({
     $(foreground_bar).on("click",function(){
       self.props.handleClick(self,{name:nextProps.label});
     })
+    // if(background_bar4){
+    //     self.handleMouse();
+    // }
 
     // $(background_bar).on("mouseleave",function(){
     //   self.handleMouse(nodata);
     // })
 
-    //yes jquery but I cannot hook to the elements in d3 svg.
-    //  so i need to bind to them...
-    $(foreground_bar).unbind('click');
-    $(background_bar).unbind('click');
-    $(background_bar2).unbind('click');
+    // //yes jquery but I cannot hook to the elements in d3 svg.
+    // //  so i need to bind to them...
+    // $(foreground_bar).unbind('click');
+    // $(background_bar).unbind('click');
+    // $(background_bar2).unbind('click');
+    // $(foreground_bar).unbind('mouseenter');
+    // $(background_bar).unbind('mouseenter');
+    // $(background_bar2).unbind('mouseenter');
+    //
+    // $(background_bar).on("click",function(){
+    //   self.props.handleClick(self,{name:nextProps.label});
+    // })
+    // $(background_bar2).on("click",function(){
+    //   self.props.handleClick(self,{name:nextProps.label});
+    // })
+    // $(foreground_bar).on("click",function(){
+    //   self.props.handleClick(self,{name:nextProps.label});
+    // })
 
-    $(background_bar).on("click",function(){
-      self.props.handleClick(self,{name:nextProps.label});
-    })
-    $(background_bar2).on("click",function(){
-      self.props.handleClick(self,{name:nextProps.label});
-    })
-    $(foreground_bar).on("click",function(){
-      self.props.handleClick(self,{name:nextProps.label});
-    })
+    // $(background_bar).on("mouseenter",function(){
+    //   self.handleMouse();
+    // })
+    // $(background_bar2).on("mouseenter",function(){
+    //   self.handleMouse();
+    // })
+    // $(foreground_bar).on("mouseenter",function(){
+    //   self.incrementCounter;
+    // })
 
+    if(this.state.counter < 1){
+      this.incrementCounter();
+    }
 
-  },
-  componentDidUpdate: function(prevProps, prevState) {
-    //yes jquery but I cannot hook to the elements in d3 svg.
-    //  so i need to bind to them...
-    const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
-    const background_bar2 = $('#bar-chart-'+chart_type).find('.recharts-wrapper')
-
-    const layer_id = this.get_layer_id(this.props.chart_type)
-    const data = {value:this.props.label, chart_type: this.props.chart_type, layer_id};
-    const chart_type = this.props.chart_type
-
-    $(background_bar).unbind('click');
-    $(background_bar2).unbind('click');
-
-    $(background_bar).on("click",function(){
-      this.props.handleClick(this,{name:data.value});
-    })
-    $(background_bar2).on("click",function(){
-      this.props.handleClick(this,{name:data.value});
-    })
 
   },
+  // handleMouse: function(){
+  //   // console.log('test')
+  //   this.setState({start:1})
+  // },
+  // componentDidUpdate: function(prevProps, prevState) {
+  //   //yes jquery but I cannot hook to the elements in d3 svg.
+  //   //  so i need to bind to them...
+  //   const foreground_bar = $('#bar-chart-'+chart_type).find('.recharts-rectangle.recharts-bar-rectangle')
+  //   const background_bar = $('#bar-chart-'+chart_type).find('.recharts-bar-cursor')
+  //   const background_bar2 = $('#bar-chart-'+chart_type).find('.recharts-wrapper')
+  //
+  //   const layer_id = this.get_layer_id(this.props.chart_type)
+  //   const data = {value:this.props.label, chart_type: this.props.chart_type, layer_id};
+  //   const chart_type = this.props.chart_type
+  //
+  //   $(background_bar).unbind('click');
+  //   $(background_bar2).unbind('click');
+  //
+  //   $(background_bar).on("click",function(){
+  //     this.props.handleClick(this,{name:data.value});
+  //   })
+  //   $(background_bar2).on("click",function(){
+  //     this.props.handleClick(this,{name:data.value});
+  //   })
+  //   const self = this;
+  //
+  //   $(background_bar).on("mouseenter",function(){
+  //     self.handleMouse(data);
+  //   })
+  //   $(foreground_bar).on("mouseenter",function(){
+  //     self.handleMouse(data);
+  //   })
+  //
+  // },
   render() {
     const self = this;
     const { active } = this.props;
