@@ -255,26 +255,24 @@ var ChartRowWrapper = React.createClass({
     if(chart_buttons){
       const chart_type = this.props.chart_type.toUpperCase()
       const buttons = chart_buttons.features.filter( button => {
-        // console.log(button.properties.chart_matchid,chart_id)
         return button.properties.chart_matchid === chart_id &&
                button.properties.chart_type === chart_type
       })
-      // console.log('buttons is next valid')
-      // console.log(buttons.length, buttons.length > 0)
-      // console.log(buttons)
 
       return (buttons.length > 0)
     }
     return false
 
   },
-  get_next_id(chart_buttons, chart_id){
+  get_last_id(chart_buttons, chart_matchid){
     if(chart_buttons){
+      const chart_type = this.props.chart_type.toUpperCase()
       const buttons = chart_buttons.features.filter( button => {
-        return button.properties.chart_matchid === chart_matchid
+        return button.properties.chart_id === chart_matchid &&
+               button.properties.chart_type === chart_type
       })
-
-      return buttons.length > 0 ? button[0].chart_id : null
+      console.log(buttons)
+      return buttons.length > 0 ? buttons[0].properties.chart_matchid : null
 
     }
     return null
@@ -287,13 +285,8 @@ var ChartRowWrapper = React.createClass({
     //get the chart levels
     const chart_levels = this.get_chart_levels()
     const last_chart = this.get_chart_Previous()
-    const is_next_valid = this.check_next_level_valid()
+    // const is_next_valid = this.check_next_level_valid()
     const sort_id = this.sort_byid(chart_levels);
-
-    // console.log(chart_type)
-    // console.log(chart_buttons)
-    // console.log('is_next_valid')
-    // console.log(is_next_valid_test)
 
     const new_chart_levels = this.update_ChartLevels(sort_id)
 
@@ -386,15 +379,7 @@ var ChartRowWrapper = React.createClass({
                 const button_color = {"backgroundColor":  colors[1]+"!important"}
                 const button_color_pulldown = {"backgroundColor":  colors[1]+"!important","padding": "0px!important","paddingLeft": "0px!important","paddingRight":  "30px!important"}
                 const  is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
-                console.log(chart_type, label, item.chart_id, is_next_valid_test)
-                console.log(chart_buttons)
-                // if(chart_type === 'TRA'){
-                //    is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
-                //   console.log(chart_type, label, item.chart_id, is_next_valid_test)
-                //   // console.log(chart_buttons)
-                //
-                // }
-
+                const last_id_test = this.get_last_id(chart_buttons,item.chart_matchid)
                 let button_class = is_next_valid_test ? "ui tiny black right labeled icon button" : "ui tiny disabled right labeled icon black button";
                 let button_class_pulldown = is_next_valid_test ? "ui tiny black right labeled icon button function " + chart_type : "ui tiny disabled right labeled icon black button function " + chart_type;
 
@@ -426,7 +411,7 @@ var ChartRowWrapper = React.createClass({
                 if(!has_dupes){
                   return (  <button className={button_class} key={label + '-' + keycntb++ } style={button_color}
                                       onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)} >
-                             {label}
+                             {label} {last_id_test}-{last_matchid}
                              <i className="level down icon"></i>
                             </button>)
                 }
