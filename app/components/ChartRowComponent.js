@@ -60,10 +60,10 @@ var ChartRow = React.createClass({
             key_colors = ['rgba(29, 131, 72 ,1)' , 'rgba(29, 131, 72,.5)']
           break;
 
-          case 'Nitrogen Agriculture':
+          case 'Nitrogen Atmosphere':
             key_colors = ['rgba(130, 224, 170, 1)' , 'rgba(130, 224, 170, .5)']
             break;
-          case 'Nitrogen Atmosphere':
+          case 'Nitrogen Agriculture':
             key_colors = ['rgba(46, 204, 113,1)' , 'rgba(46, 204, 113,.5)']
             break;
           case 'Nitrogen Urban':
@@ -75,17 +75,17 @@ var ChartRow = React.createClass({
         key_colors = ['#456fa2' , '#759ac1']
         break;
 
-        case '10 year peak':
-          key_colors = ['rgba(133, 193, 233  ,1)' , 'rgba(133, 193, 233  ,.5)'] //133, 193, 233
-          break;
-        case '100 year peak':
-          key_colors = ['rgba(52, 152, 219 ,1)' , 'rgba(52, 152, 219  ,.5)'] //52, 152, 219
-          break;
         case '2 year peak':
-          key_colors = ['rgba(46, 134, 193  ,1)' , 'rgba(46, 134, 193 ,.5)'] //46, 134, 193
+          key_colors =  ['rgba(133, 193, 233  ,1)' , 'rgba(133, 193, 233  ,.5)'] //46, 134, 193
+          break;
+        case '10 year peak':
+          key_colors = ['rgba(52, 152, 219 ,1)' , 'rgba(52, 152, 219  ,.5)']//133, 193, 233
           break;
         case '50 year peak':
-          key_colors = ['rgba(33, 97, 140  ,1)' , 'rgba(33, 97, 140 ,.5)'] //33, 97, 140
+          key_colors = ['rgba(46, 134, 193  ,1)' , 'rgba(46, 134, 193 ,.5)']//33, 97, 140
+          break;
+        case '100 year peak':
+          key_colors = ['rgba(33, 97, 140  ,1)' , 'rgba(33, 97, 140 ,.5)']  //52, 152, 219
           break;
 
       case 'Habitat':
