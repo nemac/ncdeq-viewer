@@ -219,22 +219,24 @@ function ago_getChartLevels(){
      return axios.get(query_URL);
 }
 
-function ago_getNextChart_isvalid(chart_type, match_id){
+function ago_get_chart_buttons(chart_type){
 // query?&objectIds=&time=&resultType=none&outFields=chart_id+&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=pgeojson&token=
 // query?where=chart_type+%3D+%27BASELINE+%27+&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
 
+//all chart levels
 //query?where=chart_type+%3D+%27TRA+%27+&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_level%22+as+INT%29+desc%2C+CAST%28%22chart_id%22+as+INT%29+desc%2CCAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
-
+//next valid
+//query?where=chart_type+%3D+%27BASELINE%27+and+chart_matchid+%3D+%276%27&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_level%22+as+INT%29+desc%2C+CAST%28%22chart_id%22+as+INT%29+desc%2CCAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
-                       '?where=chart_type+%3D+%27' + chart_type +'%27+and+chart_matchid+%3D+%27' + match_id +  '%27' + //+and+ID+%3D+%27' + chart_id +'%27' +
+                       '?where=chart_type+%3D+%27' + chart_type+ '%27' +
                        '&objectIds=' +
                        '&time=' +
                        '&resultType=none' +
-                       '&outFields=chart_id' +
+                       '&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level' +
                        '&returnIdsOnly=false' +
                        '&returnCountOnly=false' +
                        '&returnDistinctValues=true' +
-                       '&orderByFields=' +
+                       '&orderByFields=CAST%28%22chart_level%22+as+INT%29+desc%2C+CAST%28%22chart_id%22+as+INT%29+desc%2CCAST%28%22chart_matchid%22+as+INT%29+desc' +
                        '&groupByFieldsForStatistics=' +
                        '&outStatistics=' +
                        '&resultOffset=' +
@@ -243,7 +245,6 @@ function ago_getNextChart_isvalid(chart_type, match_id){
                        '&f=pgeojson' +
                        '&token='
 
-  console.log(query_URL)
   //send the ajax request via axios
   return axios.get(query_URL);
 }
@@ -294,34 +295,30 @@ function check_limits_valid(data, item){
 
   return true
 }
-export function is_next_valid(chart_type, match_id){
 
-  let valid
-  let lastPromise = Promise.resolve();
-  //start with resolved promise
-  return lastPromise = lastPromise.then( () => {
+export function get_chart_buttons(){
+  return (dispatch,getState) => {
 
-    return valid = ago_getNextChart_isvalid(chart_type, match_id)
-    .then( next_chart_response => {
+    //start fetching state (set to true)
+    dispatch(fetching_start())
 
-      const next_chart_data = CheckReponse(next_chart_response,'AGO_API_ERROR');
-      console.log('next_chart_data')
-      console.log(next_chart_data)
-      if(!next_chart_data.features || next_chart_data.features.length === 0){
-        console.log(false)
-        return false
-      } else {
-        console.log(true)
-        return true
-      }
-    })
-    return valid
-  })
+    const state = getState()
 
+    ago_get_chart_buttons(chart_type)
+      .then( chart_button_response => {
 
-  // )}
+        const chart_button_data = CheckReponse(chart_button_response,'AGO_API_ERROR');
 
+        //send the chart data on
+        dispatch(chart_buttons('GET_CHART_BUTTONS', chart_button_data))
+
+      })
+
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
+  }
 }
+
 export function update_ChartLevels(new_level, new_matchid, chart_type){
   return (dispatch,getState) => {
 
@@ -346,8 +343,7 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
         const chart_type_limits = state.chartData.chart_levels.chart_limits;
         let new_level_chk = new_level-1
 
-        // ago_getNextChart_isvalid(chart_type, match_id, chart_id)
-        ago_getPreviousChart(new_level_chk, new_matchid) //ago_getNextChart_isvalid(chart_type, match_id, chart_id)
+        ago_getPreviousChart(new_level_chk, new_matchid)
           .then( previous_chart_response => {
             const previous_data = CheckReponse(previous_chart_response,'AGO_API_ERROR');
 
@@ -391,9 +387,6 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
                 ///we only want to change the limit if there is chart data in the next level down.
                 //  this checks to make sure we have data
                 const isvalid = check_limits_valid(chart_level_data, new_item)
-
-                // const isvalid_next = is_next_valid(chart_type, current_chart_matchid)
-                // console.log('isvalid_next' + isvalid_next)
 
                 //there is data in the next chart level down
                 if(isvalid){
@@ -931,6 +924,10 @@ export function get_active_function (chart_id, active_name, chart_type){
 
 function active_function(type, data){
   return {type: type, active_function: data}
+}
+
+function chart_buttons(type, data){
+  return {type: type, chart_buttons: data, receivedAt: Date.now()}
 }
 
 //function to handle sending to reducer and store

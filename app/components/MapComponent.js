@@ -877,7 +877,7 @@ var MapContainer = React.createClass({
 
           <Control position="bottomleft" className="mapbutton" >
             <button className="ui grey mini button" onClick={this.props.use_imagery} style={{width:"140px"}}>
-              <i className={imageryVisibility ? "map outline icon" : "file image outline icon" }></i>
+              <i className={imageryVisibility ? "map  icon" : "image icon" }></i>
               {imageryVisibility ? "Show Map" : "Show Satellite" }
             </button>
           </Control>

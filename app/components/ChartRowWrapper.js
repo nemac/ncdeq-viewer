@@ -246,8 +246,41 @@ var ChartRowWrapper = React.createClass({
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set text',value);
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set value',value);
   },
+  componentWillMount: function() {
+
+    this.props.get_chart_buttons(this.props.chart_type.toUpperCase())
+
+  },
+  is_next_valid(chart_buttons, chart_id){
+    if(chart_buttons){
+
+      const buttons = chart_buttons.features.filter( button => {
+        // console.log(button.properties.chart_matchid,chart_id)
+        return button.properties.chart_matchid === chart_id
+      })
+      // console.log('buttons is next valid')
+      // console.log(buttons.length, buttons.length > 0)
+      // console.log(buttons)
+
+      return (buttons.length > 0)
+    }
+    return false
+
+  },
+  get_next_id(chart_buttons, chart_id){
+    if(chart_buttons){
+      const buttons = chart_buttons.features.filter( button => {
+        return button.properties.chart_matchid === chart_matchid
+      })
+
+      return buttons.length > 0 ? button[0].chart_id : null
+
+    }
+    return null
+  },
 
   render: function() {
+    const chart_buttons = this.props.chart_buttons
 
     //get the chart levels
     const chart_levels = this.get_chart_levels()
@@ -255,6 +288,11 @@ var ChartRowWrapper = React.createClass({
     const is_next_valid = this.check_next_level_valid()
     const chart_type =  this.props.chart_type;
     const sort_id = this.sort_byid(chart_levels);
+
+    // console.log(chart_type)
+    // console.log(chart_buttons)
+    // console.log('is_next_valid')
+    // console.log(is_next_valid_test)
 
     const new_chart_levels = this.update_ChartLevels(sort_id)
 
@@ -346,9 +384,18 @@ var ChartRowWrapper = React.createClass({
                 const colors = this.props.get_keyColors(label)
                 const button_color = {"backgroundColor":  colors[1]+"!important"}
                 const button_color_pulldown = {"backgroundColor":  colors[1]+"!important","padding": "0px!important","paddingLeft": "0px!important","paddingRight":  "30px!important"}
+                const  is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
+                console.log(chart_type, label, item.chart_id, is_next_valid_test)
+                console.log(chart_buttons)
+                // if(chart_type === 'TRA'){
+                //    is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
+                //   console.log(chart_type, label, item.chart_id, is_next_valid_test)
+                //   // console.log(chart_buttons)
+                //
+                // }
 
-                let button_class = is_next_valid ? "ui tiny black right labeled icon button" : "ui tiny disabled right labeled icon black button";
-                let button_class_pulldown = is_next_valid ? "ui tiny black right labeled icon button function " + chart_type : "ui tiny disabled right labeled icon black button function " + chart_type;
+                let button_class = is_next_valid_test ? "ui tiny black right labeled icon button" : "ui tiny disabled right labeled icon black button";
+                let button_class_pulldown = is_next_valid_test ? "ui tiny black right labeled icon button function " + chart_type : "ui tiny disabled right labeled icon black button function " + chart_type;
 
                 const start = (has_dupes && !last_has_dupe)
 

@@ -42,6 +42,15 @@ export function active_function(state = [], action){
   }
 }
 
+export function chart_buttons(state = [], action){
+  switch (action.type) {
+    case 'GET_CHART_BUTTONS':
+      return {...state, chart_buttons: action.chart_buttons}
+    default:
+      return state
+  }
+}
+
 export function chart_limit(state = [], action){
   switch (action.type) {
     case 'CHART_LIMIT':

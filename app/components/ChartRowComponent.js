@@ -1,6 +1,6 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
-import ChartRowWrapper from '../components/ChartRowWrapper';
+import ChartRowWrapper from '../containers/ChartRowWrapperContainer';
 import ChartPie from '../components/ChartPie';
 import ChartSimpleBar from '../components/ChartSimpleBar';
 import ChartTRA from '../components/ChartTRA';
