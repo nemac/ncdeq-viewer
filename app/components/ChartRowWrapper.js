@@ -253,10 +253,11 @@ var ChartRowWrapper = React.createClass({
   },
   is_next_valid(chart_buttons, chart_id){
     if(chart_buttons){
-
+      const chart_type = this.props.chart_type.toUpperCase()
       const buttons = chart_buttons.features.filter( button => {
         // console.log(button.properties.chart_matchid,chart_id)
-        return button.properties.chart_matchid === chart_id
+        return button.properties.chart_matchid === chart_id &&
+               button.properties.chart_type === chart_type
       })
       // console.log('buttons is next valid')
       // console.log(buttons.length, buttons.length > 0)
@@ -278,15 +279,15 @@ var ChartRowWrapper = React.createClass({
     }
     return null
   },
-
   render: function() {
+    const chart_type =  this.props.chart_type;
     const chart_buttons = this.props.chart_buttons
+
 
     //get the chart levels
     const chart_levels = this.get_chart_levels()
     const last_chart = this.get_chart_Previous()
     const is_next_valid = this.check_next_level_valid()
-    const chart_type =  this.props.chart_type;
     const sort_id = this.sort_byid(chart_levels);
 
     // console.log(chart_type)

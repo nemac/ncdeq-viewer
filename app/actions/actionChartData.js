@@ -219,7 +219,7 @@ function ago_getChartLevels(){
      return axios.get(query_URL);
 }
 
-function ago_get_chart_buttons(chart_type){
+function ago_get_chart_buttons(){
 // query?&objectIds=&time=&resultType=none&outFields=chart_id+&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=pgeojson&token=
 // query?where=chart_type+%3D+%27BASELINE+%27+&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
 
@@ -228,7 +228,7 @@ function ago_get_chart_buttons(chart_type){
 //next valid
 //query?where=chart_type+%3D+%27BASELINE%27+and+chart_matchid+%3D+%276%27&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_level%22+as+INT%29+desc%2C+CAST%28%22chart_id%22+as+INT%29+desc%2CCAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
-                       '?where=chart_type+%3D+%27' + chart_type+ '%27' +
+                       '?where=OBJECTID+>+0' +
                        '&objectIds=' +
                        '&time=' +
                        '&resultType=none' +
@@ -304,7 +304,7 @@ export function get_chart_buttons(){
 
     const state = getState()
 
-    ago_get_chart_buttons(chart_type)
+    ago_get_chart_buttons()
       .then( chart_button_response => {
 
         const chart_button_data = CheckReponse(chart_button_response,'AGO_API_ERROR');
