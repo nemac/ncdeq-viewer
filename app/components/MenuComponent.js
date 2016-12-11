@@ -107,6 +107,7 @@ var MenuComponent = React.createClass({
     //  the chart data update is handled in menu change
     this.props.handleSearchChange(comp,e)
 
+    //change search method
     this.props.set_search_method('location searched')
 
     //update header vis in action

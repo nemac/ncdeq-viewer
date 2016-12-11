@@ -123,10 +123,10 @@ var MapLayerToggleWrapper = React.createClass({
     const space = (<span>&nbsp;</span>)
 
     return (
-      <div className="ui inverted segment" style={{padding:"0px 0px 0px 0px",marginRight:"4px"}}>
+      <div className="ui inverted segment" style={{padding:"0px 5px 0px 5px",marginRight:"4px"}}>
         <div className="ui vertical inverted fluid accordion">
           <div className="item">
-            <div className="title" style={{fontWeight: "700",fontSize: ".78571429rem",width:"140px"}}>
+            <div className="title" style={{fontWeight: "700",fontSize: "1rem",width:"130px"}}>
                 <i className="dropdown left floated icon"></i>
                 <i className="list layout icon"></i>
                 Toggle Layers

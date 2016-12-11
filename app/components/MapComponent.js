@@ -10,6 +10,7 @@ import MapLayerToggleWrapper from '../components/MapLayerToggleWrapper'
 import {
   MAP_HEIGHT,
   DEF_PAD,
+  SPACING
 } from '../constants/appConstants';
 
 import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
@@ -868,7 +869,7 @@ var MapContainer = React.createClass({
           minZoom={this.props.map_settings.minZoom} >
 
           <Control position="topright" className="mapbutton" >
-            <button className="ui black mini button" onClick={this.handleChartButtonClick.bind(null,this)} style={{width:"140px"}}>
+            <button className="ui black button" onClick={this.handleChartButtonClick.bind(null,this)} style={{paddingLeft: SPACING,paddingRight: SPACING,width:"140px"}}>
               <i className={!this.props.charts.chart_visibility ? "bar chart icon" : "bar chart icon" }></i>
               {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
             </button>

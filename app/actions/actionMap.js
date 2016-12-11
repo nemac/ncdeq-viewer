@@ -605,7 +605,7 @@ export function handleSearchChange(comp,e){
       new google.maps.LatLng(southWestLatitude, southWestlongitude));
 
       //set the bounds to the optopns
-      var options = {bounds: defaultBounds}
+      var options = {strictbounds: defaultBounds}
 
       //get this so we can access in within google maps callback
       var self = this;

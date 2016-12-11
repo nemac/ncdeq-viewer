@@ -219,10 +219,14 @@ function ago_getChartLevels(){
      return axios.get(query_URL);
 }
 
-function ago_getNextChart_isvalid(chart_type, match_id, chart_id){
+function ago_getNextChart_isvalid(chart_type, match_id){
 // query?&objectIds=&time=&resultType=none&outFields=chart_id+&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=pgeojson&token=
+// query?where=chart_type+%3D+%27BASELINE+%27+&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
+
+//query?where=chart_type+%3D+%27TRA+%27+&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_level%22+as+INT%29+desc%2C+CAST%28%22chart_id%22+as+INT%29+desc%2CCAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
+
   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
-                       '?where=chart_type+%3D+%27' + chart_type +'%27+and+chart_matchid+%3D+%27' + match_id +'%27+and+ID+%3D+%27' + chart_id +'%27' +
+                       '?where=chart_type+%3D+%27' + chart_type +'%27+and+chart_matchid+%3D+%27' + match_id +  '%27' + //+and+ID+%3D+%27' + chart_id +'%27' +
                        '&objectIds=' +
                        '&time=' +
                        '&resultType=none' +
@@ -239,6 +243,7 @@ function ago_getNextChart_isvalid(chart_type, match_id, chart_id){
                        '&f=pgeojson' +
                        '&token='
 
+  console.log(query_URL)
   //send the ajax request via axios
   return axios.get(query_URL);
 }
@@ -289,7 +294,34 @@ function check_limits_valid(data, item){
 
   return true
 }
+export function is_next_valid(chart_type, match_id){
 
+  let valid
+  let lastPromise = Promise.resolve();
+  //start with resolved promise
+  return lastPromise = lastPromise.then( () => {
+
+    return valid = ago_getNextChart_isvalid(chart_type, match_id)
+    .then( next_chart_response => {
+
+      const next_chart_data = CheckReponse(next_chart_response,'AGO_API_ERROR');
+      console.log('next_chart_data')
+      console.log(next_chart_data)
+      if(!next_chart_data.features || next_chart_data.features.length === 0){
+        console.log(false)
+        return false
+      } else {
+        console.log(true)
+        return true
+      }
+    })
+    return valid
+  })
+
+
+  // )}
+
+}
 export function update_ChartLevels(new_level, new_matchid, chart_type){
   return (dispatch,getState) => {
 
@@ -303,7 +335,7 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
       let current_chart_matchid = null;
       let chart_level_data = [];
       let new_chart_type_limits = [];
-
+      let next_valid = true
       //make sure there is data in the state
       if(state.chartData){
 
@@ -314,9 +346,11 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
         const chart_type_limits = state.chartData.chart_levels.chart_limits;
         let new_level_chk = new_level-1
 
+        // ago_getNextChart_isvalid(chart_type, match_id, chart_id)
         ago_getPreviousChart(new_level_chk, new_matchid) //ago_getNextChart_isvalid(chart_type, match_id, chart_id)
           .then( previous_chart_response => {
             const previous_data = CheckReponse(previous_chart_response,'AGO_API_ERROR');
+
 
             //walk the chart limits
             chart_type_limits.map( item => {
@@ -358,6 +392,9 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
                 //  this checks to make sure we have data
                 const isvalid = check_limits_valid(chart_level_data, new_item)
 
+                // const isvalid_next = is_next_valid(chart_type, current_chart_matchid)
+                // console.log('isvalid_next' + isvalid_next)
+
                 //there is data in the next chart level down
                 if(isvalid){
                   new_chart_type_limits.push({...new_item, is_next_level })
@@ -382,6 +419,7 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
             dispatch(fetching_end())
 
             return
+
           })
           // .catch(error => {
           //   //end fetching set fetching state to false
