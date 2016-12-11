@@ -35,7 +35,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     // get_ChartData: bindActionCreators(get_ChartData,dispatch),
     // get_TRAData: bindActionCreators(get_TRAData,dispatch),
-    // update_ChartVisiblity: bindActionCreators(update_ChartVisiblity, dispatch),
+    update_ChartVisiblity: bindActionCreators(update_ChartVisiblity, dispatch),
     // update_MapHeight: bindActionCreators(update_MapHeight, dispatch),
     // get_LayerInfo_ByValue: bindActionCreators(get_LayerInfo_ByValue, dispatch),
     // change_geographyLevelActive: bindActionCreators(change_geographyLevelActive,dispatch),
@@ -47,7 +47,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     // get_catchment_data: bindActionCreators(get_catchment_data, dispatch),
     // get_LayerGeom_ByValue: bindActionCreators(get_LayerGeom_ByValue, dispatch),
     // get_all_geometries: bindActionCreators(get_all_geometries, dispatch),
-    get_chart_buttons:  bindActionCreators(get_chart_buttons, dispatch),
+    // get_chart_buttons:  bindActionCreators(get_chart_buttons, dispatch),
 
   }
 }

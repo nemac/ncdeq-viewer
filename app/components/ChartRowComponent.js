@@ -380,7 +380,7 @@ var ChartRow = React.createClass({
              blank_chart_object[item.properties.chart_level_label] = null
              blank_chart_object_two[item.properties.chart_level_label] = null
 
-             chart_object["chart_id"] =  item.properties.chart_id;
+             chart_object["chart_id"] = item.properties.chart_id;
              blank_chart_object["chart_id"] = item.properties.chart_id
              blank_chart_object_two["chart_id"] = item.properties.chart_id
 
@@ -457,6 +457,9 @@ var ChartRow = React.createClass({
     //return should update.
     return should_update
 
+  },
+  componentWillMount: function() {
+    this.props.get_chart_buttons()
   },
   set_chart_types: function(){
     return [

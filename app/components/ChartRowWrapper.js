@@ -23,7 +23,7 @@ var ChartRowWrapper = React.createClass({
   handle_chart_level_click: function(comp, next_level, next_matchid, chart_type, e){
     //update the chart level
     this.props.update_ChartLevels(next_level, next_matchid, chart_type)
-
+    // this.get_chart_level_()
     return
   },
   // get the chart level for the current chart type, levels and matchid
@@ -247,16 +247,40 @@ var ChartRowWrapper = React.createClass({
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set value',value);
   },
   componentWillMount: function() {
+    const chart_type =  this.props.chart_type;
+    const chart_buttons_all = this.props.chart_buttons;
+    if(chart_buttons_all){
 
-    this.props.get_chart_buttons(this.props.chart_type.toUpperCase())
+      const chart_buttons = chart_buttons_all.features.filter( button => {
+        return button.properties.chart_type.toUpperCase() === chart_type.toUpperCase()
+      })
+
+      this.setState({
+        chart_buttons
+      })
+      return
+    }
+
+    this.setState({
+      chart_buttons: null
+    })
+
+  },
+  get_chart_level_(chart_buttons, chart_id){
+    if(chart_buttons){
+      const buttons = chart_buttons.filter( button => {
+        return button.properties.chart_matchid === chart_id
+      })
+
+      return buttons.length > 0 ? buttons[0].properties.chart_level : null
+    }
+    return null
 
   },
   is_next_valid(chart_buttons, chart_id){
     if(chart_buttons){
-      const chart_type = this.props.chart_type.toUpperCase()
-      const buttons = chart_buttons.features.filter( button => {
-        return button.properties.chart_matchid === chart_id &&
-               button.properties.chart_type === chart_type
+      const buttons = chart_buttons.filter( button => {
+        return button.properties.chart_matchid === chart_id
       })
 
       return (buttons.length > 0)
@@ -266,12 +290,9 @@ var ChartRowWrapper = React.createClass({
   },
   get_last_id(chart_buttons, chart_matchid){
     if(chart_buttons){
-      const chart_type = this.props.chart_type.toUpperCase()
-      const buttons = chart_buttons.features.filter( button => {
-        return button.properties.chart_id === chart_matchid &&
-               button.properties.chart_type === chart_type
+      const buttons = chart_buttons.filter( button => {
+        return button.properties.chart_id === chart_matchid
       })
-      console.log(buttons)
       return buttons.length > 0 ? buttons[0].properties.chart_matchid : null
 
     }
@@ -279,8 +300,7 @@ var ChartRowWrapper = React.createClass({
   },
   render: function() {
     const chart_type =  this.props.chart_type;
-    const chart_buttons = this.props.chart_buttons
-
+    const chart_buttons = this.state.chart_buttons;
 
     //get the chart levels
     const chart_levels = this.get_chart_levels()
@@ -380,8 +400,8 @@ var ChartRowWrapper = React.createClass({
                 const button_color_pulldown = {"backgroundColor":  colors[1]+"!important","padding": "0px!important","paddingLeft": "0px!important","paddingRight":  "30px!important"}
                 const  is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
                 const last_id_test = this.get_last_id(chart_buttons,item.chart_matchid)
-                let button_class = is_next_valid_test ? "ui tiny black right labeled icon button" : "ui tiny disabled right labeled icon black button";
-                let button_class_pulldown = is_next_valid_test ? "ui tiny black right labeled icon button function " + chart_type : "ui tiny disabled right labeled icon black button function " + chart_type;
+                let button_class = is_next_valid_test ? "ui tiny black right labeled icon button" : "ui tiny right labeled icon black button";
+                let button_class_pulldown = is_next_valid_test ? "ui tiny black right labeled icon button function " + chart_type : "ui tiny right labeled icon black button function " + chart_type;
 
                 const start = (has_dupes && !last_has_dupe)
 
@@ -403,17 +423,27 @@ var ChartRowWrapper = React.createClass({
                         {testobj}
                       </div>
                     </div>
-                    <i className="level down right floated icon"  onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}></i>
+                    {is_next_valid_test &&
+                      <i className="level down right floated icon"  onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}></i>
+                    }
                 </button>
                   )
                 }
 
+
                 if(!has_dupes){
-                  return (  <button className={button_class} key={label + '-' + keycntb++ } style={button_color}
-                                      onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)} >
-                             {label} {last_id_test}-{last_matchid}
-                             <i className="level down icon"></i>
-                            </button>)
+                  if(is_next_valid_test){
+                    return (<button className={button_class} key={label + '-' + keycntb++ } style={button_color}
+                                        onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)} >
+                               {label}
+                               <i className="level down icon"></i>
+                              </button>)
+                  } else {
+                    return (<button className={button_class} key={label + '-' + keycntb++ } style={button_color}>
+                               {label}
+                              </button>)
+                  }
+
                 }
 
             }.bind(this))
