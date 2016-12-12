@@ -179,10 +179,10 @@ var ChartRowWrapper = React.createClass({
     const dup = chart_levels.map( item => {
       if(Number(item.chart_id) === Number(chart_id)){
         const colors = this.props.get_keyColors(item.chart_level_label)
-        const button_color = {"backgroundColor": colors[1]+"!important","color": "#fff"}
+        const button_color = {"backgroundColor": colors[1]+"!important","color": "rgba(0,0,0,.6)"}
         return (
           <div  key={keycnt++} className={"item function " + chart_type.toUpperCase()} style={button_color}>
-            <span className="text" onClick={this.handleChange.bind(null,item.chart_id,item.chart_level_label)} style={{"color":"#fff"}}>{item.chart_level_label}</span>
+            <span className="text" onClick={this.handleChange.bind(null,item.chart_id,item.chart_level_label)} style={{"color":"rgba(0,0,0,.6)"}}>{item.chart_level_label}</span>
           </div>)
       }
     })
@@ -243,9 +243,11 @@ var ChartRowWrapper = React.createClass({
 
     const colors = this.props.get_keyColors(label)
 
-    const csstext = 'background-color: ' + colors[1] + ' !important;padding: 0px !important;padding-left: 0px !important;padding-right: 30px !important;height:30.84px'
+    const csstext = '"background-color": "' + colors[1]+ '"!important","margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)"'
 
-    // $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).css("background-color",colors[1])
+    $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).css("background-color",colors[1])
+    $('.ui.left.item.dropdown.level.function.' + chart_type.toUpperCase()).css("background-color",colors[0])
+
     // $('.ui.tiny.disabled.right.labeled.icon.black.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext )
     // $('.ui.tiny.black.right.labeled.icon.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext )
     //
@@ -254,7 +256,7 @@ var ChartRowWrapper = React.createClass({
     //
     // $('.ui.tiny.disabled.right.labeled.icon.black.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext  )
     // $('.ui.tiny.black.right.labeled.icon.button.function.' + chart_type.toUpperCase()).css( "cssText", csstext )
-    //
+
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set text',label);
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set value',label);
   },
@@ -406,9 +408,9 @@ var ChartRowWrapper = React.createClass({
                 const chart_type  = item.chart_type;
                 const colors = this.props.get_keyColors(label)
 
-                const button_color =  {"backgroundColor":  colors[1]+"!important","margin":"0px!important","height":"36px","color":"#fff"}
-                const button_color_icon =  {"backgroundColor":  colors[0]+"!important","margin":"0px!important","height":"36px","color":"#fff","borderBottomRightRadius": BOX_BORDER_RADUIS,"borderTopRightRadius": BOX_BORDER_RADUIS}
-                const button_color_left_icon =  {"backgroundColor":  colors[0]+"!important","margin":"0px!important","height":"36px","color":"#fff","borderBottomLeftRadius": BOX_BORDER_RADUIS,"borderTopLeftRadius": BOX_BORDER_RADUIS}
+                const button_color =  {"backgroundColor":  colors[1]+"!important","margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)"}
+                const button_color_icon =  {"backgroundColor":  colors[0]+"!important","margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)","borderBottomRightRadius": BOX_BORDER_RADUIS,"borderTopRightRadius": BOX_BORDER_RADUIS}
+                const button_color_left_icon =  {"backgroundColor":  colors[0]+"!important","margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)","borderBottomLeftRadius": BOX_BORDER_RADUIS,"borderTopLeftRadius": BOX_BORDER_RADUIS}
 
                 const  is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
                 const last_id_test = this.get_last_id(chart_buttons,item.chart_matchid)
@@ -429,9 +431,9 @@ var ChartRowWrapper = React.createClass({
                   pulldown_object = (
                     <div className="ui left item">
                       {!at_top &&
-                        <div className="ui left item" style={button_color_left_icon}
+                        <div className={"ui left item dropdown level function " + chart_type }  style={button_color_left_icon}
                           onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
-                          <i className="level up flipped left floated icon"></i>
+                          <i className={"level up flipped left floated icon function " + chart_type} style={{hieght:"36px"}}></i>
                         </div>
                       }
                       <div key={label + '-' + keycnta++}
@@ -444,9 +446,9 @@ var ChartRowWrapper = React.createClass({
                         </div>
                       </div>
                       {is_next_valid_test &&
-                        <div className="ui left item" style={button_color_icon}
+                        <div className={"ui left item dropdown level function " + chart_type } style={button_color_icon}
                           onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}>
-                          <i className="level down right floated icon"></i>
+                          <i className={"level down right floated icon function " + chart_type}style={{hieght:"36px"}}></i>
                         </div>
                       }
                     </div>)
@@ -457,9 +459,9 @@ var ChartRowWrapper = React.createClass({
                     button_obj  = (
                       <div className="ui left item">
                         {!at_top &&
-                          <div className="ui left item" style={button_color_left_icon}
+                          <div className={"ui left item button level function " + chart_type }  style={button_color_left_icon}
                             onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
-                            <i className="level up flipped left floated icon"></i>
+                            <i className={"level up flipped left floated icon function " + chart_type} style={{hieght:"36px"}}></i>
                           </div>
                         }
                         {!is_next_valid_test &&
@@ -475,9 +477,9 @@ var ChartRowWrapper = React.createClass({
                           </div>
                         }
                         {is_next_valid_test &&
-                          <div className="ui left item" style={button_color_icon}
+                          <div className={"ui left item button level function " + chart_type } style={button_color_icon}
                             onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}>
-                            <i className="level down right floated icon"></i>
+                            <i className={"level down right floated icon function" + chart_type } style={{hieght:"36px"}}></i>
                           </div>
                         }
                       </div>
