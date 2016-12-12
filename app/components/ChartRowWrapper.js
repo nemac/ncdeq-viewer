@@ -23,6 +23,7 @@ var ChartRowWrapper = React.createClass({
   handle_chart_level_click: function(comp, next_level, next_matchid, chart_type, e){
     //update the chart level
     this.props.update_ChartLevels(next_level, next_matchid, chart_type)
+
     // this.get_chart_level_()
     return
   },
@@ -215,7 +216,6 @@ var ChartRowWrapper = React.createClass({
         position : 'top center',
         content  : 'Drill up into function'
       })
-      
   },
   componentDidUpdate: function(prevProps, prevState) {
     const chart_type = this.props.chart_type;
@@ -228,6 +228,18 @@ var ChartRowWrapper = React.createClass({
       })
       label = function_limits[0].active_name
     }
+
+    $('.level.down.icon')
+      .popup({
+        position : 'top center',
+        content  : 'Drill Down into function'
+      })
+
+    $('.level.up.flipped.icon')
+      .popup({
+        position : 'top center',
+        content  : 'Drill up into function'
+      })
 
     const colors = this.props.get_keyColors(label)
 
@@ -378,7 +390,17 @@ var ChartRowWrapper = React.createClass({
             </span>
           </div>
 
-
+          <button className={key_back_class}
+                  key={keyback}
+                  onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
+            {!at_top &&
+                <i className ="left chevron icon"></i>
+            }
+            {backtext}
+            {at_top &&
+                <i className ="right chevron icon"></i>
+            }
+          </button>
 
 
             { new_chart_levels &&
@@ -393,10 +415,10 @@ var ChartRowWrapper = React.createClass({
                 const next_matchid = item.chart_id;
                 const chart_type  = item.chart_type;
                 const colors = this.props.get_keyColors(label)
-                const button_color = {"backgroundColor":  colors[1]+"!important","boxShadow": "0 0 0 0px rgba(0,0,0,0)!important","paddingLeft":"4px!important",borderRadius:"0px"}
+                const button_color = {"backgroundColor":  colors[1]+"!important","boxShadow": "0 0 0 0px rgba(0,0,0,0)!important","paddingLeft":"4px!important","borderRadius":"0px"}
                 const button_color_left = {"backgroundColor":  colors[1]+"!important","boxShadow": "0 0 0 0px rgba(0,0,0,0)!important","paddingLeft":"4px!important","height":"30.84px","paddingLeft":"14px!important"}
 
-                const button_color_pulldown = {"backgroundColor":  colors[1]+"!important","padding": "0px!important","paddingLeft": "0px!important","paddingRight":  "30px!important"}
+                const button_color_pulldown = {"backgroundColor":  colors[1]+"!important","borderRadius":"0px!important","padding": "0px!important","paddingLeft": "0px!important","paddingRight":  "30px!important"}
                 const  is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
                 const last_id_test = this.get_last_id(chart_buttons,item.chart_matchid)
                 let button_class = is_next_valid_test ? "ui tiny black right labeled right attached icon middle aligned button" : "ui tiny right labeled icon black button";
@@ -417,7 +439,7 @@ var ChartRowWrapper = React.createClass({
 
 
                     <button className={button_class_pulldown} key={label + '-' + keycntb++ } style={button_color_pulldown} >
-                    <div key={label + '-' + keycnta++} className={"ui dropdown compact button function " + chart_type} style={{padding:"10px"}} >
+                    <div key={label + '-' + keycnta++} className={"ui dropdown compact button function " + chart_type} style={{padding:"10px",borderRadius:"0px"}} >
                       <span className="text" key="start" ></span>
                         <i className="dropdown right floated icon"></i>
                       <div className="menu">
@@ -456,9 +478,11 @@ var ChartRowWrapper = React.createClass({
                         {space}{space}
                       {!at_top &&
 
-                      <button className={button_class2} key={label + '-up-' + keycntb++ } style={button_color_left}>
-                        <i className="level up flipped icon"
-                          onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)}></i>
+                      <button className={button_class2} key={label + '-up-' + keycntb++ } style={button_color_left}
+                          onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)}>
+                        <i key={label + '-up-' + keycntb++ } className="level up flipped icon"
+                          onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)}>
+                        </i>
                         {space}
                       </button>
                      }
@@ -504,16 +528,3 @@ var ChartRowWrapper = React.createClass({
 });
 
 module.exports = ChartRowWrapper;
-
-
-// <button className={key_back_class}
-//         key={keyback}
-//         onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
-//   {!at_top &&
-//       <i className ="left chevron icon"></i>
-//   }
-//   {backtext}
-//   {at_top &&
-//       <i className ="right chevron icon"></i>
-//   }
-// </button>
