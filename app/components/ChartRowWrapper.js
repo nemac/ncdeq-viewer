@@ -390,17 +390,6 @@ var ChartRowWrapper = React.createClass({
             </span>
           </div>
 
-          <button className={key_back_class}
-                  key={keyback}
-                  onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
-            {!at_top &&
-                <i className ="left chevron icon"></i>
-            }
-            {backtext}
-            {at_top &&
-                <i className ="right chevron icon"></i>
-            }
-          </button>
 
           <div className="ui text menu" style={{"cursor":"pointer"}}>
 
@@ -473,9 +462,18 @@ var ChartRowWrapper = React.createClass({
                             <i className="level up flipped left floated icon"></i>
                           </div>
                         }
-                        <div className="ui left item" style={button_color}>
-                          {label}
-                        </div>
+                        {!is_next_valid_test &&
+                          <div className="ui left item" style={button_color}
+                            onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
+                            {label}
+                          </div>
+                        }
+                        {is_next_valid_test &&
+                          <div className="ui left item" style={button_color}
+                            onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}>
+                            {label}
+                          </div>
+                        }
                         {is_next_valid_test &&
                           <div className="ui left item" style={button_color_icon}
                             onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}>
