@@ -319,6 +319,16 @@ var ChartRowWrapper = React.createClass({
     }
     return null
   },
+  get_last_function(chart_buttons, chart_matchid){
+    if(chart_buttons){
+      const buttons = chart_buttons.filter( button => {
+        return button.properties.chart_id === chart_matchid
+      })
+      return buttons.length > 0 ? buttons[0].properties.chart_level_label : null
+
+    }
+    return null
+  },
   render: function() {
     const chart_type =  this.props.chart_type;
     const chart_buttons = this.state.chart_buttons;
@@ -386,7 +396,7 @@ var ChartRowWrapper = React.createClass({
 
           <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
 
-            <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "0px"}}>
+            <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "0px","paddingTop":SPACING}}>
               <h5 className="ui header">
                 {drilldown_note}
               </h5>
@@ -394,7 +404,9 @@ var ChartRowWrapper = React.createClass({
 
             <div className="ui bottom attached basic compact center aligned segment" style={{ border: "0px",margin: "0px",padding: "0px"}}>
               <div className="ui text menu" style={{"cursor":"pointer"}}>
-
+                <div className="header item">
+                  Functions:
+                </div>
                 { new_chart_levels &&
 
                   new_chart_levels.map(function(item) {
@@ -414,6 +426,7 @@ var ChartRowWrapper = React.createClass({
 
                     const  is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
                     const last_id_test = this.get_last_id(chart_buttons,item.chart_matchid)
+                    const last_label = this.get_last_function(chart_buttons,item.chart_matchid)
 
                     const pulldown = (has_dupes && !last_has_dupe)
 

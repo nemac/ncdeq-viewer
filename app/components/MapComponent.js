@@ -877,7 +877,6 @@ var MapContainer = React.createClass({
 
           <Control position="bottomleft" className="mapbutton" >
             <button className="ui grey mini button" onClick={this.props.use_imagery} style={{width:"140px"}}>
-              <i className={imageryVisibility ? "map  icon" : "image icon" }></i>
               {imageryVisibility ? "Show Map" : "Show Satellite" }
             </button>
           </Control>
@@ -916,22 +915,6 @@ var MapContainer = React.createClass({
             onLeafletClick={this.handleMapClick.bind(null,this)}
             />
 
-
-      {/*
-        <ReactLeaflet.TileLayer
-          attribution={this.state.attribution}
-          url={this.state.tileUrl}
-          onLeafletLoad={this.handleMapLoad.bind(null,this)}
-        />
-     <ESRITileMapLayer
-      url="https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer"
-      setMapLayers={this.props.set_MapLayers}
-      tileOpacity="1"
-      name="Imagery"
-      onLeafletClick={this.handleMapClick.bind(null,this)}
-      onLeafletLoad={this.handleMapLoad.bind(null,this)}
-      />
-      */}
 
       <ESRITileMapLayer
        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/Catchments/MapServer"
@@ -974,30 +957,6 @@ var MapContainer = React.createClass({
          z_Index={7}
          />
 
-
-
-
-         {/*
-
-         <ESRITileMapLayer
-          url="https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer"
-          setMapLayers={this.props.set_MapLayers}
-          tileOpacity="1"
-          name="BaseMap"
-          onLeafletClick={this.handleMapClick.bind(null,this)}
-          onLeafletLoad={this.handleMapLoad.bind(null,this)}
-          />
-          <ESRITileMapLayer
-           url="https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer"
-           setMapLayers={this.props.set_MapLayers}
-           tileOpacity="1"
-           name="BaseMap ref"
-           min_zoom="8"
-           onLeafletClick={this.handleMapClick.bind(null,this)}
-           onLeafletLoad={this.handleMapLoad.bind(null,this)}
-           />
-
-           */}
     </ReactLeaflet.Map>
   }
 
