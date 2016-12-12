@@ -459,17 +459,14 @@ var ChartRowWrapper = React.createClass({
 
             <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "0px"}}>
               <h5 className="ui header">
-                {drilldown_note} {space} <span >{breadcrumbs}</span>
+                {drilldown_note} {/* {space} <span >{breadcrumbs}</span>*/}
               </h5>
             </div>
 
             <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "0px"}}>
-              <div className="ui text stackable menu" style={{"cursor":"pointer"}}>
+              <div className="ui text stackable mini menu" style={{"cursor":"pointer"}}>
 
-                <div className="header item">
-                 Functions:
 
-               </div>
                { new_chart_levels &&
 
                  new_chart_levels.map(function(item) {
