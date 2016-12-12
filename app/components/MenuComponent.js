@@ -107,6 +107,7 @@ var MenuComponent = React.createClass({
     //  the chart data update is handled in menu change
     this.props.handleSearchChange(comp,e)
 
+    //change search method
     this.props.set_search_method('location searched')
 
     //update header vis in action
@@ -197,6 +198,9 @@ var MenuComponent = React.createClass({
     if (Number(valueLength) === Number(expectedLength)){
       //update the chartdata redux store
       this.props.get_ChartData(e.target.value, currentLevel)
+      
+      this.props.get_all_geometries(e.target.value)
+
       this.props.get_TRAData(e.target.value, currentLevel)
 
       //get the ago layer id of the currentLevel

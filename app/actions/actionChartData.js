@@ -219,18 +219,24 @@ function ago_getChartLevels(){
      return axios.get(query_URL);
 }
 
-function ago_getNextChart_isvalid(chart_type, match_id, chart_id){
+function ago_get_chart_buttons(){
 // query?&objectIds=&time=&resultType=none&outFields=chart_id+&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=pgeojson&token=
+// query?where=chart_type+%3D+%27BASELINE+%27+&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
+
+//all chart levels
+//query?where=chart_type+%3D+%27TRA+%27+&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_level%22+as+INT%29+desc%2C+CAST%28%22chart_id%22+as+INT%29+desc%2CCAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
+//next valid
+//query?where=chart_type+%3D+%27BASELINE%27+and+chart_matchid+%3D+%276%27&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_level%22+as+INT%29+desc%2C+CAST%28%22chart_id%22+as+INT%29+desc%2CCAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
-                       '?where=chart_type+%3D+%27' + chart_type +'%27+and+chart_matchid+%3D+%27' + match_id +'%27+and+ID+%3D+%27' + chart_id +'%27' +
+                       '?where=OBJECTID+>+0' +
                        '&objectIds=' +
                        '&time=' +
                        '&resultType=none' +
-                       '&outFields=chart_id' +
+                       '&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level' +
                        '&returnIdsOnly=false' +
                        '&returnCountOnly=false' +
                        '&returnDistinctValues=true' +
-                       '&orderByFields=' +
+                       '&orderByFields=CAST%28%22chart_level%22+as+INT%29+desc%2C+CAST%28%22chart_id%22+as+INT%29+desc%2CCAST%28%22chart_matchid%22+as+INT%29+desc' +
                        '&groupByFieldsForStatistics=' +
                        '&outStatistics=' +
                        '&resultOffset=' +
@@ -290,6 +296,29 @@ function check_limits_valid(data, item){
   return true
 }
 
+export function get_chart_buttons(){
+  return (dispatch,getState) => {
+
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
+    const state = getState()
+
+    ago_get_chart_buttons()
+      .then( chart_button_response => {
+
+        const chart_button_data = CheckReponse(chart_button_response,'AGO_API_ERROR');
+
+        //send the chart data on
+        dispatch(chart_buttons('GET_CHART_BUTTONS', chart_button_data))
+
+      })
+
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
+  }
+}
+
 export function update_ChartLevels(new_level, new_matchid, chart_type){
   return (dispatch,getState) => {
 
@@ -303,7 +332,7 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
       let current_chart_matchid = null;
       let chart_level_data = [];
       let new_chart_type_limits = [];
-
+      let next_valid = true
       //make sure there is data in the state
       if(state.chartData){
 
@@ -314,9 +343,10 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
         const chart_type_limits = state.chartData.chart_levels.chart_limits;
         let new_level_chk = new_level-1
 
-        ago_getPreviousChart(new_level_chk, new_matchid) //ago_getNextChart_isvalid(chart_type, match_id, chart_id)
+        ago_getPreviousChart(new_level_chk, new_matchid)
           .then( previous_chart_response => {
             const previous_data = CheckReponse(previous_chart_response,'AGO_API_ERROR');
+
 
             //walk the chart limits
             chart_type_limits.map( item => {
@@ -382,6 +412,7 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
             dispatch(fetching_end())
 
             return
+
           })
           // .catch(error => {
           //   //end fetching set fetching state to false
@@ -507,9 +538,7 @@ export function get_nlcd_data(id, level){
 
 
         //send the chart data on
-        dispatch(
-          NLCDData('GET_NLCD_DATA', ncld_chart_data)
-        )
+        dispatch(NLCDData('GET_NLCD_DATA', ncld_chart_data))
 
         //end fetching set fetching state to false
         dispatch(fetching_end())
@@ -568,11 +597,8 @@ export function get_nlcd_data_huc12(id, level){
             return 0;
           });
 
-
         //send the chart data on
-        dispatch(
-          NLCDData('GET_NLCD_DATA_HUC12', ncld_chart_data)
-        )
+        dispatch(NLCDData('GET_NLCD_DATA_HUC12', ncld_chart_data))
 
         //end fetching set fetching state to false
         dispatch(fetching_end())
@@ -796,6 +822,9 @@ export function get_ChartData(id,level){
                   },
                 ];
 
+          //send chart limit to store
+          dispatch(chart_limit(id))
+
           //send the chart data on
           dispatch(ChartData('GET_CHART_DATA', visibility, types))
 
@@ -897,6 +926,10 @@ function active_function(type, data){
   return {type: type, active_function: data}
 }
 
+function chart_buttons(type, data){
+  return {type: type, chart_buttons: data, receivedAt: Date.now()}
+}
+
 //function to handle sending to reducer and store
 function ChartLevels(type, levels, chart_limits) {
   // return {
@@ -941,6 +974,10 @@ function ChartData(type, visibility, types) {
 
 function NLCDData(type, ncld_chart_data){
   return {type: type, ncld_chart_data: ncld_chart_data}
+}
+
+function chart_limit(limit_id){
+  return {type: "CHART_LIMIT", chart_limit: limit_id}
 }
 
 function fetching_start(){

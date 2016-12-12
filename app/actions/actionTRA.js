@@ -12,7 +12,7 @@ axios.defaults.baseURL = AGO_URL;
 
 
 //get chart data for all
-function ago_get_traxwalk_by_id(hucid, current_geography_level){
+export function ago_get_traxwalk_by_id(hucid, current_geography_level){
 
   //set default id
   var id = hucid;
@@ -32,7 +32,7 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
 
    //build the query to arcgis online api for getting the raw chart data
    const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
-                   '?where=chart_value+is+not+null+and+ID%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
+                   '?where=ID%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
                    '&objectIds=' +
                    '&time=' +
                    '&resultType=' +
@@ -55,7 +55,7 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
 }
 
 //get chart data from data api
-function ago_get_tra_by_ids( id_list){
+export function ago_get_tra_by_ids( id_list){
 
   const id_in_list = "(" + id_list + ')'
 
@@ -84,6 +84,48 @@ function ago_get_tra_by_ids( id_list){
 }
 
 
+
+//get tra geom by its id
+export function ago_get_tra_geom_by_ids( id_list ){
+
+
+  const id_in_list = "(" + id_list + ')'
+
+  //build the query to arcgis online api for getting the raw chart data
+  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_MAP_FEATUREID + '/query' +
+                    '?where=id+in+' + id_in_list +
+                    '&objectIds=' +
+                    '&time=' +
+                    '&resultType=standard' +
+                    '&distance=' +
+                    '&units=esriSRUnit_Meter' +
+                    '&outFields=ID' +
+                    '&returnGeometry=true' +
+                    '&returnCentroid=true' +
+                    '&multipatchOption=' +
+                    '&maxAllowableOffset=' +
+                    '&geometryPrecision=' +
+                    '&outSR=4326' +
+                    '&returnIdsOnly=false' +
+                    '&returnCountOnly=false' +
+                    '&returnExtentOnly=false' +
+                    '&returnDistinctValues=true' +
+                    '&orderByFields=' +
+                    '&groupByFieldsForStatistics=' +
+                    '&outStatistics=' +
+                    '&resultOffset=' +
+                    '&resultRecordCount=' +
+                    '&returnZ=false' +
+                    '&returnM=false' +
+                    '&quantizationParameters=' +
+                    '&sqlFormat=none' +
+                    '&f=pgeojson' +
+                    '&token='
+
+ //send the ajax request via axios
+ return axios.get(query_URL);
+
+}
 
 //get tra geom by its id
 function ago_get_tra_geom_byid( id ){
@@ -170,7 +212,7 @@ export function get_TRAData(hucid, current_geography_level){
                 tra_geom: tra_geom_obj,
               })
 
-              //only dispatch when have down all features
+              //only dispatch when have all features
               if(count === tra_datas.features.length){
                 dispatch(tra_data('GET_TRA_DATA', group));
                 dispatch(fetching_end())

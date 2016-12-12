@@ -8,3 +8,12 @@ export function leafletMap(state = [], action) {
   }
   return state;
 }
+
+export function imagery_visibility(state = [], action){
+  switch (action.type) {
+    case 'USE_IMAGERY':
+      return {...state, visibility: action.imagery_visibility}
+    default:
+      return state
+  }
+}

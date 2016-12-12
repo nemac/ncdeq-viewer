@@ -33,6 +33,23 @@ export function mapConfig(state = [], action) {
   return state;
 }
 
+export function geometries(state = [], action){
+  switch (action.type) {
+    case 'GET_GEOMETRIES':
+      return {...state, geometries: action.geometries}
+    default:
+      return state
+  }
+}
+
+export function active_hover(state = [], action){
+  switch (action.type) {
+    case 'SET_ACTIVE_HOVER':
+      return {...state, active_hover: action.active_hover}
+    default:
+      return state
+  }
+}
 
 export function fetching_map(state = [], action){
   switch (action.type) {

@@ -2,7 +2,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 //import actions
-import { set_search_method, get_defaultMapData, HandleMapEnd, set_mapToPoint, update_ChartVisiblity, update_MapHeight, get_ChartData, change_geographyLevelActive,  change_geographyLevelFilter, set_MapLayers, set_LeafletMap, get_LayerInfo_ByPoint, update_HeaderVis, get_nlcd_data, get_catchment_data, get_nlcd_data_huc12, get_LayerGeom_ByValue} from '../actions/actionCreators'
+import { set_search_method, get_defaultMapData, HandleMapEnd, set_mapToPoint, update_ChartVisiblity, update_MapHeight,
+          get_ChartData, change_geographyLevelActive,  change_geographyLevelFilter, set_MapLayers, set_LeafletMap,
+          get_LayerInfo_ByPoint, update_HeaderVis, get_nlcd_data, get_catchment_data, get_nlcd_data_huc12,
+          get_LayerGeom_ByValue, get_all_geometries, use_imagery} from '../actions/actionCreators'
 
 //import components
 import MapComponent from '../components/MapComponent'
@@ -29,7 +32,7 @@ const mapStateToProps = (state,props) => {
   let fetching_geo = state.fetching_geo.fetching_geo;
   let fetching_menu = state.fetching_geo.fetching_menu;
   let hoverInfo = state.mapConfig.hoverInfo;
-
+  
   return {
     charts,
     geography_levels,
@@ -48,6 +51,9 @@ const mapStateToProps = (state,props) => {
     fetching_geo,
     fetching_menu,
     hoverInfo,
+    active_hover: state.active_hover.active_hover,
+    geometries: state.geometries.geometries,
+    imagery_visibility: state.imagery_visibility.visibility,
   }
 }
 
@@ -70,6 +76,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     get_nlcd_data_huc12: bindActionCreators(get_nlcd_data_huc12, dispatch),
     get_catchment_data: bindActionCreators(get_catchment_data, dispatch),
     get_LayerGeom_ByValue: bindActionCreators(get_LayerGeom_ByValue, dispatch),
+    get_all_geometries: bindActionCreators(get_all_geometries, dispatch),
+    use_imagery: bindActionCreators(use_imagery, dispatch),
+
+
   }
 }
 

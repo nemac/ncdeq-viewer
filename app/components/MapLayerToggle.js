@@ -19,7 +19,11 @@ var MapLayerToggle = React.createClass({
 
     //if visible remove (turn off) layer otherwise add (turn on)
     isLayerVis ? leafletMap.removeLayer(leafletLayer) : leafletMap.addLayer(leafletLayer);
+    console.log(leafletLayer)
 
+    if(leafletLayer.options.url === "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/"){
+      leafletLayer.bringToBack()
+    }
 
   },
   getDefaultProps: function() {
@@ -38,7 +42,7 @@ var MapLayerToggle = React.createClass({
       <div>
         <div className="ui checked checkbox">
           <input type="checkbox" defaultChecked onClick={this.handleLayerClick} />
-          <label className="ui black label"style={{paddingTop: "2px",paddingBottom: "0px",marginBottom: "0px", fontSize:".9em",paddingLeft:"2.25em"}}>
+          <label className="ui black label"style={{paddingTop: "2px",paddingBottom: "0px",marginBottom: "0px", fontSize:".78571429rem",paddingLeft:"2.25em"}}>
               {this.state.toggleText}
           </label>
         </div>

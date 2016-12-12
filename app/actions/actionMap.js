@@ -1,8 +1,13 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, HUC12_MAP_FEATUREID, SERVICE_NAME, TRA_MAP_FEATUREID, CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID } from '../constants/actionConstants';
+import { AGO_URL, HUC12_MAP_FEATUREID, SERVICE_NAME, TRA_MAP_FEATUREID,
+        CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID, BASIN_MAP_FEATUREID } from '../constants/actionConstants';
 var turf_point = require('turf-point');
 var turf_FC = require('turf-featurecollection');
+
+import * as ActionTRA from './actionTRA'
+export const ago_get_traxwalk_by_id = ActionTRA.ago_get_traxwalk_by_id;
+export const ago_get_tra_geom_by_ids = ActionTRA.ago_get_tra_geom_by_ids;
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
@@ -23,8 +28,106 @@ import {
 //basic map (leaflet state and functions)
 
 ///get feature attributes for a layer at lat & long
-function AGO_get_LayerInfo_ByValue(value, layer_id){
+function get_sub_length(length_of_id){
+    switch (length_of_id) {
+      case 12:
+        return 8
+        break;
+      case 8:
+        return 6
+        break;
+      case 6:
+        return 6
+        break;
+      default:
+        return 8
+        break;
+    }
+}
 
+///get feature attributes for a layer at lat & long
+function get_feature_layerid(length_of_id){
+    switch (length_of_id) {
+      case 12:
+        return HUC12_MAP_FEATUREID
+        break;
+      case 8:
+        return HUC12_MAP_FEATUREID
+        break;
+      case 6:
+        return CATALOGING_MAP_FEATUREID
+        break;
+      default:
+        return HUC12_MAP_FEATUREID
+        break;
+
+    }
+}
+
+///get feature attributes for a layer at lat & long
+function get_feature_huc(length_of_id){
+    switch (length_of_id) {
+      case 12:
+        return 'Cataloging Units'
+        break;
+      case 8:
+        return 'Cataloging Units'
+        break;
+      case 6:
+        return 'River Basins'
+        break;
+      default:
+        return 'HUC12'
+        break;
+    }
+}
+
+function AGO_get_geometry_for_all(search_value, search_layer_id){
+
+  // query?where=ID+%3D+%2703020101%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=ID&returnGeometry=true&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=html&token=
+  var value_field_name = 'VALUE';
+
+  //until I can change the TRA data to match the schemas of the huc files I need to change the field name from vaue to id.
+  if(search_layer_id === TRA_MAP_FEATUREID){
+    value_field_name = 'ID'
+  }
+
+
+  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + search_layer_id + '/query' +
+                    '?where=' + value_field_name + '+like+%27' + search_value + '%25%27' +
+                    '&objectIds=' +
+                    '&time=' +
+                    '&resultType=standard' +
+                    '&distance=' +
+                    '&units=esriSRUnit_Meter' +
+                    '&outFields=*' +
+                    '&returnGeometry=true' +
+                    '&returnCentroid=true' +
+                    '&multipatchOption=' +
+                    '&maxAllowableOffset=' +
+                    '&geometryPrecision=' +
+                    '&outSR=4326' +
+                    '&returnIdsOnly=false' +
+                    '&returnCountOnly=false' +
+                    '&returnExtentOnly=false' +
+                    '&returnDistinctValues=true' +
+                    '&orderByFields=' +
+                    '&groupByFieldsForStatistics=' +
+                    '&outStatistics=' +
+                    '&resultOffset=' +
+                    '&resultRecordCount=' +
+                    '&returnZ=false' +
+                    '&returnM=false' +
+                    '&quantizationParameters=' +
+                    '&sqlFormat=none' +
+                    '&f=pgeojson' +
+                    '&token='
+
+  return axios.get(query_URL);
+};
+
+///get feature attributes for a layer at lat & long
+function AGO_get_LayerInfo_ByValue(value, layer_id){
 
   var value_field_name = 'VALUE';
 
@@ -106,6 +209,71 @@ function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
   return axios.get(query_URL);
 };
 
+export function get_all_geometries(value){
+
+  return (dispatch, getState) => {
+    //start fetching state (set to true)
+    dispatch(fetching_start())
+
+    const length_of_id = value.length
+    const end_length = get_sub_length(length_of_id)
+    const search_layer_id = get_feature_layerid(length_of_id)
+    const current_geography_level = get_feature_huc(length_of_id)
+    const search_value = value.substring(0, end_length)
+
+    axios.all([AGO_get_geometry_for_all(search_value, search_layer_id),ago_get_traxwalk_by_id(search_value, current_geography_level)])
+      .then(axios.spread( (huc_response, tra_xwalk_response) => {
+
+        //get redux state
+        const state = getState()
+
+        //AGO_get_geometry_for_all(value, TRA_MAP_FEATUREID)
+       //check repsonses for errors
+       const current_geometries_huc = CheckReponse(huc_response,'AGO_API_ERROR');
+       const tra_xwalk = CheckReponse(tra_xwalk_response,'AGO_API_ERROR');
+
+       //walk the tra features and get the tra data.
+       const tras = tra_xwalk.features.map( trax_feature => {
+         return trax_feature.properties.TRA_Name
+       })
+
+       const tralist = "'" + tras.join("','") + "'";
+
+       axios.all([ago_get_tra_geom_by_ids(tralist)])
+       .then(axios.spread( (tra_response) => {
+
+         const current_geometries_tra= CheckReponse(tra_response,'AGO_API_ERROR');
+         let feat1 = current_geometries_huc.features
+         let feat2 = current_geometries_tra.features
+
+         //merge the features for tra's and hucs
+         feat1 = feat1.concat(feat2);
+         const current_geometries = turf_FC(feat1);
+
+        dispatch(geometries('GET_GEOMETRIES', current_geometries));
+
+       }))
+      //  .catch(error => {
+      //    //end fetching set fetching state to false
+      //    dispatch(fetching_end())
+       //
+      //    console.log('request failed', error);
+      //  });
+       //
+
+    }))
+    //  .catch(error => {
+    //    //end fetching set fetching state to false
+    //    dispatch(fetching_end())
+     //
+    //    console.log('request failed', error);
+    //  });
+
+    //end fetching set fetching state to false
+    dispatch(fetching_end())
+  }
+}
+
 export function set_search_method(method){
   return (dispatch, getState) => {
 
@@ -124,6 +292,31 @@ export function set_search_method(method){
     //end fetching set fetching state to false
     // dispatch(fetching_end())
   }
+}
+export function set_active_hover (ID, GEOGRAPHY_LEVEL, DATE_SENT){
+    return (dispatch, getState) => {
+      //start fetching state (set to true)
+      // dispatch(fetching_start())
+
+      //get redux state
+      const state = getState()
+      let prev_date
+
+      if(state.current_active_hover){
+        prev_date = state.current_active_hover.DATE_SENT
+      }
+
+      if(DATE_SENT > prev_date){return null}
+
+      const current_active_hover = {ID,GEOGRAPHY_LEVEL,DATE_SENT}
+
+      //send active_function setting on
+      dispatch(active_hover('SET_ACTIVE_HOVER', current_active_hover ))
+
+      //end fetching set fetching state to false
+      // dispatch(fetching_end())
+
+    }
 }
 
 export function get_LayerGeom_ByValue(value, layer_id){
@@ -412,7 +605,7 @@ export function handleSearchChange(comp,e){
       new google.maps.LatLng(southWestLatitude, southWestlongitude));
 
       //set the bounds to the optopns
-      var options = {bounds: defaultBounds}
+      var options = {strictbounds: defaultBounds}
 
       //get this so we can access in within google maps callback
       var self = this;
@@ -513,8 +706,17 @@ export function handleSearchChange(comp,e){
 function fetching_start(){
   return {type: "FETCHING_MAP", fetching: true}
 }
+
 function fetching_end(){
   return {type: "FETCHING_MAP", fetching: false}
+}
+
+function geometries(type, data){
+  return {type: type, geometries: data, receivedAt: Date.now()}
+}
+
+function active_hover(type, data){
+  return {type: type, active_hover: data, receivedAt: Date.now()}
 }
 
 function hover(type,data){

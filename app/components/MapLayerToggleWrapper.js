@@ -69,14 +69,16 @@ var MapLayerToggleWrapper = React.createClass({
   create_toggles: function(layers){
     //create geojson layer toggles
     return layers.map( item => {
-      if(item.layer){
-        return (<MapLayerToggle
-          key={item.name}
-          toggleText={item.name}
-          layer={item.layer}
-          get_display_names={this.get_display_names}
-          leafletMap={this.props.leafletMap.leafletMap}
-          />)
+      if(item.name != 'base map labels' && item.name != 'base map'  && item.name != 'imagery'){
+        if(item.layer){
+          return (<MapLayerToggle
+            key={item.name}
+            toggleText={item.name}
+            layer={item.layer}
+            get_display_names={this.get_display_names}
+            leafletMap={this.props.leafletMap.leafletMap}
+            />)
+          }
         }
       })
     },
@@ -124,13 +126,12 @@ var MapLayerToggleWrapper = React.createClass({
       <div className="ui inverted segment" style={{padding:"0px 5px 0px 5px",marginRight:"4px"}}>
         <div className="ui vertical inverted fluid accordion">
           <div className="item">
-            <div className="title" style={{fontWeight: "700",fontSize: "1rem"}}>
+            <div className="title" style={{fontWeight: "700",fontSize: "1rem",width:"130px"}}>
                 <i className="dropdown left floated icon"></i>
                 <i className="list layout icon"></i>
                 Toggle Layers
             </div>
             <div className="content">
-              <Divider />
               <MapLayerToggleName text='Base Map Layers'/>
               {tilelayer_component}
               <div style={{paddingBottom:SPACING}}></div>
