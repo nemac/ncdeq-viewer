@@ -29,6 +29,11 @@ var ChartRowWrapper = React.createClass({
     this.props.update_ChartLevels(next_level, next_matchid, chart_type)
 
     let new_array
+    //add state for direction then in render look for direction state and flip the button click
+
+    this.setState({
+      direction: direction
+    })
 
     const last_function = this.get_last_function(chart_buttons,next_matchid)
     const previous_functions = this.get_previuos_function(chart_buttons,chart_id)
@@ -419,6 +424,7 @@ var ChartRowWrapper = React.createClass({
 
     let last_chart_id = 0
     let last_has_dupe = false
+    const direction = this.state.direction ? this.state.direction : "down";
     const breadcrumbs = this.state.chart_bread_crumbs ? this.state.chart_bread_crumbs.toString() : [];
 
     let function_limits;
