@@ -550,9 +550,15 @@ var ChartRowWrapper = React.createClass({
                                {label}
                              </div>
                            }
-                           {is_next_valid_test &&
+                           {is_next_valid_test && direction === 'down' &&
                              <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type, "down", item.chart_id)}>
+                               {label}
+                             </div>
+                           }
+                           {is_next_valid_test && direction === 'up' &&
+                             <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
+                               onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, chart_type, "up", item.chart_id)}>
                                {label}
                              </div>
                            }
