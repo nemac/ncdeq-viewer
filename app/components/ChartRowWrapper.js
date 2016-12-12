@@ -386,122 +386,123 @@ var ChartRowWrapper = React.createClass({
 
           <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
 
-          <div >
-            <span className="note">
-              {drilldown_note}
-            </span>
-          </div>
+            <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "0px"}}>
+              <h5 className="ui header">
+                {drilldown_note}
+              </h5>
+            </div>
 
+            <div className="ui bottom attached basic compact center aligned segment" style={{ border: "0px",margin: "0px",padding: "0px"}}>
+              <div className="ui text menu" style={{"cursor":"pointer"}}>
 
-          <div className="ui text menu" style={{"cursor":"pointer"}}>
+                { new_chart_levels &&
 
-            { new_chart_levels &&
+                  new_chart_levels.map(function(item) {
+                    const is_selector_done = Number(item.chart_id) === last_chart_id
+                    const has_dupes  = item.has_dupes;
 
-              new_chart_levels.map(function(item) {
-                const is_selector_done = Number(item.chart_id) === last_chart_id
-                const has_dupes  = item.has_dupes;
+                    const label = item.chart_level_label;
+                    const next_chart_level = item.chart_level+1;
 
-                const label = item.chart_level_label;
-                const next_chart_level = item.chart_level+1;
+                    const next_matchid = item.chart_id;
+                    const chart_type  = item.chart_type;
+                    const colors = this.props.get_keyColors(label)
 
-                const next_matchid = item.chart_id;
-                const chart_type  = item.chart_type;
-                const colors = this.props.get_keyColors(label)
+                    const button_color =  {"backgroundColor":  colors[1]+"!important","margin":"0px!important","height":"36px","color":"rgba(0,0,0,.5)","fontWeight":"700"}
+                    const button_color_icon =  {"backgroundColor":  colors[0]+"!important","margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)","borderBottomRightRadius": BOX_BORDER_RADUIS,"borderTopRightRadius": BOX_BORDER_RADUIS}
+                    const button_color_left_icon =  {"backgroundColor":  colors[0]+"!important","margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)","borderBottomLeftRadius": BOX_BORDER_RADUIS,"borderTopLeftRadius": BOX_BORDER_RADUIS}
 
-                const button_color =  {"backgroundColor":  colors[1]+"!important","margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)"}
-                const button_color_icon =  {"backgroundColor":  colors[0]+"!important","margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)","borderBottomRightRadius": BOX_BORDER_RADUIS,"borderTopRightRadius": BOX_BORDER_RADUIS}
-                const button_color_left_icon =  {"backgroundColor":  colors[0]+"!important","margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)","borderBottomLeftRadius": BOX_BORDER_RADUIS,"borderTopLeftRadius": BOX_BORDER_RADUIS}
+                    const  is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
+                    const last_id_test = this.get_last_id(chart_buttons,item.chart_matchid)
 
-                const  is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
-                const last_id_test = this.get_last_id(chart_buttons,item.chart_matchid)
+                    const pulldown = (has_dupes && !last_has_dupe)
 
-                const pulldown = (has_dupes && !last_has_dupe)
+                    last_chart_id = Number(item.chart_id)
+                    last_has_dupe = has_dupes
+                    let keycnta = 0
+                    let keycntb = 0
+                    let pulldown_object = (<span />)
+                    let pulldown_items_obj = (<span />)
+                    let button_obj = (<span />)
 
-                last_chart_id = Number(item.chart_id)
-                last_has_dupe = has_dupes
-                let keycnta = 0
-                let keycntb = 0
-                let pulldown_object = (<span />)
-                let pulldown_items_obj = (<span />)
-                let button_obj = (<span />)
+                    if(pulldown){
+                      pulldown_items_obj = this.get_dupes(new_chart_levels,item.chart_id);
 
-                if(pulldown){
-                  pulldown_items_obj = this.get_dupes(new_chart_levels,item.chart_id);
-
-                  pulldown_object = (
-                    <div className="ui left item">
-                      {!at_top &&
-                        <div className={"ui left item dropdown level function " + chart_type }  style={button_color_left_icon}
-                          onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
-                          <i className={"level up flipped left floated icon function " + chart_type} style={{hieght:"36px"}}></i>
-                        </div>
+                      pulldown_object = (
+                        <div className="ui left item">
+                          {!at_top &&
+                            <div className={"ui left item dropdown level function " + chart_type }  style={button_color_left_icon}
+                              onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
+                              <i className={"level up flipped left floated icon function " + chart_type} style={{hieght:"36px"}}></i>
+                            </div>
+                          }
+                          <div key={label + '-' + keycnta++}
+                            className={"ui left dropdown compact button item function " + chart_type}
+                            style={button_color}>
+                            <span className="text" key="start" ></span>
+                            <i className="dropdown icon"></i>
+                            <div className="menu" >
+                              {pulldown_items_obj}
+                            </div>
+                          </div>
+                          {is_next_valid_test &&
+                            <div className={"ui left item dropdown level function " + chart_type } style={button_color_icon}
+                              onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}>
+                              <i className={"level down right floated icon function " + chart_type}style={{hieght:"36px"}}></i>
+                            </div>
+                          }
+                        </div>)
                       }
-                      <div key={label + '-' + keycnta++}
-                        className={"ui left dropdown compact button item function " + chart_type}
-                        style={button_color}>
-                        <span className="text" key="start" ></span>
-                        <i className="dropdown icon"></i>
-                        <div className="menu" >
-                          {pulldown_items_obj}
-                        </div>
-                      </div>
-                      {is_next_valid_test &&
-                        <div className={"ui left item dropdown level function " + chart_type } style={button_color_icon}
-                          onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}>
-                          <i className={"level down right floated icon function " + chart_type}style={{hieght:"36px"}}></i>
-                        </div>
+
+
+                      if(!has_dupes){
+                        button_obj  = (
+                          <div className="ui left item">
+                            {!at_top &&
+                              <div className={"ui left item button level function " + chart_type }  style={button_color_left_icon}
+                                onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
+                                <i className={"level up flipped left floated icon function " + chart_type} style={{hieght:"36px"}}></i>
+                              </div>
+                            }
+                            {!is_next_valid_test &&
+                              <div className="ui left item" style={button_color}
+                                onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
+                                {label}
+                              </div>
+                            }
+                            {is_next_valid_test &&
+                              <div className="ui left item" style={button_color}
+                                onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}>
+                                {label}
+                              </div>
+                            }
+                            {is_next_valid_test &&
+                              <div className={"ui left item button level function " + chart_type } style={button_color_icon}
+                                onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}>
+                                <i className={"level down right floated icon function" + chart_type } style={{hieght:"36px"}}></i>
+                              </div>
+                            }
+                          </div>
+                        )
                       }
-                    </div>)
+
+
+
+                      return (
+                        <span>
+                          {pulldown_object}
+                          {button_obj}
+                        </span>
+                      )
+
+
+
+
+
+                    }.bind(this))
                   }
-
-
-                  if(!has_dupes){
-                    button_obj  = (
-                      <div className="ui left item">
-                        {!at_top &&
-                          <div className={"ui left item button level function " + chart_type }  style={button_color_left_icon}
-                            onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
-                            <i className={"level up flipped left floated icon function " + chart_type} style={{hieght:"36px"}}></i>
-                          </div>
-                        }
-                        {!is_next_valid_test &&
-                          <div className="ui left item" style={button_color}
-                            onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)} >
-                            {label}
-                          </div>
-                        }
-                        {is_next_valid_test &&
-                          <div className="ui left item" style={button_color}
-                            onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}>
-                            {label}
-                          </div>
-                        }
-                        {is_next_valid_test &&
-                          <div className={"ui left item button level function " + chart_type } style={button_color_icon}
-                            onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)}>
-                            <i className={"level down right floated icon function" + chart_type } style={{hieght:"36px"}}></i>
-                          </div>
-                        }
-                      </div>
-                    )
-                  }
-
-
-
-                  return (
-                    <span>
-                      {pulldown_object}
-                      {button_obj}
-                    </span>
-                  )
-
-
-
-
-
-            }.bind(this))
-          }
-        </div>
+                </div>
+              </div>
 
             <ChartBars key={this.props.title}
                         chart_width={this.props.chart_width}
