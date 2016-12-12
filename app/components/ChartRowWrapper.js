@@ -400,7 +400,7 @@ var ChartRowWrapper = React.createClass({
                 const chart_type  = item.chart_type;
                 const colors = this.props.get_keyColors(label)
                 const button_color = {"backgroundColor":  colors[1]+"!important","boxShadow": "0 0 0 0px rgba(0,0,0,0)!important","paddingLeft":"4px!important"}
-                const button_color_left = {"backgroundColor":  colors[1]+"!important","boxShadow": "0 0 0 0px rgba(0,0,0,0)!important","paddingLeft":"4px!important","height":"30.84px","marginLeft":"2px","paddingLeft":"14px!important"}
+                const button_color_left = {"backgroundColor":  colors[1]+"!important","boxShadow": "0 0 0 0px rgba(0,0,0,0)!important","paddingLeft":"4px!important","height":"30.84px","paddingLeft":"14px!important"}
 
                 const button_color_pulldown = {"backgroundColor":  colors[1]+"!important","padding": "0px!important","paddingLeft": "0px!important","paddingRight":  "30px!important"}
                 const  is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
@@ -441,13 +441,15 @@ var ChartRowWrapper = React.createClass({
                 if(!has_dupes){
                   if(is_next_valid_test){
                     return (
-                              <span  key={label + '-up-' + keycntb++ }>
+                              <span  key={label + '-up-' + keycntb++ } stye={{"paddingLeft":"2px","paddingRight":"2px"}}>
+                              {!at_top &&
+
                               <button className={button_class2} key={label + '-up-' + keycntb++ } style={button_color_left}>
                                 <i className="level up flipped icon"
                                   onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)}></i>
                                 {space}
                               </button>
-
+                             }
                               <button className={button_class} key={label + '-' + keycntb++ } style={button_color}
                                         onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)} >
                                {label}
@@ -455,9 +457,20 @@ var ChartRowWrapper = React.createClass({
                               </button>
                               </span>)
                   } else {
-                    return (<button className={button_class} key={label + '-' + keycntb++ } style={button_color}>
+                    return (
+                      <span  key={label + '-up-' + keycntb++ } stye={{paddingLeft:"2px",paddingRight:"2px"}}>
+                      {!at_top &&
+
+                      <button className={button_class2} key={label + '-up-' + keycntb++ } style={button_color_left}>
+                        <i className="level up flipped icon"
+                          onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)}></i>
+                        {space}
+                      </button>
+                     }
+                        <button className={button_class} key={label + '-' + keycntb++ } style={button_color}>
                                {label}
-                              </button>)
+                              </button>
+                              </span>)
                   }
 
                 }
