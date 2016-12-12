@@ -208,8 +208,11 @@ var ChartRowWrapper = React.createClass({
         position : 'top center',
         content  : 'Drill Down into function'
       })
-    ;
-  },
+      $('.level.up.icon')
+        .popup({
+          position : 'top center',
+          content  : 'Drill up into function'
+        })  },
 
   componentDidUpdate: function(prevProps, prevState) {
     const chart_type = this.props.chart_type;
@@ -396,12 +399,16 @@ var ChartRowWrapper = React.createClass({
                 const next_matchid = item.chart_id;
                 const chart_type  = item.chart_type;
                 const colors = this.props.get_keyColors(label)
-                const button_color = {"backgroundColor":  colors[1]+"!important"}
+                const button_color = {"backgroundColor":  colors[1]+"!important","boxShadow": "0 0 0 0px rgba(0,0,0,0)!important","paddingLeft":"4px!important"}
+                const button_color_left = {"backgroundColor":  colors[1]+"!important","boxShadow": "0 0 0 0px rgba(0,0,0,0)!important","paddingLeft":"4px!important","height":"30.84px","marginLeft":"2px","paddingLeft":"14px!important"}
+
                 const button_color_pulldown = {"backgroundColor":  colors[1]+"!important","padding": "0px!important","paddingLeft": "0px!important","paddingRight":  "30px!important"}
                 const  is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
                 const last_id_test = this.get_last_id(chart_buttons,item.chart_matchid)
-                let button_class = is_next_valid_test ? "ui tiny black right labeled icon button" : "ui tiny right labeled icon black button";
-                let button_class_pulldown = is_next_valid_test ? "ui tiny black right labeled icon button function " + chart_type : "ui tiny right labeled icon black button function " + chart_type;
+                let button_class = is_next_valid_test ? "ui tiny black right labeled right attached icon middle aligned button" : "ui tiny right labeled icon black button";
+                let button_class_pulldown = is_next_valid_test ? "ui tiny black right labeled right attached icon middle aligned button function " + chart_type : "ui tiny right labeled black icon button middle aligned function " + chart_type;
+                let button_class2 = is_next_valid_test ? "ui tiny black left labeled left attached icon middle aligned button" : "ui tiny left labeled left attached black icon middle aligned button";
+                let button_class_pulldown2 = is_next_valid_test ? "ui tiny left right left attached icon button middle aligned function " + chart_type : "ui tiny left labeled left attached icon black icon button middle aligned function " + chart_type;
 
                 const start = (has_dupes && !last_has_dupe)
 
@@ -433,11 +440,20 @@ var ChartRowWrapper = React.createClass({
 
                 if(!has_dupes){
                   if(is_next_valid_test){
-                    return (<button className={button_class} key={label + '-' + keycntb++ } style={button_color}
+                    return (
+                              <span  key={label + '-up-' + keycntb++ }>
+                              <button className={button_class2} key={label + '-up-' + keycntb++ } style={button_color_left}>
+                                <i className="level up flipped icon"
+                                  onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type)}></i>
+                                {space}
+                              </button>
+
+                              <button className={button_class} key={label + '-' + keycntb++ } style={button_color}
                                         onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type)} >
                                {label}
                                <i className="level down icon"></i>
-                              </button>)
+                              </button>
+                              </span>)
                   } else {
                     return (<button className={button_class} key={label + '-' + keycntb++ } style={button_color}>
                                {label}
