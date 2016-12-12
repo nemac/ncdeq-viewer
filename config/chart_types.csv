@@ -1,0 +1,6 @@
+chart_type,chart_name
+tra,ChartBars
+baseline,ChartBars
+uplift,ChartBars
+Landuse-Landcover,ChartPie
+Catchment Baseline,ChartTRA

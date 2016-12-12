@@ -20,7 +20,7 @@ var ChartBars = React.createClass({
   },
   handleClick(constructor, entry, data, index, test) {
     const name = entry.name
-    
+
     const chart_type = this.props.chart_type
 
     this.props.set_search_method('chart clicked')
@@ -152,7 +152,8 @@ var ChartBars = React.createClass({
                      chart_type={this.props.chart_type}
                      level_label={this.props.level_label}
                      handleClick={this.handleClick}
-                     function_limits={this.props.function_limits}/>}/>
+                     function_limits={this.props.function_limits}
+                     set_active_hover={this.props.set_active_hover}/>}/>
             {this.get_bars()}
            </BarChart>
         </div>

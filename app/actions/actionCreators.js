@@ -30,6 +30,7 @@ export const get_nlcd_data = ChartData.get_nlcd_data;
 export const get_nlcd_data_huc12 = ChartData.get_nlcd_data_huc12;
 export const get_catchment_data = ChartData.get_catchment_data;
 export const set_active_function = ChartData.get_active_function;
+export const get_chart_buttons = ChartData.get_chart_buttons;
 
 //map data and state actions
 export const get_defaultMapData = MapConfig.get_defaultMapData;
@@ -42,6 +43,8 @@ export const get_LayerInfo_ByValue = MapConfig.get_LayerInfo_ByValue;
 export const set_search_method = MapConfig.set_search_method;
 export const get_tra_info = MapConfig.get_tra_info;
 export const get_LayerGeom_ByValue = MapConfig.get_LayerGeom_ByValue;
+export const set_active_hover = MapConfig.set_active_hover;
+export const get_all_geometries = MapConfig.get_all_geometries;
 
 //default app actions
 export const set_defaults = ActionDefault.set_defaults;
@@ -49,3 +52,4 @@ export const update_HeaderVis = ActionDefault.update_HeaderVis;
 export const update_ChartHeight = ActionDefault.update_ChartHeight;
 export const update_MapHeight = ActionDefault.update_MapHeight;
 export const set_LeafletMap = ActionLeaflet.set_LeafletMap;
+export const use_imagery = ActionLeaflet.use_imagery;

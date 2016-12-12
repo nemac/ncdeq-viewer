@@ -1,10 +1,13 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
-import ChartRowWrapper from '../components/ChartRowWrapper';
+import ChartRowWrapper from '../containers/ChartRowWrapperContainer';
 import ChartPie from '../components/ChartPie';
 import ChartSimpleBar from '../components/ChartSimpleBar';
 import ChartTRA from '../components/ChartTRA';
 var SectionWrapper = require('./SectionWrapper');
+
+import ChartPieContainer from '../containers/ChartPieContainer';
+
 
 import {
   CHART_WIDTH,
@@ -57,10 +60,10 @@ var ChartRow = React.createClass({
             key_colors = ['rgba(29, 131, 72 ,1)' , 'rgba(29, 131, 72,.5)']
           break;
 
-          case 'Nitrogen Agriculture':
+          case 'Nitrogen Atmosphere':
             key_colors = ['rgba(130, 224, 170, 1)' , 'rgba(130, 224, 170, .5)']
             break;
-          case 'Nitrogen Atmosphere':
+          case 'Nitrogen Agriculture':
             key_colors = ['rgba(46, 204, 113,1)' , 'rgba(46, 204, 113,.5)']
             break;
           case 'Nitrogen Urban':
@@ -72,17 +75,17 @@ var ChartRow = React.createClass({
         key_colors = ['#456fa2' , '#759ac1']
         break;
 
-        case '10 year peak':
-          key_colors = ['rgba(133, 193, 233  ,1)' , 'rgba(133, 193, 233  ,.5)'] //133, 193, 233
-          break;
-        case '100 year peak':
-          key_colors = ['rgba(52, 152, 219 ,1)' , 'rgba(52, 152, 219  ,.5)'] //52, 152, 219
-          break;
         case '2 year peak':
-          key_colors = ['rgba(46, 134, 193  ,1)' , 'rgba(46, 134, 193 ,.5)'] //46, 134, 193
+          key_colors =  ['rgba(133, 193, 233  ,1)' , 'rgba(133, 193, 233  ,.5)'] //46, 134, 193
+          break;
+        case '10 year peak':
+          key_colors = ['rgba(52, 152, 219 ,1)' , 'rgba(52, 152, 219  ,.5)']//133, 193, 233
           break;
         case '50 year peak':
-          key_colors = ['rgba(33, 97, 140  ,1)' , 'rgba(33, 97, 140 ,.5)'] //33, 97, 140
+          key_colors = ['rgba(46, 134, 193  ,1)' , 'rgba(46, 134, 193 ,.5)']//33, 97, 140
+          break;
+        case '100 year peak':
+          key_colors = ['rgba(33, 97, 140  ,1)' , 'rgba(33, 97, 140 ,.5)']  //52, 152, 219
           break;
 
       case 'Habitat':
@@ -377,7 +380,7 @@ var ChartRow = React.createClass({
              blank_chart_object[item.properties.chart_level_label] = null
              blank_chart_object_two[item.properties.chart_level_label] = null
 
-             chart_object["chart_id"] =  item.properties.chart_id;
+             chart_object["chart_id"] = item.properties.chart_id;
              blank_chart_object["chart_id"] = item.properties.chart_id
              blank_chart_object_two["chart_id"] = item.properties.chart_id
 
@@ -454,6 +457,45 @@ var ChartRow = React.createClass({
     //return should update.
     return should_update
 
+  },
+  componentWillMount: function() {
+    this.props.get_chart_buttons()
+  },
+  set_chart_types: function(){
+    return [
+      // {"NAME":"TRA", "TYPE": "ChartBars"},
+      // {"NAME":"BASELINE", "TYPE": "ChartBars"},
+      // {"NAME":"UPLIFT", "TYPE": "ChartBars"},
+      { "NAME":"LANDUSE_LANDCOVER_HUC12",
+        "TYPE": "ChartPieComponent",
+        "TITLE": "Landuse-Landcover",
+        "DESCRIPTION": "",
+        "USE_PERCENT": "TRUE",
+        "GEOGRAPHY": "HUC12"
+      },
+      {"NAME":"LANDUSE_LANDCOVER_CATCHMENT",
+        "TYPE": "ChartPieComponent",
+        "TITLE": "Landuse-Landcover",
+        "DESCRIPTION": "",
+        "USE_PERCENT": "TRUE",
+        "GEOGRAPHY": "Catchment"
+      },
+      // {"NAME":"CATCHMENT_BASELINE", "TYPE": "ChartSimpleBar"}
+
+      // chart_type="LANDUSE_LANDCOVER_HUC12"
+      // chart_width={chart_width_px}
+      // geography="HUC12"
+      // title="Landuse-Landcover"
+      // description=""
+      // use_percent={true}
+
+      //   chart_width={chart_width_px}
+      //   title="Landuse-Landcover (HUC12)"
+      //   title_description=""
+      //   note={"For HUC12: " + chart_filter}
+      //   chart_data={ncld_chart_data_huc12}
+      //   use_percent={true}
+    ]
   },
   render: function() {
 
@@ -631,7 +673,7 @@ var ChartRow = React.createClass({
 
     //if there is filter text for charts and data should be about the data
     if(chart_filter){
-      chart_cataloging_unit = "Charts and Data for the Cataloging Unit " + chart_filter.substring(0,8);
+      chart_cataloging_unit = "Charts and Data for the HUC " + chart_filter.substring(0,8);
       huc_message = "The " + this.getLevel() + " " +  chart_filter + " is currently highlighted."
     }
 
@@ -668,7 +710,10 @@ var ChartRow = React.createClass({
       }
 
       const ADJUSTED_CHART_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : CHART_WIDTH;
-
+      // const chart_typs_array = this.set_chart_types()
+      // chart_typs_array.map( ct => {
+      //   console.log(ct)
+      // })
 
     return (
       <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{height:chart_grid_height,paddingLeft:"10px",paddingRight:"7px",paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
@@ -686,7 +731,7 @@ var ChartRow = React.createClass({
         <div className={working_class} >
             <div className="ui loader" ></div>
         </div>
-        
+
       {/*  only show tra message when their is filter.  the filter indicates the user took an action
         that results in data and charts that can be displayed
         */}
@@ -722,6 +767,7 @@ var ChartRow = React.createClass({
           level_label={"TRA"}
           set_active_function={this.props.set_active_function}
           active_function={this.props.active_function}
+          set_active_hover={this.props.set_active_hover}
           />
         }
         { chart_filter &&
@@ -748,6 +794,7 @@ var ChartRow = React.createClass({
           level_label={this.getLevel()}
           set_active_function={this.props.set_active_function}
           active_function={this.props.active_function}
+          set_active_hover={this.props.set_active_hover}
           />
         }
         { chart_filter &&
@@ -774,17 +821,20 @@ var ChartRow = React.createClass({
            level_label={this.getLevel()}
            set_active_function={this.props.set_active_function}
            active_function={this.props.active_function}
+           set_active_hover={this.props.set_active_hover}
            />
          }
          { chart_filter &&
-           <ChartPie
+           <ChartPieContainer
+             chart_type="LANDUSE_LANDCOVER_HUC12"
              chart_width={chart_width_px}
-             title="Landuse-Landcover (HUC12)"
-             title_description=""
-             note={"For HUC12: " + chart_filter}
-             chart_data={ncld_chart_data_huc12}
+             geography="HUC12"
+             title="Landuse-Landcover"
+             description=""
              use_percent={true}
              />
+
+
          }
          { chart_filter &&
            <ChartPie
@@ -800,7 +850,7 @@ var ChartRow = React.createClass({
 
            <ChartSimpleBar
              chart_width={chart_width_px}
-             title="Catchment Baseline (Catchment)"
+             title="Baseline (Catchment)"
              title_description=""
              note={"For Catchment: " + NLCD_ID}
              chart_data={catchment_chart_ar}
@@ -819,3 +869,13 @@ var ChartRow = React.createClass({
 });
 
 module.exports = ChartRow;
+
+
+// <ChartPie
+//   chart_width={chart_width_px}
+//   title="Landuse-Landcover (HUC12)"
+//   title_description=""
+//   note={"For HUC12: " + chart_filter}
+//   chart_data={ncld_chart_data_huc12}
+//   use_percent={true}
+//   />
