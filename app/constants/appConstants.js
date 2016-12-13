@@ -1,3 +1,11 @@
+//
+//
+// // exports = config;
+//
+//
+//
+//
+// config.read_file()
 export const HEADER_HEIGHT = 125;
 export const HEADER_HEIGHT_SMALL = 40;
 export const BREAD_CRUMBS_HEIGHT = 110;
@@ -46,3 +54,5 @@ export const BOX_BORDER_RADUIS = ".28571429rem"
 export const SPACING = "14px"
 export const BACKGROUND_COLOR_BG = "#fafafa"
 export const BACKGROUND_COLOR_FG = "#ffffff"
+
+export const TITLE = "River Basin Restoration Priorities Web Application"

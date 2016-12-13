@@ -4,6 +4,7 @@ var SectionWrapper = require('./SectionWrapper');
 var PropTypes = React.PropTypes;
 import {
   SPACING,
+  TITLE,
 } from '../constants/appConstants'
 
 var HeaderComponent = React.createClass({
@@ -34,7 +35,7 @@ var HeaderComponent = React.createClass({
               <a href="http://deq.nc.gov/" className="ui left floated image" style={{width: "225px",height:"auto",fontSize: "1rem",padding: "0 14px 0 14px"  }}>
                 <img src="config/l_agency-ncdenr.svg"  />
               </a>
-              <span style={{padding: "0 14px 0 14px"}} >River Basin Restoration Priorities Web Application</span>
+              <span style={{padding: "0 14px 0 14px"}} >{TITLE}</span>
               <div className="ui right floated buttons" style={{padding: "0 14px 0 14px" }}>
                 <a  className="ui inverted button"  href="#/Resources/" >
                   Resources
