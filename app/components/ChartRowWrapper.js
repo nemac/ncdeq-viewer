@@ -66,10 +66,7 @@ var ChartRowWrapper = React.createClass({
 
          const label = current_function[0].properties.chart_level_label;
          const index_bc = chart_bread_crumbs.indexOf(label)
-         console.log(chart_bread_crumbs)
-         console.log(index_bc)
          new_array = chart_bread_crumbs.slice(0,index_bc);
-         console.log(new_array)
 
 
         break;
@@ -470,32 +467,6 @@ var ChartRowWrapper = React.createClass({
     return false
 
   },
-  get_all_lower_functions(chart_buttons, chart_id){
-
-    const chart_type =  this.props.chart_type;
-
-    if(chart_buttons){
-      let all_lower_functions = []
-      let is_next_valid = this.is_next_valid(chart_buttons, chart_id)
-      const buttons = this.get_current_function(chart_buttons, chart_id)
-      all_lower_functions.push(buttons)
-
-      let nextid = buttons[0].properties.chart_id
-      while(is_next_valid){
-        const buttons = this.get_next_function(chart_buttons, nextid)
-        // console.log(buttons[0].properties.chart_level_label)
-        // console.log(buttons[0].properties.chart_matchid)
-        // console.log(buttons[0].properties.chart_id)
-        nextid = buttons[0].properties.chart_id
-        is_next_valid = this.is_next_valid(chart_buttons, nextid)
-        // console.log(is_next_valid)
-        all_lower_functions.push(buttons)
-
-      }
-      return all_lower_functions
-    }
-    return null
-  },
   get_ids_from_label: function(label){
     const chart_buttons = this.state.chart_buttons;
 
@@ -515,25 +486,46 @@ var ChartRowWrapper = React.createClass({
   },
   get_breadcrumbs: function(breadcrumbs){
     const chart_type =  this.props.chart_type;
+    let count = 0
 
     if(breadcrumbs){
-      let count = 0
+
       return breadcrumbs.map( breadcrumb => {
-        count = count + 1;
         const colors = this.props.get_keyColors(breadcrumb)
         let message = (<span/>)
-        if(count === 1){message = (<span className="ui item" style={{"color": "rgba(0,0,0,.6)"}} >current drill down:</span>)}
+        if(count === 0){
+          message = (
+            <span className="ui item"
+              style={{"color":"rgba(0,0,0,.5)","fontWeight":"500","padding":"7px","cursor":"pointer"}} >current drill down:
+            </span>
+          )
+        }
         const ids = this.get_ids_from_label(breadcrumb)
         return (
+          <span>
+            {message}
           <span className="ui item"
             key={'breadcrumbs-'+count++}
             style={{"backgroundColor":colors[1],"color":"rgba(0,0,0,.5)","fontWeight":"500","padding":"7px","cursor":"pointer"}}
             onClick={this.handle_chart_level_click.bind(null, this, ids[2], ids[1], chart_type, "crumb", ids[0])}>
-            {breadcrumb}-level-{ids[2]}-matchid-{ids[1]}-chartid-{ids[0]}
+            {breadcrumb}
           </span>
+        </span>
           )
       })
+
+      return (<span className="ui item"
+        key={'breadcrumbs-'+count++}
+        style={{"color":"rgba(0,0,0,.5)","fontWeight":"500","padding":"7px","cursor":"pointer"}}>
+        at top
+      </span>)
     }
+
+    return (<span className="ui item"
+      key={'breadcrumbs-'+count++}
+      style={{"color":"rgba(0,0,0,.5)","fontWeight":"500","padding":"7px","cursor":"pointer"}}>
+      at top
+    </span>)
   },
   render: function() {
     const chart_type =  this.props.chart_type;
@@ -575,7 +567,7 @@ var ChartRowWrapper = React.createClass({
     direction = at_top ? "down" : direction
     // const breadcrumbs = this.state.chart_bread_crumbs ? this.state.chart_bread_crumbs.toString() : [];
 
-    const breadcrumbs_obj = this.get_breadcrumbs (this.state.chart_bread_crumbs)
+    const breadcrumbs_obj = this.get_breadcrumbs(this.state.chart_bread_crumbs)
 
     let function_limits;
     if(this.props.active_function){
@@ -608,6 +600,9 @@ var ChartRowWrapper = React.createClass({
           <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
 
             <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "7px"}}>
+              <div className="ui top aligned item" key="bc">
+                {breadcrumbs_obj}{space}
+              </div>
               <h5 className="ui header">
                 {drilldown_note}
               </h5>
@@ -616,9 +611,7 @@ var ChartRowWrapper = React.createClass({
             <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "0px"}}>
               <div className="ui text stackable mini menu" style={{"cursor":"pointer"}}>
 
-                <div className="ui item" key="bc">
-                  {breadcrumbs_obj}{space}
-                </div>
+
 
                { new_chart_levels &&
 
@@ -696,19 +689,19 @@ var ChartRowWrapper = React.createClass({
                            {!is_next_valid_test &&
                              <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type, "up", item.chart_id)} >
-                               {label}-{last_chart_level}-{last_matchid}-{item.chart_id}
+                               {label}
                              </div>
                            }
                            {is_next_valid_test && direction === 'down' &&
                              <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type, "down", item.chart_id)}>
-                               {label}-{next_chart_level}-{next_matchid}-{item.chart_id}
+                               {label}
                              </div>
                            }
                            { is_next_valid_test && direction === 'up' &&
                              <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, chart_type, "up", item.chart_id)}>
-                               {label}-{last_chart_level}-{last_matchid}-{item.chart_id}
+                               {label}
                              </div>
                            }
                            {is_next_valid_test &&
