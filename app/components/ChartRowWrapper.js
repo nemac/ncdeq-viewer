@@ -66,41 +66,11 @@ var ChartRowWrapper = React.createClass({
 
          const label = current_function[0].properties.chart_level_label;
          const index_bc = chart_bread_crumbs.indexOf(label)
-        new_array = chart_bread_crumbs.splice(index_bc);
-          console.log(next_level, next_matchid, chart_type)
+         console.log(chart_bread_crumbs)
+         console.log(index_bc)
+         new_array = chart_bread_crumbs.slice(0,index_bc);
+         console.log(new_array)
 
-          // const all_lower_functions = this.get_all_lower_functions(chart_buttons,chart_id)
-          // new_array = [...chart_bread_crumbs]
-          // console.log(all_lower_functions)
-
-        //
-        // if(current_function.length > 1){
-        //   new_array = chart_bread_crumbs.filter(item => {
-        //     current_function.map( function_item => {
-        //       return item != function_item.properties.chart_level_label
-        //     });
-        //   })
-        // } else {
-        //   new_array = current_function.filter(item => {
-        //   	return item != current_function[0].properties.chart_level_label
-        //   });
-        // }
-        // new_array = [...chart_bread_crumbs]
-
-        // console.log(current_function)
-        // console.log(previous_functions)
-        //
-        //
-        // console.log(current_function[0].properties.chart_level, current_function[0].properties.chart_id,current_function[0].properties.chart_type)
-
-        // this.props.update_ChartLevels(next_level, chart_id, chart_type)
-        // //update the chart level
-        // if(current_function){
-        //   this.props.update_ChartLevels(current_function[0].properties.chart_level+1, current_function[0].properties.chart_matchid,current_function[0].properties.chart_type)
-        // } else {
-        //   //update the chart level
-        //   // this.props.update_ChartLevels(next_level, chart_id, chart_type)
-        // }
 
         break;
       default:
