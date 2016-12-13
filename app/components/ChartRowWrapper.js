@@ -424,7 +424,8 @@ var ChartRowWrapper = React.createClass({
 
     let last_chart_id = 0
     let last_has_dupe = false
-    const direction = this.state.direction ? this.state.direction : "down";
+    let direction = this.state.direction ? this.state.direction : "down";
+    direction = at_top ? "down" : direction
     const breadcrumbs = this.state.chart_bread_crumbs ? this.state.chart_bread_crumbs.toString() : [];
 
     let function_limits;
@@ -553,7 +554,7 @@ var ChartRowWrapper = React.createClass({
                                {label}
                              </div>
                            }
-                           {is_next_valid_test && direction === 'up' &&
+                           { is_next_valid_test && direction === 'up' &&
                              <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, chart_type, "up", item.chart_id)}>
                                {label}
