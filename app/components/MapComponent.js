@@ -25,7 +25,7 @@ var GeoJSON_Layers = {"huc8": null,
   "catchment": null,
   "mappoint": null,};
 
-var MapContainer = React.createClass({
+var MapComponent = React.createClass({
   handleResize: function(){
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
@@ -965,4 +965,4 @@ var MapContainer = React.createClass({
   }
 });
 
-module.exports = MapContainer;
+module.exports = MapComponent;

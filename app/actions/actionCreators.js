@@ -56,3 +56,4 @@ export const set_LeafletMap = ActionLeaflet.set_LeafletMap;
 export const use_imagery = ActionLeaflet.use_imagery;
 
 export const set_constants = constants.set_constants;
+export const get_constant = constants.get_constant;
