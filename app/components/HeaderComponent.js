@@ -1,10 +1,8 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-
 import {
   SPACING,
-  TITLE,
 } from '../constants/appConstants'
 
 var HeaderComponent = React.createClass({
