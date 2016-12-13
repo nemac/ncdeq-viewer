@@ -268,7 +268,7 @@ function ago_getPreviousChart(chart_level, chart_id){
                           '&sqlFormat=none' +
                           '&f=pgeojson' +
                           '&token='
-
+     console.log(query_URL)
      //send the ajax request via axios
      return axios.get(query_URL);
 }
@@ -365,7 +365,8 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
                 const previous_data_type = previous_data.features.filter( previous_item => {
                   return previous_item.properties.chart_type.toUpperCase() === chart_type.toUpperCase()
                 })
-
+                console.log(previous_data)
+                console.log(previous_data_type)
                 //get previous chart heirachy from ago api
                 let last_chart_level_raw = (previous_data_type[0].properties.chart_level ? previous_data_type[0].properties.chart_level : 2);
                 let last_chart_matchid = (previous_data_type[0].properties.chart_matchid ? previous_data_type[0].properties.chart_matchid : 1);

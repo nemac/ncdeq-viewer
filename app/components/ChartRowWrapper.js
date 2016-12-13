@@ -62,20 +62,31 @@ var ChartRowWrapper = React.createClass({
       case 'crumb':
 
 
+         this.props.update_ChartLevels(next_level, next_matchid, chart_type)
 
-        if(current_function.length > 1){
-          new_array = chart_bread_crumbs.filter(item => {
-            current_function.map( function_item => {
-              return item != function_item.properties.chart_level_label
-            });
-          })
-        } else {
-          new_array = current_function.filter(item => {
-          	return item != current_function[0].properties.chart_level_label
-          });
-        }
-        new_array = [...chart_bread_crumbs]
-        this.get_all_previous_function(chart_buttons,chart_id)
+         const label = current_function[0].properties.chart_level_label;
+         const index_bc = chart_bread_crumbs.indexOf(label)
+        new_array = chart_bread_crumbs.splice(index_bc);
+          console.log(next_level, next_matchid, chart_type)
+
+          // const all_lower_functions = this.get_all_lower_functions(chart_buttons,chart_id)
+          // new_array = [...chart_bread_crumbs]
+          // console.log(all_lower_functions)
+
+        //
+        // if(current_function.length > 1){
+        //   new_array = chart_bread_crumbs.filter(item => {
+        //     current_function.map( function_item => {
+        //       return item != function_item.properties.chart_level_label
+        //     });
+        //   })
+        // } else {
+        //   new_array = current_function.filter(item => {
+        //   	return item != current_function[0].properties.chart_level_label
+        //   });
+        // }
+        // new_array = [...chart_bread_crumbs]
+
         // console.log(current_function)
         // console.log(previous_functions)
         //
@@ -489,43 +500,29 @@ var ChartRowWrapper = React.createClass({
     return false
 
   },
-  get_all_previous_function(chart_buttons, chart_id){
+  get_all_lower_functions(chart_buttons, chart_id){
 
     const chart_type =  this.props.chart_type;
 
     if(chart_buttons){
-
+      let all_lower_functions = []
       let is_next_valid = this.is_next_valid(chart_buttons, chart_id)
       const buttons = this.get_current_function(chart_buttons, chart_id)
-      console.log(buttons[0].properties.chart_level_label)
-      console.log(buttons[0].properties.chart_matchid)
-      console.log(buttons[0].properties.chart_id)
+      all_lower_functions.push(buttons)
 
-      console.log(is_next_valid)
-
+      let nextid = buttons[0].properties.chart_id
       while(is_next_valid){
-        const buttons = this.get_next_function(chart_buttons, chart_id)
-        console.log(buttons[0].properties.chart_level_label)
-        console.log(buttons[0].properties.chart_matchid)
-        console.log(buttons[0].properties.chart_id)
-
-        is_next_valid = this.is_next_valid(chart_buttons, buttons[0].properties.chart_id)
-        console.log(at_top)
+        const buttons = this.get_next_function(chart_buttons, nextid)
+        // console.log(buttons[0].properties.chart_level_label)
+        // console.log(buttons[0].properties.chart_matchid)
+        // console.log(buttons[0].properties.chart_id)
+        nextid = buttons[0].properties.chart_id
+        is_next_valid = this.is_next_valid(chart_buttons, nextid)
+        // console.log(is_next_valid)
+        all_lower_functions.push(buttons)
 
       }
-      // const buttons_cur = chart_buttons.filter( button => {
-      //   return button.properties.chart_id === chart_id
-      // })
-      //
-      // const match_id = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_matchid : null
-      //
-      // const buttons = chart_buttons.filter( button => {
-      //   return button.properties.chart_id === match_id
-      // })
-      //
-      //
-      // return buttons.length > 0 ? buttons : null
-
+      return all_lower_functions
     }
     return null
   },
@@ -537,10 +534,11 @@ var ChartRowWrapper = React.createClass({
       const buttons_cur = chart_buttons.filter( button => {
         return button.properties.chart_level_label === label
       })
-
-      const match_id = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_matchid : null
       const chart_id = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_id : null
-      return [chart_id, match_id]
+      const match_id = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_matchid : null
+      const chart_level = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_level : null
+
+      return [chart_id, match_id, chart_level]
     }
     return null;
 
@@ -556,14 +554,12 @@ var ChartRowWrapper = React.createClass({
         let message = (<span/>)
         if(count === 1){message = (<span className="ui item" style={{"color": "rgba(0,0,0,.6)"}} >current drill down:</span>)}
         const ids = this.get_ids_from_label(breadcrumb)
-        // onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type, "up", item.chart_id)} >
-
         return (
           <span className="ui item"
             key={'breadcrumbs-'+count++}
             style={{"backgroundColor":colors[1],"color":"rgba(0,0,0,.5)","fontWeight":"500","padding":"7px","cursor":"pointer"}}
-            onClick={this.handle_chart_level_click.bind(null, this, count+1, ids[1], chart_type, "crumb", ids[0])}>
-            {breadcrumb}-{count+1}-{ids[1]}-{ids[0]}
+            onClick={this.handle_chart_level_click.bind(null, this, ids[2], ids[1], chart_type, "crumb", ids[0])}>
+            {breadcrumb}-level-{ids[2]}-matchid-{ids[1]}-chartid-{ids[0]}
           </span>
           )
       })
