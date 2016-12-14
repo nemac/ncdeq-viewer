@@ -6,10 +6,10 @@ var turf_FC = require('turf-featurecollection');
 import { CheckReponse } from './responses';
 
 //  general functions and  helpers.  reuse functions
-import { getNextLevel, getAGOGeographyLabel, getPrevLevelName, get_matchEnd } from '../utils/helpers';
+import {  getNextLevel, getAGOGeographyLabel, getPrevLevelName, get_matchEnd } from '../utils/helpers';
 
 //import ACTION constants
-import { AGO_URL, DATA_FEATUREID, TRA_FEATUREID, ENCODED_COMMAS, SERVICE_NAME } from '../constants/actionConstants';
+import { AGO_URL, NCDEQ_NORMALIZED_FEATUREID, TRA_XWALK, ENCODED_COMMAS, FEATURE_SERVICE_NAME } from '../constants/actionConstants';
 import { START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION, CHART_VISIBILITY} from '../constants/appConstants';
 
 //set consts for this module
@@ -33,7 +33,8 @@ const CHART_DATA_ORDER_BY_FIELDS = 'chart_level' + ENCODED_COMMAS + 'chart_match
 
 const CHART_TYPE = 'BASELINE';
 
-//set base URL for axios
+
+// //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
 
 //get chart data for all hucs of the next lower level in the huc heirachy (huc6,huc8,huc12) for huc id
@@ -58,7 +59,7 @@ function AGO_AllChartData_byID(hucid, current_geography_level){
    }
 
    //build the query to arcgis online api for getting the raw chart data
-   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+   const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + NCDEQ_NORMALIZED_FEATUREID + '/query' +
                    '?where=chart_value+is+not+null+and+ID+like+%27' + id + '%25%27+and+geography_level%3D'+ next_level + //'+and+chart_type%3D%27' + CHART_TYPE + '%27' +
                    '&objectIds=' +
                    '&time=' +
@@ -80,7 +81,7 @@ function AGO_AllChartData_byID(hucid, current_geography_level){
 //get chart data for a single huc id
 //   requires the id to search
 function AGO_ChartData_byID(id){
-   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+   const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + NCDEQ_NORMALIZED_FEATUREID + '/query' +
                      '?where=chart_value+is+not+null+and+ID%3D%27' + id + '%27' + //' +and+chart_type%3D%27' + CHART_TYPE + '%27' +
                      '&objectIds=' +
                      '&time=' +
@@ -106,7 +107,7 @@ function AGO_ChartData_byID(id){
 //get chart data for a single catchemnt id
 //   requires the id to search
 function AGO_ChartData_Catchment_byID(id, geography_level){
-   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+   const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + NCDEQ_NORMALIZED_FEATUREID + '/query' +
                      '?where=chart_value+is+not+null+and+ID%3D%27' + id + '%27' +  '+and+geography_label%3D%27' + geography_level + '%27' +
                      '&objectIds=' +
                      '&time=' +
@@ -133,7 +134,7 @@ function ago_get_tra_by_ids( id_list){
   const id_in_list = "(" + id_list + ')'
 
   //build the query to arcgis online api for getting the raw chart data
-  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+  const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + NCDEQ_NORMALIZED_FEATUREID + '/query' +
                     '?where=ID+in+' + id_in_list +
                     '&objectIds=' +
                     '&time='  +
@@ -172,7 +173,7 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
   }
 
    //build the query to arcgis online api for getting the raw chart data
-   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
+   const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + TRA_XWALK + '/query' +
                    '?where=ID%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
                    '&objectIds=' +
                    '&time=' +
@@ -197,7 +198,7 @@ function ago_get_traxwalk_by_id(hucid, current_geography_level){
 
 function ago_getChartLevels(){
 
-     const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+     const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + NCDEQ_NORMALIZED_FEATUREID + '/query' +
                           '?where=chart_value+is+not+null+and+OBJECTID+>+0+and+chart_matchid+<>+chart_id' +
                           '&objectIds=' +
                           '&time=' +
@@ -220,14 +221,7 @@ function ago_getChartLevels(){
 }
 
 function ago_get_chart_buttons(){
-// query?&objectIds=&time=&resultType=none&outFields=chart_id+&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=pgeojson&token=
-// query?where=chart_type+%3D+%27BASELINE+%27+&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
-
-//all chart levels
-//query?where=chart_type+%3D+%27TRA+%27+&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_level%22+as+INT%29+desc%2C+CAST%28%22chart_id%22+as+INT%29+desc%2CCAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
-//next valid
-//query?where=chart_type+%3D+%27BASELINE%27+and+chart_matchid+%3D+%276%27&objectIds=&time=&resultType=none&outFields=chart_type%2Cchart_matchid%2C+chart_level_label%2Cchart_id%2C+chart_level&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=true&orderByFields=CAST%28%22chart_level%22+as+INT%29+desc%2C+CAST%28%22chart_id%22+as+INT%29+desc%2CCAST%28%22chart_matchid%22+as+INT%29+desc&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
-  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+  const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + NCDEQ_NORMALIZED_FEATUREID + '/query' +
                        '?where=OBJECTID+>+0' +
                        '&objectIds=' +
                        '&time=' +
@@ -251,7 +245,7 @@ function ago_get_chart_buttons(){
 
 function ago_getPreviousChart(chart_level, chart_id){
 
-     const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+     const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + NCDEQ_NORMALIZED_FEATUREID + '/query' +
                           '?where=chart_value+is+not+null+and+chart_level+%3D+' + chart_level + '+and+chart_id+%3D+' + chart_id  + //' chart_type+%3D+%27' + chart_type + '%27'
                           '&objectIds=' +
                           '&time=' +
@@ -304,6 +298,7 @@ export function get_chart_buttons(){
 
     const state = getState()
 
+
     ago_get_chart_buttons()
       .then( chart_button_response => {
 
@@ -326,6 +321,7 @@ export function update_ChartLevels(new_level, new_matchid, chart_type){
       dispatch(fetching_start())
 
       const state = getState()
+
 
       //set inital default settings just incase there is no data.
       let current_chart_level = null;
@@ -441,6 +437,9 @@ export function get_ChartLevels(id,level){
     //start fetching state (set to true)
     dispatch(fetching_start())
 
+    const state = getState()
+
+
     ago_getChartLevels()
      .then( chart_level_response => {
 
@@ -498,6 +497,10 @@ export function get_nlcd_data(id, level){
   return (dispatch,getState) => {
     //start fetching state (set to true)
     dispatch(fetching_start())
+
+    const state = getState()
+
+
 
     AGO_ChartData_Catchment_byID(id, 'NLCD_Catchments')
       .then( nlcd_response => {
@@ -560,6 +563,9 @@ export function get_nlcd_data_huc12(id, level){
     //start fetching state (set to true)
     dispatch(fetching_start())
 
+    const state = getState()
+
+
     AGO_ChartData_Catchment_byID(id, 'NLCD_huc_12')
       .then( nlcd_response => {
 
@@ -619,6 +625,9 @@ export function get_catchment_data(id, level){
   return (dispatch,getState) => {
     //start fetching state (set to true)
     dispatch(fetching_start())
+
+    const state = getState()
+
 
     AGO_ChartData_Catchment_byID(id, 'catchments_baseline')
       .then( catchment_response => {
@@ -722,6 +731,9 @@ export function get_ChartData(id,level){
 
       //start fetching state (set to true)
       dispatch(fetching_start())
+
+      const state = getState()
+
 
       axios.all([AGO_AllChartData_byID(id, level), ago_get_traxwalk_by_id(id, level)])
       .then(axios.spread(function (chartdata_response, tra_response) {
@@ -859,6 +871,7 @@ export function update_ChartVisiblity (visibility){
 
       const state = getState()
 
+
       let chartData_Level = [];
       let chartData_ID = [];
       let types = [];
@@ -889,6 +902,7 @@ export function get_active_function (chart_id, active_name, chart_type){
       dispatch(fetching_start())
 
       const state = getState()
+
       let active_functions
       //walk the charts array and get chart types that will have switcher for baseline
       //  and write the current active function

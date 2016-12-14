@@ -2,7 +2,7 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 
 import { BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { HUC12_MAP_FEATUREID, TRA_MAP_FEATUREID, CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID } from '../constants/actionConstants';
+import { HUC12_MAP_FEATUREID, TRA_FEATUREID, CATALOGING_MAP_FEATUREID, NLCD_CATCHMENT_FEATUREID } from '../constants/actionConstants';
 import { getFriendlyName_NextLevel, getAGOGeographyLabel_NextLevel } from '../utils/helpers'
 
 const tooltipstyle = {
@@ -45,7 +45,7 @@ const CustomToolTipBarCharts  = React.createClass({
         return HUC12_MAP_FEATUREID
         break;
       case 'tra':
-        return TRA_MAP_FEATUREID
+        return TRA_FEATUREID
         break;
       default:
         return HUC12_MAP_FEATUREID

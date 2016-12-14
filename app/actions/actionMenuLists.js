@@ -53,10 +53,11 @@ function buildMenuList (name, menuList, geoJSON){
 
 
 export function get_MenuList(){
-    return dispatch => {
-
+    return (dispatch, getState) => {
       //start fetching state (set to true)
       dispatch(fetching_start())
+
+      const state = getState()
 
       axios.all([get_Basins(), get_CatalogingUnits(),get_HUCS()])
       .then(axios.spread(function (basins, catalogingUnits, HUCS) {
