@@ -22,8 +22,6 @@ export const ENCODED_COMMAS = '%2C'
 //out fields for menu lists
 const MENU_OUT_FIELDS = 'id,NAME,VALUE,MAIN,SUB';
 
-
-
 //URL or Getting RiverBasins
 export const AGO_RIVER_BASINS = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + BASIN_MAP_FEATUREID +
                                '/query?where=id%3C%3E%27%27' +

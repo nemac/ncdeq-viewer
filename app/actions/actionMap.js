@@ -84,7 +84,6 @@ function get_feature_huc(length_of_id){
 }
 
 function AGO_get_geometry_for_all(search_value, search_layer_id){
-  // query?where=ID+%3D+%2703020101%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=&units=esriSRUnit_Meter&outFields=ID&returnGeometry=true&returnCentroid=false&multipatchOption=&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=true&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=html&token=
   var value_field_name = 'VALUE';
 
   //until I can change the TRA data to match the schemas of the huc files I need to change the field name from vaue to id.

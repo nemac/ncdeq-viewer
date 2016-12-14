@@ -532,61 +532,68 @@ var ChartRowWrapper = React.createClass({
 
   },
   render: function() {
-    const chart_type =  this.props.chart_type;
-    const chart_buttons = this.state.chart_buttons;
 
-    //get the chart levels
-    const chart_levels = this.get_chart_levels()
-    const last_chart = this.get_chart_Previous()
-    // const is_next_valid = this.check_next_level_valid()
-    const sort_id = this.sort_byid(chart_levels);
+    const data = this.props.chart_data
 
-    const new_chart_levels = this.update_ChartLevels(sort_id)
+      const chart_type =  this.props.chart_type;
+      const chart_buttons = this.state.chart_buttons;
 
-    //check if at the charts top heirachy
-    const at_top = (last_chart.current_chart_level === 2 && last_chart.current_chart_matchid === 1)
+      //get the chart levels
+      const chart_levels = this.get_chart_levels()
+      const last_chart = this.get_chart_Previous()
+      // const is_next_valid = this.check_next_level_valid()
+      const sort_id = this.sort_byid(chart_levels);
 
-    //set up all messaging for drilldowns
-    const keyback = "back";
-    const backtext = ( at_top ? ' Function ' : " Back ");
-    const last_chart_level = last_chart.last_chart_level;
-    const last_matchid = last_chart.last_chart_matchid;
-    const last_chart_type  = this.props.chart_type;
-    const key_back_class = ( at_top ? 'ui tiny black basic button' : 'ui tiny grey button' );
+      const new_chart_levels = this.update_ChartLevels(sort_id)
 
-    //return the chart and drill downs
-    const drilldown_note = 'Click a function to drill down '
+      //check if at the charts top heirachy
+      const at_top = (last_chart.current_chart_level === 2 && last_chart.current_chart_matchid === 1)
 
-    //no next level text
-    const no_next_level = "There is nothing else to drill into"
-    //get the previous labels
-    const previous_label = last_chart.last_chart_label.trim() === "" ?  "Total" : last_chart.last_chart_label;
-    const ADJUSTED_TITLE_HEIGHT = window.innerWidth < 1260 ? "3.5em" : "3em";
+      //set up all messaging for drilldowns
+      const keyback = "back";
+      const backtext = ( at_top ? ' Function ' : " Back ");
+      const last_chart_level = last_chart.last_chart_level;
+      const last_matchid = last_chart.last_chart_matchid;
+      const last_chart_type  = this.props.chart_type;
+      const key_back_class = ( at_top ? 'ui tiny black basic button' : 'ui tiny grey button' );
 
-    const space = (<span>&nbsp;</span>)
+      //return the chart and drill downs
+      const drilldown_note = 'Click a function to drill down '
 
-    let last_chart_id = 0
-    let last_has_dupe = false
-    let direction = this.state.direction ? this.state.direction : "down";
-    direction = at_top ? "down" : direction
+      //no next level text
+      const no_next_level = "There is nothing else to drill into"
+      //get the previous labels
+      const previous_label = last_chart.last_chart_label.trim() === "" ?  "Total" : last_chart.last_chart_label;
+      const ADJUSTED_TITLE_HEIGHT = window.innerWidth < 1260 ? "3.5em" : "3em";
 
-    const breadcrumbs_obj = this.get_breadcrumbs(this.state.chart_bread_crumbs)
-    const chart_bread_crumbs = this.state.chart_bread_crumbs
-    let breadcrumbs_count = 0
+      const space = (<span>&nbsp;</span>)
 
-    const drill_down_message = this.get_drilldown_breadcrombs(at_top)
+      let last_chart_id = 0
+      let last_has_dupe = false
+      let direction = this.state.direction ? this.state.direction : "down";
+      direction = at_top ? "down" : direction
 
-    if(chart_bread_crumbs){
-      breadcrumbs_count = chart_bread_crumbs.length
-    }
+      const breadcrumbs_obj = this.get_breadcrumbs(this.state.chart_bread_crumbs)
+      const chart_bread_crumbs = this.state.chart_bread_crumbs
+      let breadcrumbs_count = 0
 
-    let function_limits;
-    if(this.props.active_function){
-      function_limits = this.props.active_function.filter( af => {
-        return af.chart_type === chart_type
-      })
-    }
-    const level_label = getFriendlyName_NextLevel(this.props.level_label)
+      const drill_down_message = this.get_drilldown_breadcrombs(at_top)
+
+      if(chart_bread_crumbs){
+        breadcrumbs_count = chart_bread_crumbs.length
+      }
+
+      let function_limits;
+      if(this.props.active_function){
+        function_limits = this.props.active_function.filter( af => {
+          return af.chart_type === chart_type
+        })
+      }
+      const level_label = getFriendlyName_NextLevel(this.props.level_label)
+
+      const note = data.length < 1 ? 'No ' + this.props.title + ' found at this location!' : this.props.note  ;
+      const sub_header =  data.length < 1 ? 'Click or search to try again' : ''
+
 
     return (
 
@@ -608,8 +615,20 @@ var ChartRowWrapper = React.createClass({
               <span className="description">{this.props.title_description}</span>
             </div>
 
-          <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
-
+            <div className="description" style={{padding: SPACING,width:this.props.chart_width}}>
+            { data.length < 1 &&
+              <div className='ui icon negative message' >
+                <i className="remove circle icon"></i>
+                <div className="content">
+                  <div className="header">
+                    {note}
+                  </div>
+                  {sub_header}
+                </div>
+              </div>
+            }
+            { data.length > 0 &&
+              <span>
             <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "7px"}}>
               <div className="ui labels" key="bc">
                 {drill_down_message}{breadcrumbs_obj}
@@ -757,7 +776,8 @@ var ChartRowWrapper = React.createClass({
                         set_active_hover={this.props.set_active_hover}
 
                                       />
-
+                                    </span>
+                                    }
           </div>
         </div>
       </div>
