@@ -1,7 +1,7 @@
 import React from 'react';
 
 //import components
-var HeaderComponent = require('../components/HeaderComponent');
+
 var SectionWrapper = require('../components/SectionWrapper');
 var RowWrapper = require('../components/RowWrapper');
 var MapRowWrapper = require('../components/MapRowWrapper');
@@ -9,6 +9,7 @@ var MapRowComponent = require('../components/MapRowComponent');
 var ModalAbout = require('../components/ModalAbout');
 import ChartRowContainer from '../containers/ChartRowContainer';
 import MenuContainer from '../containers/MenuContainer';
+import HeaderContainer from '../containers/HeaderContainer';
 
 import {HEADER_HEIGHT ,
   BREAD_CRUMBS_HEIGHT,
@@ -52,6 +53,8 @@ var MainComponent = React.createClass({
       //leaflet needs an actual mapheight. and we want to dynamically resize the map as the user resizes the browser....
       this.props.update_MapHeight();
 
+      this.props.set_constants();
+
       //handle resize.  - map and chart areas should scale to browser
       //width and height
       window.addEventListener('resize', this.handleResize);
@@ -83,15 +86,10 @@ var MainComponent = React.createClass({
       const columnWidth = is_chart_vis ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
       const header_description_visibility =  this.props.default_settings ? this.props.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
 
-      const HeaderContent = "The purpose of this tool is to display the Division of Mitigation Services Targeted Resource Areas (TRAs) and " +
-                      "identify watersheds where ecological and hydrological function can be improved.  " +
-                      "TRAs identify clusters of areas where habitat, hydrology and/or water quality variables " +
-                      "can be managed to improve watershed function. " +
-                      "  To get started click a River Basin on the map, " +
-                      "or search for a location to zoom to."
+
       return (
         <div className="ui stackable one column padded grid" style={{backgroundColor: BACKGROUND_COLOR_BG}}>
-          <HeaderComponent content={HeaderContent}  header_description_visibility={header_description_visibility} />
+          <HeaderContainer  header_description_visibility={header_description_visibility} />
           <MenuContainer />
 
             <div className="doubling two column row">

@@ -710,10 +710,6 @@ var ChartRow = React.createClass({
       }
 
       const ADJUSTED_CHART_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : CHART_WIDTH;
-      // const chart_typs_array = this.set_chart_types()
-      // chart_typs_array.map( ct => {
-      //   console.log(ct)
-      // })
 
     return (
       <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{height:chart_grid_height,paddingLeft:"10px",paddingRight:"7px",paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>

@@ -6,7 +6,8 @@ import {
   BOX_BORDER,
   SPACING,
   BACKGROUND_COLOR_FG,
-  BOX_BORDER_RADUIS
+  BOX_BORDER_RADUIS,
+  BACKGROUND_COLOR_BG
 } from '../constants/appConstants'
 
 import { getFriendlyName_NextLevel } from '../utils/helpers'
@@ -25,20 +26,22 @@ var ChartRowWrapper = React.createClass({
     const chart_buttons = this.state.chart_buttons;
     const chart_bread_crumbs = this.state.chart_bread_crumbs ? this.state.chart_bread_crumbs: [];
 
-    //update the chart level
-    this.props.update_ChartLevels(next_level, next_matchid, chart_type)
-
     let new_array
     //add state for direction then in render look for direction state and flip the button click
 
     this.setState({
-      direction: direction
+      direction: direction === "crumb" ? "up" : direction
     })
 
+    const current_function = this.get_current_function(chart_buttons,chart_id)
+    const previous_functions = this.get_previous_function(chart_buttons,chart_id)
     const last_function = this.get_last_function(chart_buttons,next_matchid)
-    const previous_functions = this.get_previuos_function(chart_buttons,chart_id)
-    console.log(previous_functions.length)
-    if(direction === 'up'){
+
+     switch (direction) {
+      case 'up':
+        //update the chart level
+        this.props.update_ChartLevels(next_level, next_matchid, chart_type)
+
         if(previous_functions.length > 1){
           new_array = chart_bread_crumbs.filter(item => {
             previous_functions.map( function_item => {
@@ -50,11 +53,33 @@ var ChartRowWrapper = React.createClass({
           	return item != previous_functions[0].properties.chart_level_label
           });
         }
-      }
+        break;
+      case 'down':
+          //update the chart level
+          this.props.update_ChartLevels(next_level, next_matchid, chart_type)
+
+          new_array = [...chart_bread_crumbs,last_function]
+        break;
+      case 'crumb':
 
 
-    if(direction === 'down'){
-      new_array = [...chart_bread_crumbs,last_function]
+         this.props.update_ChartLevels(next_level, next_matchid, chart_type)
+
+         const label = current_function[0].properties.chart_level_label;
+         const index_bc = chart_bread_crumbs.indexOf(label)
+         new_array = chart_bread_crumbs.slice(0,index_bc);
+
+
+        break;
+      default:
+        new_array = [...chart_bread_crumbs]
+        break;
+    }
+
+    const at_top = (next_level === 2 && next_matchid === 1)
+
+    if(at_top){
+      new_array = []
     }
 
     this.setState({
@@ -357,7 +382,6 @@ var ChartRowWrapper = React.createClass({
 
       let label = ''
       if(buttons.length > 1){
-        console.log(buttons.length)
         label = $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('get text');
       } else {
         label = buttons[0].properties.chart_level_label
@@ -367,7 +391,51 @@ var ChartRowWrapper = React.createClass({
     }
     return null
   },
-  get_previuos_function(chart_buttons, chart_id){
+  get_current_function(chart_buttons, chart_id){
+
+    const chart_type =  this.props.chart_type;
+
+    if(chart_buttons){
+
+      const buttons = chart_buttons.filter( button => {
+        return button.properties.chart_id === chart_id
+      })
+
+      return buttons.length > 0 ? buttons : null
+
+    }
+    return null
+  },
+  get_current_function(chart_buttons, chart_id){
+
+    const chart_type =  this.props.chart_type;
+
+    if(chart_buttons){
+
+      const buttons = chart_buttons.filter( button => {
+        return button.properties.chart_id === chart_id
+      })
+
+      return buttons.length > 0 ? buttons : null
+
+    }
+    return null
+  },
+  is_at_top: function(chart_buttons, chart_id){
+
+    const chart_type =  this.props.chart_type;
+
+    if(chart_buttons){
+
+      const buttons = chart_buttons.filter( button => {
+        return button.properties.chart_id === chart_id
+      })
+
+      return buttons[0].properties.chart_level === 2 && buttons[0].properties.chart_matchid == 1
+    }
+    return false
+  },
+  get_previous_function(chart_buttons, chart_id){
 
     const chart_type =  this.props.chart_type;
 
@@ -387,6 +455,81 @@ var ChartRowWrapper = React.createClass({
 
     }
     return null
+  },
+  get_next_function(chart_buttons, chart_id){
+    if(chart_buttons){
+
+      const buttons = chart_buttons.filter( button => {
+        return button.properties.chart_matchid === chart_id
+      })
+
+      return buttons.length > 0 ? buttons : null
+    }
+    return false
+
+  },
+  get_ids_from_label: function(label){
+    const chart_buttons = this.state.chart_buttons;
+
+    if(chart_buttons){
+
+      const buttons_cur = chart_buttons.filter( button => {
+        return button.properties.chart_level_label === label
+      })
+      const chart_id = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_id : null
+      const match_id = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_matchid : null
+      const chart_level = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_level : null
+
+      return [chart_id, match_id, chart_level]
+    }
+    return null;
+
+  },
+  get_breadcrumbs: function(breadcrumbs){
+    const chart_type =  this.props.chart_type;
+    let count = 0
+
+    if(breadcrumbs){
+
+      return breadcrumbs.map( breadcrumb => {
+        const colors = this.props.get_keyColors(breadcrumb)
+
+        const ids = this.get_ids_from_label(breadcrumb)
+        return (
+          <div className="ui small label"
+            key={'breadcrumbs-'+count++}
+            style={{"backgroundColor":colors[1],"cursor":"pointer"}}
+            onClick={this.handle_chart_level_click.bind(null, this, ids[2], ids[1], chart_type, "crumb", ids[0])}>
+            {breadcrumb}
+            <i className="delete icon"></i>
+          </div>
+          )
+      })
+      return null
+    }
+  },
+  get_drilldown_breadcrombs: function(at_top){
+    const chart_type =  this.props.chart_type;
+
+    if(!at_top){
+      return (
+        <div className="ui small label"
+          key={'breadcrumbs-message-top'}
+          style={{"cursor":"pointer"}}
+          onClick={this.handle_chart_level_click.bind(null, this, 2, 1, chart_type, "crumb", 3)} >
+          Top Function
+        </div>
+      )
+    } else {
+      return (
+        <div className="ui small label"
+          key={'breadcrumbs-message-top'}
+          style={{"cursor":"pointer"}} >
+          Top Function
+        </div>
+      )
+    }
+
   },
   render: function() {
     const chart_type =  this.props.chart_type;
@@ -426,7 +569,16 @@ var ChartRowWrapper = React.createClass({
     let last_has_dupe = false
     let direction = this.state.direction ? this.state.direction : "down";
     direction = at_top ? "down" : direction
-    const breadcrumbs = this.state.chart_bread_crumbs ? this.state.chart_bread_crumbs.toString() : [];
+
+    const breadcrumbs_obj = this.get_breadcrumbs(this.state.chart_bread_crumbs)
+    const chart_bread_crumbs = this.state.chart_bread_crumbs
+    let breadcrumbs_count = 0
+
+    const drill_down_message = this.get_drilldown_breadcrombs(at_top)
+
+    if(chart_bread_crumbs){
+      breadcrumbs_count = chart_bread_crumbs.length
+    }
 
     let function_limits;
     if(this.props.active_function){
@@ -458,14 +610,18 @@ var ChartRowWrapper = React.createClass({
 
           <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
 
-            <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "0px"}}>
-              <h5 className="ui header">
-                {drilldown_note} {/* {space} <span >{breadcrumbs}</span>*/}
+            <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "7px"}}>
+              <div className="ui labels" key="bc">
+                {drill_down_message}{breadcrumbs_obj}
+              </div>
+              <h5 className="ui header" style={{"marginTop": "10px"}}>
+                {drilldown_note}
               </h5>
             </div>
 
             <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "0px"}}>
               <div className="ui text stackable mini menu" style={{"cursor":"pointer"}}>
+
 
 
                { new_chart_levels &&
@@ -482,10 +638,9 @@ var ChartRowWrapper = React.createClass({
                    const colors = this.props.get_keyColors(label)
 
 
-                   const button_color =  {"backgroundColor":  colors[1],"margin":"0px!important","height":"36px","color":"rgba(0,0,0,.5)","fontWeight":"700"}
-                   const button_color_icon =  {"backgroundColor":  colors[0],"margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)","borderBottomRightRadius": BOX_BORDER_RADUIS,"borderTopRightRadius": BOX_BORDER_RADUIS}
-                   const button_color_left_icon =  {"backgroundColor":  colors[0],"margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)","borderBottomLeftRadius": BOX_BORDER_RADUIS,"borderTopLeftRadius": BOX_BORDER_RADUIS}
-
+                   const button_color =  {"backgroundColor":  colors[1],"margin":"0px!important","height":"36px","color":"rgba(0,0,0,.5)","fontWeight":"700","minWidth":"100px!important","maxWidth":"350px!important"}
+                   const button_color_icon =  {"backgroundColor":  colors[0],"margin":"0px!important","height":"36px","width":"36px!important","color":"rgba(0,0,0,.6)","borderBottomRightRadius": BOX_BORDER_RADUIS,"borderTopRightRadius": BOX_BORDER_RADUIS}
+                   const button_color_left_icon =  {"backgroundColor":  colors[0],"margin":"0px!important","height":"36px","width":"36px!important","color":"rgba(0,0,0,.6)","borderBottomLeftRadius": BOX_BORDER_RADUIS,"borderTopLeftRadius": BOX_BORDER_RADUIS,"borderBottomRightRadius": "0px","borderTopRightRadius": "0px"}
 
                    const is_next_valid_test = this.is_next_valid(chart_buttons,item.chart_id)
                    const last_id_test = this.get_last_id(chart_buttons,item.chart_matchid)
@@ -505,11 +660,11 @@ var ChartRowWrapper = React.createClass({
                      pulldown_items_obj = this.get_dupes(new_chart_levels,item.chart_id);
 
                      pulldown_object = (
-                       <div className="ui left item" key={label + '-' + keycnta++}>
+                       <div className="ui left compact item" key={label + '-' + keycnta++}>
                          {!at_top &&
-                           <div className={"ui left item dropdown level function " + chart_type }  style={button_color_left_icon}
+                           <div className={"ui dropdown middle aligned center aligned level function " + chart_type }  style={button_color_left_icon}
                              onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type, "up", item.chart_id)} >
-                             <i className={"level up flipped left floated icon function " + chart_type} style={{hieght:"36px"}}></i>
+                             <i className={"level up flipped icon function " + chart_type} style={{hieght:"36px"}}></i>
                            </div>
                          }
                          <div key={label + '-' + keycnta++}
@@ -522,7 +677,7 @@ var ChartRowWrapper = React.createClass({
                            </div>
                          </div>
                          {is_next_valid_test &&
-                           <div className={"ui left item dropdown level function " + chart_type } style={button_color_icon}
+                           <div className={"ui left item dropdown middle aligned center aligned level function " + chart_type } style={button_color_icon}
                              onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type, "down", item.chart_id)}
                              key={label + '-' + keycnta++}>
                              <i className={"level down right floated icon function " + chart_type} style={{hieght:"36px"}} key={label + '-' + keycnta++}></i>
@@ -531,15 +686,14 @@ var ChartRowWrapper = React.createClass({
                        </div>)
                      }
 
-
                      if(!has_dupes){
                        button_obj  = (
                          <div className="ui left item" key={label + '-' + keycnta++}>
 
                            {!at_top &&
-                             <div className={"ui left item button level function " + chart_type }  style={button_color_left_icon} key={label + '-' + keycnta++}
+                             <div className={"ui button middle aligned center aligned level function " + chart_type }  style={button_color_left_icon} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type, "up", item.chart_id)} >
-                               <i className={"level up flipped left floated icon function " + chart_type} style={{hieght:"36px"}} key={label + '-' + keycnta++}></i>
+                               <i className={"level up flipped icon function " + chart_type} style={{hieght:"36px"}} key={label + '-' + keycnta++}></i>
                              </div>
                            }
                            {!is_next_valid_test &&
@@ -561,7 +715,7 @@ var ChartRowWrapper = React.createClass({
                              </div>
                            }
                            {is_next_valid_test &&
-                             <div className={"ui left item button level function " + chart_type } style={button_color_icon} key={label + '-' + keycnta++}
+                             <div className={"ui left item button middle aligned center aligned level function " + chart_type } style={button_color_icon} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type, "down", item.chart_id)}>
                                <i className={"level down right floated icon function" + chart_type } style={{hieght:"36px"}} key={label + '-' + keycnta++}></i>
                              </div>

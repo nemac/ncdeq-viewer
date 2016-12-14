@@ -33,11 +33,6 @@ export default class ESRITileMapLayer extends BaseTileLayer {
 
     var name = this.props.name
 
-
-    // if(name === "base map" || name === "base map labels" || name === "imagery"){
-    //   the_ZIndex = 9999
-    // }
-
     //add layer to map from tiled service
     this.leafletElement = esri.tiledMapLayer({
       url: url,
@@ -49,44 +44,6 @@ export default class ESRITileMapLayer extends BaseTileLayer {
     })
 
     const thelayer = this.leafletElement
-
-    // if(leafletMap){
-    //
-    //   console.log('leafletMap.length')
-    //   console.log(leafletMap.length)
-    //   if(leafletMap.length > 0){
-    //     console.log('name')
-    //     console.log(name)
-    //
-    //     if(name === "base map"){
-    //       console.log('name')
-    //       console.log(name)
-    //       if(imageryVisibility){
-    //         leafletMap.removeLayer(thelayer)
-    //       }
-    //     }
-    //
-    //     if( name === "base map labels"){
-    //       if(imageryVisibility){
-    //         leafletMap.removeLayer(thelayer)
-    //       }
-    //     }
-    //
-    //     if( name === "imagery"){
-    //       if(!imageryVisibility){
-    //         leafletMap.removeLayer(thelayer)
-    //       }
-    //     }
-    //   }
-    // }
-
-
-    //   console.log(0)
-    //   thelayer.setZIndex(0)
-    //   // if(thelayer){
-    //   //   thelayer.bringToBack()
-    //   // }
-    // }
 
       // this.leafletElement is the layer to map.addLayer(name) or map.removeLayer(name) - toggle layer
       this.props.setMapLayers({name,layer:this.leafletElement})
