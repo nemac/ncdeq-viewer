@@ -493,44 +493,43 @@ var ChartRowWrapper = React.createClass({
 
       return breadcrumbs.map( breadcrumb => {
         const colors = this.props.get_keyColors(breadcrumb)
-        let message = (<span/>)
-        if(count === 0){
-          message = (
-            <span className="ui item"
-              style={{"color":"rgba(0,0,0,.5)","fontWeight":"500","padding":"7px","cursor":"pointer"}} >
-              function Dr:
-            </span>
-          )
-        }
+
         const ids = this.get_ids_from_label(breadcrumb)
         return (
-        <span>
-          <span className="ui item"
+          <div className="ui small label"
             key={'breadcrumbs-'+count++}
-            style={{"backgroundColor":colors[1],"color":"rgba(0,0,0,.5)","fontWeight":"500","padding":"7px","cursor":"pointer"}}
+            style={{"backgroundColor":colors[1],"cursor":"pointer"}}
             onClick={this.handle_chart_level_click.bind(null, this, ids[2], ids[1], chart_type, "crumb", ids[0])}>
             {breadcrumb}
-          </span>
-        </span>
+            <i className="delete icon"></i>
+          </div>
           )
       })
       return null
-      {/*
-
-      return (<span className="ui item"
-        key={'breadcrumbs-'+count++}
-        style={{"color":"rgba(0,0,0,.5)","fontWeight":"500","padding":"7px","cursor":"pointer"}}>
-        at top
-      </span>)
-      */}
     }
-  {/*
-    return (<span className="ui item"
-      key={'breadcrumbs-'+count++}
-      style={{"color":"rgba(0,0,0,.5)","fontWeight":"500","padding":"7px","cursor":"pointer"}}>
-      at top
-    </span>)
-    */}
+  },
+  get_drilldown_breadcrombs: function(at_top){
+    const chart_type =  this.props.chart_type;
+
+    if(!at_top){
+      return (
+        <div className="ui small label"
+          key={'breadcrumbs-message-top'}
+          style={{"cursor":"pointer"}}
+          onClick={this.handle_chart_level_click.bind(null, this, 2, 1, chart_type, "crumb", 3)} >
+          Top Function
+        </div>
+      )
+    } else {
+      return (
+        <div className="ui small label"
+          key={'breadcrumbs-message-top'}
+          style={{"cursor":"pointer"}} >
+          Top Function
+        </div>
+      )
+    }
+
   },
   render: function() {
     const chart_type =  this.props.chart_type;
@@ -570,16 +569,12 @@ var ChartRowWrapper = React.createClass({
     let last_has_dupe = false
     let direction = this.state.direction ? this.state.direction : "down";
     direction = at_top ? "down" : direction
-    // const breadcrumbs = this.state.chart_bread_crumbs ? this.state.chart_bread_crumbs.toString() : [];
 
     const breadcrumbs_obj = this.get_breadcrumbs(this.state.chart_bread_crumbs)
     const chart_bread_crumbs = this.state.chart_bread_crumbs
     let breadcrumbs_count = 0
-    const drill_down_message =  (<span className="ui item"
-            key={'breadcrumbs-message-top'}
-            style={{"backgroundColor":BACKGROUND_COLOR_BG,"color":"rgba(0,0,0,.75)","fontWeight":"500","padding":"7px"}}>
-            Top Function
-          </span>)
+
+    const drill_down_message = this.get_drilldown_breadcrombs(at_top)
 
     if(chart_bread_crumbs){
       breadcrumbs_count = chart_bread_crumbs.length
@@ -616,10 +611,10 @@ var ChartRowWrapper = React.createClass({
           <div className="description" style={{paddingLeft:"20px",width:this.props.chart_width}}>
 
             <div className="ui bottom attached basic compact left aligned segment" style={{ border: "0px",margin: "0px",padding: "7px"}}>
-              <div className="ui top aligned item" key="bc">
+              <div className="ui labels" key="bc">
                 {drill_down_message}{breadcrumbs_obj}
               </div>
-              <h5 className="ui header">
+              <h5 className="ui header" style={{"marginTop": "10px"}}>
                 {drilldown_note}
               </h5>
             </div>
