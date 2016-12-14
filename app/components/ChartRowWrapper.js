@@ -1,6 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 var ChartBars = require('../components/ChartBars');
+import NoDataMessage from './NoDataMessage'
 
 import {
   BOX_BORDER,
@@ -617,15 +618,7 @@ var ChartRowWrapper = React.createClass({
 
             <div className="description" style={{padding: SPACING,width:this.props.chart_width}}>
             { data.length < 1 &&
-              <div className='ui icon negative message' >
-                <i className="remove circle icon"></i>
-                <div className="content">
-                  <div className="header">
-                    {note}
-                  </div>
-                  {sub_header}
-                </div>
-              </div>
+              <NoDataMessage note={note} sub_header={sub_header} />
             }
             { data.length > 0 &&
               <span>
