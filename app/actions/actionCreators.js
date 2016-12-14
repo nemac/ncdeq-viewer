@@ -10,6 +10,7 @@ import * as MapConfig from './actionMap';
 import * as ActionDefault from './actionDefault';
 import * as ActionLeaflet from './actionLeaflet'
 import * as ActionTRA from './actionTRA'
+import * as constants from './constants'
 
 //create a const for each action so it can be imported and connected components
 //menu actions
@@ -53,3 +54,6 @@ export const update_ChartHeight = ActionDefault.update_ChartHeight;
 export const update_MapHeight = ActionDefault.update_MapHeight;
 export const set_LeafletMap = ActionLeaflet.set_LeafletMap;
 export const use_imagery = ActionLeaflet.use_imagery;
+
+export const set_constants = constants.set_constants;
+export const get_constant = constants.get_constant;

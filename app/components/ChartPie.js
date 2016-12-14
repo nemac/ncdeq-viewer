@@ -212,6 +212,4 @@ const ChartPie = React.createClass({
   }
 })
 
-
-
 module.exports = ChartPie;
