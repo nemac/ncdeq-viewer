@@ -488,7 +488,7 @@ var ChartRowWrapper = React.createClass({
   get_breadcrumbs: function(breadcrumbs){
     const chart_type =  this.props.chart_type;
     let count = 0
-    console.log(breadcrumbs)
+
     if(breadcrumbs){
 
       return breadcrumbs.map( breadcrumb => {

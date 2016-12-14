@@ -1,11 +1,4 @@
-//
-//
-// // exports = config;
-//
-//
-//
-//
-// config.read_file()
+
 export const HEADER_HEIGHT = 125;
 export const HEADER_HEIGHT_SMALL = 40;
 export const BREAD_CRUMBS_HEIGHT = 110;

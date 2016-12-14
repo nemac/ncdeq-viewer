@@ -57,7 +57,7 @@ const CustomToolTipBarCharts  = React.createClass({
 
     let current_huc_level = 'huc_12'
     let geography_level =  getAGOGeographyLabel_NextLevel(this.props.level_label)
-    console.log(geography_level)
+
     if(chart_type.toUpperCase() === 'TRA'){
       geography_level = 'tra'
     }
@@ -85,7 +85,6 @@ const CustomToolTipBarCharts  = React.createClass({
       const new_label = nextProps.label;
       const last_label = this.props.label
       if(new_label != last_label || this.state.counter < 1){
-        // console.log(this.state.counter)
 
         const self = this;
         const layer_id = this.get_layer_id(nextProps.chart_type)
