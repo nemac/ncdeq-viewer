@@ -33,7 +33,15 @@ var MainComponent = React.createClass({
       //  this updates redux store - MapComponent is subscribed to it.
       this.props.update_MapHeight();
     },
-    componentDidMount: function() {
+    shouldComponentUpdate: function(nextProps, nextState) {
+      if(!nextProps.constants){
+        return false;
+      }
+      return true
+
+    },
+    componentWillMount: function() {
+      this.props.set_constants();
 
       //get and populate the geography_levels state...
       this.props.get_GeographyLevels();
@@ -53,7 +61,10 @@ var MainComponent = React.createClass({
       //leaflet needs an actual mapheight. and we want to dynamically resize the map as the user resizes the browser....
       this.props.update_MapHeight();
 
-      this.props.set_constants();
+    },
+    componentDidMount: function() {
+
+
 
       //handle resize.  - map and chart areas should scale to browser
       //width and height

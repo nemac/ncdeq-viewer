@@ -1,6 +1,6 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, DATA_FEATUREID , SERVICE_NAME, TRA_FEATUREID, TRA_MAP_FEATUREID} from '../constants/actionConstants';
+import { AGO_URL, NCDEQ_NORMALIZED_FEATUREID , FEATURE_SERVICE_NAME, TRA_XWALK, TRA_FEATUREID} from '../constants/actionConstants';
 
 import { START_POSITION, CATALOGING_UNIT_FROM_HUC12_END_POISTION } from '../constants/appConstants';
 
@@ -13,7 +13,6 @@ axios.defaults.baseURL = AGO_URL;
 
 //get chart data for all
 export function ago_get_traxwalk_by_id(hucid, current_geography_level){
-
   //set default id
   var id = hucid;
 
@@ -31,7 +30,7 @@ export function ago_get_traxwalk_by_id(hucid, current_geography_level){
 
 
    //build the query to arcgis online api for getting the raw chart data
-   const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
+   const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + TRA_XWALK + '/query' +
                    '?where=ID%3D%27' + id + '%27+and+type+%3D+%27' + level.toUpperCase() + '%27' +
                    '&objectIds=' +
                    '&time=' +
@@ -56,11 +55,10 @@ export function ago_get_traxwalk_by_id(hucid, current_geography_level){
 
 //get chart data from data api
 export function ago_get_tra_by_ids( id_list){
-
   const id_in_list = "(" + id_list + ')'
 
   //build the query to arcgis online api for getting the raw chart data
-  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+  const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + NCDEQ_NORMALIZED_FEATUREID + '/query' +
                     '?where=ID+in+' + id_in_list +
                     '&objectIds=' +
                     '&time='  +
@@ -87,12 +85,10 @@ export function ago_get_tra_by_ids( id_list){
 
 //get tra geom by its id
 export function ago_get_tra_geom_by_ids( id_list ){
-
-
   const id_in_list = "(" + id_list + ')'
 
   //build the query to arcgis online api for getting the raw chart data
-  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_MAP_FEATUREID + '/query' +
+  const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
                     '?where=id+in+' + id_in_list +
                     '&objectIds=' +
                     '&time=' +
@@ -130,10 +126,8 @@ export function ago_get_tra_geom_by_ids( id_list ){
 //get tra geom by its id
 function ago_get_tra_geom_byid( id ){
 
-
-
   //build the query to arcgis online api for getting the raw chart data
-  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + TRA_MAP_FEATUREID + '/query' +
+  const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + TRA_FEATUREID + '/query' +
                     '?where=id+%3D+%27' + id + '%27' +
                     '&objectIds=' +
                     '&time='  +
@@ -165,10 +159,12 @@ export function get_TRAData(hucid, current_geography_level){
     //get redux state
     const state = getState()
 
+
     ago_get_traxwalk_by_id(hucid, current_geography_level)
     .then( tra_xwalk_response => {
 
       const state = getState()
+
 
       let tra_datas = {};
       let tra_geom = {};
