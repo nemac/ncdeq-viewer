@@ -638,7 +638,7 @@ var ChartRowWrapper = React.createClass({
                    const colors = this.props.get_keyColors(label)
 
 
-                   const button_color =  {"backgroundColor":  colors[1],"margin":"0px!important","height":"36px","color":"rgba(0,0,0,.5)","fontWeight":"700","minWidth":"100px!important","maxWidth":"350px!important"}
+                   const button_color =  {"backgroundColor":  colors[1],"margin":"0px!important","height":"36px","color":"rgba(0,0,0,.5)","fontWeight":"700","minWidth":"100px!important","maxWidth":"250px!important"}
                    const button_color_icon =  {"backgroundColor":  colors[0],"margin":"0px!important","height":"36px","width":"36px!important","color":"rgba(0,0,0,.6)","borderBottomRightRadius": BOX_BORDER_RADUIS,"borderTopRightRadius": BOX_BORDER_RADUIS}
                    const button_color_left_icon =  {"backgroundColor":  colors[0],"margin":"0px!important","height":"36px","width":"36px!important","color":"rgba(0,0,0,.6)","borderBottomLeftRadius": BOX_BORDER_RADUIS,"borderTopLeftRadius": BOX_BORDER_RADUIS,"borderBottomRightRadius": "0px","borderTopRightRadius": "0px"}
 
