@@ -357,9 +357,6 @@ var MapComponent = React.createClass({
     return should_update
 
   },
-  // componentWillMount: function() {
-  //     this.props.use_imagery()
-  // },
   componentWillUpdate: function(nextProps, nextState) {
     //leaflet map dose not update size this forces the issue
     let leafletMap
@@ -461,6 +458,8 @@ var MapComponent = React.createClass({
     // need to functionise this.
     if (prevProps){
 
+
+
       let level = this.getLevel();
       const method = this.props.searchMethod;
 
@@ -481,14 +480,7 @@ var MapComponent = React.createClass({
             }
           }
         }
-        // if(this.props.geometries){
-        //   let has_features = this.has_features(this.props.geometries)
-        //   if(has_features){
-        //     const all_features = this.props.geometries.features;
-        //
-        //     this.add_GeoJSON_Layer(current_mappoint_features, 'hover', false)
-        //   }
-        // }
+
       }
 
       //map point (location search or map click)

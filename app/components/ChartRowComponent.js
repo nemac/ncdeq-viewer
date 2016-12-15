@@ -315,89 +315,92 @@ var ChartRow = React.createClass({
     let chart_data_array = [];
 
     if(chart_data ){
+      if(this.props.charts.chart_levels){
 
-      //get constants from redux
-      const charts_limits = this.props.charts.chart_levels.chart_limits ? this.props.charts.chart_levels.chart_limits : [];
+        //get constants from redux
+        const charts_limits = this.props.charts.chart_levels.chart_limits ? this.props.charts.chart_levels.chart_limits : [];
 
-      //get a filtered array of the chart type limits
-      const chart_type_limt = charts_limits.filter( item => {
-        return item.chart_type.toUpperCase() === chart_type.toUpperCase();
-      })
+        //get a filtered array of the chart type limits
+        const chart_type_limt = charts_limits.filter( item => {
+          return item.chart_type.toUpperCase() === chart_type.toUpperCase();
+        })
 
-          //get the chart types limits to apply to the data
-          const current_chart_matchid = (chart_type_limt[0] ? chart_type_limt[0].current_chart_matchid : 2)
+            //get the chart types limits to apply to the data
+            const current_chart_matchid = (chart_type_limt[0] ? chart_type_limt[0].current_chart_matchid : 2)
 
-          //get the chart for the current chart hierarchical level
-          let levelone =  this.getChart_FilteredByChartLevel( chart_data, current_chart_matchid, chart_type, false );
+            //get the chart for the current chart hierarchical level
+            let levelone =  this.getChart_FilteredByChartLevel( chart_data, current_chart_matchid, chart_type, false );
 
-          // sort by value
-          let sorted_hucs = this.getChart_Sorted(levelone);
+            // sort by value
+            let sorted_hucs = this.getChart_Sorted(levelone);
 
-          //create chart objects
-          var blank_chart_object = new Object;
-          var blank_chart_object_two = new Object;
+            //create chart objects
+            var blank_chart_object = new Object;
+            var blank_chart_object_two = new Object;
 
-          //loop through the sorted hucs and prepare the data for the chart.
-          sorted_hucs.map(huc => {
+            //loop through the sorted hucs and prepare the data for the chart.
+            sorted_hucs.map(huc => {
 
-            const underscore = "_"
+              const underscore = "_"
 
-            let underscore_position = huc.indexOf(underscore);
+              let underscore_position = huc.indexOf(underscore);
 
-            //find the underscore sperates the huc id from the id of chart_matchid  only need the huc_id
-            if( (huc.split(underscore).length -1 ) > 1){
-              underscore_position = huc.indexOf(underscore,underscore_position + 1);
-            }
+              //find the underscore sperates the huc id from the id of chart_matchid  only need the huc_id
+              if( (huc.split(underscore).length -1 ) > 1){
+                underscore_position = huc.indexOf(underscore,underscore_position + 1);
+              }
 
-           //get the huc id from the array
-           var name = huc.substring(0,underscore_position);
+             //get the huc id from the array
+             var name = huc.substring(0,underscore_position);
 
-           //create an object to hold the chart data
-           var chart_object = new Object;
+             //create an object to hold the chart data
+             var chart_object = new Object;
 
-           chart_object["name"] =  name;
-           blank_chart_object["name"] = " "
-           blank_chart_object_two["name"] = "   "
+             chart_object["name"] =  name;
+             blank_chart_object["name"] = " "
+             blank_chart_object_two["name"] = "   "
 
-           //get the chart for each indivual huc
-           const levelones = this.getChart_FilteredByHUC(levelone, name);
+             //get the chart for each indivual huc
+             const levelones = this.getChart_FilteredByHUC(levelone, name);
 
-           levelones.map(item => {
+             levelones.map(item => {
 
-             //Get the value for chart bar--cell
-             var value = item.properties.chart_value
+               //Get the value for chart bar--cell
+               var value = item.properties.chart_value
 
-             //numbers need to be truncated.  rounding results in values such as
-             // .999999 to round to 1.0 which is not correct
-             if( value ){
-               //value = item.properties.chart_value.substring(0,5)
-               value = item.properties.chart_value
-             }
+               //numbers need to be truncated.  rounding results in values such as
+               // .999999 to round to 1.0 which is not correct
+               if( value ){
+                 //value = item.properties.chart_value.substring(0,5)
+                 value = item.properties.chart_value
+               }
 
-             //convert back to a number type
-             var value = Number( value );
-             chart_object[item.properties.chart_level_label] =  value;
-             blank_chart_object[item.properties.chart_level_label] = null
-             blank_chart_object_two[item.properties.chart_level_label] = null
+               //convert back to a number type
+               var value = Number( value );
+               chart_object[item.properties.chart_level_label] =  value;
+               blank_chart_object[item.properties.chart_level_label] = null
+               blank_chart_object_two[item.properties.chart_level_label] = null
 
-             chart_object["chart_id"] = item.properties.chart_id;
-             blank_chart_object["chart_id"] = item.properties.chart_id
-             blank_chart_object_two["chart_id"] = item.properties.chart_id
+               chart_object["chart_id"] = item.properties.chart_id;
+               blank_chart_object["chart_id"] = item.properties.chart_id
+               blank_chart_object_two["chart_id"] = item.properties.chart_id
 
+             })
+             chart_data_array.push(chart_object);
            })
-           chart_data_array.push(chart_object);
-         })
 
-        //until I can upgrade recharts to .11 I need to overcome a bug with one bar and tool tip not working.
-        if(chart_data_array.length === 1){
+          //until I can upgrade recharts to .11 I need to overcome a bug with one bar and tool tip not working.
+          if(chart_data_array.length === 1){
 
-            //add a blank bar to each side of a one bar chart so the tooltips will apears
-            chart_data_array.unshift(blank_chart_object)
-            chart_data_array.push(blank_chart_object_two)
+              //add a blank bar to each side of a one bar chart so the tooltips will apears
+              chart_data_array.unshift(blank_chart_object)
+              chart_data_array.push(blank_chart_object_two)
 
-        }
+          }
 
+        }        
       }
+
 
     return chart_data_array
   },
