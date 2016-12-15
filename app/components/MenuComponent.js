@@ -33,9 +33,12 @@ var MenuComponent = React.createClass({
   },
   componentDidMount: function() {
     this.props.get_MenuList();
+
   },
   componentWillUpdate: function(nextProps, nextState) {
     this.props.update_MapHeight();
+
+    const method = nextProps.searchMethod;
 
     //leaflet map dose not update size this forces the issue
     if(nextProps.leafletMap){
@@ -198,7 +201,7 @@ var MenuComponent = React.createClass({
     if (Number(valueLength) === Number(expectedLength)){
       //update the chartdata redux store
       this.props.get_ChartData(e.target.value, currentLevel)
-      
+
       this.props.get_all_geometries(e.target.value)
 
       this.props.get_TRAData(e.target.value, currentLevel)
@@ -222,6 +225,8 @@ var MenuComponent = React.createClass({
     let long = this.props.map_settings.longitude + .00000001
     let zoom =  this.props.map_settings.zoom
     this.props.set_mapToPoint(lat, long, zoom, null)
+  },
+  handleSearchIconClick: function(){
   },
   handleMenuClick: function(val,e) {
 
@@ -287,7 +292,7 @@ var MenuComponent = React.createClass({
               <div className="ui form" >
                 <div className="field" >
                   <label style={{width:three_width_sub, marginLeft:margin_left}}>
-                    <i className="search link icon" ></i>
+                    <i className="search link icon" onClick={this.handleSearchIconClick.bind(null,this)}></i>
                     Search for a Location
                   </label>
                   <div className="ui left icon input"  style={{height: "50px", width:three_width_sub, marginLeft:margin_left}}>

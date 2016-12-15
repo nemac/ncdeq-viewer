@@ -28,6 +28,24 @@ import {
 
 //basic map (leaflet state and functions)
 
+
+function parseLatLng(value) {
+  // Attempt to parse a latlng in this string.
+  var split = value.split(',');
+  if (split.length == 2) {
+    // Remove whitespaces from start and end, but nowhere else.
+    // Use Number() instead of parseFloat() to parse strictly only numbers.
+    // These avoid things like "7 High St, 2GB UK" => (7,2)
+    var lat = +split[0];
+    var lng = +split[1];
+    if (Math.abs(lat) <= 90 && Math.abs(lng) <= 180) {
+      return new google.maps.LatLng(lat, lng);
+    }
+  }
+  return null;
+};
+
+
 ///get feature attributes for a layer at lat & long
 function get_sub_length(length_of_id){
     switch (length_of_id) {
@@ -604,96 +622,147 @@ export function handleSearchChange(comp,e){
     //start fetching state (set to true)
     dispatch(fetching_start())
 
+
     //get redux state
     const state = getState()
-
 
     //get the input dom element
     var input = e.target;
 
-    //get max bounds from constants for google search limits - prefrence.
-    const northEastLatitude = NORTH_EAST_LATITUDE
-    const northEastlongitude = NORTH_EAST_LONGITUDE
-    const southWestLatitude = SOUTH_WEST_LATITUDE
-    const southWestlongitude = SOUTH_WEST_LONGITUDE
+    var lat
+    var lng
 
-    //search google api default bounds in latitude.
-    //  this will push all locations in the searh results to the top of the Autocomplete list
-    var defaultBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(northEastLatitude, northEastlongitude),
-      new google.maps.LatLng(southWestLatitude, southWestlongitude));
+    const latlong = parseLatLng(input.value)
 
-      //set the bounds to the optopns
-      var options = {strictbounds: defaultBounds}
+    if(!latlong){
 
-      //get this so we can access in within google maps callback
-      var self = this;
+      //get max bounds from constants for google search limits - prefrence.
+      const northEastLatitude = NORTH_EAST_LATITUDE
+      const northEastlongitude = NORTH_EAST_LONGITUDE
+      const southWestLatitude = SOUTH_WEST_LATITUDE
+      const southWestlongitude = SOUTH_WEST_LONGITUDE
 
-      //instatiate a new google maps search box api
-      var ac = new google.maps.places.SearchBox(input,options);
+      //search google api default bounds in latitude.
+      //  this will push all locations in the searh results to the top of the Autocomplete list
+      var defaultBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(northEastLatitude, northEastlongitude),
+        new google.maps.LatLng(southWestLatitude, southWestlongitude));
 
-      //google search callback
-      google.maps.event.addListener(ac, 'places_changed', () => {
+        //set the bounds to the optopns
+        var options = {strictbounds: defaultBounds}
 
-        //instatiate the results object with the results of the search
-        var place = ac.getPlaces()[0];
+        //get this so we can access in within google maps callback
+        var self = this;
 
-        //if none go ahead and stop and return null
-        if (!place.geometry) return;
+        //instatiate a new google maps search box api
+        var ac = new google.maps.places.SearchBox(input,options);
 
-        //instatiate the address object to a varrable so we can parse the location
-        //  in latitude and longitude
-        if (!place.address_components){
-          input.value = place.formatted_address
-        }
+        //google search callback
+        google.maps.event.addListener(ac, 'places_changed', () => {
 
-        //get lat, long of user location
-        var lat = place.geometry.location.lat();
-        var lng = place.geometry.location.lng();
+          //instatiate the results object with the results of the search
+          var place = ac.getPlaces()[0];
 
-        var turfPoint = turf_point([lng,lat]);
-        var turfPointfc = turf_FC(turfPoint);
-
-        //retreive the layerinfo object (huc12) at the google api places lat long
-        axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, CATALOGING_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, NLCD_CATCHMENT_FEATUREID)])
-        .then(axios.spread(function (huc_response, tra_response, cu_response, NLCD_response) {
-
-          //check repsonses for NLCD errors
-          const theNLCDPointInfo = CheckReponse(NLCD_response,'AGO_API_ERROR')
-
-          const thetraPointInfo = CheckReponse(tra_response,'AGO_API_ERROR');
-
-          //check repsonses for errors
-          const theLayerInfo = CheckReponse(huc_response,'AGO_API_ERROR');
-
-          const theCatalogingUnitInfo = CheckReponse(cu_response,'AGO_API_ERROR');
-
-          //get redux state
-          const state = getState()
+          //if none go ahead and stop and return null
+          //  but first try to do a lat long search
+          if (!place.geometry) return
 
 
-          //NOT THE CLEANIST but works need to understand how to call set_mapToPoint from here
-          //set store to new lat,long and zoom level
-          //will need to add ability to detect the huc's this point falls in
-          //get redux state
+            //instatiate the address object to a varrable so we can parse the location
+            //  in latitude and longitude
+            if (!place.address_components){
+              input.value = place.formatted_address
+            }
 
-          const layerInfo = theLayerInfo;
-          const traPointInfo = thetraPointInfo;
-          const NLCDPointInfo = theNLCDPointInfo;
-          const huc8Info = theCatalogingUnitInfo;
-          const map_point = turfPointfc
+            //get lat, long of user location
+            lat = place.geometry.location.lat();
+            lng = place.geometry.location.lng();
 
-          //create map config object
-          const mapConfig = {...state.mapConfig.mapconfig, layerInfo, traPointInfo, NLCDPointInfo, huc8Info, map_point };
+            var turfPoint = turf_point([lng,lat]);
+            var turfPointfc = turf_FC(turfPoint);
 
-          dispatch(mapSate('MAP_SEARCH',mapConfig));
+            //retreive the layerinfo object (huc12) at the google api places lat long
+            axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, CATALOGING_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, NLCD_CATCHMENT_FEATUREID)])
+            .then(axios.spread(function (huc_response, tra_response, cu_response, NLCD_response) {
 
-          //end fetching set fetching state to false
-          dispatch(fetching_end())
-        }))
-      });
+              //check repsonses for NLCD errors
+              const theNLCDPointInfo = CheckReponse(NLCD_response,'AGO_API_ERROR')
+
+              const thetraPointInfo = CheckReponse(tra_response,'AGO_API_ERROR');
+
+              //check repsonses for errors
+              const theLayerInfo = CheckReponse(huc_response,'AGO_API_ERROR');
+
+              const theCatalogingUnitInfo = CheckReponse(cu_response,'AGO_API_ERROR');
+
+              //NOT THE CLEANIST but works need to understand how to call set_mapToPoint from here
+              //set store to new lat,long and zoom level
+              //will need to add ability to detect the huc's this point falls in
+              //get redux state
+
+              const layerInfo = theLayerInfo;
+              const traPointInfo = thetraPointInfo;
+              const NLCDPointInfo = theNLCDPointInfo;
+              const huc8Info = theCatalogingUnitInfo;
+              const map_point = turfPointfc
+
+              //create map config object
+              const mapConfig = {...state.mapConfig.mapconfig, layerInfo, traPointInfo, NLCDPointInfo, huc8Info, map_point };
+
+              dispatch(mapSate('MAP_SEARCH',mapConfig));
+
+              //end fetching set fetching state to false
+              dispatch(fetching_end())
+              return
+            }))
+
+        });
+
+    } else {
+      //get lat, long of user location
+      lat = latlong.lat();
+      lng = latlong.lng();
+
+      var turfPoint = turf_point([lng,lat]);
+      var turfPointfc = turf_FC(turfPoint);
+
+      //retreive the layerinfo object (huc12) at the google api places lat long
+      axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, CATALOGING_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, NLCD_CATCHMENT_FEATUREID)])
+      .then(axios.spread(function (huc_response, tra_response, cu_response, NLCD_response) {
+
+        //check repsonses for NLCD errors
+        const theNLCDPointInfo = CheckReponse(NLCD_response,'AGO_API_ERROR')
+
+        const thetraPointInfo = CheckReponse(tra_response,'AGO_API_ERROR');
+
+        //check repsonses for errors
+        const theLayerInfo = CheckReponse(huc_response,'AGO_API_ERROR');
+
+        const theCatalogingUnitInfo = CheckReponse(cu_response,'AGO_API_ERROR');
+
+        //NOT THE CLEANIST but works need to understand how to call set_mapToPoint from here
+        //set store to new lat,long and zoom level
+        //will need to add ability to detect the huc's this point falls in
+        //get redux state
+
+        const layerInfo = theLayerInfo;
+        const traPointInfo = thetraPointInfo;
+        const NLCDPointInfo = theNLCDPointInfo;
+        const huc8Info = theCatalogingUnitInfo;
+        const map_point = turfPointfc
+
+        //create map config object
+        const mapConfig = {...state.mapConfig.mapconfig, layerInfo, traPointInfo, NLCDPointInfo, huc8Info, map_point };
+
+        dispatch(mapSate('MAP_SEARCH',mapConfig));
+
+        //end fetching set fetching state to false
+        dispatch(fetching_end())
+        return
+      }))
     }
-  };
+  }
+}
 
   //this is for chart clicks and highlighting on map
   export function get_tra_info(id){
