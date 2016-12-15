@@ -1,6 +1,6 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, DATA_FEATUREID , SERVICE_NAME} from '../constants/actionConstants';
+import { AGO_URL, NCDEQ_NORMALIZED_FEATUREID , FEATURE_SERVICE_NAME} from '../constants/actionConstants';
 
 //  general functions and  helpers.  reuse functions
 import {  getAGOGeographyLabel, getCurrentLevel } from '../utils/helpers';
@@ -13,8 +13,7 @@ const CHART_DATA_ORDER_BY_FIELDS = 'geography_level';
 
 //AGO query to get list of geography levels available
 function AGO_GeographyLevels(){
-
-  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + DATA_FEATUREID + '/query' +
+  const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + NCDEQ_NORMALIZED_FEATUREID + '/query' +
                     '?where=id<>%27%27+and+geography_level+%21%3D+99+and+geography_label+%21%3D+%27NLCD_Catchments%27+and+geography_label+%21%3D+%27catchments_baseline%27+and+geography_label+%21%3D+%27NLCD_huc_12%27' +
                     '&objectIds=' +
                     '&time=&resultType=none' +
@@ -52,6 +51,8 @@ function getNextLevel(geogLevel){
 //  determined by changed menuitem value
 //  or when the user clicks on huc in map (not done yet)
 function update_activeGeographyFilter( state, active_level, filter_value ){
+
+
 
   //convert the active layer name to the AGO generic name
   // need to do check of active layer
@@ -134,6 +135,8 @@ function update_activeGeographyFilter( state, active_level, filter_value ){
 //  or when the user clicks on huc in map (not done yet)
 function update_activeGeographyLevel( state, active_level ){
 
+
+
   //convert the active layer name to the AGO generic name
   // need to do check of active layer
   const label = getAGOGeographyLabel(active_level);
@@ -185,6 +188,7 @@ export function change_geographyLevelFilter(filter_value, active_level) {
 
     const state = getState()
 
+
     //create new geography_level state object
     if (filter_value){
       const newLevels = update_activeGeographyFilter( state, active_level, filter_value );
@@ -207,6 +211,7 @@ export function change_geographyLevelActive(active_level) {
 
     const state = getState()
 
+
     //create new geography_level state object
     const newLevels = update_activeGeographyLevel( state, active_level );
 
@@ -223,6 +228,9 @@ export function get_GeographyLevels(){
   return (dispatch, getState) => {
     //start fetching state (set to true)
     dispatch(fetching_start())
+
+    const state = getState()
+
 
       AGO_GeographyLevels()
         .then(function test(response){

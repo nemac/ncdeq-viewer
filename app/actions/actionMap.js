@@ -1,7 +1,7 @@
 var axios = require('axios');
 import { CheckReponse } from './responses';
-import { AGO_URL, HUC12_MAP_FEATUREID, SERVICE_NAME, TRA_MAP_FEATUREID,
-        CATALOGING_MAP_FEATUREID, NLCD_MAP_FEATUREID, BASIN_MAP_FEATUREID } from '../constants/actionConstants';
+import { AGO_URL, HUC12_MAP_FEATUREID, FEATURE_SERVICE_NAME, TRA_FEATUREID,
+        CATALOGING_MAP_FEATUREID, NLCD_CATCHMENT_FEATUREID, BASIN_MAP_FEATUREID } from '../constants/actionConstants';
 var turf_point = require('turf-point');
 var turf_FC = require('turf-featurecollection');
 
@@ -11,6 +11,7 @@ export const ago_get_tra_geom_by_ids = ActionTRA.ago_get_tra_geom_by_ids;
 
 //set base URL for axios
 axios.defaults.baseURL = AGO_URL;
+
 
 import {
   NORTH_EAST_LATITUDE,
@@ -87,12 +88,12 @@ function AGO_get_geometry_for_all(search_value, search_layer_id){
   var value_field_name = 'VALUE';
 
   //until I can change the TRA data to match the schemas of the huc files I need to change the field name from vaue to id.
-  if(search_layer_id === TRA_MAP_FEATUREID){
+  if(search_layer_id === TRA_FEATUREID){
     value_field_name = 'ID'
   }
 
 
-  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + search_layer_id + '/query' +
+  const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + search_layer_id + '/query' +
                     '?where=' + value_field_name + '+like+%27' + search_value + '%25%27' +
                     '&objectIds=' +
                     '&time=' +
@@ -127,15 +128,14 @@ function AGO_get_geometry_for_all(search_value, search_layer_id){
 
 ///get feature attributes for a layer at lat & long
 function AGO_get_LayerInfo_ByValue(value, layer_id){
-
   var value_field_name = 'VALUE';
 
   //until I can change the TRA data to match the schemas of the huc files I need to change the field name from vaue to id.
-  if(layer_id === TRA_MAP_FEATUREID){
+  if(layer_id === TRA_FEATUREID){
     value_field_name = 'ID'
   }
 
-  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + layer_id + '/query' +
+  const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + layer_id + '/query' +
                     '?where=' + value_field_name + '+%3D+%27' + value + '%27' +
                     '&objectIds=' +
                     '&time=' +
@@ -170,8 +170,7 @@ function AGO_get_LayerInfo_ByValue(value, layer_id){
 
 ///get feature attributes for a layer at lat & long
 function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
-
-  const query_URL = '/' + SERVICE_NAME + '/FeatureServer/' + layer_id + '/query' +
+  const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + layer_id + '/query' +
                     '?where=' +
                     '&objectIds=' +
                     '&time=' +
@@ -215,6 +214,8 @@ export function get_all_geometries(value){
     //start fetching state (set to true)
     dispatch(fetching_start())
 
+    const state = getState()
+
     const length_of_id = value.length
     const end_length = get_sub_length(length_of_id)
     const search_layer_id = get_feature_layerid(length_of_id)
@@ -227,7 +228,8 @@ export function get_all_geometries(value){
         //get redux state
         const state = getState()
 
-        //AGO_get_geometry_for_all(value, TRA_MAP_FEATUREID)
+
+        //AGO_get_geometry_for_all(value, TRA_FEATUREID)
        //check repsonses for errors
        const current_geometries_huc = CheckReponse(huc_response,'AGO_API_ERROR');
        const tra_xwalk = CheckReponse(tra_xwalk_response,'AGO_API_ERROR');
@@ -282,6 +284,7 @@ export function set_search_method(method){
 
     const state = getState()
 
+
     const searchMethod = method;
 
     //create map config object
@@ -300,6 +303,8 @@ export function set_active_hover (ID, GEOGRAPHY_LEVEL, DATE_SENT){
 
       //get redux state
       const state = getState()
+
+
       let prev_date
 
       if(state.current_active_hover){
@@ -329,6 +334,7 @@ export function get_LayerGeom_ByValue(value, layer_id){
       //get redux state
       const state = getState()
 
+
       const hoverInfo = [];
 
       //create map config object
@@ -346,6 +352,7 @@ export function get_LayerGeom_ByValue(value, layer_id){
 
         //get redux state
         const state = getState()
+
 
         const hoverInfo = theHoverInfo;
 
@@ -372,6 +379,9 @@ export function get_LayerInfo_ByValue(value, layer_id){
     //start fetching state (set to true)
     dispatch(fetching_start())
 
+    const state = getState()
+
+
     axios.all([AGO_get_LayerInfo_ByValue(value, layer_id), AGO_get_LayerInfo_ByValue(value.substring(0,8), CATALOGING_MAP_FEATUREID)])
     .then(axios.spread(function (huc_response, cu_response) {
 
@@ -382,6 +392,7 @@ export function get_LayerInfo_ByValue(value, layer_id){
 
         //get redux state
         const state = getState()
+
 
         const layerInfo = theLayerInfo;
         const huc8Info = theCatalogingUnitInfo;
@@ -410,7 +421,10 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
     //start fetching state (set to true)
     dispatch(fetching_start())
 
-    axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, layer_id), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, CATALOGING_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, NLCD_MAP_FEATUREID)])
+    const state = getState()
+
+
+    axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, layer_id), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, CATALOGING_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, NLCD_CATCHMENT_FEATUREID)])
     .then(axios.spread(function (huc_response, tra_response, cu_response, NLCD_response) {
 
       //check repsonses for NLCD errors
@@ -427,6 +441,7 @@ export function get_LayerInfo_ByPoint(lat, lng, layer_id){
 
       //get redux state
       const state = getState()
+
 
       var turfPoint = turf_point([lng,lat]);
       var turfPointfc = turf_FC(turfPoint);
@@ -491,6 +506,7 @@ export function set_mapToPoint(lat,lng,z,e){
     //get redux state
     const state = getState()
 
+
     const latitude = lat;
     const longitude = lng;
     const zoom =  z;
@@ -514,6 +530,7 @@ export function HandleMapEnd(mapComp,e){
 
     //get redux state
     const state = getState()
+
 
     //requires leaftlet to be installed.
     var L = mapComp.refs.map.leafletElement
@@ -542,6 +559,7 @@ export function get_defaultMapData(zoom){
 
     //get redux state
     const state = getState()
+
 
     //requires leaftlet to be installed.
     var southWest = L.latLng(SOUTH_WEST_LATITUDE, SOUTH_WEST_LONGITUDE),
@@ -588,6 +606,7 @@ export function handleSearchChange(comp,e){
 
     //get redux state
     const state = getState()
+
 
     //get the input dom element
     var input = e.target;
@@ -636,7 +655,7 @@ export function handleSearchChange(comp,e){
         var turfPointfc = turf_FC(turfPoint);
 
         //retreive the layerinfo object (huc12) at the google api places lat long
-        axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, CATALOGING_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, NLCD_MAP_FEATUREID)])
+        axios.all([AGO_get_LayerInfo_ByPoint(lat, lng, HUC12_MAP_FEATUREID), AGO_get_LayerInfo_ByPoint(lat, lng, TRA_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, CATALOGING_MAP_FEATUREID),AGO_get_LayerInfo_ByPoint(lat, lng, NLCD_CATCHMENT_FEATUREID)])
         .then(axios.spread(function (huc_response, tra_response, cu_response, NLCD_response) {
 
           //check repsonses for NLCD errors
@@ -651,6 +670,7 @@ export function handleSearchChange(comp,e){
 
           //get redux state
           const state = getState()
+
 
           //NOT THE CLEANIST but works need to understand how to call set_mapToPoint from here
           //set store to new lat,long and zoom level
@@ -685,7 +705,8 @@ export function handleSearchChange(comp,e){
       //get redux state
       const state = getState()
 
-      AGO_get_LayerInfo_ByValue(id, TRA_MAP_FEATUREID)
+
+      AGO_get_LayerInfo_ByValue(id, TRA_FEATUREID)
       .then( tra_response => {
 
         const theTraInfo = CheckReponse(tra_response,'AGO_API_ERROR');

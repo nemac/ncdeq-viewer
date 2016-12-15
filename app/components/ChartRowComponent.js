@@ -317,7 +317,7 @@ var ChartRow = React.createClass({
     if(chart_data ){
 
       //get constants from redux
-      const charts_limits = this.props.charts.chart_levels.chart_limits;
+      const charts_limits = this.props.charts.chart_levels.chart_limits ? this.props.charts.chart_levels.chart_limits : [];
 
       //get a filtered array of the chart type limits
       const chart_type_limt = charts_limits.filter( item => {
@@ -771,7 +771,7 @@ var ChartRow = React.createClass({
           chart_width={chart_width_px}
           title="BASELINE"
           title_description=""
-          note="The taller the bar chart the more impaired."
+          note="The taller the bar chart the more degraded"
           chart_type="baseline"
           chart_data={chart_baseline_bar}
           chart_filter={chart_filter}
@@ -785,8 +785,8 @@ var ChartRow = React.createClass({
           update_ChartLevels={this.props.update_ChartLevels}
           update_ChartMatchId={this.props.update_ChartMatchId}
           get_keyColors={this.get_keyColors}
-          top_label="Most Impaired"
-          bottom_label="Least Impaired"
+          top_label="Most Degraded"
+          bottom_label="Least Degraded"
           level_label={this.getLevel()}
           set_active_function={this.props.set_active_function}
           active_function={this.props.active_function}
@@ -821,12 +821,12 @@ var ChartRow = React.createClass({
            />
          }
          { chart_filter &&
-           <ChartPieContainer
-             chart_type="LANDUSE_LANDCOVER_HUC12"
+           <ChartPie
              chart_width={chart_width_px}
-             geography="HUC12"
-             title="Landuse-Landcover"
-             description=""
+             title="Landuse-Landcover (HUC12)"
+             title_description=""
+             note={"For Catchment: " + NLCD_ID}
+             chart_data={ncld_chart_data_huc12}
              use_percent={true}
              />
 

@@ -1,5 +1,21 @@
 //general functions used in multiple components, actions, and reducers
+var axios = require('axios');
 
+export function set_main(state, constant_name,source){
+    console.log(source)
+    console.log(state)
+
+    const constants = state.constants.constants;
+    return get_constant(constants, constant_name)
+
+}
+
+export function get_constant(constants, constant_name){
+    const title_obj = constants.filter( constant => {
+      return constant.name.toUpperCase() === constant_name.toUpperCase()
+    })
+    return ''
+}
  //get the next level of geog for a geography level to use in ago api
 //  example this gets all the hucs for a Cataloging unit
 export function getNextLevel(geogLevel){

@@ -1,7 +1,6 @@
 var axios = require('axios');
 
 //import actions and action contstants
-import { AGO_URL, AGO_RIVER_BASINS, AGO_CATALOGING_UNITS, AGO_HUCS } from '../constants/actionConstants';
 import { CheckReponse } from './responses';
 import * as MenuLists from './actionMenuLists';
 import * as ChartData from './actionChartData';
@@ -56,4 +55,3 @@ export const set_LeafletMap = ActionLeaflet.set_LeafletMap;
 export const use_imagery = ActionLeaflet.use_imagery;
 
 export const set_constants = constants.set_constants;
-export const get_constant = constants.get_constant;
