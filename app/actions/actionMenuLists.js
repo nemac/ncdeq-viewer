@@ -41,6 +41,7 @@ function buildMenuList (name, menuList, geoJSON){
     if(menu.name === name){
       //map geojson features and add the properties (attributes) to the list
       //  this will populate the menu items
+      console.log(geoJSON)
       geoJSON.features.map(function(features) {
          menu.lists.push(features.properties)
        })
