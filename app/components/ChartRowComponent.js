@@ -821,12 +821,12 @@ var ChartRow = React.createClass({
            />
          }
          { chart_filter &&
-           <ChartPieContainer
-             chart_type="LANDUSE_LANDCOVER_HUC12"
+           <ChartPie
              chart_width={chart_width_px}
-             geography="HUC12"
-             title="Landuse-Landcover"
-             description=""
+             title="Landuse-Landcover (HUC12)"
+             title_description=""
+             note={"For Catchment: " + NLCD_ID}
+             chart_data={ncld_chart_data_huc12}
              use_percent={true}
              />
 
