@@ -98,7 +98,7 @@ export function ago_get_tra_geom_by_ids( id_list ){
                     '&outFields=ID' +
                     '&returnGeometry=true' +
                     '&returnCentroid=true' +
-                    '&multipatchOption=' +
+                    '&multipatchOption=xyFootprint' +
                     '&maxAllowableOffset=' +
                     '&geometryPrecision=' +
                     '&outSR=4326' +

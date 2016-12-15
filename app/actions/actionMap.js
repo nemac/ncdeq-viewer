@@ -83,7 +83,7 @@ function get_feature_huc(length_of_id){
     }
 }
 
-function AGO_get_geometry_for_all(search_value, search_layer_id){
+function AGO_get_geometry_for_all(search_value, search_layer_id){d
   var value_field_name = 'VALUE';
 
   //until I can change the TRA data to match the schemas of the huc files I need to change the field name from vaue to id.
@@ -102,7 +102,7 @@ function AGO_get_geometry_for_all(search_value, search_layer_id){
                     '&outFields=*' +
                     '&returnGeometry=true' +
                     '&returnCentroid=true' +
-                    '&multipatchOption=' +
+                    '&multipatchOption=xyFootprint' +
                     '&maxAllowableOffset=' +
                     '&geometryPrecision=' +
                     '&outSR=4326' +
@@ -144,7 +144,7 @@ function AGO_get_LayerInfo_ByValue(value, layer_id){
                     '&outFields=*' +
                     '&returnGeometry=true' +
                     '&returnCentroid=true' +
-                    '&multipatchOption=' +
+                    '&multipatchOption=xyFootprint' +
                     '&maxAllowableOffset=' +
                     '&geometryPrecision=' +
                     '&outSR=4326' +
@@ -175,15 +175,16 @@ function AGO_get_LayerInfo_ByPoint(lat, long, layer_id){
                     '&time=' +
                     '&geometry=%7Bx%3A+'+long+'%2C+y%3A+'+lat+'%7D' +
                     '&geometryType=esriGeometryPoint' +
+                    '&multipatchOption=xyFootprint' +
+                    '&returnGeodetic=false' +
                     '&inSR=4326' +
                     '&spatialRel=esriSpatialRelIntersects' +
-                    '&resultType=standard' +
-                    '&distance=' +
+                    '&resultType=none' +
+                    '&distance=0.0' +
                     '&units=esriSRUnit_Meter' +
                     '&outFields=*' +
                     '&returnGeometry=true' +
                     '&returnCentroid=true' +
-                    '&multipatchOption=' +
                     '&maxAllowableOffset=' +
                     '&geometryPrecision=' +
                     '&outSR=4326' +
