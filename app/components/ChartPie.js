@@ -88,7 +88,7 @@ const renderLegendPercent = (props) => {
   return (
 
 
-    <div className="ui list">
+    <div className="ui list" style={{marginLeft:"30px" }}>
       {
         payload.map((entry, index) => (
           <div className="item"  key={`item-${index}`}>
@@ -121,7 +121,7 @@ const renderLegendTotal = (props) => {
   return (
 
 
-    <div className="ui list" >
+    <div className="ui list" style={{marginLeft:"30px" }}>
       {
         payload.map((entry, index) => (
 
@@ -151,7 +151,7 @@ const ChartPie = React.createClass({
 
     const self = this;
     const chart_width = this.props.chart_width < 500 ? this.props.chart_width/2.5 : this.props.chart_width/2;
-
+    const chart_height = data.length < 1 ? "150px" : "250px"
     const space = (<span>&nbsp;</span>)
 
   	return (
@@ -169,33 +169,35 @@ const ChartPie = React.createClass({
 
 
         <div className="active content">
-          <div className="description" style={{padding: SPACING,width:this.props.chart_width}}>
+          <div className="description" style={{padding: SPACING,width:this.props.chart_width,height:chart_height}}>
             { data.length < 1 &&
               <NoDataMessage note={note} sub_header={sub_header} />
             }
             { data.length > 0 &&
-              <PieChart key="" width={chart_width} height={250}
-                margin={{top: 0, right: 0, left: 0, bottom: 0}}  >
-                { this.props.use_percent &&
-                  <Legend content={renderLegendPercent} verticalAlign={"middle"} align={"right"} />
-                }
-                { !this.props.use_percent &&
-                  <Legend content={renderLegendTotal} verticalAlign={"middle"} align={"right"}/>
-                }
-
-                <Pie
-                  data={data}
-                  labelLine={false}
-                  fill="#8884d8"
-                  outerRadius={100}
-                  >
-                  {
-                    data.map((entry, index) => <Cell key={index} fill={get_keyColors(entry.name)}/>)
+              <ResponsiveContainer>
+                <PieChart key="" width={chart_width} height={250}
+                  margin={{top: 0, right: 0, left: 0, bottom: 0}}  >
+                  { this.props.use_percent &&
+                    <Legend content={renderLegendPercent} width={this.props.chart_width/3} verticalAlign={"middle"} align={"right"}
+                      margin={{top: 0, right: 0, left: 0, bottom: 0}}/>
                   }
-                </Pie>
-                <Tooltip content={<CustomToolTipPieChart get_keyColors={get_keyColors} data={data}/>}/>
-              </PieChart>
-
+                  { !this.props.use_percent &&
+                    <Legend content={renderLegendTotal}  width={this.props.chart_width/3}  verticalAlign={"middle"} align={"right"}
+                      margin={{top: 0, right: 0, left: 10, bottom: 0}}/>
+                  }
+                  <Pie
+                    data={data}
+                    labelLine={false}
+                    fill="#8884d8"
+                    outerRadius={100}
+                    >
+                    {
+                      data.map((entry, index) => <Cell key={index} fill={get_keyColors(entry.name)}/>)
+                    }
+                  </Pie>
+                  <Tooltip content={<CustomToolTipPieChart get_keyColors={get_keyColors} data={data}/>}/>
+                </PieChart>
+              </ResponsiveContainer>
             }
           </div>
         </div>
