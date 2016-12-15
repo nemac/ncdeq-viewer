@@ -82,7 +82,7 @@ function AGO_AllChartData_byID(hucid, current_geography_level){
 //   requires the id to search
 function AGO_ChartData_byID(id){
    const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + NCDEQ_NORMALIZED_FEATUREID + '/query' +
-                     '?where=chart_value+is+not+null+and+ID%3D%27' + id + '%27' +
+                     '?where=chart_value+is+not+null+and+ID%3D%27' + id + '%27' + 
                      '&objectIds=' +
                      '&time=' +
                      '&resultType=none' +
@@ -246,7 +246,7 @@ function ago_get_chart_buttons(){
 function ago_getPreviousChart(chart_level, chart_id){
 
      const query_URL = '/' + FEATURE_SERVICE_NAME + '/FeatureServer/' + NCDEQ_NORMALIZED_FEATUREID + '/query' +
-                          '?where=chart_value+is+not+null+and+chart_level+%3D+' + chart_level + '+and+chart_id+%3D+' + chart_id  + 
+                          '?where=chart_value+is+not+null+and+chart_level+%3D+' + chart_level + '+and+chart_id+%3D+' + chart_id  + //' chart_type+%3D+%27' + chart_type + '%27'
                           '&objectIds=' +
                           '&time=' +
                           '&resultType=none' +

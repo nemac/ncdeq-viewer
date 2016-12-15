@@ -304,6 +304,8 @@ var ChartRowWrapper = React.createClass({
         content  : 'Drill up into function'
       })
 
+    // $('.ui.small.label.breadcrumbs').popup();
+
     const colors = this.props.get_keyColors(label)
 
     const csstext = '"background-color": "' + colors[1]+ '"!important","margin":"0px!important","height":"36px","color":"rgba(0,0,0,.6)"'
@@ -480,8 +482,9 @@ var ChartRowWrapper = React.createClass({
       const chart_id = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_id : null
       const match_id = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_matchid : null
       const chart_level = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_level : null
+      const chart_description = buttons_cur.length > 0 ? buttons_cur[0].properties.chart_description : null
 
-      return [chart_id, match_id, chart_level]
+      return [chart_id, match_id, chart_level, chart_description]
     }
     return null;
 
@@ -497,10 +500,10 @@ var ChartRowWrapper = React.createClass({
 
         const ids = this.get_ids_from_label(breadcrumb)
         return (
-          <div className="ui small label"
+          <div className="ui small label breadcrumbs"
             key={'breadcrumbs-'+count++}
             style={{"backgroundColor":colors[1],"cursor":"pointer"}}
-            onClick={this.handle_chart_level_click.bind(null, this, ids[2], ids[1], chart_type, "crumb", ids[0])}>
+            onClick={this.handle_chart_level_click.bind(null, this, ids[2], ids[1], chart_type, "crumb", ids[0])} >
             {breadcrumb}
             <i className="delete icon"></i>
           </div>

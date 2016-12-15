@@ -317,7 +317,7 @@ var ChartRow = React.createClass({
     if(chart_data ){
 
       //get constants from redux
-      const charts_limits = this.props.charts.chart_levels.chart_limits;
+      const charts_limits = this.props.charts.chart_levels.chart_limits ? this.props.charts.chart_levels.chart_limits : [];
 
       //get a filtered array of the chart type limits
       const chart_type_limt = charts_limits.filter( item => {
