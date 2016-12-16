@@ -113,6 +113,9 @@ var ChartBars = React.createClass({
     return null;
 
   },
+  componentDidMount: function() {
+    $("#bar-chart-"+this.props.chart_type + " .recharts-surface").css("overflow","visible");
+  },
   render: function() {
     //build chart data component and when there is no data returned
     //  Tell user no chart data Available

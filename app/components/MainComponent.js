@@ -1,10 +1,7 @@
 import React from 'react';
 
 //import components
-
 var SectionWrapper = require('../components/SectionWrapper');
-var RowWrapper = require('../components/RowWrapper');
-var MapRowWrapper = require('../components/MapRowWrapper');
 var MapRowComponent = require('../components/MapRowComponent');
 var ModalAbout = require('../components/ModalAbout');
 import ChartRowContainer from '../containers/ChartRowContainer';
@@ -96,7 +93,6 @@ var MainComponent = React.createClass({
       const chartHeight = this.props.default_settings ? this.props.default_settings.chartHeight : CHART_HEIGHT;
       const columnWidth = is_chart_vis ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
       const header_description_visibility =  this.props.default_settings ? this.props.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
-
 
       return (
         <div className="ui stackable one column padded grid" style={{backgroundColor: BACKGROUND_COLOR_BG}}>

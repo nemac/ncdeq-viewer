@@ -1,20 +1,38 @@
+var axios = require('axios');
+
+import {  get_constant } from '../utils/helpers';
 
 //ArcGIS online feature layer id's - each layer in a feautre services has an unique id
 // these refer to those.  put into a const so it can be figured for different sites
 //ArcGIS Online base URl
-export const AGO_URL = 'https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services'
+//get title from constant.json file read in from index.html file
+export const AGO_URL = get_constant('AGO_URL')
+export const FEATURE_SERVICE_NAME = get_constant('FEATURE_SERVICE_NAME')
+export const TITLE = get_constant('TITLE')
 
-//featire service name
-export const FEATURE_SERVICE_NAME = "RDRBP_AGO6"
+//feature layers
+export const TRA_FEATUREID = get_constant('TRA_FEATUREID')
+export const HUC12_MAP_FEATUREID = get_constant('HUC12_MAP_FEATUREID')
+export const CATALOGING_MAP_FEATUREID = get_constant('CATALOGING_MAP_FEATUREID')
+export const BASIN_MAP_FEATUREID = get_constant('BASIN_MAP_FEATUREID')
+export const NLCD_CATCHMENT_FEATUREID = get_constant('NLCD_CATCHMENT_FEATUREID')
+export const NCDEQ_NORMALIZED_FEATUREID = get_constant('NCDEQ_NORMALIZED_FEATUREID')
+export const HUC_NAMES_FEATUREID = get_constant('HUC_NAMES_FEATUREID')
+export const TRA_XWALK = get_constant('TRA_XWALK')
 
-export const TRA_FEATUREID = 3;
-export const HUC12_MAP_FEATUREID = 4;
-export const CATALOGING_MAP_FEATUREID = 5;
-export const BASIN_MAP_FEATUREID = 6;
-export const NLCD_CATCHMENT_FEATUREID = 8;
-export const NCDEQ_NORMALIZED_FEATUREID = 10;
-export const HUC_NAMES_FEATUREID = 11;
-export const TRA_XWALK = 12;
+//tile layers
+export const IMAGERY_BASEMAP = get_constant('imagery')
+export const BASE_MAP_LABELS = get_constant('base map labels')
+export const BASE_MAP = get_constant('base map')
+export const CATCHMENTS_BASE_MAP = get_constant('Catchments Base Map')
+export const HUC12_BASE_MAP = get_constant('HUC 12 Base Map')
+export const HUC8_BASE_MAP = get_constant('Cataloging Units Base Map')
+export const HUC6_BASE_MAP = get_constant('River Basins Base Map')
+export const TRA_BASE_MAP = get_constant('Targeted Resource Areas (TRA) Base Map')
+
+
+//set base URL for axios
+axios.defaults.baseURL = AGO_URL;
 
 //encoding constants to use in ArcGIS online api calls
 export const ENCODED_COMMAS = '%2C'
