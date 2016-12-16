@@ -102,6 +102,12 @@ var MenuComponent = React.createClass({
       return null;
     }
   },
+  handleSearchClick: function(comp,e){
+    //update header vis in action
+    this.props.update_HeaderVis()
+    this.props.update_MapHeight();
+
+  },
   handleSearch: function(comp,e){
     //set current geography level in redux state store
     this.props.change_geographyLevelActive("HUC12");
@@ -296,7 +302,9 @@ var MenuComponent = React.createClass({
                     Search for a Location
                   </label>
                   <div className="ui left icon input"  style={{height: "50px", width:three_width_sub, marginLeft:margin_left}}>
-                    <input className="mapSearch" type="text" placeholder="Search for a Location..." onChange={this.handleSearch.bind(null,this)}/>
+                    <input className="mapSearch" type="text" placeholder="Search for a Location..."
+                      onChange={this.handleSearch.bind(null,this)}
+                      onClick={this.handleSearchClick.bind(null,this)}/>
                     <i className="search link icon" ></i>
                   </div>
                 </div>

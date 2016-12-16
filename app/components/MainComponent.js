@@ -1,10 +1,7 @@
 import React from 'react';
 
 //import components
-
 var SectionWrapper = require('../components/SectionWrapper');
-var RowWrapper = require('../components/RowWrapper');
-var MapRowWrapper = require('../components/MapRowWrapper');
 var MapRowComponent = require('../components/MapRowComponent');
 var ModalAbout = require('../components/ModalAbout');
 import ChartRowContainer from '../containers/ChartRowContainer';

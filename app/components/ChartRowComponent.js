@@ -398,7 +398,7 @@ var ChartRow = React.createClass({
 
           }
 
-        }        
+        }
       }
 
 
