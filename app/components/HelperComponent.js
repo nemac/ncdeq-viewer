@@ -7,7 +7,7 @@ var HelperComponent = React.createClass({
   componentDidMount: function() {
     const class_name_text = this.props.helper_name.replace(' ','_')
 
-    $('.help.circle.outline.icon.'+class_name_text).popup();
+    $('.help.circle.icon.'+class_name_text).popup();
   },
   shouldComponentUpdate: function(nextProps, nextState) {
     const topic = nextProps.helper_name
@@ -26,7 +26,7 @@ var HelperComponent = React.createClass({
     return(
       <span>
         {helper_text &&
-          <i className={"grey help circle outline icon "+class_name_text} data-title={title} data-content={helper_text}  style={{"paddingLeft":"7px"}}></i>
+          <i className={"inverted black help circle icon "+class_name_text} data-title={title} data-content={helper_text}  style={{"paddingLeft":"7px"}}></i>
         }
         {!helper_text &&
           <span></span>
