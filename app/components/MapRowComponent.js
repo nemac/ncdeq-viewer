@@ -1,6 +1,5 @@
 var React = require('react');
-
-var MapWrapper = require('./MapWrapper');
+import MapContainer from '../containers/MapContainer'
 
 var PropTypes = React.PropTypes;
 
@@ -8,6 +7,7 @@ import {
   OVERIDE_WIDTH,
   CHART_HEIGHT_ADJUSTMENT,
   MAP_HEIGHT,
+  SPACING,
 } from '../constants/appConstants'
 
 var MapRowComponent = React.createClass({
@@ -25,17 +25,11 @@ var MapRowComponent = React.createClass({
     return (
       <div className={"ui stackable internally celled " + ADJUSTED_COLUMN_WIDTH + " wide column grid"} style={{height:chart_grid_height,paddingRight:"10px",paddingLeft:"7px",paddingTop:"0px"}}>
         <div className="stretched row" >
-
-          <MapWrapper />
-
+          <MapContainer />
         </div>
-
       </div>
-
-
     );
   }
-
 });
 
 module.exports = MapRowComponent;

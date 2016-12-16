@@ -398,7 +398,7 @@ var ChartRow = React.createClass({
 
           }
 
-        }        
+        }
       }
 
 
@@ -727,7 +727,7 @@ var ChartRow = React.createClass({
         </div>
        <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,width:chart_width_px+21,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
       <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{width:chart_width_px,overflow:"visible"}}>
-        <div className={working_class} >
+        <div className={working_class} style={{height:chart_grid_height+100}}>
             <div className="ui loader" ></div>
         </div>
 
