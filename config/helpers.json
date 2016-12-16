@@ -1,0 +1,19 @@
+var JSON_HELPERS = [
+  {
+    "name": "tra",
+    "value": "Target Resource Areas is..."
+  },
+  {
+    "name": "baseline",
+    "value": "Baseline is..."
+  },
+  {
+    "name": "uplift",
+    "value": "Uplift is..."
+  }
+  ,
+  {
+    "name": "hydrology",
+    "value": "Hydrology is..."
+  }
+]

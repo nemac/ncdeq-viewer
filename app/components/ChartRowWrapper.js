@@ -2,6 +2,7 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var ChartBars = require('../components/ChartBars');
 import NoDataMessage from './NoDataMessage'
+import HelperComponent from '../components/HelperComponent'
 
 import {
   BOX_BORDER,
@@ -11,7 +12,7 @@ import {
   BACKGROUND_COLOR_BG
 } from '../constants/appConstants'
 
-import { getFriendlyName_NextLevel } from '../utils/helpers'
+import { getFriendlyName_NextLevel, get_helper } from '../utils/helpers'
 
 var ChartRowWrapper = React.createClass({
   propTypes: {
@@ -265,8 +266,10 @@ var ChartRowWrapper = React.createClass({
   componentDidMount: function() {
     const chart_type = this.props.chart_type;
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown({allowCategorySelection: true});
-    $('.level.down.icon').popup();
+
     this.get_initial_dupe()
+
+    $('.help.circle.outline.icon.'+chart_type).popup();
 
     $('.level.down.icon')
       .popup({
@@ -605,7 +608,9 @@ var ChartRowWrapper = React.createClass({
           <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: ADJUSTED_TITLE_HEIGHT}}>
             <div className="header" style={{fontSize: "1.28571429em",fontWeight: "700"}}>
               <i className="dropdown left floated icon" style={{float:"left"}}></i>
-              <span style={{float:"left"}}>{this.props.title} ({level_label})</span>
+              <span style={{float:"left"}}>{this.props.title} ({level_label})
+                  <HelperComponent helper_name={chart_type}/>
+              </span>
               <span style={{float:"left",fontSize:".75em!important",fontWeight: "500!important",color: "rgba(0,0,0,.6)"}}>
                 <span className="description">{this.props.title_description}</span>
                 <span className="note">{space}- {this.props.note}</span>
@@ -715,18 +720,21 @@ var ChartRowWrapper = React.createClass({
                              <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type, "up", item.chart_id)} >
                                {label}
+                               <HelperComponent helper_name={label}/>
                              </div>
                            }
                            {is_next_valid_test && direction === 'down' &&
                              <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type, "down", item.chart_id)}>
                                {label}
+                               <HelperComponent helper_name={label}/>
                              </div>
                            }
                            { is_next_valid_test && direction === 'up' &&
                              <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, chart_type, "up", item.chart_id)}>
                                {label}
+                               <HelperComponent helper_name={label}/>
                              </div>
                            }
                            {is_next_valid_test &&

@@ -1,6 +1,16 @@
 //general functions used in multiple components, actions, and reducers
 var axios = require('axios');
 
+export function get_helper(topic){
+    //JSON_HELPERS from config helpers.json file
+    //  this is read into the body of the index.htm file as
+    //  a global obect so users do not have to rebuild node
+    const helper = JSON_HELPERS.filter( helper => {
+      return helper.name.toUpperCase() === topic.toUpperCase()
+    })
+    return helper[0] ? helper[0].value : null;
+
+}
 
 export function get_constant(constant_name){
     //JSON_CONSTANTS from config constants.json file
