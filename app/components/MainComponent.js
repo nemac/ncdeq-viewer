@@ -97,7 +97,6 @@ var MainComponent = React.createClass({
       const columnWidth = is_chart_vis ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
       const header_description_visibility =  this.props.default_settings ? this.props.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
 
-
       return (
         <div className="ui stackable one column padded grid" style={{backgroundColor: BACKGROUND_COLOR_BG}}>
           <HeaderContainer  header_description_visibility={header_description_visibility} />

@@ -1,5 +1,6 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
+import { TITLE } from '../constants/actionConstants';
 
 import {
   SPACING,
@@ -12,26 +13,26 @@ var HeaderComponent = React.createClass({
       content:'Do Something on the map'
     };
   },
-  get_title: function(constants){
+  get_title: function(){
 
-    if(!constants){return 'web app'}
-
-    const title_obj = constants.filter( constant => {
-      return constant.name === 'TITLE'
-    })
-
-    return title_obj[0].value ? title_obj[0].value : 'web app';
+    return TITLE ? TITLE : 'web app';
   },
   getInitialState: function() {
     return {
       title: 'web app'
     };
   },
+  componentWillMount: function() {
+    //get title form constants
+    this.setState({
+      title: this.get_title()
+    })
+  },
   componentWillReceiveProps: function(nextProps) {
 
     //get title form constants
     this.setState({
-      title: this.get_title(nextProps.constants)
+      title: this.get_title()
     })
   },
   componentDidMount: function() {

@@ -126,7 +126,6 @@ const renderLegendTotal = (props) => {
         payload.map((entry, index) => (
 
           <div className="item"  key={`item-${index}`}>
-
           <svg  width="14" height="14" >
             <path stroke-strokeWidth="4" fill={entry.fill} stroke={entry.stroke} d="M0,0h32v32h-32z" >
             </path>
@@ -142,6 +141,8 @@ const ChartPie = React.createClass({
 
   componentDidMount: function() {
     $('.ui.accordion').accordion();
+    $('.PieChart .recharts-surface').css("overflow","visible");
+
   },
 	render () {
 
@@ -169,27 +170,29 @@ const ChartPie = React.createClass({
 
 
         <div className="active content">
-          <div className="description" style={{padding: SPACING,width:this.props.chart_width,height:chart_height}}>
+          <div className="description PieChart" style={{padding: SPACING,width:this.props.chart_width,height:chart_height}}>
             { data.length < 1 &&
               <NoDataMessage note={note} sub_header={sub_header} />
             }
             { data.length > 0 &&
-              <ResponsiveContainer>
-                <PieChart key="" width={chart_width} height={250}
+              <ResponsiveContainer  >
+                <PieChart key=""
                   margin={{top: 0, right: 0, left: 0, bottom: 0}}  >
                   { this.props.use_percent &&
-                    <Legend content={renderLegendPercent} width={this.props.chart_width/3} verticalAlign={"middle"} align={"right"}
+                    <Legend content={renderLegendPercent} width={175} verticalAlign={"middle"} align={"right"}
                       margin={{top: 0, right: 0, left: 0, bottom: 0}}/>
                   }
                   { !this.props.use_percent &&
-                    <Legend content={renderLegendTotal}  width={this.props.chart_width/3}  verticalAlign={"middle"} align={"right"}
+                    <ResponsiveContainer>
+                    <Legend content={renderLegendTotal}  width={175}  verticalAlign={"middle"} align={"right"}
                       margin={{top: 0, right: 0, left: 10, bottom: 0}}/>
+                    </ResponsiveContainer>
                   }
                   <Pie
                     data={data}
                     labelLine={false}
                     fill="#8884d8"
-                    outerRadius={100}
+                    outerRadius={'90%'}
                     >
                     {
                       data.map((entry, index) => <Cell key={index} fill={get_keyColors(entry.name)}/>)

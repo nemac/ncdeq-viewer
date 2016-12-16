@@ -13,7 +13,9 @@ import {
   SPACING
 } from '../constants/appConstants';
 
-import { HUC12_MAP_FEATUREID } from '../constants/actionConstants';
+import { HUC12_MAP_FEATUREID, IMAGERY_BASEMAP, BASE_MAP_LABELS,
+         BASE_MAP, CATCHMENTS_BASE_MAP, HUC12_BASE_MAP, HUC8_BASE_MAP,
+         HUC6_BASE_MAP, TRA_BASE_MAP  } from '../constants/actionConstants';
 
 import { getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd, get_HUC} from '../utils/helpers';
 
@@ -879,37 +881,36 @@ var MapComponent = React.createClass({
         </Control>
 
 
-          <ESRITileMapLayer
-            z_Index={0}
-            setMapLayers={this.props.set_MapLayers}
-            name="imagery"
-            url={"https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"}
-            onLeafletLoad={this.handleMapLoad.bind(null,this)}
-            onLeafletClick={this.handleMapClick.bind(null,this)}
-            />
-
-          <ESRITileMapLayer
-            z_Index={2}
-            setMapLayers={this.props.set_MapLayers}
-            name="base map labels"
-            min_zoom={"8"}
-            url={"https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"}
-            onLeafletLoad={this.handleMapLoad.bind(null,this)}
-            onLeafletClick={this.handleMapClick.bind(null,this)}
-            />
-
-          <ESRITileMapLayer
-            z_Index={1}
-            setMapLayers={this.props.set_MapLayers}
-            name="base map"
-            url={"https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"}
-            onLeafletLoad={this.handleMapLoad.bind(null,this)}
-            onLeafletClick={this.handleMapClick.bind(null,this)}
-            />
-
+      <ESRITileMapLayer
+        z_Index={0}
+        setMapLayers={this.props.set_MapLayers}
+        name="imagery"
+        url={IMAGERY_BASEMAP}
+        onLeafletLoad={this.handleMapLoad.bind(null,this)}
+        onLeafletClick={this.handleMapClick.bind(null,this)}
+        />
 
       <ESRITileMapLayer
-       url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/Catchments/MapServer"
+        z_Index={2}
+        setMapLayers={this.props.set_MapLayers}
+        name="base map labels"
+        min_zoom={"8"}
+        url={BASE_MAP_LABELS}
+        onLeafletLoad={this.handleMapLoad.bind(null,this)}
+        onLeafletClick={this.handleMapClick.bind(null,this)}
+        />
+
+      <ESRITileMapLayer
+        z_Index={1}
+        setMapLayers={this.props.set_MapLayers}
+        name="base map"
+        url={BASE_MAP}
+        onLeafletLoad={this.handleMapLoad.bind(null,this)}
+        onLeafletClick={this.handleMapClick.bind(null,this)}
+        />
+
+      <ESRITileMapLayer
+       url={CATCHMENTS_BASE_MAP}
        setMapLayers={this.props.set_MapLayers}
        name="Catchments Base Map"
        min_zoom="12"
@@ -917,7 +918,7 @@ var MapComponent = React.createClass({
        z_Index={3}
        />
       <ESRITileMapLayer
-       url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc12/MapServer"
+       url={HUC12_BASE_MAP}
        setMapLayers={this.props.set_MapLayers}
        name="HUC 12 Base Map"
        min_zoom="9"
@@ -925,7 +926,7 @@ var MapComponent = React.createClass({
        z_Index={4}
        />
       <ESRITileMapLayer
-       url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc8/MapServer"
+       url={HUC8_BASE_MAP}
        setMapLayers={this.props.set_MapLayers}
        name="Cataloging Units Base Map"
        min_zoom="8"
@@ -933,7 +934,7 @@ var MapComponent = React.createClass({
        z_Index={5}
        />
        <ESRITileMapLayer
-        url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc6_outline/MapServer"
+        url={HUC6_BASE_MAP}
         setMapLayers={this.props.set_MapLayers}
         tileOpacity="0.5"
         name="River Basins Base Map"
@@ -941,7 +942,7 @@ var MapComponent = React.createClass({
         z_Index={6}
         />
         <ESRITileMapLayer
-         url="https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/TRAS/MapServer"
+         url={TRA_BASE_MAP}
          setMapLayers={this.props.set_MapLayers}
          tileOpacity="0.5"
          name="Targeted Resource Areas (TRA) Base Map"
