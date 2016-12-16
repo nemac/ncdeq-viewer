@@ -155,6 +155,8 @@ const ChartPie = React.createClass({
     const chart_height = data.length < 1 ? "150px" : "250px"
     const space = (<span>&nbsp;</span>)
 
+    const use_legend = window.innerWidth < 500 ? false : true;
+
   	return (
       <div className="ui fluid accordion" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border:BOX_BORDER,paddingTop:"0px", borderRadius: BOX_BORDER_RADUIS}}>
         <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: "3em"}}>
@@ -178,15 +180,13 @@ const ChartPie = React.createClass({
               <ResponsiveContainer  >
                 <PieChart key=""
                   margin={{top: 0, right: 0, left: 0, bottom: 0}}  >
-                  { this.props.use_percent &&
+                  { this.props.use_percent && use_legend &&
                     <Legend content={renderLegendPercent} width={175} verticalAlign={"middle"} align={"right"}
                       margin={{top: 0, right: 0, left: 0, bottom: 0}}/>
                   }
-                  { !this.props.use_percent &&
-                    <ResponsiveContainer>
+                  { !this.props.use_percent && use_legend &&
                     <Legend content={renderLegendTotal}  width={175}  verticalAlign={"middle"} align={"right"}
                       margin={{top: 0, right: 0, left: 10, bottom: 0}}/>
-                    </ResponsiveContainer>
                   }
                   <Pie
                     data={data}
