@@ -1,0 +1,78 @@
+var JSON_CONSTANTS = [
+  {
+    "name": "TITLE",
+    "value": "River Basin Restoration Priorities Web Application"
+  },
+  {
+    "name": "AGO_URL",
+    "value": "https://services1.arcgis.com/PwLrOgCfU0cYShcG/ArcGIS/rest/services"
+  },
+  {
+    "name": "FEATURE_SERVICE_NAME",
+    "value": "RDRBP_AGO6"
+  },
+  {
+    "name": "TRA_FEATUREID",
+    "value": "3"
+  },
+  {
+    "name": "HUC12_MAP_FEATUREID",
+    "value": "4"
+  },
+  {
+    "name": "CATALOGING_MAP_FEATUREID",
+    "value": "5"
+  },
+  {
+    "name": "BASIN_MAP_FEATUREID",
+    "value": "6"
+  },
+  {
+    "name": "NLCD_CATCHMENT_FEATUREID",
+    "value": "8"
+  },
+  {
+    "name": "NCDEQ_NORMALIZED_FEATUREID",
+    "value": "10"
+  },
+  {
+    "name": "HUC_NAMES_FEATUREID",
+    "value": "11"
+  },
+  {
+    "name": "TRA_XWALK",
+    "value": "12"
+  },
+  {
+    "name": "imagery",
+    "value": "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+  },
+  {
+    "name": "base map labels",
+    "value": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+  },
+  {
+    "name": "base map",
+    "value": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+  },
+  {
+    "name": "Catchments Base Map",
+    "value": "https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/Catchments/MapServer"
+  },
+  {
+    "name": "HUC 12 Base Map",
+    "value": "https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc12/MapServer"
+  },
+  {
+    "name": "Cataloging Units Base Map",
+    "value": "https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc8/MapServer"
+  },
+  {
+    "name": "River Basins Base Map",
+    "value": "https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/huc6_outline/MapServer"
+  },
+  {
+    "name": "Targeted Resource Areas (TRA) Base Map",
+    "value": "https://tiles.arcgis.com/tiles/PwLrOgCfU0cYShcG/arcgis/rest/services/TRAS/MapServer"
+  }
+]
