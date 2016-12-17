@@ -2,6 +2,7 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var ChartBars = require('../components/ChartBars');
 import NoDataMessage from './NoDataMessage'
+import HelperComponent from '../components/HelperComponent'
 
 import {
   BOX_BORDER,
@@ -11,7 +12,7 @@ import {
   BACKGROUND_COLOR_BG
 } from '../constants/appConstants'
 
-import { getFriendlyName_NextLevel } from '../utils/helpers'
+import { getFriendlyName_NextLevel, get_helper } from '../utils/helpers'
 
 var ChartRowWrapper = React.createClass({
   propTypes: {
@@ -265,8 +266,10 @@ var ChartRowWrapper = React.createClass({
   componentDidMount: function() {
     const chart_type = this.props.chart_type;
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown({allowCategorySelection: true});
-    $('.level.down.icon').popup();
+
     this.get_initial_dupe()
+
+    $('.help.circle.outline.icon.'+chart_type).popup();
 
     $('.level.down.icon')
       .popup({
@@ -313,6 +316,10 @@ var ChartRowWrapper = React.createClass({
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).css("background-color",colors[1])
     $('.ui.left.item.dropdown.level.function.' + chart_type.toUpperCase()).css("background-color",colors[0])
 
+    $('.help.circle.icon.function'+chart_type.toUpperCase()).attr("data-title", label);
+    const content_text = get_helper(label)
+    $('.help.circle.icon.function'+chart_type.toUpperCase()).attr("data-content", content_text);
+
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set text',label);
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set value',label);
   },
@@ -321,6 +328,7 @@ var ChartRowWrapper = React.createClass({
 
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set text',value);
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set value',value);
+
   },
   componentWillMount: function() {
     const chart_type =  this.props.chart_type;
@@ -505,6 +513,7 @@ var ChartRowWrapper = React.createClass({
             style={{"backgroundColor":colors[1],"cursor":"pointer"}}
             onClick={this.handle_chart_level_click.bind(null, this, ids[2], ids[1], chart_type, "crumb", ids[0])} >
             {breadcrumb}
+            <HelperComponent helper_name={breadcrumb}/>
             <i className="delete icon"></i>
           </div>
           )
@@ -605,7 +614,9 @@ var ChartRowWrapper = React.createClass({
           <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: ADJUSTED_TITLE_HEIGHT}}>
             <div className="header" style={{fontSize: "1.28571429em",fontWeight: "700"}}>
               <i className="dropdown left floated icon" style={{float:"left"}}></i>
-              <span style={{float:"left"}}>{this.props.title} ({level_label})</span>
+              <span style={{float:"left"}}>{this.props.title} ({level_label})
+                  <HelperComponent helper_name={chart_type}/>
+              </span>
               <span style={{float:"left",fontSize:".75em!important",fontWeight: "500!important",color: "rgba(0,0,0,.6)"}}>
                 <span className="description">{this.props.title_description}</span>
                 <span className="note">{space}- {this.props.note}</span>
@@ -690,6 +701,7 @@ var ChartRowWrapper = React.createClass({
                            <div className="menu" key={label + '-' + keycnta++}>
                              {pulldown_items_obj}
                            </div>
+                           <HelperComponent class_name_text={"function "+chart_type} helper_name={item.chart_level_label}/>
                          </div>
                          {is_next_valid_test &&
                            <div className={"ui left item dropdown middle aligned center aligned level function " + chart_type } style={button_color_icon}
@@ -715,18 +727,21 @@ var ChartRowWrapper = React.createClass({
                              <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, last_chart_type, "up", item.chart_id)} >
                                {label}
+                               <HelperComponent helper_name={label}/>
                              </div>
                            }
                            {is_next_valid_test && direction === 'down' &&
                              <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, next_chart_level, next_matchid, chart_type, "down", item.chart_id)}>
                                {label}
+                               <HelperComponent helper_name={label}/>
                              </div>
                            }
                            { is_next_valid_test && direction === 'up' &&
                              <div className={"ui left item button function "  + chart_type} style={button_color} key={label + '-' + keycnta++}
                                onClick={this.handle_chart_level_click.bind(null, this, last_chart_level, last_matchid, chart_type, "up", item.chart_id)}>
                                {label}
+                               <HelperComponent helper_name={label}/>
                              </div>
                            }
                            {is_next_valid_test &&

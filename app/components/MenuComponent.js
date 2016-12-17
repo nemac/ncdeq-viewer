@@ -2,6 +2,7 @@ var React = require('react');
 var MenuItemComponent = require('../components/MenuItemComponent');
 var PropTypes = React.PropTypes;
 import Divider from '../components/Divider'
+import HelperComponent from '../components/HelperComponent'
 
 //  general functions and  helpers.  reuse functions
 import { getNextLevelName, getCategoryName, getAGOGeographyLabel, getAGOFeatureId, get_matchEnd, zoomToGeoJson} from '../utils/helpers';
@@ -300,6 +301,7 @@ var MenuComponent = React.createClass({
                   <label style={{width:three_width_sub, marginLeft:margin_left}}>
                     <i className="search link icon" onClick={this.handleSearchIconClick.bind(null,this)}></i>
                     Search for a Location
+                    <HelperComponent helper_name={'Search for a Location'} />
                   </label>
                   <div className="ui left icon input"  style={{height: "50px", width:three_width_sub, marginLeft:margin_left}}>
                     <input className="mapSearch" type="text" placeholder="Search for a Location..."

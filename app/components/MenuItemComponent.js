@@ -1,5 +1,6 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
+import HelperComponent from '../components/HelperComponent'
 
 //  general functions and  helpers.  reuse functions
 import { get_HUC } from '../utils/helpers';
@@ -56,6 +57,7 @@ var MenuItemComponent = React.createClass({
             <div className="field">
               <label style={{marginLeft:margin_left}}>
                 Choose a {this.props.name}  ({HUC_desgination})
+                <HelperComponent helper_name={this.props.name}/>
               </label>
               <div className="ui input" onClick={this.props.handleMenuClick.bind(null, this.props.name)} style={{height: "50px",width:three_width_sub, marginLeft:margin_left}} >
                 <select className="ui fluid search selection dropdown" id={'search-select-'+this.props.name.replace(' ','_')} onChange={this.props.menuChange.bind(null, this.props.name)} >
