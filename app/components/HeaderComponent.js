@@ -65,9 +65,6 @@ var HeaderComponent = React.createClass({
           <div className="seven wide column" style={{padding:"0px"}}>
             <div className="ui basic segment">
               <h2>{this.state.title}
-                { !this.props.header_description_visibility &&
-                <HelperComponent helper_name={"Title"} color={"white"}/>
-                }
               </h2>
             </div>
           </div>
