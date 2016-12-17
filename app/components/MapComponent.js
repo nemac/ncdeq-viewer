@@ -17,7 +17,7 @@ import { HUC12_MAP_FEATUREID, IMAGERY_BASEMAP, BASE_MAP_LABELS,
          BASE_MAP, CATCHMENTS_BASE_MAP, HUC12_BASE_MAP, HUC8_BASE_MAP,
          HUC6_BASE_MAP, TRA_BASE_MAP  } from '../constants/actionConstants';
 
-import { getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd, get_HUC} from '../utils/helpers';
+import { get_attribution, getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd, get_HUC} from '../utils/helpers';
 
 var PropTypes = React.PropTypes;
 
@@ -455,6 +455,11 @@ var MapComponent = React.createClass({
     }
 
   },
+  componentDidMount: function() {
+    $('.leaflet-bottom.leaflet-left').css('z-index',100000)
+    $('.leaflet-top.leaflet-left').css('z-index',1)
+
+  },
   componentDidUpdate: function(prevProps, prevState) {
     //check if there was a prevProps
     // need to functionise this.
@@ -870,7 +875,7 @@ var MapComponent = React.createClass({
           </Control>
 
           <Control position="bottomleft" className="mapbutton" >
-            <button className="ui grey mini button" onClick={this.props.use_imagery} style={{width:"140px"}}>
+            <button className="ui grey mini button" onClick={this.props.use_imagery} style={{width:"140px",marginBottom:"14px",zIndex:10000000}}>
               {imageryVisibility ? "Show Map" : "Show Satellite" }
             </button>
           </Control>

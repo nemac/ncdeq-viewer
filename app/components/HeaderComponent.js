@@ -52,7 +52,7 @@ var HeaderComponent = React.createClass({
                     "or search for a location to zoom to."
     return (
 
-      <div className="row" >
+      <div id="headerrow" className="row" >
         <div className="column" >
         <div className="ui equal width center aligned stackable fluid grid" style={{"backgroundColor": "#092940","color": "#fff"}}>
           <div className="three wide middle center aligned column" style={{padding:"0px"}}>

@@ -18,17 +18,18 @@ import {HEADER_HEIGHT,
         CHART_BORDER,
         OVERIDE_WIDTH,
         OVERIDE_WIDTH_NORMAL,
-        HEADER_PADDING} from '../constants/appConstants'
+        HEADER_PADDING,
+        SPACING} from '../constants/appConstants'
 
 
 function calculate_NewHeights(state, header_overide){
-
+  const padding = 14
   //when state is not defined yet set to default CHART_VISIBILITY
   var vis = state.chartData.chart_visibility ? state.chartData.chart_visibility : CHART_VISIBILITY;
   const height = header_overide ? HEADER_HEIGHT_SMALL : HEADER_HEIGHT
-  const headerHeight = state.default_settings.default_settings ? state.default_settings.default_settings.headerHeight : HEADER_HEIGHT ;
-  const breadCrumbsHeight = state.default_settings.default_settings ? state.default_settings.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
-  const rowPadding = state.default_settings.default_settings ? state.default_settings.default_settings.rowPadding : ROW_PADDING;
+  const headerHeight = $('#headerrow').outerHeight() //state.default_settings.default_settings ? state.default_settings.default_settings.headerHeight : HEADER_HEIGHT ;
+  const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()//state.default_settings.default_settings ? state.default_settings.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
+  const rowPadding = padding //state.default_settings.default_settings ? state.default_settings.default_settings.rowPadding : ROW_PADDING;
   const headerPadding =  HEADER_PADDING;
 
   const defpad = state.default_settings.default_settings ? state.default_settings.default_settings.defpad : DEF_PAD;
@@ -40,12 +41,8 @@ function calculate_NewHeights(state, header_overide){
   //first get whats leftover from fixed components
   // the calculate the map hieght.
   //give the rest to the chart
-  const leftover = window.innerHeight -
-                    (headerHeight + breadCrumbsHeight +
-                      (rowPadding*4)
-                    )- (headerPadding*2);
 
-
+  const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + rowPadding)
 
   let chart_px_width = (window.innerWidth * (CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (14*2)
 
