@@ -316,6 +316,10 @@ var ChartRowWrapper = React.createClass({
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).css("background-color",colors[1])
     $('.ui.left.item.dropdown.level.function.' + chart_type.toUpperCase()).css("background-color",colors[0])
 
+    $('.help.circle.icon.function'+chart_type.toUpperCase()).attr("data-title", label);
+    const content_text = get_helper(label)
+    $('.help.circle.icon.function'+chart_type.toUpperCase()).attr("data-content", content_text);
+
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set text',label);
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set value',label);
   },
@@ -324,6 +328,7 @@ var ChartRowWrapper = React.createClass({
 
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set text',value);
     $('.ui.dropdown.button.function.' + chart_type.toUpperCase()).dropdown('set value',value);
+
   },
   componentWillMount: function() {
     const chart_type =  this.props.chart_type;
@@ -508,6 +513,7 @@ var ChartRowWrapper = React.createClass({
             style={{"backgroundColor":colors[1],"cursor":"pointer"}}
             onClick={this.handle_chart_level_click.bind(null, this, ids[2], ids[1], chart_type, "crumb", ids[0])} >
             {breadcrumb}
+            <HelperComponent helper_name={breadcrumb}/>
             <i className="delete icon"></i>
           </div>
           )
@@ -695,6 +701,7 @@ var ChartRowWrapper = React.createClass({
                            <div className="menu" key={label + '-' + keycnta++}>
                              {pulldown_items_obj}
                            </div>
+                           <HelperComponent class_name_text={"function "+chart_type} helper_name={item.chart_level_label}/>
                          </div>
                          {is_next_valid_test &&
                            <div className={"ui left item dropdown middle aligned center aligned level function " + chart_type } style={button_color_icon}

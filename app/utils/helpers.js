@@ -2,6 +2,8 @@
 var axios = require('axios');
 
 export function get_helper(topic){
+
+   if(typeof topic != 'string') return ""
     //JSON_HELPERS from config helpers.json file
     //  this is read into the body of the index.htm file as
     //  a global obect so users do not have to rebuild node

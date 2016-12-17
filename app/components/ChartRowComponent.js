@@ -5,6 +5,7 @@ import ChartPie from '../components/ChartPie';
 import ChartSimpleBar from '../components/ChartSimpleBar';
 import ChartTRA from '../components/ChartTRA';
 var SectionWrapper = require('./SectionWrapper');
+import HelperComponent from '../components/HelperComponent'
 
 import ChartPieContainer from '../containers/ChartPieContainer';
 
@@ -660,6 +661,8 @@ var ChartRow = React.createClass({
 
   //TRA  message for clicks and searches
   tra_message_point = (
+
+
       <div className={success_class_point} >
         {icon_point}
         <div className="content">
@@ -668,7 +671,9 @@ var ChartRow = React.createClass({
           </div>
           {sub_header_point}
         </div>
-      </div>)
+      </div>
+
+    )
 
     //default text for chart is to give user a push to do an action...
     let chart_cataloging_unit = 'Please Click on the Map, Search for a location, or Choose a HUC to get started.'
@@ -714,6 +719,8 @@ var ChartRow = React.createClass({
 
       const ADJUSTED_CHART_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : CHART_WIDTH;
 
+      const ADJUSTED_TITLE_HEIGHT = window.innerWidth < 1260 ? "3.5em" : "3em";
+
     return (
       <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{height:chart_grid_height,paddingLeft:"10px",paddingRight:"7px",paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
 
@@ -735,11 +742,29 @@ var ChartRow = React.createClass({
         that results in data and charts that can be displayed
         */}
       { chart_filter &&
-          <div className="ui item" style={{backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING+"!important",marginTop: SPACING+"!important",padding:SPACING,border: BOX_BORDER}}>
-            <div className="content" style={{marginTop: SPACING}}>
+        <div className="ui fluid accordion" style={{display: "block", backgroundColor: BACKGROUND_COLOR_FG,marginBottom: SPACING,border:BOX_BORDER,paddingTop:"0px", borderRadius: BOX_BORDER_RADUIS}}>
+          <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: ADJUSTED_TITLE_HEIGHT}}>
+            <div className="header" style={{fontSize: "1.28571429em",fontWeight: "700"}}>
+              <i className="dropdown left floated icon" style={{float:"left"}}></i>
+              <span style={{float:"left"}}>Is it In a TRA?
+                  <HelperComponent helper_name={"TRA Point"}/>
+              </span>
+              <span style={{float:"left",fontSize:".75em!important",fontWeight: "500!important",color: "rgba(0,0,0,.6)"}}>
+                <span className="description"></span>
+                <span className="note"></span>
+              </span>
+            </div>
+          </div>
+          <div className="active content">
+            <div className="meta">
+              <span className="description"></span>
+            </div>
+
+            <div className="description" style={{padding: SPACING,width:this.props.chart_width}}>
               {tra_message_point}
             </div>
           </div>
+        </div>
       }
 
       { chart_filter &&
@@ -827,6 +852,7 @@ var ChartRow = React.createClass({
            <ChartPie
              chart_width={chart_width_px}
              title="Landuse-Landcover (HUC12)"
+             chart_type="Landuse-Landcover HUC12"
              title_description=""
              note={"For Catchment: " + NLCD_ID}
              chart_data={ncld_chart_data_huc12}
@@ -839,6 +865,7 @@ var ChartRow = React.createClass({
            <ChartPie
              chart_width={chart_width_px}
              title="Landuse-Landcover (Catchment)"
+             chart_type="Landuse-Landcover Catchment"
              title_description=""
              note={"For Catchment: " + NLCD_ID}
              chart_data={ncld_chart_data}
@@ -850,6 +877,7 @@ var ChartRow = React.createClass({
            <ChartSimpleBar
              chart_width={chart_width_px}
              title="Baseline (Catchment)"
+             chart_type="Baseline Catchment"
              title_description=""
              note={"For Catchment: " + NLCD_ID}
              chart_data={catchment_chart_ar}

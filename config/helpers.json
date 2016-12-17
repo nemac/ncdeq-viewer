@@ -10,10 +10,129 @@ var JSON_HELPERS = [
   {
     "name": "uplift",
     "value": "Uplift is..."
-  }
-  ,
+  },
   {
     "name": "hydrology",
     "value": "Hydrology is..."
+  },
+  {
+    "name": "Water Quality",
+    "value": "Water Quality is..."
+  },
+  {
+    "name": "Nitrogen",
+    "value": "Nitrogen is..."
+  },
+  {
+    "name": "Phosphorus",
+    "value": "Phosphorus is..."
+  },
+  {
+    "name": "Habitat",
+    "value": "Habitat is..."
+  },
+  {
+    "name": "Wetlands and BMPs",
+    "value": "Wetlands and BMPs is..."
+  },
+  {
+    "name": "Avoided Conversion",
+    "value": "Avoided Conversion is..."
+  },
+  {
+    "name": "Aquatic Connectivity",
+    "value": "Aquatic Connectivity is..."
+  },
+  {
+    "name": "Streams Restoration",
+    "value": "Streams Restoration is..."
+  },
+  {
+    "name": "Habitat Likelhood",
+    "value": "Habitat Likelhood is..."
+  },
+  {
+    "name": "100 year peak",
+    "value": "100 year peak is..."
+  },
+  {
+    "name": "50 year peak",
+    "value": "50 year peak is..."
+  },
+  {
+    "name": "10 year peak",
+    "value": "10 year peak is..."
+  },
+  {
+    "name": "2 year peak",
+    "value": "2 year peak is..."
+  },
+  {
+    "name": "Phosphorus Agriculture",
+    "value": "Phosphorus Agriculture is..."
+  },
+  {
+    "name": "Phosphorus Urban",
+    "value": "Phosphorus Urban is..."
+  },
+  {
+    "name": "Nitrogen Urban",
+    "value": "Nitrogen Urban is..."
+  },
+  {
+    "name": "Nitrogen Agriculture",
+    "value": "Nitrogen Agriculture is..."
+  },
+  {
+    "name": "Nitrogen Atmosphere",
+    "value": "Nitrogen Atmosphere is..."
+  },
+  {
+    "name": "River Basins",
+    "value": "River Basins is..."
+  },
+  {
+    "name": "Cataloging Units",
+    "value": "Cataloging Units is..."
+  },
+  {
+    "name": "HUC12",
+    "value": "HUC12 is..."
+  },
+  {
+    "name": "Catchment",
+    "value": "Catchment is..."
+  },
+  {
+    "name": "Landuse-Landcover",
+    "value": "Landuse-Landcover is..."
+  },
+  {
+    "name": "Landuse-Landcover Catchment",
+    "value": "Landuse-Landcover Catchment is..."
+  },
+  {
+    "name": "Landuse-Landcover HUC12",
+    "value": "Landuse-Landcover HUC12is..."
+  },
+  {
+    "name": "Title",
+    "value": "The purpose of this tool is to display the Division of Mitigation Services Targeted Resource Areas (TRAs) and identify watersheds where ecological and hydrological function can be improved.  TRAs identify clusters of areas where habitat, hydrology and/or water quality variables can be managed to improve watershed function.  To get started click a River Basin on the map, or search for a location to zoom to."
+  },
+  {
+    "name": "Baseline Catchment",
+    "value": "Baseline is..."
+  },
+  {
+    "name": "Search for a Location",
+    "value": "Search for a Location is.."
+  },
+  {
+    "name": "TRA Point",
+    "value": "TRA Point is..."
+  },
+  {
+    "name": "helper_name",
+    "value": "helper_name is..."
   }
 ]
