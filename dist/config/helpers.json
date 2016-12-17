@@ -133,6 +133,6 @@ var JSON_HELPERS = [
   },
   {
     "name": "helper_name",
-    "value": "helper_name is..."
+    "value": "helper_name is.."
   }
 ]
