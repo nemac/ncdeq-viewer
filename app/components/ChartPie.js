@@ -1,6 +1,7 @@
 import { PieChart, Pie, Sector, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 var React = require('react');
 var PropTypes = React.PropTypes;
+import HelperComponent from '../components/HelperComponent'
 
 import CustomToolTipPieChart from './CustomToolTipPieChart'
 import NoDataMessage from './NoDataMessage'
@@ -162,7 +163,9 @@ const ChartPie = React.createClass({
         <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: "3em"}}>
           <div className="header" style={{fontSize: "1.28571429em",fontWeight: "700"}}>
             <i className="dropdown left floated icon" style={{float:"left"}}></i>
-            <span style={{float:"left"}}>{this.props.title}</span>
+            <span style={{float:"left"}}>{this.props.title}
+              <HelperComponent helper_name={this.props.chart_type}/>
+              </span>
             <span style={{float:"left",fontSize:".75em!important",fontWeight: "500!important",color: "rgba(0,0,0,.6)"}}>
               <span className="description">{this.props.title_description}</span>
               <span className="note">{space}- {note}</span>

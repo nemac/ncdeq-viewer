@@ -1,6 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 import { TITLE } from '../constants/actionConstants';
+import HelperComponent from '../components/HelperComponent'
 
 import {
   SPACING,
@@ -63,7 +64,11 @@ var HeaderComponent = React.createClass({
           </div>
           <div className="seven wide column" style={{padding:"0px"}}>
             <div className="ui basic segment">
-              <h2>{this.state.title}</h2>
+              <h2>{this.state.title}
+                { !this.props.header_description_visibility &&
+                <HelperComponent helper_name={"Title"} color={"white"}/>
+                }
+              </h2>
             </div>
           </div>
           <div className="middle aligned column" style={{"marginRight": "14px"}}>
