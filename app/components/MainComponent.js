@@ -7,15 +7,10 @@ import ChartRowContainer from '../containers/ChartRowContainer';
 import MenuContainer from '../containers/MenuContainer';
 import HeaderContainer from '../containers/HeaderContainer';
 
-import {HEADER_HEIGHT ,
-  BREAD_CRUMBS_HEIGHT,
+import {
   HEADER_DESCRIPTION_VISIBILITY,
-  ROW_PADDING,
-  DEF_PAD,
   MAP_HEIGHT,
-  CHART_HEIGHT,
   CHART_VISIBILITY,
-  MAX_SEARCH_ZOOM,
   MAP_FULL_WIDTH,
   MAP_CHART_WIDTH,
   BOX_BORDER,
@@ -27,7 +22,7 @@ var MainComponent = React.createClass({
     handleResize: function(e) {
       //update map size when browser is reiszed.
       //  this updates redux store - MapComponent is subscribed to it.
-      this.props.update_MapHeight();
+      this.props.set_defaults();
     },
     shouldComponentUpdate: function(nextProps, nextState) {
       if(!nextProps.constants){
@@ -51,11 +46,8 @@ var MainComponent = React.createClass({
       //get and populate the map data
       this.props.get_defaultMapData();
 
-      //set default app i.e div heights, padding, and such
-      this.props.set_defaults();
-
       //leaflet needs an actual mapheight. and we want to dynamically resize the map as the user resizes the browser....
-      this.props.update_MapHeight();
+      this.props.set_defaults();
 
     },
     componentDidMount: function() {
@@ -82,16 +74,10 @@ var MainComponent = React.createClass({
       } else {
         is_chart_vis = this.props.charts.chart_visibility
       }
-      // let is_chart_vis = this.props.charts.chart_visibility ? true : false
-      // is_chart_vis = this.props ? true : this.props.charts.chart_visibility
-      const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : ROW_PADDING;
       const mapHeight = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
-      // const breadCrumbsHeight = this.props.default_settings ? this.props.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
-      // const headerHeight = this.props.default_settings ? this.props.default_settings.headerHeight : HEADER_HEIGHT;
-      const defpad = this.props.default_settings ? this.props.default_settings.defpad : DEF_PAD;
-      const chartHeight = this.props.default_settings ? this.props.default_settings.chartHeight : CHART_HEIGHT;
+
       const columnWidth = is_chart_vis ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
-      const header_description_visibility =  this.props.default_settings ? this.props.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
+      const header_description_visibility =  this.props.default_settings ? this.props.default_settings.HEADER_DESCRIPTION_VISIBILITY : HEADER_DESCRIPTION_VISIBILITY;
 
       const ADJUSTED_COLUMN_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : columnWidth;
 

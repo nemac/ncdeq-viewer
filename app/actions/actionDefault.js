@@ -1,135 +1,32 @@
 //action for setting and updating varoius dom stuff. like height and width of div's
 ///   this especially important for Leaflet which needs an absilte hieght to fill
-
-//get constants for default sizes and settings
-import {HEADER_HEIGHT,
-        HEADER_HEIGHT_SMALL,
-        HEADER_DESCRIPTION_VISIBILITY,
-        BREAD_CRUMBS_HEIGHT,
-        ROW_PADDING ,
-        DEF_PAD ,
-        MAP_HEIGHT ,
-        CHART_HEIGHT ,
-        CHART_VISIBILITY,
-        MAP_HEIGHT_OFFSET,
-        MAP_FULL_WIDTH_INT,
-        MAP_CHART_WIDTH_INT,
-        CHART_WIDTH_INT,
-        CHART_BORDER,
-        OVERIDE_WIDTH,
-        OVERIDE_WIDTH_NORMAL,
-        HEADER_PADDING,
-        SPACING} from '../constants/appConstants'
-
-
-function calculate_NewHeights(){
-  const padding = 14
-
-  const headerHeight = $('#headerrow').outerHeight()
-  const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
-  const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + padding)
-  const mapHeight = leftover
-  const chartHeight = leftover
-
-  const leftoverInner = window.innerHeight - (headerHeight + breadCrumbsHeight + (padding*2))
-  const chartWidth = $('#chartColumn').innerWidth()-(padding*2)
-  const chartSubColumn = $('#chartSubColumn').innerWidth()-(padding-2)
-  const chartHeader = $('#chartHeader').innerHeight()
-  const chartAreaHeight = leftoverInner-chartHeader
-  const mapWidth = $('#mapColumn').innerWidth() - (padding*2)
-
-
-  return {
-    headerHeight,
-    breadCrumbsHeight,
-    mapHeight,
-    chartHeight,
-    chartWidth,
-    mapWidth,
-    padding
-  }
-
-}
-export function update_ChartHeight(){
-    return (dispatch, getState) => {
-
-      const padding = 14
-
-      const headerHeight = $('#headerrow').outerHeight()
-      const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
-      const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + padding)
-      const mapHeight = leftover
-      const chartHeight = leftover
-
-      const leftoverInner = window.innerHeight - (headerHeight + breadCrumbsHeight + (padding*2))
-      const chartWidth = $('#chartColumn').innerWidth()-(padding*2)
-      const chartSubColumn = $('#chartSubColumn').innerWidth()-(padding-2)
-      const chartHeader = $('#chartHeader').innerHeight()
-      const chartAreaHeight = leftoverInner-chartHeader
-      const mapWidth = $('#mapColumn').innerWidth() - (padding*2)
-
-
-      return {
-        headerHeight,
-        breadCrumbsHeight,
-        mapHeight,
-        chartHeight,
-        chartWidth,
-        mapWidth,
-        padding
-      }
-
-      dispatch(defaultSate('UPDATE_CHART_HEIGHT',default_settings));
-
-    }
-}
-export function update_MapHeight(){
-    return (dispatch, getState) => {
-
-      //get redux state
-      const state = getState();
-      const heights = calculate_NewHeights(state);
-
-      const headerHeight = state.default_settings.default_settings ? state.default_settings.default_settings.headerHeight : HEADER_HEIGHT ;
-      const breadCrumbsHeight = state.default_settings.default_settings ? state.default_settings.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
-      const rowPadding = state.default_settings.default_settings ? state.default_settings.default_settings.rowPadding : ROW_PADDING;
-      const defpad = state.default_settings.default_settings ? state.default_settings.default_settings.defpad : DEF_PAD;
-      const mapHeight = heights.mapHeight;
-      const chartHeight = heights.chartHeight;
-      const mapWidth = heights.map_px_width;
-      const chartWidth = heights.chart_px_width;
-      const header_description_visibility =  state.default_settings.default_settings ? state.default_settings.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
-
-      //create map config object
-      const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth, header_description_visibility};
-
-      dispatch(defaultSate('UPDATE_MAP_HEIGHT',default_settings));
-
-    }
-}
-
+import {
+  HEADER_DESCRIPTION_VISIBILITY,
+} from '../constants/appConstants'
 export function update_HeaderVis(){
     return (dispatch, getState) => {
 
 
-      const header_description_visibility = false;
+      const HEADER_DESCRIPTION_VISIBILITY = false;
 
-      //get redux state
-      const state = getState();
-      const heights = calculate_NewHeights(state, true);
+      const PADDING = 14
 
-      const headerHeight = HEADER_HEIGHT_SMALL;
-      const breadCrumbsHeight = state.default_settings.default_settings ? state.default_settings.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
-      const rowPadding = state.default_settings.default_settings ? state.default_settings.default_settings.rowPadding : ROW_PADDING;
-      const defpad = state.default_settings.default_settings ? state.default_settings.default_settings.defpad : DEF_PAD;
-      const mapHeight = heights.mapHeight;
-      const chartHeight = heights.chartHeight;
-      const mapWidth = heights.map_px_width;
-      const chartWidth = heights.chart_px_width;
+      const HEADERHEIGHT = $('#headerrow').outerHeight()
+      const BREADCRUMBSHEIGHT = $('#breadCrumbsHeight').outerHeight()
+      const LEFTOVER = window.innerHeight - (HEADERHEIGHT + BREADCRUMBSHEIGHT + PADDING)
+      const MAPHEIGHT = LEFTOVER
+      const MAPWIDTH = $('#mapColumn').innerWidth() - (PADDING*2)
+      const CHARTWIDTH = $('#chartColumn').innerWidth()-(PADDING*2)
+
+
+      const mapHeight = LEFTOVER;
+      const chartHeight = LEFTOVER;
+      const mapWidth = MAPWIDTH;
+      const chartWidth = CHARTWIDTH;
 
 
       //create map config object
-      const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth, header_description_visibility};
+      const default_settings = {mapHeight, chartHeight, mapWidth, chartWidth, HEADER_DESCRIPTION_VISIBILITY};
 
       dispatch(defaultSate('UPDATE_HEADER_DESCRIPTION_VISIBILITY',default_settings));
 
@@ -137,25 +34,32 @@ export function update_HeaderVis(){
 }
 
 //default state
-export function set_defaults(e){
+export function set_defaults(){
   return (dispatch, getState) => {
 
     //get redux state
-    const state = getState();
+    const state = getState()
 
-    const headerHeight = HEADER_HEIGHT;
-    const breadCrumbsHeight = BREAD_CRUMBS_HEIGHT;
-    const rowPadding = ROW_PADDING;
-    const defpad = DEF_PAD;
-    const mapHeight = MAP_HEIGHT;
-    const chartHeight = CHART_HEIGHT;
-    const mapWidth = MAP_HEIGHT;
-    const chartWidth = CHART_HEIGHT;
-    const header_description_visibility =  state.default_settings.default_settings ? state.default_settings.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
+    const HEADER_DESCRIPTION_VISIBILITY_CHANGED =  state.default_settings.default_settings ? state.default_settings.default_settings.HEADER_DESCRIPTION_VISIBILITY : HEADER_DESCRIPTION_VISIBILITY;
 
+    const PADDING = 14
+    const HEADERHEIGHT = $('#headerrow').outerHeight()
+    const BREADCRUMBSHEIGHT = $('#breadCrumbsHeight').outerHeight()
+    const LEFTOVER = window.innerHeight - (HEADERHEIGHT + BREADCRUMBSHEIGHT + PADDING)
+    const MAPHEIGHT = LEFTOVER
+    const CHARTHEIGHT = LEFTOVER
+
+    const LEFTOVERINNER = window.innerHeight - (HEADERHEIGHT + BREADCRUMBSHEIGHT + (PADDING*2))
+    const CHARTWIDTH = $('#chartColumn').innerWidth()-(PADDING*2)
+    const CHARTSUBCOLUMN = $('#chartSubColumn').innerWidth()-(PADDING-2)
+    const CHARTHEADER = $('#chartHeader').innerHeight()
+    const CHARTAREAHEIGHT = LEFTOVERINNER-CHARTHEADER
+    const MAPWIDTH = $('#mapColumn').innerWidth() - (PADDING*2)
 
     //create map config object
-    const default_settings = {mapHeight, chartHeight, headerHeight, breadCrumbsHeight, rowPadding, defpad, mapWidth, chartWidth, header_description_visibility};
+    const default_settings = {PADDING, HEADERHEIGHT, BREADCRUMBSHEIGHT, LEFTOVER, MAPHEIGHT,
+                              CHARTHEIGHT, LEFTOVERINNER, CHARTWIDTH, CHARTSUBCOLUMN,
+                              CHARTHEADER, MAPWIDTH, HEADER_DESCRIPTION_VISIBILITY:HEADER_DESCRIPTION_VISIBILITY_CHANGED};
 
     dispatch(defaultSate('SET_DEFAULT_SETTINGS',default_settings));
 

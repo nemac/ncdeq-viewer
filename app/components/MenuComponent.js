@@ -21,7 +21,7 @@ var MenuComponent = React.createClass({
 
     //toggle chart visibility with button click
     this.props.update_ChartVisiblity();
-    this.props.update_MapHeight();
+    this.props.set_defaults();
 
     //update header vis in action
     this.props.update_HeaderVis()
@@ -37,7 +37,7 @@ var MenuComponent = React.createClass({
 
   },
   componentWillUpdate: function(nextProps, nextState) {
-    this.props.update_MapHeight();
+    this.props.set_defaults();
 
     const method = nextProps.searchMethod;
 
@@ -106,7 +106,7 @@ var MenuComponent = React.createClass({
   handleSearchClick: function(comp,e){
     //update header vis in action
     this.props.update_HeaderVis()
-    this.props.update_MapHeight();
+    this.props.set_defaults();
 
   },
   handleSearch: function(comp,e){

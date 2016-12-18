@@ -1,22 +1,29 @@
-export const HEADER_HEIGHT = 135;
-export const HEADER_HEIGHT_SMALL = 40;
-export const BREAD_CRUMBS_HEIGHT = 110;
-export const ROW_PADDING = 1;
-export const HEADER_PADDING = 15;
-export const DEF_PAD = 5;
-export const MAP_HEIGHT = 300;
-export const CHART_HEIGHT = 100;
+//HTML size defaults
+const PADDING = 14
+
+const HEADERHEIGHT = $('#headerrow').outerHeight()
+const BREADCRUMBSHEIGHT = $('#breadCrumbsHeight').outerHeight()
+const LEFTOVER = window.innerHeight - (HEADERHEIGHT + BREADCRUMBSHEIGHT + PADDING)
+const MAPHEIGHT = LEFTOVER
+const CHARTHEIGHT = LEFTOVER
+
+const LEFTOVERINNER = window.innerHeight - (HEADERHEIGHT + BREADCRUMBSHEIGHT + (PADDING*2))
+const CHARTWIDTH = $('#chartColumn').innerWidth()-(PADDING*2)
+const CHARTSUBCOLUMN = $('#chartSubColumn').innerWidth()-(PADDING-2)
+const CHARTHEADER = $('#chartHeader').innerHeight()
+const CHARTAREAHEIGHT = LEFTOVERINNER-CHARTHEADER
+const MAPWIDTH = $('#mapColumn').innerWidth() - (PADDING*2)
+
+//huc stuff
+export const START_POSITION = 0;
+export const CATALOGING_UNIT_FROM_HUC12_END_POISTION = 8;
+
+
+//map constants
 export const CHART_VISIBILITY = true;
 export const IMAGERY_VISIBILITY = false;
 export const HEADER_DESCRIPTION_VISIBILITY = true;
-export const MAX_SEARCH_ZOOM = 12;
-export const START_POSITION = 0;
-export const CATALOGING_UNIT_FROM_HUC12_END_POISTION = 8;
-export const MAP_HEIGHT_OFFSET = 0;
-export const CHART_BORDER = 30;
-export const CHART_WIDTH_PX = 100;
-export const CHART_HEIGHT_ADJUSTMENT = 126;
-//map constants
+
 export const NORTH_EAST_LATITUDE = 33.7528762817383;
 export const NORTH_EAST_LONGITUDE = -94.3218765258789;
 export const SOUTH_WEST_LATITUDE = 36.5880393981934;

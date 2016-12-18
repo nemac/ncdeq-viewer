@@ -3,16 +3,13 @@ var HeaderComponent = require('../components/HeaderComponent');
 
 var PropTypes = React.PropTypes;
 
-import {HEADER_HEIGHT ,
-  BREAD_CRUMBS_HEIGHT,
+import {
+  PADDING,
+
   HEADER_DESCRIPTION_VISIBILITY,
-  ROW_PADDING,
-  DEF_PAD,
   MAP_HEIGHT,
-  CHART_HEIGHT,
   CHART_VISIBILITY,
-  MAX_SEARCH_ZOOM,
-  MAP_FULL_WIDTH,
+   MAP_FULL_WIDTH,
   MAP_CHART_WIDTH
 } from '../constants/appConstants'
 
@@ -88,7 +85,6 @@ var ResourcesComponent = React.createClass({
     }
 
     const header_description_visibility =  this.props.default_settings ? this.props.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
-    const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : ROW_PADDING;
 
     const HeaderContent = "The purpose of this tool is to display the Division of Mitigation Services Targeted Resource Areas (TRAs) and " +
                     "identify watersheds where ecological and hydrological function can be improved.  " +
@@ -108,8 +104,8 @@ var ResourcesComponent = React.createClass({
         <div className="ui stackable internally celled sixteen wide column grid">
           <div className="stretched row" >
 
-            <div className="row" style={{borderWidth:'1px',padding:rowPadding +'px'}} >
-              <div className="ui sixteen column padded grid" style={{padding:rowPadding +'px'}} >
+            <div className="row" style={{borderWidth:'1px',padding:PADDING +'px'}} >
+              <div className="ui sixteen column padded grid" style={{padding:PADDING +'px'}} >
                 <div className="ui relaxed divided list">
                   {this.get_links()}
                 </div>

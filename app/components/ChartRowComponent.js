@@ -10,9 +10,7 @@ import ChartPieContainer from '../containers/ChartPieContainer';
 
 import {
   CHART_WIDTH,
-  CHART_WIDTH_PX,
   MAP_HEIGHT,
-  CHART_HEIGHT_ADJUSTMENT,
   BOX_BORDER,
   SPACING,
   BACKGROUND_COLOR_BG,
@@ -127,8 +125,9 @@ var ChartRow = React.createClass({
   chartToggle: function(e){
 
     this.props.update_ChartVisiblity();
+    
     //update map height comes after chart vis sp map will resize to full hieght.
-    this.props.update_MapHeight();
+    this.props.set_defaults();
 
     //update header vis in action
     this.props.update_HeaderVis()
@@ -485,13 +484,13 @@ var ChartRow = React.createClass({
       // {"NAME":"CATCHMENT_BASELINE", "TYPE": "ChartSimpleBar"}
 
       // chart_type="LANDUSE_LANDCOVER_HUC12"
-      // chart_width={chart_width_px}
+      // chart_width={}
       // geography="HUC12"
       // title="Landuse-Landcover"
       // description=""
       // use_percent={true}
 
-      //   chart_width={chart_width_px}
+      //   chart_width={}
       //   title="Landuse-Landcover (HUC12)"
       //   title_description=""
       //   note={"For HUC12: " + chart_filter}
@@ -529,12 +528,6 @@ var ChartRow = React.createClass({
     const working_message = working ? "loading..." : ""
     const working_class = working ? "ui active inverted fluid dimmer" : "ui disabled inverted dimmer"
 
-    //get chart width in pixels from redux should handle resize in actiion creators
-    let chart_width_px = CHART_WIDTH_PX;
-
-    //not sure yet ho to handle this but chartHeight needs to be adjusted by to px in the chart component
-    let chart_grid_height =  MAP_HEIGHT-CHART_HEIGHT_ADJUSTMENT;
-
     let searchMethod = ""
     let show_point = false;
 
@@ -543,13 +536,6 @@ var ChartRow = React.createClass({
     if(this.props.searchMethod){
         searchMethod = this.props.searchMethod;
         show_point =  (searchMethod === "location searched" || searchMethod === "clicked" || searchMethod === "tra clicked" || searchMethod === "chart clicked" ||  searchMethod.substring(0,11) === 'chart hover');
-    }
-
-    //get the chart width and chart height settings from the redux store
-    //  so we can pass it as a prop to the chart components
-    if(this.props.default_settings){
-      chart_width_px = this.props.default_settings.chartWidth;
-      chart_grid_height = this.props.default_settings.mapHeight-CHART_HEIGHT_ADJUSTMENT;
     }
 
     let is_chart_vis = true
@@ -722,7 +708,6 @@ var ChartRow = React.createClass({
       const tra_header = "Is it in a Targeted Resource Area (TRA)?"
 
       const display_start_message = (chart_filter ? 'none' : 'show');
-      // const no_show_height = chart_filter ? chart_grid_height : 0;
 
       const headerHeight = $('#headerrow').outerHeight()
       const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()

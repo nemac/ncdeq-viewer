@@ -9,7 +9,6 @@ import MapLayerToggleWrapper from '../components/MapLayerToggleWrapper'
 //app constants
 import {
   MAP_HEIGHT,
-  DEF_PAD,
   SPACING
 } from '../constants/appConstants';
 
@@ -39,7 +38,7 @@ var MapComponent = React.createClass({
 
     //toggle chart visibility with button click
     this.props.update_ChartVisiblity();
-    this.props.update_MapHeight();
+    this.props.set_defaults();
 
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
@@ -847,7 +846,6 @@ var MapComponent = React.createClass({
 
     //not sure yet ho to handle this but mapHeight needs to be adjusted by to px in the map component
     const mapHeight_adjustment = 10;
-    const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;
     const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight-mapHeight_adjustment : MAP_HEIGHT-mapHeight_adjustment;
     const chartVisibility = this.props.chart ? this.props.chart.chart_visibility : null;
 
