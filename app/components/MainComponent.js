@@ -9,7 +9,6 @@ import HeaderContainer from '../containers/HeaderContainer';
 
 import {
   HEADER_DESCRIPTION_VISIBILITY,
-  MAP_HEIGHT,
   CHART_VISIBILITY,
   MAP_FULL_WIDTH,
   MAP_CHART_WIDTH,
@@ -74,17 +73,14 @@ var MainComponent = React.createClass({
       } else {
         is_chart_vis = this.props.charts.chart_visibility
       }
-      const mapHeight = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
 
       const columnWidth = is_chart_vis ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
       const header_description_visibility =  this.props.default_settings ? this.props.default_settings.HEADER_DESCRIPTION_VISIBILITY : HEADER_DESCRIPTION_VISIBILITY;
 
       const ADJUSTED_COLUMN_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : columnWidth;
 
-      const headerHeight = $('#headerrow').outerHeight()
-      const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
-      const padding = 14
-      const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight)
+      const padding = this.props.default_settings ? this.props.default_settings.PADDING : 0;
+      const leftover =  this.props.default_settings ? this.props.default_settings.MAPHEIGHT : 0;
 
       return (
         <div className="ui stackable one column padded grid" style={{backgroundColor: BACKGROUND_COLOR_BG}}>
@@ -100,11 +96,11 @@ var MainComponent = React.createClass({
                 <div className="row" style={{padding:"0px"}}>
                   {/* only render the charts section when the user has made the charts visibility true */}
                   { is_chart_vis &&
-                    <div id="chartColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,padding:"14px"}}>
+                    <div id="chartColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,"padding":padding+"px"}}>
                       <ChartRowContainer />
                     </div>
                   }
-                  <div id="mapColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,padding:"14px"}}>
+                  <div id="mapColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,"padding":padding+"px"}}>
                     <MapRowComponent columnWidth={columnWidth} />
                   </div>
                 </div>

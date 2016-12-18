@@ -8,8 +8,8 @@ import MapLayerToggleWrapper from '../components/MapLayerToggleWrapper'
 
 //app constants
 import {
-  MAP_HEIGHT,
-  SPACING
+  SPACING,
+  PADDING
 } from '../constants/appConstants';
 
 import { HUC12_MAP_FEATUREID, IMAGERY_BASEMAP, BASE_MAP_LABELS,
@@ -31,7 +31,11 @@ var MapComponent = React.createClass({
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize(true)}, 200);
+      if(leafletMap){
+        setTimeout(function(){
+          leafletMap.invalidateSize(true)
+        }, 200);
+      }
     };
   },
   handleChartButtonClick: function(comp,e){
@@ -841,21 +845,18 @@ var MapComponent = React.createClass({
         tileUrl:'https://api.tiles.mapbox.com/v3/daveism.oo0p88l4/{z}/{x}/{y}.png',
       }
     },
+
   render: function() {
 
 
     //not sure yet ho to handle this but mapHeight needs to be adjusted by to px in the map component
-    const mapHeight_adjustment = 10;
-    const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight-mapHeight_adjustment : MAP_HEIGHT-mapHeight_adjustment;
     const chartVisibility = this.props.chart ? this.props.chart.chart_visibility : null;
 
     const imageryVisibility = this.props.imagery_visibility ? this.props.imagery_visibility : false;
 
-    const headerHeight = $('#headerrow').outerHeight()
-    const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
-    const padding = 14
-    const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + (padding*2))
-    const mapwidth = $('#mapSubColumn').innerWidth()
+    const padding = this.props.default_settings ? this.props.default_settings.PADDING : 0;
+    const leftover =  this.props.default_settings ? this.props.default_settings.MAPHEIGHT - (padding) : 0;
+    const mapwidth = this.props.default_settings ? this.props.default_settings.MAPWIDTH : 0;
 
     return (
       <div style={{height:leftover,width:mapwidth,padding:"0px"}}>
@@ -870,8 +871,6 @@ var MapComponent = React.createClass({
           maxBounds={this.props.map_settings.maxBounds}
           maxZoom={this.props.map_settings.maxZoom}
           minZoom={this.props.map_settings.minZoom}
-          height={leftover}
-          width={mapwidth}
           >
 
           <Control position="topright" className="mapbutton" >

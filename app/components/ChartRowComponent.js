@@ -125,7 +125,7 @@ var ChartRow = React.createClass({
   chartToggle: function(e){
 
     this.props.update_ChartVisiblity();
-    
+
     //update map height comes after chart vis sp map will resize to full hieght.
     this.props.set_defaults();
 
@@ -709,19 +709,15 @@ var ChartRow = React.createClass({
 
       const display_start_message = (chart_filter ? 'none' : 'show');
 
-      const headerHeight = $('#headerrow').outerHeight()
-      const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
-      const padding = 14
-      const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + padding)
-
-      const leftoverInner = window.innerHeight - (headerHeight + breadCrumbsHeight + (padding*2))
-      const chartWidth = $('#chartColumn').innerWidth()-(padding*2)
-      const chartSubColumn = $('#chartSubColumn').innerWidth()-(padding-2)
-      const chartHeader = $('#chartHeader').innerHeight()
-      const chartAreaHeight = leftoverInner-chartHeader
+      const padding = this.props.default_settings ? this.props.default_settings.PADDING : 0;
+      const leftover =  this.props.default_settings ? this.props.default_settings.LEFTOVER - (padding) : 0;
+      const chartWidth = this.props.default_settings ? this.props.default_settings.CHARTWIDTH : 0;
+      const chartAreaHeight = this.props.default_settings ? this.props.default_settings.CHARTAREAHEIGHT : 0;
+      const chartHeader = this.props.default_settings ? this.props.default_settings.CHARTHEADER : 0;
+      const chartSubColumn = this.props.default_settings ? this.props.default_settings.CHARTSUBCOLUMN : 0;
+      const leftoverInner = this.props.default_settings ? this.props.default_settings.LEFTOVERINNER : 0;
       const no_show_height = chart_filter ? chartAreaHeight : 0;
-
-
+      
     return (
         <div id="chartSubColumn" style={{height:leftover,width:chartWidth,padding:"0px",margin:"0px"}}>
 

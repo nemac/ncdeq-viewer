@@ -6,11 +6,11 @@ var AccordionComponent = React.createClass({
   componentDidMount: function() {
 
   },
-header
-description
-note
-content or chidlren
-helper_name
+// header
+// description
+// note
+// content or chidlren
+// helper_name
 
   render: function() {
 

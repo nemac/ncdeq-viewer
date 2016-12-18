@@ -149,6 +149,7 @@ const ChartPie = React.createClass({
   },
   componentDidUpdate: function(prevProps, prevState) {
     $('.PieChart .recharts-layer.recharts-pie').attr("transform","translate(-100)");
+    $('.PieChart .recharts-layer.recharts-pie').attr("transform","translate(-100)");
 
   },
 	render () {
