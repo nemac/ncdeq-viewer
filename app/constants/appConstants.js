@@ -37,11 +37,11 @@ export const MAX_ZOOM = 16;
 
 // semantic constants
 export const MAP_FULL_WIDTH = "sixteen"
-export const MAP_CHART_WIDTH = "nine"; // these two need to add up to sixteen
-export const CHART_WIDTH = "seven";
+export const MAP_CHART_WIDTH = "eight"; // these two need to add up to sixteen
+export const CHART_WIDTH = "eight";
 export const MAP_FULL_WIDTH_INT = 16;
-export const MAP_CHART_WIDTH_INT = 9; // these two need to add up to sixteen
-export const CHART_WIDTH_INT= 7;
+export const MAP_CHART_WIDTH_INT = 8; // these two need to add up to sixteen
+export const CHART_WIDTH_INT= 8;
 export const OVERIDE_WIDTH = 1030;
 export const OVERIDE_WIDTH_NORMAL = 768;
 
