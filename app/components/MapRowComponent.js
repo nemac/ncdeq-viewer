@@ -10,7 +10,7 @@ var MapRowComponent = React.createClass({
     const headerHeight = $('#headerrow').outerHeight()
 
     const padding = this.props.default_settings ? this.props.default_settings.PADDING : 0;
-    const leftover =  this.props.default_settings ? this.props.default_settings.MAPHEIGHT - (padding) : 0;
+    const leftover =  this.props.default_settings ? this.props.default_settings.LEFTOVER - (padding) : 0;
     const mapwidth = this.props.default_settings ? this.props.default_settings.MAPWIDTH : 0;
 
     return (

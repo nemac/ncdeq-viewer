@@ -1,7 +1,7 @@
 import React from 'react';
 
 //import components
-var MapRowComponent = require('../components/MapRowComponent');
+import MapRowContainer from '../containers/MapRowContainer';
 var ModalAbout = require('../components/ModalAbout');
 import ChartRowContainer from '../containers/ChartRowContainer';
 import MenuContainer from '../containers/MenuContainer';
@@ -51,8 +51,6 @@ var MainComponent = React.createClass({
     },
     componentDidMount: function() {
 
-
-
       //handle resize.  - map and chart areas should scale to browser
       //width and height
       window.addEventListener('resize', this.handleResize);
@@ -101,7 +99,7 @@ var MainComponent = React.createClass({
                     </div>
                   }
                   <div id="mapColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,"padding":padding+"px"}}>
-                    <MapRowComponent columnWidth={columnWidth} />
+                    <MapRowContainer columnWidth={columnWidth} />
                   </div>
                 </div>
               </div>
