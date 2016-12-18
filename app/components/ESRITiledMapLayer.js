@@ -4,6 +4,7 @@ import { PropTypes } from 'react';
 import { tileLayer } from 'leaflet';
 import { tiledMapLayer } from 'esri-leaflet'
 var esri = require('esri-leaflet')
+import { get_attribution } from '../utils/helpers';
 
 export default class ESRITileMapLayer extends BaseTileLayer {
   componentWillMount() {
@@ -21,17 +22,20 @@ export default class ESRITileMapLayer extends BaseTileLayer {
     if(max_zoom){
       the_max_zoom = max_zoom;
     }
+
     //make sure min_zoom json is set to null
     var the_min_zoom = 0;
     if(min_zoom){
       the_min_zoom = min_zoom;
     }
+    
     let the_ZIndex = 0;
     if(z_Index){
       the_ZIndex = z_Index;
     }
 
     var name = this.props.name
+    const the_attribution = get_attribution(name);
 
     //add layer to map from tiled service
     this.leafletElement = esri.tiledMapLayer({
@@ -41,6 +45,7 @@ export default class ESRITileMapLayer extends BaseTileLayer {
       minZoom: the_min_zoom,
       maxNativeZoom: the_max_zoom,
       zIndex: the_ZIndex,
+      attribution: the_attribution,
     })
 
     const thelayer = this.leafletElement

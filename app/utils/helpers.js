@@ -14,6 +14,19 @@ export function get_helper(topic){
 
 }
 
+export function get_attribution(topic){
+
+   if(typeof topic != 'string') return ""
+    //JSON_HELPERS from config helpers.json file
+    //  this is read into the body of the index.htm file as
+    //  a global obect so users do not have to rebuild node
+    const helper = JSON_CONSTANTS.filter( helper => {
+      return helper.name.toUpperCase() === topic.toUpperCase()
+    })
+
+    return helper[0] && helper[0].attribution ?  helper[0].attribution : null;
+
+}
 export function get_constant(constant_name){
     //JSON_CONSTANTS from config constants.json file
     //  this is read into the body of the index.htm file as

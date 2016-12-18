@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
-import { get_ChartData, get_TRAData, update_ChartVisiblity, update_MapHeight, get_LayerInfo_ByValue, change_geographyLevelActive, set_search_method, get_tra_info, update_ChartLevels, update_HeaderVis, get_nlcd_data, get_nlcd_data_huc12, get_catchment_data, get_LayerGeom_ByValue} from '../actions/actionCreators'
+import { set_defaults, get_ChartData, get_TRAData, update_ChartVisiblity, get_LayerInfo_ByValue, change_geographyLevelActive, set_search_method, get_tra_info, update_ChartLevels, update_HeaderVis, get_nlcd_data, get_nlcd_data_huc12, get_catchment_data, get_LayerGeom_ByValue} from '../actions/actionCreators'
 import ChartPieComponent from '../components/ChartPieComponent'
 
 //either rename the properties or rename it also in main
@@ -14,6 +14,8 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     get_ChartData: bindActionCreators(get_ChartData,dispatch),
+    set_defaults: bindActionCreators(set_defaults, dispatch),
+
   }
 }
 const ChartPieContainer = connect(

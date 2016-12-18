@@ -8,16 +8,15 @@ import MapLayerToggleWrapper from '../components/MapLayerToggleWrapper'
 
 //app constants
 import {
-  MAP_HEIGHT,
-  DEF_PAD,
-  SPACING
+  SPACING,
+  PADDING
 } from '../constants/appConstants';
 
 import { HUC12_MAP_FEATUREID, IMAGERY_BASEMAP, BASE_MAP_LABELS,
          BASE_MAP, CATCHMENTS_BASE_MAP, HUC12_BASE_MAP, HUC8_BASE_MAP,
          HUC6_BASE_MAP, TRA_BASE_MAP  } from '../constants/actionConstants';
 
-import { getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd, get_HUC} from '../utils/helpers';
+import { get_attribution, getCategoryName, getNextLevelName, getPrevLevelName, get_matchEnd, get_HUC} from '../utils/helpers';
 
 var PropTypes = React.PropTypes;
 
@@ -29,22 +28,29 @@ var GeoJSON_Layers = {"huc8": null,
 
 var MapComponent = React.createClass({
   handleResize: function(){
+
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize(true)}, 200);
+      if(leafletMap){
+        leafletMap.invalidateSize(true)
+      }
     };
   },
   handleChartButtonClick: function(comp,e){
 
     //toggle chart visibility with button click
     this.props.update_ChartVisiblity();
-    this.props.update_MapHeight();
+    this.props.set_defaults();
+    const self = this;
 
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize(true)}, 200);
+      leafletMap.invalidateSize(true)
+      setTimeout(function(){
+        self.props.set_defaults();
+      }, 100);
     };
   },
   //get geojson symbology
@@ -455,6 +461,11 @@ var MapComponent = React.createClass({
     }
 
   },
+  componentDidMount: function() {
+    $('.leaflet-bottom.leaflet-left').css('z-index',100000)
+    $('.leaflet-top.leaflet-left').css('z-index',1)
+
+  },
   componentDidUpdate: function(prevProps, prevState) {
     //check if there was a prevProps
     // need to functionise this.
@@ -837,19 +848,21 @@ var MapComponent = React.createClass({
         tileUrl:'https://api.tiles.mapbox.com/v3/daveism.oo0p88l4/{z}/{x}/{y}.png',
       }
     },
+
   render: function() {
 
 
     //not sure yet ho to handle this but mapHeight needs to be adjusted by to px in the map component
-    const mapHeight_adjustment = 10;
-    const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : DEF_PAD;
-    const mapHght = this.props.default_settings ? this.props.default_settings.mapHeight-mapHeight_adjustment : MAP_HEIGHT-mapHeight_adjustment;
     const chartVisibility = this.props.chart ? this.props.chart.chart_visibility : null;
 
     const imageryVisibility = this.props.imagery_visibility ? this.props.imagery_visibility : false;
 
+    const padding = this.props.default_settings ? this.props.default_settings.PADDING : 0;
+    const leftover =  this.props.default_settings ? this.props.default_settings.LEFTOVER - (padding) : 0;
+    const mapwidth = this.props.default_settings ? this.props.default_settings.MAPWIDTH : 0;
+
     return (
-      <div className="sixteen wide stackable column" style={{paddingLeft: rowPadding + 'px',paddingRight: rowPadding + 'px',paddingTop: rowPadding + 'px',height: mapHght + 'px'}}>
+      <div style={{height:leftover,width:mapwidth,padding:"0px"}} onResize={this.handleResize()} >
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
           onLeafletZoomEnd={this.HandleMapEnd.bind(null,this)}
@@ -860,7 +873,8 @@ var MapComponent = React.createClass({
           zoom={this.props.map_settings.zoom}
           maxBounds={this.props.map_settings.maxBounds}
           maxZoom={this.props.map_settings.maxZoom}
-          minZoom={this.props.map_settings.minZoom} >
+          minZoom={this.props.map_settings.minZoom}
+          >
 
           <Control position="topright" className="mapbutton" >
             <button className="ui black button" onClick={this.handleChartButtonClick.bind(null,this)} style={{paddingLeft: SPACING,paddingRight: SPACING,width:"140px"}}>
@@ -870,7 +884,7 @@ var MapComponent = React.createClass({
           </Control>
 
           <Control position="bottomleft" className="mapbutton" >
-            <button className="ui grey mini button" onClick={this.props.use_imagery} style={{width:"140px"}}>
+            <button className="ui grey mini button" onClick={this.props.use_imagery} style={{width:"140px",marginBottom:"14px",zIndex:10000000}}>
               {imageryVisibility ? "Show Map" : "Show Satellite" }
             </button>
           </Control>
@@ -952,8 +966,8 @@ var MapComponent = React.createClass({
 
     </ReactLeaflet.Map>
   }
+</div>
 
-  </div>
     );
   }
 });

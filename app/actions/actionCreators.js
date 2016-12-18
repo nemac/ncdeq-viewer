@@ -49,8 +49,6 @@ export const get_all_geometries = MapConfig.get_all_geometries;
 //default app actions
 export const set_defaults = ActionDefault.set_defaults;
 export const update_HeaderVis = ActionDefault.update_HeaderVis;
-export const update_ChartHeight = ActionDefault.update_ChartHeight;
-export const update_MapHeight = ActionDefault.update_MapHeight;
 export const set_LeafletMap = ActionLeaflet.set_LeafletMap;
 export const use_imagery = ActionLeaflet.use_imagery;
 

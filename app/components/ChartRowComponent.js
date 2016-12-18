@@ -4,17 +4,13 @@ import ChartRowWrapper from '../containers/ChartRowWrapperContainer';
 import ChartPie from '../components/ChartPie';
 import ChartSimpleBar from '../components/ChartSimpleBar';
 import ChartTRA from '../components/ChartTRA';
-var SectionWrapper = require('./SectionWrapper');
 import HelperComponent from '../components/HelperComponent'
 
 import ChartPieContainer from '../containers/ChartPieContainer';
 
-
 import {
   CHART_WIDTH,
-  CHART_WIDTH_PX,
   MAP_HEIGHT,
-  CHART_HEIGHT_ADJUSTMENT,
   BOX_BORDER,
   SPACING,
   BACKGROUND_COLOR_BG,
@@ -129,8 +125,9 @@ var ChartRow = React.createClass({
   chartToggle: function(e){
 
     this.props.update_ChartVisiblity();
+
     //update map height comes after chart vis sp map will resize to full hieght.
-    this.props.update_MapHeight();
+    this.props.set_defaults();
 
     //update header vis in action
     this.props.update_HeaderVis()
@@ -487,13 +484,13 @@ var ChartRow = React.createClass({
       // {"NAME":"CATCHMENT_BASELINE", "TYPE": "ChartSimpleBar"}
 
       // chart_type="LANDUSE_LANDCOVER_HUC12"
-      // chart_width={chart_width_px}
+      // chart_width={}
       // geography="HUC12"
       // title="Landuse-Landcover"
       // description=""
       // use_percent={true}
 
-      //   chart_width={chart_width_px}
+      //   chart_width={}
       //   title="Landuse-Landcover (HUC12)"
       //   title_description=""
       //   note={"For HUC12: " + chart_filter}
@@ -531,12 +528,6 @@ var ChartRow = React.createClass({
     const working_message = working ? "loading..." : ""
     const working_class = working ? "ui active inverted fluid dimmer" : "ui disabled inverted dimmer"
 
-    //get chart width in pixels from redux should handle resize in actiion creators
-    let chart_width_px = CHART_WIDTH_PX;
-
-    //not sure yet ho to handle this but chartHeight needs to be adjusted by to px in the chart component
-    let chart_grid_height =  MAP_HEIGHT-CHART_HEIGHT_ADJUSTMENT;
-
     let searchMethod = ""
     let show_point = false;
 
@@ -545,13 +536,6 @@ var ChartRow = React.createClass({
     if(this.props.searchMethod){
         searchMethod = this.props.searchMethod;
         show_point =  (searchMethod === "location searched" || searchMethod === "clicked" || searchMethod === "tra clicked" || searchMethod === "chart clicked" ||  searchMethod.substring(0,11) === 'chart hover');
-    }
-
-    //get the chart width and chart height settings from the redux store
-    //  so we can pass it as a prop to the chart components
-    if(this.props.default_settings){
-      chart_width_px = this.props.default_settings.chartWidth;
-      chart_grid_height = this.props.default_settings.mapHeight-CHART_HEIGHT_ADJUSTMENT;
     }
 
     let is_chart_vis = true
@@ -721,20 +705,46 @@ var ChartRow = React.createClass({
 
       const ADJUSTED_TITLE_HEIGHT = window.innerWidth < 1260 ? "3.5em" : "3em";
 
+      const tra_header = "Is it in a Targeted Resource Area (TRA)?"
+
+      const display_start_message = (chart_filter ? 'none' : 'show');
+
+      const padding = this.props.default_settings ? this.props.default_settings.PADDING : 0;
+      const leftover =  this.props.default_settings ? this.props.default_settings.LEFTOVER - (padding) : 0;
+      const chartWidth = this.props.default_settings ? this.props.default_settings.CHARTWIDTH : 0;
+      const chartAreaHeight = this.props.default_settings ? this.props.default_settings.CHARTAREAHEIGHT : 0;
+      const chartHeader = this.props.default_settings ? this.props.default_settings.CHARTHEADER : 0;
+      const chartSubColumn = this.props.default_settings ? this.props.default_settings.CHARTSUBCOLUMN : 0;
+      const leftoverInner = this.props.default_settings ? this.props.default_settings.LEFTOVERINNER : 0;
+      const no_show_height = chart_filter ? chartAreaHeight : 0;
+      
     return (
-      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{height:chart_grid_height,paddingLeft:"10px",paddingRight:"7px",paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
+        <div id="chartSubColumn" style={{height:leftover,width:chartWidth,padding:"0px",margin:"0px"}}>
 
+        { chart_filter &&
 
-        <div className="ui sticky" style={{border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
+        <div id="chartHeader" className="ui sticky" style={{border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
           <div className="content" style={{marginTop: SPACING}}>
           <div className="ui header">
             {chart_cataloging_unit}
           </div>
         </div>
         </div>
-       <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,width:chart_width_px+21,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
-      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{width:chart_width_px,overflow:"visible"}}>
-        <div className={working_class} style={{height:chart_grid_height+100}}>
+      }
+
+      <div className="ui basic segment" style={{display:display_start_message,height:leftoverInner,border:BOX_BORDER,padding: SPACING,marginBottom:"7px",backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
+        <div className="content" style={{marginTop: SPACING}}>
+        <div className="ui header">
+          {chart_cataloging_unit}
+        </div>
+      </div>
+      </div>
+
+
+       <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,width:chartWidth+21,paddingRight:SPACING,height:no_show_height,overflowY:"scroll",overflowX:"hidden"}}>
+
+      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{width:chartWidth,overflow:"visible"}}>
+        <div className={working_class} style={{height:'100%'}}>
             <div className="ui loader" ></div>
         </div>
 
@@ -746,8 +756,8 @@ var ChartRow = React.createClass({
           <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: ADJUSTED_TITLE_HEIGHT}}>
             <div className="header" style={{fontSize: "1.28571429em",fontWeight: "700"}}>
               <i className="dropdown left floated icon" style={{float:"left"}}></i>
-              <span style={{float:"left"}}>Is it in a TRA?
-                  <HelperComponent helper_name={"TRA Point"}/> 
+                <span style={{float:"left"}}>{tra_header}
+                  <HelperComponent helper_name={"TRA Point"}/>
               </span>
               <span style={{float:"left",fontSize:".75em!important",fontWeight: "500!important",color: "rgba(0,0,0,.6)"}}>
                 <span className="description"></span>
@@ -769,7 +779,7 @@ var ChartRow = React.createClass({
 
       { chart_filter &&
         <ChartRowWrapper key="tra"
-          chart_width={chart_width_px}
+          chart_width={chartSubColumn}
           title="Targeted Resource Areas"
           title_description=""
           note={tra_note}
@@ -796,7 +806,7 @@ var ChartRow = React.createClass({
         }
         { chart_filter &&
         <ChartRowWrapper key="baseline"
-          chart_width={chart_width_px}
+          chart_width={chartSubColumn}
           title="BASELINE"
           title_description=""
           note="The taller the bar chart the more degraded"
@@ -823,7 +833,7 @@ var ChartRow = React.createClass({
         }
         { chart_filter &&
         <ChartRowWrapper key="uplift"
-          chart_width={chart_width_px}
+          chart_width={chartSubColumn}
           title="UPLIFT"
           title_description=""
           note="The taller the bar chart the more potential for improvement."
@@ -850,7 +860,7 @@ var ChartRow = React.createClass({
          }
          { chart_filter &&
            <ChartPie
-             chart_width={chart_width_px}
+             chart_width={chartSubColumn}
              title="Landuse-Landcover (HUC12)"
              chart_type="Landuse-Landcover HUC12"
              title_description=""
@@ -863,7 +873,7 @@ var ChartRow = React.createClass({
          }
          { chart_filter &&
            <ChartPie
-             chart_width={chart_width_px}
+             chart_width={chartSubColumn}
              title="Landuse-Landcover (Catchment)"
              chart_type="Landuse-Landcover Catchment"
              title_description=""
@@ -875,7 +885,7 @@ var ChartRow = React.createClass({
          { chart_filter && catchment_chart_ar &&
 
            <ChartSimpleBar
-             chart_width={chart_width_px}
+             chart_width={chartSubColumn}
              title="Baseline (Catchment)"
              chart_type="Baseline Catchment"
              title_description=""
@@ -896,13 +906,3 @@ var ChartRow = React.createClass({
 });
 
 module.exports = ChartRow;
-
-
-// <ChartPie
-//   chart_width={chart_width_px}
-//   title="Landuse-Landcover (HUC12)"
-//   title_description=""
-//   note={"For HUC12: " + chart_filter}
-//   chart_data={ncld_chart_data_huc12}
-//   use_percent={true}
-//   />

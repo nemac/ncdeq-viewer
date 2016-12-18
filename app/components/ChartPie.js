@@ -141,8 +141,15 @@ const renderLegendTotal = (props) => {
 const ChartPie = React.createClass({
 
   componentDidMount: function() {
+    const chart_width = this.props.chart_width < 500 ? this.props.chart_width/2.5 : this.props.chart_width/2;
+
     $('.ui.accordion').accordion();
     $('.PieChart .recharts-surface').css("overflow","visible");
+
+  },
+  componentDidUpdate: function(prevProps, prevState) {
+    $('.PieChart .recharts-layer.recharts-pie').attr("transform","translate(-100)");
+    $('.PieChart .recharts-layer.recharts-pie').attr("transform","translate(-100)");
 
   },
 	render () {

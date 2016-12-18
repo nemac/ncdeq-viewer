@@ -2,8 +2,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 //import actions
-import { set_search_method, get_MenuList, get_ChartData, get_TRAData, change_geographyLevelActive,
-         change_geographyLevelFilter, handleSearchChange, update_ChartVisiblity, update_MapHeight,
+import { set_defaults, set_search_method, get_MenuList, get_ChartData, get_TRAData, change_geographyLevelActive,
+         change_geographyLevelFilter, handleSearchChange, update_ChartVisiblity,
          set_mapToPoint, get_LayerInfo_ByValue, update_HeaderVis, get_all_geometries } from '../actions/actionCreators'
 
 //import components
@@ -41,7 +41,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     get_MenuList: bindActionCreators(get_MenuList, dispatch),
     update_ChartVisiblity: bindActionCreators(update_ChartVisiblity, dispatch),
-    update_MapHeight: bindActionCreators(update_MapHeight, dispatch),
     change_geographyLevelActive: bindActionCreators(change_geographyLevelActive,dispatch),
     change_geographyLevelFilter: bindActionCreators(change_geographyLevelFilter,dispatch),
     get_ChartData: bindActionCreators(get_ChartData,dispatch),
@@ -52,6 +51,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     set_search_method: bindActionCreators(set_search_method,dispatch),
     update_HeaderVis: bindActionCreators(update_HeaderVis, dispatch),
     get_all_geometries: bindActionCreators(get_all_geometries, dispatch),
+    set_defaults: bindActionCreators(set_defaults, dispatch),
 
   }
 }
