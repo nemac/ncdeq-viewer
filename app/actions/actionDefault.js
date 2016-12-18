@@ -22,77 +22,62 @@ import {HEADER_HEIGHT,
         SPACING} from '../constants/appConstants'
 
 
-function calculate_NewHeights(state, header_overide){
+function calculate_NewHeights(){
   const padding = 14
-  //when state is not defined yet set to default CHART_VISIBILITY
-  var vis = state.chartData.chart_visibility ? state.chartData.chart_visibility : CHART_VISIBILITY;
-  const height = header_overide ? HEADER_HEIGHT_SMALL : HEADER_HEIGHT
-  const headerHeight = $('#headerrow').outerHeight() //state.default_settings.default_settings ? state.default_settings.default_settings.headerHeight : HEADER_HEIGHT ;
-  const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()//state.default_settings.default_settings ? state.default_settings.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
-  const rowPadding = padding //state.default_settings.default_settings ? state.default_settings.default_settings.rowPadding : ROW_PADDING;
-  const headerPadding =  HEADER_PADDING;
 
-  const defpad = state.default_settings.default_settings ? state.default_settings.default_settings.defpad : DEF_PAD;
+  const headerHeight = $('#headerrow').outerHeight()
+  const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
+  const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + padding)
+  const mapHeight = leftover
+  const chartHeight = leftover
 
+  const leftoverInner = window.innerHeight - (headerHeight + breadCrumbsHeight + (padding*2))
+  const chartWidth = $('#chartColumn').innerWidth()-(padding*2)
+  const chartSubColumn = $('#chartSubColumn').innerWidth()-(padding-2)
+  const chartHeader = $('#chartHeader').innerHeight()
+  const chartAreaHeight = leftoverInner-chartHeader
+  const mapWidth = $('#mapColumn').innerWidth() - (padding*2)
 
-  //map and chart areas should scale to browser
-  //for leaflet the map height needs to be explicit
-  //adjustable heights.
-  //first get whats leftover from fixed components
-  // the calculate the map hieght.
-  //give the rest to the chart
-
-  const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + rowPadding)
-
-  let chart_px_width = (window.innerWidth * (CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (14*2)
-
-  if (window.innerWidth < OVERIDE_WIDTH){
-    chart_px_width = (window.innerWidth  - (CHART_BORDER));
-  }
-
-  const map_px_width = (window.innerWidth * (MAP_CHART_WIDTH_INT/MAP_FULL_WIDTH_INT)) - (14)
-
-  if (vis){
-    var mapHeight = leftover - MAP_HEIGHT_OFFSET;
-    var chartHeight = 0;
-  } else {
-    var mapHeight  = leftover - MAP_HEIGHT_OFFSET;
-    var chartHeight = 0;
-  }
-
-  //do not let map height less than 300 pixels
-  if (mapHeight < MAP_HEIGHT){
-    mapHeight = MAP_HEIGHT
-  }
-
-  //do not let chart area less than 100 pixels
-  //  may need to rethink this if the charts need more space....
-  if (chartHeight < CHART_HEIGHT){
-    chartHeight = CHART_HEIGHT
-  }
 
   return {
+    headerHeight,
+    breadCrumbsHeight,
     mapHeight,
     chartHeight,
-    chart_px_width,
-    map_px_width
+    chartWidth,
+    mapWidth,
+    padding
   }
 
 }
 export function update_ChartHeight(){
     return (dispatch, getState) => {
 
-        //get redux state
-      const state = getState();
-      const heights = calculate_NewHeights(state);
+      const padding = 14
 
-      const mapHeight = heights.mapHeight;
-      const chartHeight = heights.chartHeight;
-      const mapWidth = heights.map_px_width;
-      const chartWidth = heights.chart_px_width;
+      const headerHeight = $('#headerrow').outerHeight()
+      const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
+      const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + padding)
+      const mapHeight = leftover
+      const chartHeight = leftover
 
-      //create map config object
-      const default_settings = {...state.default_settings.default_set, mapHeight, chartHeight, mapWidth, chartWidth};
+      const leftoverInner = window.innerHeight - (headerHeight + breadCrumbsHeight + (padding*2))
+      const chartWidth = $('#chartColumn').innerWidth()-(padding*2)
+      const chartSubColumn = $('#chartSubColumn').innerWidth()-(padding-2)
+      const chartHeader = $('#chartHeader').innerHeight()
+      const chartAreaHeight = leftoverInner-chartHeader
+      const mapWidth = $('#mapColumn').innerWidth() - (padding*2)
+
+
+      return {
+        headerHeight,
+        breadCrumbsHeight,
+        mapHeight,
+        chartHeight,
+        chartWidth,
+        mapWidth,
+        padding
+      }
 
       dispatch(defaultSate('UPDATE_CHART_HEIGHT',default_settings));
 

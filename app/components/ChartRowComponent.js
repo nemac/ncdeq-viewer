@@ -722,22 +722,27 @@ var ChartRow = React.createClass({
       const tra_header = "Is it in a Targeted Resource Area (TRA)?"
 
       const display_start_message = (chart_filter ? 'none' : 'show');
-      const no_show_height = chart_filter ? chart_grid_height : 0;
-
+      // const no_show_height = chart_filter ? chart_grid_height : 0;
 
       const headerHeight = $('#headerrow').outerHeight()
       const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
       const padding = 14
       const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + padding)
+
       const leftoverInner = window.innerHeight - (headerHeight + breadCrumbsHeight + (padding*2))
       const chartWidth = $('#chartColumn').innerWidth()-(padding*2)
+      const chartSubColumn = $('#chartSubColumn').innerWidth()-(padding-2)
+      const chartHeader = $('#chartHeader').innerHeight()
+      const chartAreaHeight = leftoverInner-chartHeader
+      const no_show_height = chart_filter ? chartAreaHeight : 0;
+
 
     return (
         <div id="chartSubColumn" style={{height:leftover,width:chartWidth,padding:"0px",margin:"0px"}}>
 
         { chart_filter &&
 
-        <div className="ui sticky" style={{border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
+        <div id="chartHeader" className="ui sticky" style={{border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
           <div className="content" style={{marginTop: SPACING}}>
           <div className="ui header">
             {chart_cataloging_unit}
@@ -746,22 +751,19 @@ var ChartRow = React.createClass({
         </div>
       }
 
-      <div className="ui basic segment" style={{display:display_start_message,height:leftoverInner,border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
+      <div className="ui basic segment" style={{display:display_start_message,height:leftoverInner,border:BOX_BORDER,padding: SPACING,marginBottom:"7px",backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
         <div className="content" style={{marginTop: SPACING}}>
         <div className="ui header">
           {chart_cataloging_unit}
         </div>
       </div>
-      <div className={working_class} style={{height:leftoverInner}}>
-          <div className="ui loader" ></div>
-      </div>
       </div>
 
 
-       <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,width:chart_width_px+21,height:no_show_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px",paddingLeft:"5px"}}>
+       <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,width:chartWidth+21,paddingRight:SPACING,height:no_show_height,overflowY:"scroll",overflowX:"hidden"}}>
 
-      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{width:chart_width_px,overflow:"visible"}}>
-        <div className={working_class} style={{height:leftoverInner}}>
+      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{width:chartWidth,overflow:"visible"}}>
+        <div className={working_class} style={{height:'100%'}}>
             <div className="ui loader" ></div>
         </div>
 
@@ -796,7 +798,7 @@ var ChartRow = React.createClass({
 
       { chart_filter &&
         <ChartRowWrapper key="tra"
-          chart_width={chart_width_px}
+          chart_width={chartSubColumn}
           title="Targeted Resource Areas"
           title_description=""
           note={tra_note}
@@ -823,7 +825,7 @@ var ChartRow = React.createClass({
         }
         { chart_filter &&
         <ChartRowWrapper key="baseline"
-          chart_width={chart_width_px}
+          chart_width={chartSubColumn}
           title="BASELINE"
           title_description=""
           note="The taller the bar chart the more degraded"
@@ -850,7 +852,7 @@ var ChartRow = React.createClass({
         }
         { chart_filter &&
         <ChartRowWrapper key="uplift"
-          chart_width={chart_width_px}
+          chart_width={chartSubColumn}
           title="UPLIFT"
           title_description=""
           note="The taller the bar chart the more potential for improvement."
@@ -877,7 +879,7 @@ var ChartRow = React.createClass({
          }
          { chart_filter &&
            <ChartPie
-             chart_width={chart_width_px}
+             chart_width={chartSubColumn}
              title="Landuse-Landcover (HUC12)"
              chart_type="Landuse-Landcover HUC12"
              title_description=""
@@ -890,7 +892,7 @@ var ChartRow = React.createClass({
          }
          { chart_filter &&
            <ChartPie
-             chart_width={chart_width_px}
+             chart_width={chartSubColumn}
              title="Landuse-Landcover (Catchment)"
              chart_type="Landuse-Landcover Catchment"
              title_description=""
@@ -902,7 +904,7 @@ var ChartRow = React.createClass({
          { chart_filter && catchment_chart_ar &&
 
            <ChartSimpleBar
-             chart_width={chart_width_px}
+             chart_width={chartSubColumn}
              title="Baseline (Catchment)"
              chart_type="Baseline Catchment"
              title_description=""

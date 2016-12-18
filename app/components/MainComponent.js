@@ -114,7 +114,7 @@ var MainComponent = React.createClass({
                 <div className="row" style={{padding:"0px"}}>
                   {/* only render the charts section when the user has made the charts visibility true */}
                   { is_chart_vis &&
-                    <div id="chartColumn" className="ui eight wide column" style={{height:leftover,padding:"14px"}}>
+                    <div id="chartColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,padding:"14px"}}>
                       <ChartRowContainer />
                     </div>
                   }
