@@ -28,11 +28,9 @@ export const NORTH_EAST_LATITUDE = 33.7528762817383;
 export const NORTH_EAST_LONGITUDE = -94.3218765258789;
 export const SOUTH_WEST_LATITUDE = 36.5880393981934;
 export const SOUTH_WEST_LONGITUDE = -65.4001159667969;
-export const START_LATITUDE =  35.6729639;
-export const START_LONGITUDE = -79.0392919;
+export const START_LATITUDE =  35.728677;
+export const START_LONGITUDE = -80.595703;
 
-// export const START_LATITUDE =  35.40;
-// export const START_LONGITUDE = -76.55;
 export const START_ZOOM = 7;
 export const MIN_ZOOM = 6;
 export const MAX_ZOOM = 16;

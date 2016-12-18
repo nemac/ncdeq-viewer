@@ -50,7 +50,7 @@ var MapComponent = React.createClass({
       leafletMap.invalidateSize(true)
       setTimeout(function(){
         self.props.set_defaults();
-      }, 0);
+      }, 100);
     };
   },
   //get geojson symbology
