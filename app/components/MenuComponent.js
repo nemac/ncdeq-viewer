@@ -21,7 +21,7 @@ var MenuComponent = React.createClass({
 
     //toggle chart visibility with button click
     this.props.update_ChartVisiblity();
-    this.props.update_MapHeight();
+    this.props.set_defaults();
 
     //update header vis in action
     this.props.update_HeaderVis()
@@ -29,7 +29,7 @@ var MenuComponent = React.createClass({
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize()}, 100);
+      setTimeout(function(){ leafletMap.invalidateSize()}, 0);
     };
   },
   componentDidMount: function() {
@@ -37,7 +37,7 @@ var MenuComponent = React.createClass({
 
   },
   componentWillUpdate: function(nextProps, nextState) {
-    this.props.update_MapHeight();
+    this.props.set_defaults();
 
     const method = nextProps.searchMethod;
 
@@ -106,7 +106,7 @@ var MenuComponent = React.createClass({
   handleSearchClick: function(comp,e){
     //update header vis in action
     this.props.update_HeaderVis()
-    this.props.update_MapHeight();
+    this.props.set_defaults();
 
   },
   handleSearch: function(comp,e){
@@ -292,7 +292,7 @@ var MenuComponent = React.createClass({
     const select_columns = window.innerWidth < OVERIDE_WIDTH ? "sixteen wide" : "four wide";
 
     return (
-      <div className="html ui top attached segment" style={{marginLeft:"10px",marginRight:"10px"}}>
+      <div className="html ui top attached segment" >
         <div className="ui relaxed stackable divided grid" >
           <div className="row">
             <div className={select_columns + " wide column"} >

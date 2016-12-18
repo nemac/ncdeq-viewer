@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
-import { get_ChartData, get_TRAData, update_ChartVisiblity, update_MapHeight, get_LayerInfo_ByValue,
+import { set_defaults, get_ChartData, get_TRAData, update_ChartVisiblity, get_LayerInfo_ByValue,
         change_geographyLevelActive, set_search_method, get_tra_info, update_ChartLevels, update_HeaderVis,
         get_nlcd_data, get_nlcd_data_huc12, get_catchment_data, get_LayerGeom_ByValue, set_active_function,
         set_active_hover, get_all_geometries, get_chart_buttons} from '../actions/actionCreators'
@@ -36,7 +36,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     get_ChartData: bindActionCreators(get_ChartData,dispatch),
     get_TRAData: bindActionCreators(get_TRAData,dispatch),
     update_ChartVisiblity: bindActionCreators(update_ChartVisiblity, dispatch),
-    update_MapHeight: bindActionCreators(update_MapHeight, dispatch),
     get_LayerInfo_ByValue: bindActionCreators(get_LayerInfo_ByValue, dispatch),
     change_geographyLevelActive: bindActionCreators(change_geographyLevelActive,dispatch),
     set_search_method: bindActionCreators(set_search_method,dispatch),
@@ -50,6 +49,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     set_active_hover: bindActionCreators(set_active_hover, dispatch),
     get_all_geometries: bindActionCreators(get_all_geometries, dispatch),
     get_chart_buttons:  bindActionCreators(get_chart_buttons, dispatch),
+    set_defaults: bindActionCreators(set_defaults, dispatch),
+
   }
 }
 const ChartRowContainer = connect(

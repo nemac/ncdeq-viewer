@@ -23,7 +23,6 @@ import {
   START_ZOOM,
   MIN_ZOOM,
   MAX_ZOOM,
-  MAX_SEARCH_ZOOM,
 } from '../constants/appConstants'
 
 //basic map (leaflet state and functions)
@@ -246,8 +245,6 @@ export function get_all_geometries(value){
         //get redux state
         const state = getState()
 
-
-        //AGO_get_geometry_for_all(value, TRA_FEATUREID)
        //check repsonses for errors
        const current_geometries_huc = CheckReponse(huc_response,'AGO_API_ERROR');
        const tra_xwalk = CheckReponse(tra_xwalk_response,'AGO_API_ERROR');
