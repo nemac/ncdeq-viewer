@@ -12,6 +12,8 @@ import {
   CHART_VISIBILITY,
   MAP_FULL_WIDTH,
   MAP_CHART_WIDTH,
+  CHART_WIDTH_INT,
+  CHART_WIDTH,
   BOX_BORDER,
   BACKGROUND_COLOR_BG,
   OVERIDE_WIDTH,
@@ -28,6 +30,7 @@ var MainComponent = React.createClass({
         const leafletMap = this.props.leafletMap.leafletMap;
         if(leafletMap){
           leafletMap.invalidateSize(true)
+          this.props.set_defaults();
           setTimeout(function(){ leafletMap.invalidateSize(true)}, 0);
         }
       };
@@ -55,8 +58,17 @@ var MainComponent = React.createClass({
       //get and populate the map data
       this.props.get_defaultMapData();
 
+      //leaflet map dosenot update size this forces the issue
+      if(this.props.leafletMap){
+        const leafletMap = this.props.leafletMap.leafletMap;
+        if(leafletMap){
+          leafletMap.invalidateSize(true)
+          setTimeout(function(){ leafletMap.invalidateSize(true)}, 0);
+        }
+      };
+
       //leaflet needs an actual mapheight. and we want to dynamically resize the map as the user resizes the browser....
-      this.props.set_defaults();
+      //this.props.set_defaults();
 
     },
     componentDidMount: function() {
@@ -82,10 +94,13 @@ var MainComponent = React.createClass({
         is_chart_vis = this.props.charts.chart_visibility
       }
 
-      const columnWidth = is_chart_vis ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
+      const columnWidth_map = is_chart_vis ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
+      const columnWidth_chart = is_chart_vis ? CHART_WIDTH : MAP_FULL_WIDTH;
+
       const header_description_visibility =  this.props.default_settings ? this.props.default_settings.HEADER_DESCRIPTION_VISIBILITY : HEADER_DESCRIPTION_VISIBILITY;
 
-      const ADJUSTED_COLUMN_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : columnWidth;
+      const ADJUSTED_COLUMN_WIDTH_MAP = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : columnWidth_map;
+      const ADJUSTED_COLUMN_WIDTH_CHART = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : columnWidth_chart;
 
       const padding = this.props.default_settings ? this.props.default_settings.PADDING : 0;
       const leftover =  this.props.default_settings ? this.props.default_settings.MAPHEIGHT : 0;
@@ -104,12 +119,12 @@ var MainComponent = React.createClass({
                 <div className="row" style={{padding:"0px"}}>
                   {/* only render the charts section when the user has made the charts visibility true */}
                   { is_chart_vis &&
-                    <div id="chartColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,paddingTop:"0px !important"}}>
+                    <div id="chartColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH_CHART + " wide column"} style={{height:leftover,paddingTop:"0px !important"}}>
                       <ChartRowContainer />
                     </div>
                   }
-                  <div id="mapColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,paddingTop:"0px !important"}}>
-                    <MapRowContainer columnWidth={columnWidth} />
+                  <div id="mapColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH_MAP + " wide column"} style={{height:leftover,paddingTop:"0px !important"}}>
+                    <MapRowContainer columnWidth={columnWidth_map} />
                   </div>
                 </div>
               </div>
