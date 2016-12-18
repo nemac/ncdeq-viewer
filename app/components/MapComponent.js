@@ -9,7 +9,9 @@ import MapLayerToggleWrapper from '../components/MapLayerToggleWrapper'
 //app constants
 import {
   SPACING,
-  PADDING
+  PADDING,
+  START_LATITUDE,
+  START_LONGITUDE,
 } from '../constants/appConstants';
 
 import { HUC12_MAP_FEATUREID, IMAGERY_BASEMAP, BASE_MAP_LABELS,
@@ -28,6 +30,8 @@ var GeoJSON_Layers = {"huc8": null,
 
 var MapComponent = React.createClass({
   handleResize: function(){
+
+    const self = this;
 
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
@@ -50,6 +54,7 @@ var MapComponent = React.createClass({
       leafletMap.invalidateSize(true)
       setTimeout(function(){
         self.props.set_defaults();
+        leafletMap.invalidateSize(true)
       }, 100);
     };
   },
@@ -853,13 +858,21 @@ var MapComponent = React.createClass({
 
 
     //not sure yet ho to handle this but mapHeight needs to be adjusted by to px in the map component
-    const chartVisibility = this.props.chart ? this.props.chart.chart_visibility : null;
+    let is_chart_vis = true
+    if(this.props.charts.chart_visibility === undefined){
+      is_chart_vis = true
+    } else {
+      is_chart_vis = this.props.charts.chart_visibility
+    }
 
     const imageryVisibility = this.props.imagery_visibility ? this.props.imagery_visibility : false;
 
     const padding = this.props.default_settings ? this.props.default_settings.PADDING : 0;
     const leftover =  this.props.default_settings ? this.props.default_settings.LEFTOVER - (padding) : 0;
     const mapwidth = this.props.default_settings ? this.props.default_settings.MAPWIDTH : 0;
+
+    const latitude = this.props.map_settings ? this.props.map_settings.latitude : START_LATITUDE
+    const longitude = this.props.map_settings ? this.props.map_settings.longitude : START_LONGITUDE
 
     return (
       <div style={{height:leftover,width:mapwidth,padding:"0px"}} onResize={this.handleResize()} >
@@ -869,7 +882,7 @@ var MapComponent = React.createClass({
           onLeafletMoveEnd={this.HandleMapEnd.bind(null,this)}
           onLeafletClick={this.handleMapClick.bind(null,this)}
           onLeafletResize={this.handleResize.bind(null,this)}
-          center={[this.props.map_settings.latitude,this.props.map_settings.longitude]}
+          center={[latitude,longitude]}
           zoom={this.props.map_settings.zoom}
           maxBounds={this.props.map_settings.maxBounds}
           maxZoom={this.props.map_settings.maxZoom}
@@ -878,8 +891,8 @@ var MapComponent = React.createClass({
 
           <Control position="topright" className="mapbutton" >
             <button className="ui black button" onClick={this.handleChartButtonClick.bind(null,this)} style={{paddingLeft: SPACING,paddingRight: SPACING,width:"140px"}}>
-              <i className={!this.props.charts.chart_visibility ? "bar chart icon" : "bar chart icon" }></i>
-              {!this.props.charts.chart_visibility ? "Show Charts" : "Hide Charts" }
+              <i className={!is_chart_vis ? "bar chart icon" : "bar chart icon" }></i>
+              {!is_chart_vis ? "Show Charts" : "Hide Charts" }
             </button>
           </Control>
 
@@ -889,11 +902,9 @@ var MapComponent = React.createClass({
             </button>
           </Control>
 
-
         <Control position="topright" className="mapbutton" >
           <MapLayerToggleWrapper map_settings={this.props.map_settings} leafletMap={this.props.leafletMap} geojson_layers={GeoJSON_Layers}/>
         </Control>
-
 
       <ESRITileMapLayer
         z_Index={0}
