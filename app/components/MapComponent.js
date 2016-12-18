@@ -28,13 +28,12 @@ var GeoJSON_Layers = {"huc8": null,
 
 var MapComponent = React.createClass({
   handleResize: function(){
+
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
       if(leafletMap){
-        setTimeout(function(){
-          leafletMap.invalidateSize(true)
-        }, 200);
+        leafletMap.invalidateSize(true)
       }
     };
   },
@@ -43,11 +42,15 @@ var MapComponent = React.createClass({
     //toggle chart visibility with button click
     this.props.update_ChartVisiblity();
     this.props.set_defaults();
+    const self = this;
 
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize(true)}, 200);
+      leafletMap.invalidateSize(true)
+      setTimeout(function(){
+        self.props.set_defaults();
+      }, 0);
     };
   },
   //get geojson symbology
@@ -855,11 +858,11 @@ var MapComponent = React.createClass({
     const imageryVisibility = this.props.imagery_visibility ? this.props.imagery_visibility : false;
 
     const padding = this.props.default_settings ? this.props.default_settings.PADDING : 0;
-    const leftover =  this.props.default_settings ? this.props.default_settings.MAPHEIGHT - (padding) : 0;
+    const leftover =  this.props.default_settings ? this.props.default_settings.LEFTOVER - (padding) : 0;
     const mapwidth = this.props.default_settings ? this.props.default_settings.MAPWIDTH : 0;
 
     return (
-      <div style={{height:leftover,width:mapwidth,padding:"0px"}}>
+      <div style={{height:leftover,width:mapwidth,padding:"0px"}} onResize={this.handleResize()} >
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
           onLeafletZoomEnd={this.HandleMapEnd.bind(null,this)}

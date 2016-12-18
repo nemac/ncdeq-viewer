@@ -59,7 +59,7 @@ export function set_defaults(){
     const CHARTWIDTH = $('#chartColumn').innerWidth()-(PADDING*2)
     const CHARTSUBCOLUMN = $('#chartSubColumn').innerWidth()-(PADDING-2)
     const CHARTHEADER = $('#chartHeader').innerHeight()
-    const CHARTAREAHEIGHT = LEFTOVERINNER-CHARTHEADER
+    const CHARTAREAHEIGHT = LEFTOVERINNER-CHARTHEADER-20
     const MAPWIDTH = $('#mapColumn').innerWidth() - (PADDING*2)
 
     //create map config object

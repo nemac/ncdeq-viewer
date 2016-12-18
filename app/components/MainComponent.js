@@ -22,6 +22,16 @@ var MainComponent = React.createClass({
       //update map size when browser is reiszed.
       //  this updates redux store - MapComponent is subscribed to it.
       this.props.set_defaults();
+
+      //leaflet map dosenot update size this forces the issue
+      if(this.props.leafletMap){
+        const leafletMap = this.props.leafletMap.leafletMap;
+        if(leafletMap){
+          leafletMap.invalidateSize(true)
+          setTimeout(function(){ leafletMap.invalidateSize(true)}, 0);
+        }
+      };
+
     },
     shouldComponentUpdate: function(nextProps, nextState) {
       if(!nextProps.constants){
@@ -94,11 +104,11 @@ var MainComponent = React.createClass({
                 <div className="row" style={{padding:"0px"}}>
                   {/* only render the charts section when the user has made the charts visibility true */}
                   { is_chart_vis &&
-                    <div id="chartColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,"padding":padding+"px"}}>
+                    <div id="chartColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,paddingTop:"0px !important"}}>
                       <ChartRowContainer />
                     </div>
                   }
-                  <div id="mapColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,"padding":padding+"px"}}>
+                  <div id="mapColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,paddingTop:"0px !important"}}>
                     <MapRowContainer columnWidth={columnWidth} />
                   </div>
                 </div>

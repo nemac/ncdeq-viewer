@@ -29,7 +29,7 @@ var MenuComponent = React.createClass({
     //leaflet map dosenot update size this forces the issue
     if(this.props.leafletMap){
       const leafletMap = this.props.leafletMap.leafletMap;
-      setTimeout(function(){ leafletMap.invalidateSize()}, 100);
+      setTimeout(function(){ leafletMap.invalidateSize()}, 0);
     };
   },
   componentDidMount: function() {

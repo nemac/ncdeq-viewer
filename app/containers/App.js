@@ -9,8 +9,11 @@ function mapStateToProps(state) {
   let charts = state.chartData;
   let default_settings = state.default_settings.default_settings;
   let constants = state.constants.constants;
+  let leafletMap = state.leafletMap;
+
 
   return {
+    leafletMap,
     charts,
     default_settings,
     constants,
