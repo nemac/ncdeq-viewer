@@ -4,11 +4,9 @@ import ChartRowWrapper from '../containers/ChartRowWrapperContainer';
 import ChartPie from '../components/ChartPie';
 import ChartSimpleBar from '../components/ChartSimpleBar';
 import ChartTRA from '../components/ChartTRA';
-var SectionWrapper = require('./SectionWrapper');
 import HelperComponent from '../components/HelperComponent'
 
 import ChartPieContainer from '../containers/ChartPieContainer';
-
 
 import {
   CHART_WIDTH,
@@ -721,9 +719,23 @@ var ChartRow = React.createClass({
 
       const ADJUSTED_TITLE_HEIGHT = window.innerWidth < 1260 ? "3.5em" : "3em";
 
-    return (
-      <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{height:chart_grid_height,paddingLeft:"10px",paddingRight:"7px",paddingTop:"0px",paddingBottom:"0px",marginBottom:"0px",marginTop:SPACING}}>
+      const tra_header = "Is it in a Targeted Resource Area (TRA)?"
 
+      const display_start_message = (chart_filter ? 'none' : 'show');
+      const no_show_height = chart_filter ? chart_grid_height : 0;
+
+
+      const headerHeight = $('#headerrow').outerHeight()
+      const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
+      const padding = 14
+      const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + padding)
+      const leftoverInner = window.innerHeight - (headerHeight + breadCrumbsHeight + (padding*2))
+      const chartWidth = $('#chartColumn').innerWidth()-(padding*2)
+
+    return (
+        <div id="chartSubColumn" style={{height:leftover,width:chartWidth,padding:"0px",margin:"0px"}}>
+
+        { chart_filter &&
 
         <div className="ui sticky" style={{border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
           <div className="content" style={{marginTop: SPACING}}>
@@ -732,9 +744,24 @@ var ChartRow = React.createClass({
           </div>
         </div>
         </div>
-       <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,width:chart_width_px+21,height:chart_grid_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px"}}>
+      }
+
+      <div className="ui basic segment" style={{display:display_start_message,height:leftoverInner,border:BOX_BORDER,padding: SPACING,marginBottom:SPACING,backgroundColor:BACKGROUND_COLOR_FG, borderRadius: BOX_BORDER_RADUIS  }}>
+        <div className="content" style={{marginTop: SPACING}}>
+        <div className="ui header">
+          {chart_cataloging_unit}
+        </div>
+      </div>
+      <div className={working_class} style={{height:leftoverInner}}>
+          <div className="ui loader" ></div>
+      </div>
+      </div>
+
+
+       <div style={{display:vis,backgroundColor: BACKGROUND_COLOR_BG,width:chart_width_px+21,height:no_show_height,overflowY:"scroll",overflowX:"hidden",paddingBottom:"0px",marginBottom:"0px", marginTop:"10px",paddingLeft:"5px"}}>
+
       <div className={"ui stackable internally celled " + ADJUSTED_CHART_WIDTH + " wide column vertically divided items "} style={{width:chart_width_px,overflow:"visible"}}>
-        <div className={working_class} style={{height:chart_grid_height+100}}>
+        <div className={working_class} style={{height:leftoverInner}}>
             <div className="ui loader" ></div>
         </div>
 
@@ -746,8 +773,8 @@ var ChartRow = React.createClass({
           <div className="active title" style={{borderBottom: BOX_BORDER,marginTop: SPACING,paddingBottom: SPACING,height: ADJUSTED_TITLE_HEIGHT}}>
             <div className="header" style={{fontSize: "1.28571429em",fontWeight: "700"}}>
               <i className="dropdown left floated icon" style={{float:"left"}}></i>
-                <span style={{float:"left"}}>Is it in a Targeted Resource Area (TRA)?
-                  <HelperComponent helper_name={"TRA Point"}/> 
+                <span style={{float:"left"}}>{tra_header}
+                  <HelperComponent helper_name={"TRA Point"}/>
               </span>
               <span style={{float:"left",fontSize:".75em!important",fontWeight: "500!important",color: "rgba(0,0,0,.6)"}}>
                 <span className="description"></span>
@@ -896,13 +923,3 @@ var ChartRow = React.createClass({
 });
 
 module.exports = ChartRow;
-
-
-// <ChartPie
-//   chart_width={chart_width_px}
-//   title="Landuse-Landcover (HUC12)"
-//   title_description=""
-//   note={"For HUC12: " + chart_filter}
-//   chart_data={ncld_chart_data_huc12}
-//   use_percent={true}
-//   />

@@ -853,8 +853,14 @@ var MapComponent = React.createClass({
 
     const imageryVisibility = this.props.imagery_visibility ? this.props.imagery_visibility : false;
 
+    const headerHeight = $('#headerrow').outerHeight()
+    const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
+    const padding = 14
+    const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + (padding*2))
+    const mapwidth = $('#mapSubColumn').innerWidth()
+
     return (
-      <div className="sixteen wide stackable column" style={{paddingLeft: rowPadding + 'px',paddingRight: rowPadding + 'px',paddingTop: rowPadding + 'px',height: mapHght + 'px'}}>
+      <div style={{height:leftover,width:mapwidth,padding:"0px"}}>
         {this.props.map_settings &&
       <ReactLeaflet.Map  ref='map'
           onLeafletZoomEnd={this.HandleMapEnd.bind(null,this)}
@@ -865,7 +871,10 @@ var MapComponent = React.createClass({
           zoom={this.props.map_settings.zoom}
           maxBounds={this.props.map_settings.maxBounds}
           maxZoom={this.props.map_settings.maxZoom}
-          minZoom={this.props.map_settings.minZoom} >
+          minZoom={this.props.map_settings.minZoom}
+          height={leftover}
+          width={mapwidth}
+          >
 
           <Control position="topright" className="mapbutton" >
             <button className="ui black button" onClick={this.handleChartButtonClick.bind(null,this)} style={{paddingLeft: SPACING,paddingRight: SPACING,width:"140px"}}>
@@ -957,8 +966,8 @@ var MapComponent = React.createClass({
 
     </ReactLeaflet.Map>
   }
+</div>
 
-  </div>
     );
   }
 });

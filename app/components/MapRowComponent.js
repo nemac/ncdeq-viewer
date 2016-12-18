@@ -22,11 +22,18 @@ var MapRowComponent = React.createClass({
       chart_width_px = this.props.default_settings.chartWidth;
       chart_grid_height = this.props.default_settings.mapHeight-CHART_HEIGHT_ADJUSTMENT;
     }
+
+    const headerHeight = $('#headerrow').outerHeight()
+
+    const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
+    const padding = 14
+    const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight + padding)
+    const mapwidth = $('#mapColumn').innerWidth() - (padding*2)
+
     return (
-      <div className={"ui stackable internally celled " + ADJUSTED_COLUMN_WIDTH + " wide column grid"} style={{height:chart_grid_height,paddingRight:"10px",paddingLeft:"7px",paddingTop:"0px"}}>
-        <div className="stretched row" >
+
+      <div id="mapSubColumn" style={{height:leftover,width:mapwidth,padding:"0px",margin:"0px"}}>
           <MapContainer />
-        </div>
       </div>
     );
   }

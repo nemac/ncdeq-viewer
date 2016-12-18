@@ -17,17 +17,18 @@ export default class ESRITileMapLayer extends BaseTileLayer {
       the_opacity = Number(tileOpacity);
     }
 
-    //m
     //make sure maxzoom json is set to null
     var the_max_zoom = 19;
     if(max_zoom){
       the_max_zoom = max_zoom;
     }
+
     //make sure min_zoom json is set to null
     var the_min_zoom = 0;
     if(min_zoom){
       the_min_zoom = min_zoom;
     }
+    
     let the_ZIndex = 0;
     if(z_Index){
       the_ZIndex = z_Index;

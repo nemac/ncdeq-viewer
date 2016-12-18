@@ -292,7 +292,7 @@ var MenuComponent = React.createClass({
     const select_columns = window.innerWidth < OVERIDE_WIDTH ? "sixteen wide" : "four wide";
 
     return (
-      <div id="breadCrumbsHeight" className="html ui top attached segment" style={{marginLeft:"10px",marginRight:"10px"}}>
+      <div className="html ui top attached segment" >
         <div className="ui relaxed stackable divided grid" >
           <div className="row">
             <div className={select_columns + " wide column"} >

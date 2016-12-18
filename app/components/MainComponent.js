@@ -1,7 +1,6 @@
 import React from 'react';
 
 //import components
-var SectionWrapper = require('../components/SectionWrapper');
 var MapRowComponent = require('../components/MapRowComponent');
 var ModalAbout = require('../components/ModalAbout');
 import ChartRowContainer from '../containers/ChartRowContainer';
@@ -87,29 +86,46 @@ var MainComponent = React.createClass({
       // is_chart_vis = this.props ? true : this.props.charts.chart_visibility
       const rowPadding = this.props.default_settings ? this.props.default_settings.rowPadding : ROW_PADDING;
       const mapHeight = this.props.default_settings ? this.props.default_settings.mapHeight : MAP_HEIGHT;
-      const breadCrumbsHeight = this.props.default_settings ? this.props.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
-      const headerHeight = this.props.default_settings ? this.props.default_settings.headerHeight : HEADER_HEIGHT;
+      // const breadCrumbsHeight = this.props.default_settings ? this.props.default_settings.breadCrumbsHeight : BREAD_CRUMBS_HEIGHT;
+      // const headerHeight = this.props.default_settings ? this.props.default_settings.headerHeight : HEADER_HEIGHT;
       const defpad = this.props.default_settings ? this.props.default_settings.defpad : DEF_PAD;
       const chartHeight = this.props.default_settings ? this.props.default_settings.chartHeight : CHART_HEIGHT;
       const columnWidth = is_chart_vis ? MAP_CHART_WIDTH : MAP_FULL_WIDTH;
       const header_description_visibility =  this.props.default_settings ? this.props.default_settings.header_description_visibility : HEADER_DESCRIPTION_VISIBILITY;
 
+      const ADJUSTED_COLUMN_WIDTH = window.innerWidth < OVERIDE_WIDTH ? "sixteen" : columnWidth;
+
+      const headerHeight = $('#headerrow').outerHeight()
+      const breadCrumbsHeight =   $('#breadCrumbsHeight').outerHeight()
+      const padding = 14
+      const leftover = window.innerHeight - (headerHeight + breadCrumbsHeight)
+
       return (
         <div className="ui stackable one column padded grid" style={{backgroundColor: BACKGROUND_COLOR_BG}}>
           <HeaderContainer  header_description_visibility={header_description_visibility} />
-          <MenuContainer />
-
-            <div className="doubling two column row">
-
-              {/* only render the charts section when the user has made the charts visibility true */}
-              { is_chart_vis &&
-                <ChartRowContainer />
-              }
-              <MapRowComponent columnWidth={columnWidth} />
+          <div id="breadCrumbsHeight"  className="row">
+            <div className="column">
+              <MenuContainer />
+            </div>
+          </div>
+          <div id="mapandcharts" className="row" style={{height:leftover,padding:"0px"}}>
+            <div className="column" style={{padding:"0px"}}>
+              <div className="ui stackable two column padded grid" style={{height:leftover,backgroundColor: BACKGROUND_COLOR_BG}}>
+                <div className="row" style={{padding:"0px"}}>
+                  {/* only render the charts section when the user has made the charts visibility true */}
+                  { is_chart_vis &&
+                    <div id="chartColumn" className="ui eight wide column" style={{height:leftover,padding:"14px"}}>
+                      <ChartRowContainer />
+                    </div>
+                  }
+                  <div id="mapColumn" className={"ui " + ADJUSTED_COLUMN_WIDTH + " wide column"} style={{height:leftover,padding:"14px"}}>
+                    <MapRowComponent columnWidth={columnWidth} />
+                  </div>
+                </div>
               </div>
-
-              <ModalAbout />
-
+            </div>
+          </div>
+          <ModalAbout />
         </div>
       );
 
