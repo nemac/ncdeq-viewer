@@ -45,18 +45,15 @@ var JSON_CONSTANTS = [
   },
   {
     "name": "imagery",
-    "value": "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    "attribution": " Source: Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community"
+    "value": "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
   },
   {
     "name": "base map labels",
-    "value": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
-    "attribution": ""
+    "value": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
   },
   {
     "name": "base map",
-    "value": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-    "attribution": "Esri, HERE, DeLorme, MapmyIndia, © OpenStreetMap contributors, and the GIS user community"
+    "value": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
   },
   {
     "name": "Catchments Base Map",
