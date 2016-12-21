@@ -9,7 +9,7 @@ var JSON_CONSTANTS = [
   },
   {
     "name": "FEATURE_SERVICE_NAME",
-    "value": "RDRBP_AGO6"
+    "value": "RDRBP_AGO"
   },
   {
     "name": "TRA_FEATUREID",
