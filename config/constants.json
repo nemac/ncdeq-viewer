@@ -9,51 +9,54 @@ var JSON_CONSTANTS = [
   },
   {
     "name": "FEATURE_SERVICE_NAME",
-    "value": "RDRBP_AGO6"
+    "value": "RDRBP_AGO"
   },
   {
     "name": "TRA_FEATUREID",
-    "value": "3"
+    "value": "0"
   },
   {
     "name": "HUC12_MAP_FEATUREID",
-    "value": "4"
+    "value": "1"
   },
   {
     "name": "CATALOGING_MAP_FEATUREID",
-    "value": "5"
+    "value": "2"
   },
   {
     "name": "BASIN_MAP_FEATUREID",
-    "value": "6"
+    "value": "3"
   },
   {
     "name": "NLCD_CATCHMENT_FEATUREID",
-    "value": "8"
+    "value": "4"
   },
   {
     "name": "NCDEQ_NORMALIZED_FEATUREID",
-    "value": "10"
+    "value": "6"
   },
   {
     "name": "HUC_NAMES_FEATUREID",
-    "value": "11"
+    "value": "7"
   },
   {
     "name": "TRA_XWALK",
-    "value": "12"
+    "value": "8"
   },
   {
     "name": "imagery",
-    "value": "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+    "value": "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    "attribution": " Source: Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community"
   },
   {
     "name": "base map labels",
-    "value": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+    "value": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
+    "attribution": ""
   },
   {
     "name": "base map",
-    "value": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+    "value": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+    "attribution": "Esri, HERE, DeLorme, MapmyIndia, © OpenStreetMap contributors, and the GIS user community"
   },
   {
     "name": "Catchments Base Map",

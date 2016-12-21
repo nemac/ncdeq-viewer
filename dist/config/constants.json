@@ -9,39 +9,39 @@ var JSON_CONSTANTS = [
   },
   {
     "name": "FEATURE_SERVICE_NAME",
-    "value": "RDRBP_AGO6"
+    "value": "RDRBP_AGO"
   },
   {
     "name": "TRA_FEATUREID",
-    "value": "3"
+    "value": "0"
   },
   {
     "name": "HUC12_MAP_FEATUREID",
-    "value": "4"
+    "value": "1"
   },
   {
     "name": "CATALOGING_MAP_FEATUREID",
-    "value": "5"
+    "value": "2"
   },
   {
     "name": "BASIN_MAP_FEATUREID",
-    "value": "6"
+    "value": "3"
   },
   {
     "name": "NLCD_CATCHMENT_FEATUREID",
-    "value": "8"
+    "value": "4"
   },
   {
     "name": "NCDEQ_NORMALIZED_FEATUREID",
-    "value": "10"
+    "value": "6"
   },
   {
     "name": "HUC_NAMES_FEATUREID",
-    "value": "11"
+    "value": "7"
   },
   {
     "name": "TRA_XWALK",
-    "value": "12"
+    "value": "8"
   },
   {
     "name": "imagery",
