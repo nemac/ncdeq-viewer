@@ -29,7 +29,7 @@ var JSON_CONSTANTS = [
   },
   {
     "name": "NLCD_CATCHMENT_FEATUREID",
-    "value": "4"
+    "value": "5"
   },
   {
     "name": "NCDEQ_NORMALIZED_FEATUREID",
